@@ -1,0 +1,18 @@
+# Optional: `docker compose -f docker-compose.local.yml up -d` for PostgreSQL + Redis
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dealseal
+      POSTGRES_PASSWORD: dealseal
+      POSTGRES_DB: dealseal
+    ports:
+      - "5432:5432"
+    volumes:
+      - dealseal_pg:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+volumes:
+  dealseal_pg: {}

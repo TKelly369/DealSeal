@@ -1,0 +1,39 @@
+import type { Express } from "express";
+import type { Env } from "../config/env.js";
+import { createAuthRouter } from "./auth.js";
+import { createTransactionsRouter } from "./transactions.js";
+import { createDocumentsRouter } from "./documents.js";
+import { createRulesRouter } from "./rules.js";
+import { createApprovalsRouter } from "./approvals.js";
+import { createOverridesRouter } from "./overrides.js";
+import { createStateRouter } from "./state.js";
+import { createPackagesRouter } from "./packages.js";
+import { createBillingRouter } from "./billing.js";
+import { createAdminRouter } from "./admin.js";
+import { createAnalyticsRouter } from "./analytics.js";
+import { createAuditRouter } from "./audit.js";
+import { createCompletionTasksRouter } from "./completion-tasks.js";
+import { createPostFundingObligationsRouter } from "./post-funding-obligations.js";
+import { createIntegrationsRouter } from "./integrations.js";
+import { createOutboundTestRouter } from "./webhooks-routes.js";
+import { createPartnerApiRouter } from "./partner-api.js";
+
+export function registerRoutes(app: Express, env: Env): void {
+  app.use("/auth", createAuthRouter(env));
+  app.use("/transactions", createTransactionsRouter(env));
+  app.use("/documents", createDocumentsRouter(env));
+  app.use("/rules", createRulesRouter(env));
+  app.use("/approvals", createApprovalsRouter(env));
+  app.use("/overrides", createOverridesRouter(env));
+  app.use("/state", createStateRouter(env));
+  app.use("/packages", createPackagesRouter(env));
+  app.use("/billing", createBillingRouter(env));
+  app.use("/admin", createAdminRouter(env));
+  app.use("/analytics", createAnalyticsRouter(env));
+  app.use("/audit", createAuditRouter(env));
+  app.use("/completion-tasks", createCompletionTasksRouter(env));
+  app.use("/post-funding-obligations", createPostFundingObligationsRouter(env));
+  app.use("/integrations", createIntegrationsRouter(env));
+  app.use("/webhooks", createOutboundTestRouter(env));
+  app.use("/api", createPartnerApiRouter(env));
+}

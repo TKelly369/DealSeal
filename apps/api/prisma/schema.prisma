@@ -1,0 +1,1134 @@
+// DealSeal — PostgreSQL schema. One governing agreement per transaction (enforced).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  DEALER_USER
+  FINANCE_MANAGER
+  COMPLIANCE_OFFICER
+  AUDITOR
+}
+
+enum TransactionState {
+  DRAFT
+  INVALID
+  CONDITIONAL
+  APPROVED
+  EXECUTED
+  RED
+  YELLOW
+  GREEN_STAGE_1
+  EXECUTED_PENDING_VERIFICATION
+  LOCKED
+  POST_FUNDING_PENDING
+  COMPLETED
+  GREEN_STAGE_2
+  DISCREPANCY_RESTRICTED
+  HOLD
+  ARCHIVED
+  PURGED
+}
+
+enum ContractLifecyclePhase {
+  CANDIDATE
+  APPROVED
+  EXECUTED
+  LOCKED
+}
+
+enum DocumentType {
+  CANDIDATE_CONTRACT
+  EXECUTED_CONTRACT
+  SUPPORTING
+  PACKAGE_EXPORT
+  OTHER
+}
+
+enum DocumentIngestStatus {
+  UPLOADED
+  VALIDATING
+  CLASSIFIED
+  ACCEPTED
+  REJECTED
+}
+
+enum DocumentUploadIntentStatus {
+  PENDING
+  COMPLETED
+  EXPIRED
+  CANCELLED
+}
+
+enum RuleType {
+  LENDER
+  JURISDICTION
+  FINANCIAL
+  SEQUENCING
+}
+
+enum RuleSeverity {
+  INFO
+  CONDITIONAL
+  BLOCKING
+}
+
+enum RuleEvalOutcome {
+  PASS
+  FAIL
+  CONDITIONAL
+}
+
+enum DiscrepancyStatus {
+  OPEN
+  ASSIGNED
+  RESOLVED
+  WAIVED
+}
+
+enum OverrideStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum HoldScope {
+  TRANSACTION
+  ORGANIZATION
+}
+
+enum CompletionTaskStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+enum PostFundingStatus {
+  PENDING
+  IN_PROGRESS
+  SATISFIED
+  WAIVED
+}
+
+enum LenderRuleLineOutcome {
+  PASS
+  FAIL
+  WARN
+  INFO
+}
+
+enum ExecutedContractVerificationState {
+  PENDING_UPLOAD
+  PENDING_VERIFICATION
+  VERIFIED
+  REJECTED
+}
+
+enum ExecutionVerificationResult {
+  PASS
+  FAIL
+  CONDITIONAL
+}
+
+enum PostFundingSeverity {
+  LOW
+  NORMAL
+  HIGH
+  CRITICAL
+}
+
+enum PackageFormat {
+  JSON
+  XML
+  PDF_BUNDLE
+}
+
+enum PackageJobStatus {
+  QUEUED
+  PROCESSING
+  SUCCEEDED
+  FAILED
+}
+
+enum SubscriptionTier {
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum BillableEventType {
+  DEAL_SEALED
+  DOCUMENT_EXPORT
+  CERTIFIED_PACKAGE
+  API_CALL
+  PRIORITY_PROCESSING
+  ANALYTICS_DASHBOARD
+  ANALYTICS_REPORT
+  ADDON_RISK_SCORING
+  ADDON_STRUCTURING
+  ADDON_ERROR_DETECTION
+  SUBSCRIPTION_PERIOD
+  SUBSCRIPTION_PLAN_ASSIGNED
+  PREMIUM_COMPLIANCE
+}
+
+enum InvoiceStatus {
+  DRAFT
+  OPEN
+  PAID
+  VOID
+}
+
+// --- Auth / org
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships  Membership[]
+  auditEvents  AuditEvent[] @relation("ActorAudit")
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships         Membership[]
+  transactions        Transaction[]
+  auditEvents         AuditEvent[]
+  usageEvents         UsageEvent[]
+  billingSubscription BillingSubscription?
+  pricingRules        PricingRule[]
+  packageTemplates    PackageTemplate[]
+  invoices            Invoice[]
+  lenderRuleEvals     LenderRuleEvaluation[]
+  holds               Hold[]
+  purgeJobs           PurgeJob[]
+
+  integrationConfigs IntegrationConfig[]
+  analyticsSnapshots  AnalyticsSnapshot[]
+  apiKeys             ApiKey[]
+}
+
+model Membership {
+  id     String     @id @default(uuid())
+  userId String
+  orgId  String
+  roles  UserRole[]
+
+  user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+  @@index([orgId])
+}
+
+// --- Core deal
+
+model Transaction {
+  id                String   @id @default(uuid())
+  publicId          String   @unique @default(cuid())
+  orgId             String
+  state             TransactionState   @default(DRAFT)
+  lifecyclePhase    ContractLifecyclePhase @default(CANDIDATE)
+  validationVersion Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  org                   Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  governingAgreement    GoverningAgreement?
+  transactionAuthority  TransactionAuthorityFile?
+  buyer                 BuyerProfile?
+  vehicle               VehicleRecord?
+  financials            DealFinancials?
+  documents             Document[]
+  ruleEvaluations       RuleEvaluation[]
+  stateTransitionLogs   StateTransitionLog[]
+  auditEvents           AuditEvent[]
+  discrepancies         Discrepancy[]
+  overrideRecords       OverrideRecord[]
+  holds                 Hold[]
+  completionTasks     CompletionTask[]
+  postFundingItems    PostFundingItem[]
+  packageJobs         PackageJob[]
+  packageManifests    PackageManifest[]
+  usageEvents         UsageEvent[]
+
+  selectedLenderProgramId String?
+  selectedLenderProgram  LenderProgram? @relation(fields: [selectedLenderProgramId], references: [id], onDelete: SetNull)
+  lenderRuleEvaluations  LenderRuleEvaluation[]
+
+  executedContracts        ExecutedContract[]
+  executionVerifications   ExecutionVerification[]
+  authoritativeEmbodiments AuthoritativeEmbodiment[]
+  integrationLogs         IntegrationLog[]
+
+  @@index([orgId, state])
+  @@index([publicId])
+}
+
+model GoverningAgreement {
+  id            String   @id @default(uuid())
+  transactionId String   @unique
+  referenceCode String   @unique
+  title         String
+  candidateVersion Int  @default(1)
+  executedVersion  Int?
+  lockedAt      DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+}
+
+model ExecutedContract {
+  id                    String   @id @default(uuid())
+  transactionId         String
+  documentId            String
+  documentVersionId     String?
+  governingCandidateVersion Int?
+  candidateReference    String?
+  storageKey            String
+  sha256                String
+  uploadedByUserId      String
+  verifiedByUserId      String?
+  verificationStatus    ExecutedContractVerificationState @default(PENDING_VERIFICATION)
+  authoritative         Boolean  @default(false)
+  lockedAt              DateTime?
+  createdAt             DateTime @default(now())
+
+  transaction   Transaction   @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  document      Document      @relation(fields: [documentId], references: [id], onDelete: Restrict)
+  documentVersion DocumentVersion? @relation(fields: [documentVersionId], references: [id], onDelete: SetNull)
+  verifications ExecutionVerification[]
+  embodiments AuthoritativeEmbodiment[]
+
+  @@index([transactionId, verificationStatus])
+  @@index([documentId])
+  @@map("executed_contracts")
+}
+
+model ExecutionVerification {
+  id                 String   @id @default(uuid())
+  transactionId      String
+  executedContractId String
+  candidateReference String
+  comparedFieldsJson Json     @default("{}")
+  mismatchesJson     Json     @default("[]")
+  result             ExecutionVerificationResult
+  method             String   @default("RULES_ENGINE_V1")
+  actorUserId        String?
+  metadataJson       Json     @default("{}")
+  verifiedAt         DateTime @default(now())
+
+  transaction        Transaction   @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  executedContract   ExecutedContract @relation(fields: [executedContractId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId, verifiedAt])
+  @@index([executedContractId])
+  @@map("execution_verifications")
+}
+
+model AuthoritativeEmbodiment {
+  id                 String   @id @default(uuid())
+  transactionId     String
+  executedContractId String
+  representationType String  @default("STRUCTURED_DEALSEAL")
+  outputFormat        String  @default("json")
+  storageKey         String
+  digest             String
+  version            Int      @default(1)
+  active             Boolean  @default(true)
+  generatedByUserId  String?
+  serviceName        String   @default("authoritative-embodiment")
+  createdAt         DateTime @default(now())
+
+  transaction      Transaction   @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  executedContract ExecutedContract @relation(fields: [executedContractId], references: [id], onDelete: Restrict)
+
+  @@index([transactionId, active])
+  @@map("authoritative_embodiments")
+}
+
+model PackageManifest {
+  id                 String   @id @default(uuid())
+  packageJobId       String   @unique
+  transactionId     String
+  packageTemplateId String?
+  packageType        String
+  includedRefsJson  Json     @default("{}")
+  stateSnapshotJson Json     @default("{}")
+  manifestJson      Json     @default("{}")
+  contentDigest     String
+  packageDigest     String
+  certificationStatement String @default("")
+  generatedByUserId  String
+  createdAt         DateTime @default(now())
+
+  packageJob   PackageJob   @relation(fields: [packageJobId], references: [id], onDelete: Cascade)
+  transaction  Transaction  @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  verification PackageVerification?
+
+  @@index([transactionId, createdAt])
+  @@map("package_manifests")
+}
+
+model PackageVerification {
+  id                 String   @id @default(uuid())
+  packageManifestId  String   @unique
+  verificationDigest String
+  algorithm         String  @default("sha256+canonical-json")
+  detailsJson      Json     @default("{}")
+  createdAt         DateTime @default(now())
+
+  packageManifest PackageManifest @relation(fields: [packageManifestId], references: [id], onDelete: Cascade)
+  @@map("package_verifications")
+}
+
+model TransactionAuthorityFile {
+  id            String   @id @default(uuid())
+  transactionId String   @unique
+  manifestJson  Json     @default("{}")
+  checksum      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+}
+
+model BuyerProfile {
+  id            String   @id @default(uuid())
+  transactionId String   @unique
+  legalName     String
+  dob           DateTime?
+  addressJson   Json     @default("{}")
+  identifiersJson Json   @default("{}")
+  version       Int      @default(1)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  versions    BuyerProfileVersion[]
+}
+
+model BuyerProfileVersion {
+  id              String   @id @default(uuid())
+  buyerProfileId  String
+  transactionId   String
+  version         Int
+  legalName       String
+  dob             DateTime?
+  addressJson     Json     @default("{}")
+  identifiersJson Json     @default("{}")
+  fromVersion     Int?
+  sourceState     TransactionState?
+  materialChange  Boolean  @default(false)
+  changeReason    String?
+  diffJson        Json     @default("{}")
+  editorUserId    String?
+  createdAt       DateTime @default(now())
+
+  buyerProfile BuyerProfile @relation(fields: [buyerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([buyerProfileId, version])
+  @@index([transactionId, createdAt])
+  @@map("buyer_profile_versions")
+}
+
+model VehicleRecord {
+  id            String   @id @default(uuid())
+  transactionId String   @unique
+  vin           String?
+  year          Int?
+  make          String?
+  model         String?
+  trim          String?
+  mileage       Int?
+  rawJson       Json     @default("{}")
+  version       Int      @default(1)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  versions    VehicleRecordVersion[]
+}
+
+model VehicleRecordVersion {
+  id              String   @id @default(uuid())
+  vehicleRecordId String
+  transactionId   String
+  version         Int
+  vin             String?
+  year            Int?
+  make            String?
+  model           String?
+  trim            String?
+  mileage         Int?
+  rawJson         Json     @default("{}")
+  fromVersion     Int?
+  sourceState     TransactionState?
+  materialChange  Boolean  @default(false)
+  changeReason    String?
+  diffJson        Json     @default("{}")
+  editorUserId    String?
+  createdAt       DateTime @default(now())
+
+  vehicleRecord VehicleRecord @relation(fields: [vehicleRecordId], references: [id], onDelete: Cascade)
+
+  @@unique([vehicleRecordId, version])
+  @@index([transactionId, createdAt])
+  @@map("vehicle_record_versions")
+}
+
+model DealFinancials {
+  id            String   @id @default(uuid())
+  transactionId String   @unique
+  amountFinanced Decimal @db.Decimal(14, 2)
+  aprBps        Int?
+  termMonths    Int?
+  paymentJson   Json     @default("{}")
+  lenderCode    String?
+  version       Int      @default(1)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  versions    DealFinancialsVersion[]
+}
+
+model DealFinancialsVersion {
+  id              String   @id @default(uuid())
+  dealFinancialsId String
+  transactionId   String
+  version         Int
+  amountFinanced  Decimal  @db.Decimal(14, 2)
+  aprBps          Int?
+  termMonths      Int?
+  paymentJson     Json     @default("{}")
+  lenderCode      String?
+  fromVersion     Int?
+  sourceState     TransactionState?
+  materialChange  Boolean  @default(false)
+  changeReason    String?
+  diffJson        Json     @default("{}")
+  editorUserId    String?
+  createdAt       DateTime @default(now())
+
+  dealFinancials DealFinancials @relation(fields: [dealFinancialsId], references: [id], onDelete: Cascade)
+
+  @@unique([dealFinancialsId, version])
+  @@index([transactionId, createdAt])
+  @@map("financial_versions")
+}
+
+model Document {
+  id            String             @id @default(uuid())
+  transactionId String
+  type          DocumentType
+  ingestStatus  DocumentIngestStatus @default(UPLOADED)
+  requirementKey String?
+  lineageParentId String?
+  ocrConfidence  Float?
+  blurScore      Float?
+  hasSignature   Boolean?
+  duplicateOfId  String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  versions    DocumentVersion[]
+  uploadIntents DocumentUploadIntent[]
+  executedContractRecords ExecutedContract[]
+
+  @@index([transactionId, type])
+}
+
+model DocumentUploadIntent {
+  id               String                     @id @default(uuid())
+  documentId       String
+  transactionId    String
+  orgId            String
+  stagingKey       String                     @unique
+  mimeType         String
+  maxBytes         BigInt
+  sha256Declared   String?
+  status           DocumentUploadIntentStatus @default(PENDING)
+  expiresAt        DateTime
+  createdByUserId  String
+  createdAt        DateTime                   @default(now())
+  completedAt      DateTime?
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId, status])
+  @@index([transactionId])
+}
+
+model DocumentVersion {
+  id         String   @id @default(uuid())
+  documentId String
+  version    Int
+  storageKey String
+  mimeType   String
+  byteSize   BigInt
+  sha256     String
+  isImmutable Boolean @default(false)
+  authoritative Boolean @default(false)
+  derivedRenderKey String?
+  parentVersionId String?
+  createdAt  DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  parentVersion DocumentVersion? @relation("DocumentVersionLineage", fields: [parentVersionId], references: [id], onDelete: SetNull)
+  childVersions DocumentVersion[] @relation("DocumentVersionLineage")
+  executedContractLinks ExecutedContract[]
+
+  @@unique([documentId, version])
+  @@index([documentId])
+  @@index([sha256])
+}
+
+// --- Rules
+
+model Rule {
+  id                  String       @id @default(uuid())
+  ruleId              String       @unique
+  ruleType            RuleType
+  conditionExpression String       @db.Text
+  evaluationOutput    Json         @default("{}")
+  overrideFlag        Boolean      @default(false)
+  severity            RuleSeverity
+  lenderCode          String?
+  jurisdiction        String?
+  active              Boolean      @default(true)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  evaluations RuleEvaluation[]
+  lenderProgramRules   LenderProgramRule[]
+  lenderRuleEvaluations LenderRuleEvaluation[]
+}
+
+model RuleEvaluation {
+  id            String          @id @default(uuid())
+  transactionId String
+  ruleDbId      String
+  outcome       RuleEvalOutcome
+  detailJson    Json            @default("{}")
+  evaluatedAt   DateTime        @default(now())
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  rule        Rule        @relation(fields: [ruleDbId], references: [id], onDelete: Restrict)
+
+  @@index([transactionId])
+}
+
+model StateTransitionLog {
+  id            String            @id @default(uuid())
+  transactionId String
+  fromState     TransactionState?
+  toState       TransactionState
+  reason        String?
+  actorUserId   String?
+  metadataJson  Json              @default("{}")
+  createdAt     DateTime          @default(now())
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId, createdAt])
+}
+
+model AuditEvent {
+  id             String   @id @default(uuid())
+  organizationId String?
+  transactionId  String?
+  actorUserId    String?
+  eventType      String?
+  action         String?
+  entityType     String?
+  entityId       String?
+  resource       String?
+  resourceId     String?
+  payloadJson    Json     @default("{}")
+  ip             String?
+  userAgent      String?
+  createdAt      DateTime @default(now())
+
+  actorUser    User?         @relation("ActorAudit", fields: [actorUserId], references: [id], onDelete: SetNull)
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  transaction  Transaction?  @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([transactionId, createdAt])
+  @@index([actorUserId, createdAt])
+  @@index([eventType, createdAt])
+}
+
+model Discrepancy {
+  id            String             @id @default(uuid())
+  transactionId String
+  code          String
+  message       String
+  status        DiscrepancyStatus  @default(OPEN)
+  assigneeUserId String?
+  resolutionJson Json              @default("{}")
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  resolvedAt    DateTime?
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId, status])
+}
+
+model OverrideRecord {
+  id            String          @id @default(uuid())
+  transactionId String
+  ruleId        String?
+  status        OverrideStatus  @default(PENDING)
+  justification String          @db.Text
+  requesterId   String
+  approverId    String?
+  createdAt     DateTime        @default(now())
+  decidedAt     DateTime?
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId, status])
+}
+
+model Hold {
+  id            String     @id @default(uuid())
+  scope         HoldScope
+  transactionId String?
+  orgId         String?
+  reason        String
+  active        Boolean    @default(true)
+  placedByUserId String
+  releasedAt    DateTime?
+  createdAt     DateTime   @default(now())
+
+  transaction Transaction? @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  org         Organization? @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId, active])
+  @@index([orgId, active])
+}
+
+model CompletionTask {
+  id            String               @id @default(uuid())
+  transactionId String
+  key           String
+  title         String
+  description   String               @default("")
+  taskType      String               @default("GENERAL")
+  source        String               @default("STATE")
+  isBlocker     Boolean              @default(false)
+  priority      Int                  @default(0)
+  status        CompletionTaskStatus @default(PENDING)
+  dueAt         DateTime?
+  assigneeRole  UserRole?
+  dependsOnKeys String[]             @default([])
+  metadataJson  Json                 @default("{}")
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@unique([transactionId, key])
+  @@index([transactionId, isBlocker, status])
+}
+
+// --- Packages
+
+model PackageTemplate {
+  id          String   @id @default(uuid())
+  orgId       String?
+  key         String
+  name        String
+  description String   @default("")
+  specJson    Json     @default("{}")
+  version     Int      @default(1)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  org Organization? @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([key])
+  @@index([orgId, active])
+  @@map("package_templates")
+}
+
+model PackageJob {
+  id                 String           @id @default(uuid())
+  transactionId    String
+  formats            PackageFormat[]
+  status             PackageJobStatus @default(QUEUED)
+  templateKey        String           @default("default-v1")
+  outputKeys         String[]         @default([])
+  manifestStorageKey String?
+  bundleSha256       String?
+  error              String?
+  requestedById      String
+  packageKind        String          @default("STANDARD")
+  stateSnapshotJson  Json            @default("{}")
+  certified         Boolean         @default(false)
+  createdAt          DateTime         @default(now())
+  completedAt        DateTime?
+
+  transaction Transaction      @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  generatedPackages GeneratedPackage[]
+  manifestRecord  PackageManifest?
+
+  @@index([transactionId])
+}
+
+model GeneratedPackage {
+  id            String         @id @default(uuid())
+  packageJobId  String
+  format        PackageFormat
+  storageKey    String
+  byteSize      BigInt
+  sha256        String
+  manifestJson  Json           @default("{}")
+  createdAt     DateTime       @default(now())
+
+  packageJob PackageJob @relation(fields: [packageJobId], references: [id], onDelete: Cascade)
+
+  @@index([packageJobId])
+  @@map("generated_packages")
+}
+
+// --- Post-funding
+
+model PostFundingItem {
+  id            String             @id @default(uuid())
+  transactionId String
+  kind          String
+  title         String             @default("")
+  description   String
+  status        PostFundingStatus  @default(PENDING)
+  severity      PostFundingSeverity  @default(NORMAL)
+  source        String             @default("MANUAL")
+  assigneeRole  UserRole?
+  completedByUserId String?
+  isBlocker     Boolean            @default(false)
+  dueAt         DateTime?
+  satisfiedAt   DateTime?
+  metadataJson  Json               @default("{}")
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId, status])
+  @@index([transactionId, isBlocker, status])
+}
+
+// --- Billing
+
+model BillingSubscription {
+  id               String            @id @default(uuid())
+  orgId            String            @unique
+  tier             SubscriptionTier
+  stripeCustomerId String?
+  stripeSubId      String?
+  status           String
+  currentPeriodEnd DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+}
+
+model PricingRule {
+  id            String   @id @default(uuid())
+  orgId         String
+  eventType     BillableEventType
+  unitAmountUsd Decimal  @db.Decimal(10, 4)
+  active        Boolean  @default(true)
+  effectiveFrom DateTime @default(now())
+  effectiveTo   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, eventType, active])
+}
+
+model UsageEvent {
+  id            String   @id @default(uuid())
+  orgId         String
+  transactionId String?
+  eventType     BillableEventType
+  quantity      Int      @default(1)
+  unitAmountUsd Decimal  @db.Decimal(10, 4)
+  amountUsd     Decimal  @db.Decimal(12, 4)
+  idempotencyKey String? @unique
+  metadataJson  Json     @default("{}")
+  recordedAt    DateTime @default(now())
+
+  org         Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  transaction Transaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, recordedAt])
+  @@index([transactionId, recordedAt])
+}
+
+model Invoice {
+  id              String   @id @default(uuid())
+  orgId           String
+  status          InvoiceStatus
+  totalCents      Int
+  currency        String   @default("usd")
+  issuedAt        DateTime?
+  paidAt          DateTime?
+  stripeInvoiceId String?  @unique
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  org   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  lines InvoiceLine[]
+
+  @@index([orgId, status])
+}
+
+model InvoiceLine {
+  id            String   @id @default(uuid())
+  invoiceId     String
+  description   String
+  amountCents   Int
+  metadataJson  Json     @default("{}")
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+// --- Lender
+
+model Lender {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  programs LenderProgram[]
+}
+
+model LenderProgram {
+  id                 String   @id @default(uuid())
+  lenderId           String
+  key                String
+  name               String
+  description        String   @default("")
+  active             Boolean  @default(true)
+  minAmountFinanced  Decimal? @db.Decimal(14, 2)
+  maxAmountFinanced  Decimal? @db.Decimal(14, 2)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  lender              Lender                 @relation(fields: [lenderId], references: [id], onDelete: Cascade)
+  programRules        LenderProgramRule[]
+  documentRequirements LenderDocumentRequirement[]
+  ruleEvaluations     LenderRuleEvaluation[]
+  selectedTransactions Transaction[]
+
+  @@unique([lenderId, key])
+  @@index([lenderId, active])
+}
+
+model LenderProgramRule {
+  id         String @id @default(uuid())
+  programId  String
+  ruleDbId   String
+  sortOrder  Int     @default(0)
+  active     Boolean @default(true)
+
+  program    LenderProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+  rule       Rule         @relation(fields: [ruleDbId], references: [id], onDelete: Restrict)
+
+  @@index([programId, sortOrder])
+  @@index([ruleDbId])
+}
+
+model LenderDocumentRequirement {
+  id           String       @id @default(uuid())
+  programId    String
+  documentType DocumentType
+  required     Boolean      @default(true)
+  program      LenderProgram @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@index([programId])
+}
+
+model LenderRuleEvaluation {
+  id              String               @id @default(uuid())
+  runId            String
+  orgId            String
+  transactionId   String
+  lenderProgramId String
+  ruleDbId        String
+  lineOutcome      LenderRuleLineOutcome
+  severity         RuleSeverity
+  message          String
+  isOverrideable   Boolean
+  detailJson       Json                 @default("{}")
+  evaluatedAt     DateTime             @default(now())
+
+  transaction   Transaction  @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  org           Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  lenderProgram LenderProgram @relation(fields: [lenderProgramId], references: [id], onDelete: Restrict)
+  rule          Rule          @relation(fields: [ruleDbId], references: [id], onDelete: Restrict)
+
+  @@index([transactionId, evaluatedAt])
+  @@index([runId])
+  @@index([lenderProgramId, evaluatedAt])
+  @@index([orgId, evaluatedAt])
+}
+
+model PurgeJob {
+  id          String   @id @default(uuid())
+  orgId       String
+  transactionId String?
+  status      String
+  residualAuditRef String
+  createdAt   DateTime @default(now())
+  completedAt DateTime?
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+}
+
+/// Pluggable integration adapter catalog (lender, credit, identity, webhooks).
+model IntegrationProvider {
+  id    String   @id @default(uuid())
+  key   String   @unique
+  name  String
+  /// LENDER | CREDIT | IDENTITY | WEBHOOK
+  category  String
+  configSchemaJson Json @default("{}")
+  active Boolean @default(true)
+  createdAt DateTime @default(now())
+
+  configs IntegrationConfig[]
+
+  @@index([category, active])
+  @@map("integration_providers")
+}
+
+/// Per-tenant (and optional lender) integration wiring.
+model IntegrationConfig {
+  id         String   @id @default(uuid())
+  orgId      String
+  providerId String
+  lenderId   String?
+  name       String
+  configJson  Json     @default("{}")
+  /// For inbound webhooks, optional HMAC/shared secret (stored; rotate via UI later).
+  inboundSecret String?
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  org        Organization         @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  provider   IntegrationProvider  @relation(fields: [providerId], references: [id], onDelete: Restrict)
+  logs       IntegrationLog[]
+
+  @@index([orgId, active])
+  @@map("integration_configs")
+}
+
+model IntegrationLog {
+  id            String   @id @default(uuid())
+  configId     String
+  transactionId String?
+  kind         String
+  requestSummaryJson  Json   @default("{}")
+  responseSummaryJson Json  @default("{}")
+  status       String
+  errorMessage String?
+  durationMs   Int?
+  createdAt    DateTime @default(now())
+
+  config     IntegrationConfig @relation(fields: [configId], references: [id], onDelete: Cascade)
+  transaction Transaction? @relation(fields: [transactionId], references: [id], onDelete: SetNull)
+
+  @@index([configId, createdAt])
+  @@index([transactionId, createdAt])
+  @@map("integration_logs")
+}
+
+/// Rolled-up analytics (periodic job / on-demand recompute).
+model AnalyticsSnapshot {
+  id          String   @id @default(uuid())
+  orgId       String
+  periodStart DateTime
+  periodEnd   DateTime
+  /** counts, avgs, rates — stable keys for API */
+  metricsJson Json     @default("{}")
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, periodStart])
+  @@map("analytics_snapshots")
+}
+
+model ApiKey {
+  id         String   @id @default(uuid())
+  orgId     String
+  name      String
+  keyPrefix String
+  keyHash   String   @unique
+  scopes    String[] @default([])
+  active    Boolean  @default(true)
+  lastUsedAt DateTime?
+  expiresAt DateTime?
+  createdByUserId String
+  createdAt   DateTime @default(now())
+
+  org       Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  usageLogs ApiUsageLog[]
+
+  @@index([orgId, active])
+  @@map("api_keys")
+}
+
+model ApiUsageLog {
+  id         String   @id @default(uuid())
+  orgId      String
+  apiKeyId  String
+  method     String
+  path       String
+  statusCode Int
+  durationMs Int
+  billable  Boolean  @default(true)
+  metadataJson Json   @default("{}")
+  recordedAt DateTime @default(now())
+
+  apiKey ApiKey @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+
+  @@index([orgId, recordedAt])
+  @@index([apiKeyId, recordedAt])
+  @@map("api_usage_logs")
+}

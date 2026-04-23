@@ -1,0 +1,132 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b1320;
+  --surface: #111c2b;
+  --surface-soft: #162335;
+  --border: #27384f;
+  --text: #eef4ff;
+  --muted: #9aacbf;
+  --primary: #2e6fb8;
+  --secondary: #17a2b8;
+  --accent: #31c2a7;
+  --danger: #f87171;
+  --warn: #fbbf24;
+  --ok: #34d399;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #11203a 0%, var(--bg) 42%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+a {
+  color: var(--secondary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  border-right: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface) 0%, #0e1724 100%);
+  padding: 1.25rem;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 1rem;
+}
+
+.sidebar a {
+  padding: 0.45rem 0.5rem;
+  border-radius: 6px;
+  color: var(--text);
+}
+
+.sidebar a:hover {
+  background: color-mix(in srgb, var(--primary) 25%, transparent);
+  text-decoration: none;
+}
+
+.sidebar a[aria-current="page"] {
+  background: color-mix(in srgb, var(--primary) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 65%, var(--border));
+}
+
+main {
+  padding: 1.5rem 2rem;
+}
+
+.card {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-soft) 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  box-shadow: 0 8px 24px rgba(8, 12, 20, 0.24);
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 75%, var(--primary) 25%);
+  color: var(--text);
+}
+
+button,
+.btn {
+  border: 1px solid color-mix(in srgb, var(--primary) 62%, var(--border));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 80%, #fff 20%), var(--primary));
+  color: #f5f9ff;
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled,
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+button:hover,
+.btn:hover {
+  filter: brightness(1.06);
+}
+
+.btn-secondary {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--secondary) 82%, #fff 18%), var(--secondary));
+  border: 1px solid color-mix(in srgb, var(--secondary) 60%, var(--border));
+}
+
+h1, h2, h3 {
+  letter-spacing: 0.01em;
+  margin-top: 0;
+}
