@@ -1,13 +1,8 @@
-export default function PackagesPage() {
+export default function Home() {
   return (
-    <div>
-      <h1>Package builder</h1>
-      <div className="card">
-        <p>Outputs: PDF bundles, JSON, XML — includes documents, metadata, audit</p>
-        <p style={{ color: "var(--muted)" }}>
-          API: POST /packages/jobs
-        </p>
-      </div>
-    </div>
+    <main style={{ padding: 40 }}>
+      <h1>DealSeal is Live 🚀</h1>
+      <p>Your platform is now running.</p>
+    </main>
   );
 }
