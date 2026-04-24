@@ -1,31 +1,11 @@
 {
-  "name": "dealseal",
+  "name": "dealseal-root",
   "private": true,
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run build -w @dealseal/shared && concurrently -n api,web -c blue,green \"npm run dev -w @dealseal/api\" \"npm run dev -w @dealseal/web\"",
-    "build": "npm run build -w @dealseal/shared && npm run build -w @dealseal/api && npm run build -w @dealseal/web",
-    "start": "concurrently -n api,web -c blue,magenta \"npm run start -w @dealseal/api\" \"npm run start -w @dealseal/web\"",
-    "db:generate": "npm run db:generate -w @dealseal/api",
-    "db:push": "npm run db:push -w @dealseal/api",
-    "db:seed": "npm run db:generate -w @dealseal/api && npm run db:seed -w @dealseal/api",
-    "db:migrate": "npm run db:migrate -w @dealseal/api",
-    "db:studio": "npm run db:studio -w @dealseal/api",
-    "worker": "npm run worker -w @dealseal/api",
-    "lint": "npm run lint -w @dealseal/api -w @dealseal/web --if-present"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.0",
-    "typescript": "^5.7.2"
-  },
-  "engines": {
-    "node": ">=20"
-  },
-  "dependencies": {
-    "@prisma/client": "^6.19.3",
-    "prisma": "^6.19.3"
+    "build": "npm run build -w @dealseal/shared && npm run build -w @dealseal/web"
   }
 }
