@@ -24,18 +24,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>
-        <Suspense fallback={<div className="card" style={{ margin: "2rem" }}>Loading…</div>}>
-          <SessionGate>
-            <AppShell>{children}</AppShell>
-          </SessionGate>
-        </Suspense>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
