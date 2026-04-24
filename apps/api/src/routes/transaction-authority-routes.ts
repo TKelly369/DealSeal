@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { z } from "zod";
-import { PackageFormat, type UserRole } from "@prisma/client";
+import { PackageFormat, RenderingMode, type UserRole } from "@prisma/client";
 import type { Env } from "../config/env.js";
+import { prisma } from "../lib/prisma.js";
+import { renderContract } from "../contract-renderer/render-contract.js";
 import { asyncHandler } from "../util/async-handler.js";
 import { requireRoles } from "../middleware/auth.js";
 import {
@@ -32,6 +34,11 @@ const verifyEx = z.object({ executedContractId: z.string().uuid() });
 const certifiedPkgBody = z.object({
   formats: z.array(z.nativeEnum(PackageFormat)).min(1),
   templateKey: z.string().min(1).max(120).optional(),
+});
+
+const contractRenderBody = z.object({
+  mode: z.nativeEnum(RenderingMode),
+  imageFormat: z.enum(["png", "jpeg"]).optional(),
 });
 
 /**
@@ -161,6 +168,30 @@ export function registerTransactionAuthorityRoutes(r: Router, _env: Env): void {
       const out = await getAuthoritativeEmbodiment({
         orgId: req.auth!.orgId,
         transactionId: req.params.id,
+      });
+      res.json(out);
+    }),
+  );
+
+  r.post(
+    "/:id/contract-rendering",
+    requireRoles("ADMIN", "DEALER_USER", "FINANCE_MANAGER", "COMPLIANCE_OFFICER"),
+    asyncHandler(async (req, res) => {
+      const orgId = req.auth!.orgId;
+      const body = contractRenderBody.parse(req.body);
+      const gr = await prisma.governingRecord.findFirst({
+        where: { transactionId: req.params.id, orgId },
+      });
+      if (!gr) {
+        res.status(404).json({ code: "NO_GOVERNING_RECORD", message: "No governing record for this deal yet (lock the deal first)." });
+        return;
+      }
+      const out = await renderContract({
+        governingRecordId: gr.id,
+        orgId,
+        mode: body.mode,
+        requestedBy: req.auth!.sub,
+        imageFormat: body.imageFormat,
       });
       res.json(out);
     }),

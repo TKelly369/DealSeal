@@ -2,6 +2,7 @@ import { prisma } from "../lib/prisma.js";
 import { HttpError } from "../lib/http-error.js";
 import { recordAudit } from "./audit-service.js";
 import { transitionTransaction } from "./state-engine.js";
+import { upsertGoverningRecordOnLock } from "./governing-record-service.js";
 import type { TransactionState, UserRole } from "@prisma/client";
 import { ExecutedContractVerificationState } from "@prisma/client";
 
@@ -128,5 +129,11 @@ export async function activateLockSideEffects(input: {
     resource: "GoverningAgreement",
     resourceId: tx.governingAgreement.id,
     payload: { executedContractId: accepted.id, documentVersionId: accepted.documentVersionId },
+  });
+
+  await upsertGoverningRecordOnLock({
+    orgId: input.orgId,
+    transactionId: tx.id,
+    actorUserId: input.actorUserId,
   });
 }

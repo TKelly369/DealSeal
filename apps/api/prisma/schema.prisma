@@ -164,6 +164,25 @@ enum SubscriptionTier {
   ENTERPRISE
 }
 
+enum RecordStatus {
+  DRAFT
+  EXECUTED
+  LOCKED
+  VOIDED
+  SUPERSEDED
+}
+
+enum RenderingMode {
+  CERTIFIED
+  CONVENIENCE
+}
+
+/// Raster output for a rendering event (same PDF, re-encoded)
+enum RenderingImageFormat {
+  PNG
+  JPEG
+}
+
 enum BillableEventType {
   DEAL_SEALED
   DOCUMENT_EXPORT
@@ -199,6 +218,8 @@ model User {
 
   memberships  Membership[]
   auditEvents  AuditEvent[] @relation("ActorAudit")
+  requestedRenderings    RenderingEvent[]   @relation("RenderingEventRequestedBy")
+  governingRecordAudits  AuditLog[]   @relation("GoverningRecordAuditActor")
 }
 
 model Organization {
@@ -219,6 +240,7 @@ model Organization {
   lenderRuleEvals     LenderRuleEvaluation[]
   holds               Hold[]
   purgeJobs           PurgeJob[]
+  governingRecords    GoverningRecord[]
 
   integrationConfigs IntegrationConfig[]
   analyticsSnapshots  AnalyticsSnapshot[]
@@ -276,6 +298,7 @@ model Transaction {
   executedContracts        ExecutedContract[]
   executionVerifications   ExecutionVerification[]
   authoritativeEmbodiments AuthoritativeEmbodiment[]
+  governingRecord          GoverningRecord?
   integrationLogs         IntegrationLog[]
 
   @@index([orgId, state])
@@ -294,6 +317,101 @@ model GoverningAgreement {
   updatedAt     DateTime @updatedAt
 
   transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+}
+
+/// Authoritative governing record: immutable after execution/lock, hash-addressed, never exposed as a raw file download.
+model GoverningRecord {
+  id         String       @id @default(uuid())
+  publicRef  String       @unique @default(cuid())
+  orgId      String
+  transactionId String   @unique
+  version    Int         @default(1)
+  status     RecordStatus @default(DRAFT)
+  /// Canonical contract payload, signatures, control, and audit material stored in system custody.
+  recordDataJson          Json
+  signaturesJson         Json   @default("{}")
+  /// Assignment, control, and version lineage metadata (system custody)
+  controlAssignmentJson  Json   @default("{}")
+  /// Embedded or summarized audit (detailed line items also in AuditLog)
+  versionAuditJson      Json   @default("[]")
+  recordHashSha256       String
+  /// Optional: sealed object storage pointer for the same bytes as the governing hash (e.g. embodiment)
+  sealedStorageKey       String?
+  executedAt  DateTime?
+  lockedAt    DateTime?
+  voidedAt    DateTime?
+  voidReason  String?
+  supersededById String? @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  org          Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  transaction  Transaction     @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  successor   GoverningRecord? @relation("GoverningRecordSupersession", fields: [supersededById], references: [id], onDelete: SetNull)
+  predecessor GoverningRecord? @relation("GoverningRecordSupersession")
+  renderings   RenderingEvent[]
+  auditLog     AuditLog[]
+
+  @@index([orgId, status])
+  @@index([publicRef])
+  @@map("governing_records")
+}
+
+/// Certified visual rendering or non-authoritative convenience copy generation events.
+model RenderingEvent {
+  id                 String    @id @default(uuid())
+  governingRecordId  String
+  governingVersion  Int
+  mode               RenderingMode
+  baseBodyHashSha256 String
+  renderingHashSha256 String
+  outputMimeType     String
+  /// Optional: PDF stored in org bucket; empty when only returned over HTTP
+  outputStorageKey   String?
+  /// Hash of the certified/convenience image PNG (litigation-grade first-class output)
+  imageHashSha256    String?
+  /// MIME type of rendered image (e.g. image/png)
+  imageMimeType      String   @default("image/png")
+  /// PNG or JPEG raster of the same final PDF
+  imageOutputFormat  RenderingImageFormat @default(PNG)
+  /// Optional: Image stored in org bucket
+  imageStorageKey    String?
+  qrVerifyUrl        String
+  recordHashAtRender  String
+  /// ISO timestamp printed on the certified facsimile
+  facsimileTimestamp  DateTime
+  /// Copy of the certification or disclaimer text applied
+  attestationText    String
+  requestedByUserId  String?
+  clientMetadataJson Json   @default("{}")
+
+  createdAt DateTime @default(now())
+
+  governingRecord GoverningRecord @relation(fields: [governingRecordId], references: [id], onDelete: Cascade)
+  requestedBy     User?           @relation("RenderingEventRequestedBy", fields: [requestedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([governingRecordId, createdAt])
+  @@map("rendering_events")
+}
+
+/// Audit trail for governing record lifecycle, renders, verification, and blocked raw access.
+model AuditLog {
+  id                String  @id @default(uuid())
+  governingRecordId String
+  /// e.g. RECORD_CREATED, RECORD_LOCKED, RENDERING_GENERATED, VERIFICATION_VIEW, UNAUTHORIZED_RAW_ACCESS
+  eventKind  String
+  message    String  @default("")
+  actorUserId    String?
+  /// Request metadata: IP, path, user-agent, etc.
+  requestMetadataJson Json @default("{}")
+  createdAt  DateTime @default(now())
+
+  governingRecord GoverningRecord @relation(fields: [governingRecordId], references: [id], onDelete: Cascade)
+  actor           User?     @relation("GoverningRecordAuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([governingRecordId, createdAt])
+  @@index([eventKind, createdAt])
+  @@map("governing_record_audit_log")
 }
 
 model ExecutedContract {

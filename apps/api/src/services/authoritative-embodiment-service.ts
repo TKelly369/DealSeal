@@ -6,6 +6,7 @@ import { loadEnv } from "../config/env.js";
 import { createS3Client, getBucket } from "./s3-service.js";
 import { recordAudit } from "./audit-service.js";
 import { canonicalStringify } from "./package-certification-service.js";
+import { syncGoverningRecordSealedStorageKey } from "./governing-record-service.js";
 
 function sha256Hex(buf: Buffer): string {
   return createHash("sha256").update(buf).digest("hex");
@@ -109,6 +110,12 @@ export async function generateAuthoritativeEmbodiment(input: {
     resource: "AuthoritativeEmbodiment",
     resourceId: version.id,
     payload: { digest, storageKey },
+  });
+
+  await syncGoverningRecordSealedStorageKey({
+    orgId: input.orgId,
+    transactionId: tx.id,
+    sealedStorageKey: storageKey,
   });
 
   return { id: version.id, storageKey, digest, version: version.version };

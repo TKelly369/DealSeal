@@ -18,6 +18,8 @@ const schema = z.object({
   STRIPE_CHECKOUT_PRICE_ID: z.string().optional(),
   /** Public app URL for Checkout success/cancel redirects */
   APP_PUBLIC_URL: z.string().url().optional(),
+  /** Public base for QR and verification links (e.g. Next.js origin with `/api/verify`). Falls back to APP_PUBLIC_URL. */
+  VERIFICATION_PUBLIC_BASE_URL: z.string().url().optional(),
   /** Per-IP requests per window for unauthenticated / integration routes */
   RATE_LIMIT_WINDOW_MS: z.coerce.number().default(60_000),
   RATE_LIMIT_MAX: z.coerce.number().default(300),
@@ -25,6 +27,11 @@ const schema = z.object({
   API_RATE_LIMIT_MAX: z.coerce.number().default(120),
   /** Comma-separated explicit origins, e.g. `https://app.dealseal1.com,https://dealseal1.com`. If unset, CORS reflects any origin. */
   CORS_ORIGIN: z.string().optional(),
+  /**
+   * Optional. Base URL of this API for server-to-server fetches (when different from public URLs).
+   * Not read by the API process by default; documented for Next.js / workers calling the API.
+   */
+  API_INTERNAL_URL: z.string().url().optional(),
 });
 
 export type Env = z.infer<typeof schema>;

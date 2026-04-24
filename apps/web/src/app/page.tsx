@@ -57,7 +57,7 @@ export default async function Home() {
       </section>
 
       <section className="card" style={{ marginBottom: "1rem", background: "linear-gradient(180deg, #162335 0%, #0f1a28 100%)" }}>
-        <h3 style={{ marginTop: 0, marginBottom: "0.8rem" }}>What You'll See Here</h3>
+        <h3 style={{ marginTop: 0, marginBottom: "0.8rem" }}>What You&apos;ll See Here</h3>
         <div className="row" style={{ gap: "1rem" }}>
           <div style={{ flex: "1 1 200px" }}>
             <p style={{ margin: 0, fontWeight: 600, fontSize: 14 }}>📊 Pipeline Metrics</p>

@@ -135,6 +135,24 @@ Org slug: **`demo-dealer`**. Seed also prints **transaction UUIDs** and a **part
 | `STRIPE_*` | API | Billing |
 | `NEXT_PUBLIC_API_URL` | Web | API base (browser) |
 | `NEXT_PUBLIC_APP_URL` | Web | Public app URL (optional) |
+| `VERIFICATION_PUBLIC_BASE_URL` | API | Public **web** origin; QR = `{VERIFICATION_PUBLIC_BASE_URL}/verify/{recordId}`; falls back to `APP_PUBLIC_URL` |
+| `API_INTERNAL_URL` | Web (optional) | Server-only fetch to API (e.g. verify page & `/api/verify` proxy) |
+
+**Deal-Scan / governing record**
+
+- **Health:** `GET /health` and `GET /api/health` on the API.
+- **Public verify JSON:** `GET {API}/api/verify/{governingRecordId}`.
+- **Public verify page (for QR):** open `{VERIFICATION_PUBLIC_BASE_URL}/verify/{governingRecordId}` (Next.js; no raw contract JSON).
+- **Renders (auth):** `POST /governing-records/{id}/render` body `{ "mode": "CERTIFIED" | "CONVENIENCE", "imageFormat"?: "png" | "jpeg" }` — returns PDF+image (same base; certified adds authority overlay + QR; convenience = disclaimer only).
+- **Backfill** (LOCKED deals before governing records): `npm run backfill:governing-records` from repo root (see script header).
+
+**Checks**
+
+```bash
+npm run lint && npm run typecheck && npm run test && npm run build
+```
+
+**QR smoke (local):** set `VERIFICATION_PUBLIC_BASE_URL=http://localhost:3000` on API, start web + API, open `/verify/{uuid}` for a real governing record id, confirm JSON at `/api/verify/{uuid}` matches.
 
 ## Docs
 

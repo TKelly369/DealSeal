@@ -6,6 +6,7 @@ import { getCorsOriginOption, loadEnv } from "./config/env.js";
 import { setLogLevelFromEnv } from "./lib/logger.js";
 import { requestLoggerMiddleware } from "./middleware/request-logger.js";
 import { registerRoutes } from "./routes/index.js";
+import { createVerifyApiRouter } from "./routes/verify-public.js";
 import { errorHandler } from "./middleware/error-handler.js";
 import { createStripeWebhookHandler } from "./routes/billing-webhook.js";
 import { createWebhooksPublicHandler } from "./routes/webhooks-routes.js";
@@ -37,7 +38,12 @@ app.post("/webhooks/inbound", express.raw({ type: "application/json" }), createW
 app.use(requestLoggerMiddleware());
 app.use(express.json({ limit: "2mb" }));
 
+app.use("/api/verify", createVerifyApiRouter(env));
+
 app.get("/health", (_req, res) => {
+  res.json({ ok: true, service: "dealseal-api", time: new Date().toISOString() });
+});
+app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "dealseal-api", time: new Date().toISOString() });
 });
 

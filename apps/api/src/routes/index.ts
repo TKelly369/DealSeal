@@ -17,6 +17,7 @@ import { createPostFundingObligationsRouter } from "./post-funding-obligations.j
 import { createIntegrationsRouter } from "./integrations.js";
 import { createOutboundTestRouter } from "./webhooks-routes.js";
 import { createPartnerApiRouter } from "./partner-api.js";
+import { createGoverningRecordsRouter } from "./governing-records-routes.js";
 
 export function registerRoutes(app: Express, env: Env): void {
   app.use("/auth", createAuthRouter(env));
@@ -35,5 +36,6 @@ export function registerRoutes(app: Express, env: Env): void {
   app.use("/post-funding-obligations", createPostFundingObligationsRouter(env));
   app.use("/integrations", createIntegrationsRouter(env));
   app.use("/webhooks", createOutboundTestRouter(env));
+  app.use("/governing-records", createGoverningRecordsRouter(env));
   app.use("/api", createPartnerApiRouter(env));
 }
