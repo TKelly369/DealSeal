@@ -6,12 +6,14 @@ type ButtonBaseProps = {
   variant?: ButtonVariant;
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 };
 
 type ButtonAsLinkProps = ButtonBaseProps & {
   href: string;
   onClick?: never;
   type?: never;
+  disabled?: never;
 };
 
 type ButtonAsButtonProps = ButtonBaseProps & {
@@ -40,7 +42,7 @@ export function Button(props: ButtonProps) {
   }
 
   return (
-    <button type={props.type ?? "button"} className={className} onClick={props.onClick}>
+    <button type={props.type ?? "button"} className={className} onClick={props.onClick} disabled={props.disabled}>
       {props.children}
     </button>
   );

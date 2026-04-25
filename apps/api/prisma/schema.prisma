@@ -166,15 +166,11 @@ enum SubscriptionTier {
 
 enum RecordStatus {
   DRAFT
-  EXECUTED
   LOCKED
-  VOIDED
-  SUPERSEDED
 }
 
 enum RenderingMode {
   CERTIFIED
-  CONVENIENCE
   NON_AUTHORITATIVE
 }
 
@@ -324,10 +320,10 @@ model GoverningAgreement {
 /// Authoritative governing record: immutable after execution/lock, hash-addressed, never exposed as a raw file download.
 model GoverningRecord {
   id         String       @id @default(uuid())
-  dealId     String       @default("")
-  contractData Json       @default("{}")
-  hash       String       @default("")
-  custodian  String       @default("system")
+  dealId     String
+  contractData Json
+  hash       String
+  custodian  String
   publicRef  String       @unique @default(cuid())
   orgId      String
   transactionId String   @unique

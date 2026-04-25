@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 import { getGoverningRecords } from "@/lib/api";
+import { DownloadRenderingButtons } from "@/components/DownloadRenderingButtons";
 
 function formatLockedDate(value: string | null): string {
   if (!value) return "Pending lock";
@@ -106,9 +107,7 @@ export default async function GoverningRecordsPage() {
                               View
                             </Button>
                             <Button href="/certified-renderings">Certified Rendering</Button>
-                            <Button href="/documents" variant="secondary">
-                              Copy
-                            </Button>
+                            <DownloadRenderingButtons governingRecordId={row.id} />
                           </div>
                         </td>
                       </tr>

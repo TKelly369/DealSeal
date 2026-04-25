@@ -73,6 +73,9 @@ export function createVerifyApiRouter(_env: Env) {
       const { recordVerifies } = verifyRecordMessage(g);
       const latest = g.renderings[0];
       res.json({
+        valid: recordVerifies,
+        hashMatch: recordVerifies,
+        timestamp: latest?.facsimileTimestamp.toISOString() ?? g.createdAt.toISOString(),
         verificationStatus: recordVerifies ? "VERIFIED" : "MISMATCH",
         governingRecordId: g.id,
         recordId: g.id,

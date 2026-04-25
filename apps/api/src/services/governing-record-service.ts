@@ -140,6 +140,10 @@ export async function upsertGoverningRecordOnLock(input: { orgId: string; transa
 
   const gr = await prisma.governingRecord.create({
     data: {
+      dealId: tx.publicId,
+      contractData: payload as unknown as Prisma.InputJsonValue,
+      hash,
+      custodian: "Deal-Scan",
       orgId: tx.orgId,
       transactionId: tx.id,
       version: 1,
@@ -242,6 +246,10 @@ export async function backfillSingleGoverningRecordForTransaction(transactionId:
   try {
     const gr = await prisma.governingRecord.create({
       data: {
+        dealId: tx.publicId,
+        contractData: payload as unknown as Prisma.InputJsonValue,
+        hash,
+        custodian: "Deal-Scan",
         orgId: tx.orgId,
         transactionId: tx.id,
         version: 1,

@@ -139,12 +139,21 @@ export function buildBaseContractHTML(record: GoverningRecord): string {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Deal-Scan Contract Rendering</title>
     <style>
-      :root { color-scheme: light; }
+      :root {
+        color-scheme: dark;
+        --ds-bg: #050505;
+        --ds-surface: #111111;
+        --ds-surface-soft: #181818;
+        --ds-text: #ffffff;
+        --ds-text-muted: #b8bcc2;
+        --ds-accent: #c8102e;
+        --ds-border: #2a2a2a;
+      }
       * { box-sizing: border-box; }
       body {
         margin: 0;
-        background: #f6f8fb;
-        color: #111827;
+        background: var(--ds-bg);
+        color: var(--ds-text);
         font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         line-height: 1.45;
       }
@@ -152,18 +161,20 @@ export function buildBaseContractHTML(record: GoverningRecord): string {
         max-width: 980px;
         margin: 28px auto;
         padding: 32px;
-        background: #ffffff;
-        border: 1px solid #d5d8de;
+        background: var(--ds-surface);
+        border: 1px solid var(--ds-border);
         border-radius: 12px;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
       }
       .contract-heading {
         margin: 0 0 12px;
         font-size: 28px;
         letter-spacing: -0.02em;
+        color: var(--ds-text);
       }
       .contract-subheading {
         margin: 0;
-        color: #475467;
+        color: var(--ds-text-muted);
         font-size: 14px;
       }
       .contract-meta {
@@ -172,18 +183,18 @@ export function buildBaseContractHTML(record: GoverningRecord): string {
         gap: 8px 24px;
         margin: 20px 0 24px;
         padding: 16px;
-        border: 1px solid #d5d8de;
+        border: 1px solid var(--ds-border);
         border-radius: 10px;
-        background: #f8fafc;
+        background: var(--ds-surface-soft);
       }
       .contract-meta dt {
         font-size: 12px;
-        color: #667085;
+        color: var(--ds-text-muted);
       }
       .contract-meta dd {
         margin: 2px 0 0;
         font-size: 13px;
-        color: #1f2937;
+        color: var(--ds-text);
         word-break: break-all;
       }
       .contract-section + .contract-section {
@@ -192,6 +203,7 @@ export function buildBaseContractHTML(record: GoverningRecord): string {
       .contract-section h3 {
         margin: 0 0 10px;
         font-size: 16px;
+        color: var(--ds-text);
       }
       .contract-table {
         width: 100%;
@@ -200,29 +212,31 @@ export function buildBaseContractHTML(record: GoverningRecord): string {
       .contract-table th,
       .contract-table td {
         padding: 9px 10px;
-        border: 1px solid #e4e7ec;
+        border: 1px solid var(--ds-border);
         vertical-align: top;
       }
       .contract-table th {
         width: 40%;
         text-align: left;
         font-size: 12px;
-        color: #344054;
-        background: #f9fafb;
+        color: var(--ds-text-muted);
+        background: #151515;
       }
       .contract-table td {
         font-size: 13px;
-        color: #101828;
+        color: var(--ds-text);
       }
       .overlay-panel {
         margin-top: 28px;
         padding: 18px;
         border-radius: 10px;
-        border: 1px solid #d5d8de;
+        border: 1px solid var(--ds-border);
+        background: var(--ds-surface-soft);
       }
       .overlay-panel h4 {
         margin: 0 0 8px;
         font-size: 16px;
+        color: var(--ds-text);
       }
       .overlay-grid {
         display: grid;
@@ -233,12 +247,34 @@ export function buildBaseContractHTML(record: GoverningRecord): string {
       .overlay-grid p {
         margin: 0;
         font-size: 13px;
-        color: #334155;
+        color: var(--ds-text-muted);
         word-break: break-all;
       }
       .overlay-note {
         margin-top: 14px;
         font-size: 13px;
+        color: var(--ds-text-muted);
+      }
+      .overlay-certified {
+        border-left: 4px solid var(--ds-accent);
+      }
+      .overlay-certified h4 {
+        color: #ffd8de;
+      }
+      .overlay-convenience {
+        border-left: 4px solid #6b7280;
+      }
+      .overlay-convenience h4 {
+        color: #d1d5db;
+      }
+      .overlay-key {
+        color: var(--ds-text-muted);
+      }
+      .overlay-value {
+        color: var(--ds-text);
+      }
+      .overlay-highlight {
+        color: #ffd8de;
       }
     </style>
   </head>

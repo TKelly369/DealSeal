@@ -10,12 +10,10 @@ import { GoverningAuditEventKind, appendGoverningRecordAudit } from "../services
 
 const renderBody = z.object({
   mode: z.nativeEnum(RenderingMode),
-  imageFormat: z.enum(["png", "jpeg"]).optional(),
 });
 
 const downloadPostBody = z.object({
   mode: z.nativeEnum(RenderingMode),
-  imageFormat: z.enum(["png", "jpeg"]).optional(),
 });
 
 function filePrefix(mode: RenderingMode): "certified" | "convenience" {
@@ -63,7 +61,6 @@ export function createGoverningRecordsRouter(env: Env) {
         orgId,
         mode: body.mode,
         requestedBy: req.auth!.sub,
-        imageFormat: body.imageFormat,
       });
       res.json(out);
     }),
@@ -81,7 +78,6 @@ export function createGoverningRecordsRouter(env: Env) {
         orgId,
         mode: body.mode,
         requestedBy: req.auth!.sub,
-        imageFormat: body.imageFormat,
       });
       const pdfBuffer = Buffer.from(rendered.pdfBase64, "base64");
       const filename = `DealScan-${filePrefix(body.mode)}-${rendered.publicRef}-v${rendered.recordVersion}.pdf`;
@@ -90,7 +86,7 @@ export function createGoverningRecordsRouter(env: Env) {
       res.setHeader("X-Rendering-Event-Id", rendered.renderingEventId);
       res.setHeader("X-Rendering-Hash", rendered.renderingHashSha256);
       res.setHeader("X-Record-Hash", rendered.recordHashAtRender);
-      res.setHeader("X-Image-Hash", rendered.imageHashSha256);
+      res.setHeader("X-Image-Hash", rendered.imageHashSha256 ?? "");
       res.send(pdfBuffer);
     }),
   );
@@ -107,15 +103,12 @@ export function createGoverningRecordsRouter(env: Env) {
         orgId,
         mode: body.mode,
         requestedBy: req.auth!.sub,
-        imageFormat: body.imageFormat ?? "png",
       });
-      const imageBuffer = Buffer.from(rendered.imageBase64, "base64");
-      const ext = rendered.imageOutputFormat === "JPEG" ? "jpg" : "png";
-      const filename = `DealScan-${filePrefix(body.mode)}-${rendered.publicRef}-v${rendered.recordVersion}.${ext}`;
-      res.setHeader("Content-Type", rendered.imageMimeType);
+      const imageBuffer = Buffer.from(rendered.pdfBase64, "base64");
+      const filename = `DealScan-${filePrefix(body.mode)}-${rendered.publicRef}-v${rendered.recordVersion}.pdf`;
+      res.setHeader("Content-Type", "application/pdf");
       res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
       res.setHeader("X-Rendering-Event-Id", rendered.renderingEventId);
-      res.setHeader("X-Image-Hash", rendered.imageHashSha256);
       res.setHeader("X-Rendering-Hash", rendered.renderingHashSha256);
       res.setHeader("X-Record-Hash", rendered.recordHashAtRender);
       res.send(imageBuffer);

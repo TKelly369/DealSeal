@@ -1,8 +1,18 @@
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { DownloadRenderingButtons } from "@/components/DownloadRenderingButtons";
 import { Section } from "@/components/ui/Section";
+import { getGoverningRecords } from "@/lib/api";
 
-export default function CertifiedRenderingsPage() {
+export default async function CertifiedRenderingsPage() {
+  let latestRecordId: string | null = null;
+  try {
+    const records = await getGoverningRecords();
+    latestRecordId = records[0]?.id ?? null;
+  } catch {
+    latestRecordId = null;
+  }
+
   return (
     <div className="ds-dashboard">
       <Section
@@ -48,6 +58,16 @@ export default function CertifiedRenderingsPage() {
           hash.
         </p>
       </Card>
+
+      {latestRecordId ? (
+        <Card className="ds-card-panel">
+          <p className="ds-card-panel__title">Download outputs</p>
+          <p className="ds-card-panel__body">
+            Generate PDF artifacts from the same authoritative template with mode-specific overlays.
+          </p>
+          <DownloadRenderingButtons governingRecordId={latestRecordId} />
+        </Card>
+      ) : null}
     </div>
   );
 }

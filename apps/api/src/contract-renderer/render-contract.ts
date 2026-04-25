@@ -1,7 +1,7 @@
-import { PrismaClient, Prisma, RenderingImageFormat, RenderingMode, type GoverningRecord } from "@prisma/client";
+import { PrismaClient, Prisma, RenderingMode, type GoverningRecord } from "@prisma/client";
 import { prisma } from "../lib/prisma.js";
 import { HttpError } from "../lib/http-error.js";
-import { renderingHashFromPdf, renderingHashFromImage } from "../lib/record-hashing.js";
+import { renderingHashFromPdf } from "../lib/record-hashing.js";
 import { loadEnv } from "../config/env.js";
 import { buildPublicVerifyPageUrl } from "../config/urls.js";
 import {
@@ -12,12 +12,12 @@ import {
   injectOverlayIntoBaseContractHTML,
 } from "./base-contract-template.js";
 import { getCertifiedAttestationText, getConvenienceDisclaimerText } from "./base-contract-template.js";
-import { applyCertifiedOverlayToBasePdf, applyConvenienceOverlayToBasePdf, drawBaseOnlyPdf } from "./render-pdf.js";
-import { pdfToImage } from "./render-image.js";
 import { GoverningAuditEventKind, appendGoverningRecordAudit } from "../services/governing-record-audit.js";
 import { verifyRecordMessage } from "../services/governing-record-service.js";
 import { recordAudit } from "../services/audit-service.js";
 import crypto from "crypto";
+import QRCode from "qrcode";
+import puppeteer from "puppeteer";
 
 const _prismaClientTypeOnly: PrismaClient | undefined = undefined;
 void _prismaClientTypeOnly;
@@ -37,7 +37,7 @@ type RenderArtifactResult = {
   renderingEventId: string;
   baseBodyHashSha256: string;
   renderingHashSha256: string;
-  imageHashSha256: string;
+  imageHashSha256: string | null;
   /** Governing (authoritative) record content hash on file at time of render */
   recordHashAtRender: string;
   publicRef: string;
@@ -45,9 +45,9 @@ type RenderArtifactResult = {
   mode: RenderingMode;
   recordVersion: number;
   pdfBase64: string;
-  imageBase64: string;
-  imageMimeType: string;
-  imageOutputFormat: "PDF" | "PNG" | "JPEG";
+  imageBase64: string | null;
+  imageMimeType: string | null;
+  imageOutputFormat: "PDF";
   generatedAt: string;
 };
 
@@ -59,30 +59,54 @@ export type RenderContractResult = {
 type RenderContractInput = {
   governingRecord: GoverningRecord;
   mode: "CERTIFIED" | "NON_AUTHORITATIVE";
+  renderedAt?: Date;
+  verifyUrl?: string;
 };
 
 function certifiedOverlay(
   governingRecord: GoverningRecord,
   renderingHash: string,
   timestamp: Date,
+  verifyUrl: string,
+  qrCodeDataUrl: string,
 ): string {
   const statement =
     "This document is a Certified Visual Rendering generated from the Authoritative Governing Record maintained in Deal-Scan. The authoritative record remains in system custody. This rendering is verifiable via Record ID and hash.";
-  const hashValue = governingRecord.hash || governingRecord.recordHashSha256;
-  const verifyUrl = `https://verify.dealseal.local/verify/${governingRecord.id}`;
+  const hashValue = governingRecord.hash;
 
   return `
-    <aside class="overlay certified-overlay">
-      <h2>Certified Visual Rendering</h2>
-      <div class="meta-grid">
-        <div><span>Governing Record ID</span><strong>${governingRecord.id}</strong></div>
-        <div><span>Version</span><strong>${governingRecord.version}</strong></div>
-        <div><span>Timestamp</span><strong>${timestamp.toISOString()}</strong></div>
-        <div><span>Record hash</span><strong>${hashValue}</strong></div>
-        <div><span>Rendering hash</span><strong>${renderingHash}</strong></div>
-        <div><span>QR verification</span><strong>${verifyUrl}</strong></div>
+    <aside class="overlay-panel">
+      <h4 style="color: #ffffff;">Certified Visual Rendering</h4>
+      <div class="overlay-grid">
+        <div>
+          <p><strong>Governing Record ID</strong></p>
+          <p>${governingRecord.id}</p>
+        </div>
+        <div>
+          <p><strong>Version</strong></p>
+          <p>${governingRecord.version}</p>
+        </div>
+        <div>
+          <p><strong>Timestamp</strong></p>
+          <p>${timestamp.toISOString()}</p>
+        </div>
+        <div>
+          <p><strong>Record hash</strong></p>
+          <p>${hashValue}</p>
+        </div>
+        <div>
+          <p><strong>Rendering hash</strong></p>
+          <p>${renderingHash}</p>
+        </div>
+        <div>
+          <p><strong>QR verification URL</strong></p>
+          <p>${verifyUrl}</p>
+        </div>
       </div>
-      <p class="statement">${statement}</p>
+      <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
+        <img src="${qrCodeDataUrl}" alt="QR code for record verification" style="width: 120px; height: 120px; border: 1px solid #2a2a2a; background: #050505; padding: 8px;" />
+      </div>
+      <p class="overlay-note">${statement}</p>
     </aside>
   `;
 }
@@ -91,25 +115,68 @@ function nonAuthoritativeOverlay(): string {
   const statement =
     "This is a non-authoritative convenience copy. It does not independently establish control, ownership, or enforceability.";
   return `
-    <aside class="overlay convenience-overlay">
-      <h2>Non-Authoritative Convenience Copy</h2>
-      <p class="statement">${statement}</p>
+    <aside class="overlay-panel">
+      <h4 style="color: #ffffff;">Non-Authoritative Convenience Copy</h4>
+      <p class="overlay-note">${statement}</p>
     </aside>
   `;
 }
 
-export async function renderContract({ governingRecord, mode }: RenderContractInput): Promise<RenderContractResult> {
+export async function generatePDF(html: string): Promise<Buffer> {
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+
+  try {
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: "networkidle0" });
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: {
+        top: "24px",
+        right: "24px",
+        bottom: "24px",
+        left: "24px",
+      },
+    });
+    return Buffer.from(pdfBuffer);
+  } finally {
+    await browser.close();
+  }
+}
+
+export async function renderContract({
+  governingRecord,
+  mode,
+  renderedAt,
+  verifyUrl,
+}: RenderContractInput): Promise<RenderContractResult> {
   const baseHtml = buildBaseContractHTML(governingRecord);
-  const renderedAt = new Date();
+  const timestamp = renderedAt ?? new Date();
+  const resolvedVerifyUrl = verifyUrl ?? `https://yourdomain.com/verify/${governingRecord.id}`;
   const baseHash = crypto.createHash("sha256").update(baseHtml).digest("hex");
+  const qrCodeDataUrl =
+    mode === "CERTIFIED"
+      ? await QRCode.toDataURL(resolvedVerifyUrl, {
+          errorCorrectionLevel: "M",
+          margin: 1,
+          width: 256,
+        })
+      : "";
 
   const overlayPreview =
-    mode === "CERTIFIED" ? certifiedOverlay(governingRecord, baseHash, renderedAt) : nonAuthoritativeOverlay();
+    mode === "CERTIFIED"
+      ? certifiedOverlay(governingRecord, baseHash, timestamp, resolvedVerifyUrl, qrCodeDataUrl)
+      : nonAuthoritativeOverlay();
   const htmlWithOverlay = injectOverlayIntoBaseContractHTML(baseHtml, overlayPreview);
   const renderingHash = crypto.createHash("sha256").update(htmlWithOverlay).digest("hex");
 
   const finalOverlay =
-    mode === "CERTIFIED" ? certifiedOverlay(governingRecord, renderingHash, renderedAt) : nonAuthoritativeOverlay();
+    mode === "CERTIFIED"
+      ? certifiedOverlay(governingRecord, renderingHash, timestamp, resolvedVerifyUrl, qrCodeDataUrl)
+      : nonAuthoritativeOverlay();
   const html = injectOverlayIntoBaseContractHTML(baseHtml, finalOverlay);
 
   await prisma.renderEvent.create({
@@ -144,36 +211,18 @@ export async function renderContractArtifacts(input: RenderArtifactInput): Promi
   const vm2 = buildBaseViewModelFromGoverningRecord(gr);
   assertSameBaseModel(vm1, vm2);
   const baseBodyHashSha256 = baseViewModelContentHash(vm1);
-  const basePdf = await drawBaseOnlyPdf(vm1);
   const ts = input.facsimileAt ?? new Date();
   const verifyPageUrl = input.mode === RenderingMode.CERTIFIED ? buildPublicVerifyPageUrl(env, gr.id) : "";
-
-  const pdfBytes = Buffer.from(
-    input.mode === RenderingMode.CERTIFIED
-      ? await applyCertifiedOverlayToBasePdf(basePdf, {
-          verifyUrl: verifyPageUrl,
-          recordId: gr.id,
-          version: gr.version,
-          recordHash: gr.recordHashSha256,
-          timestamp: ts,
-        })
-      : await applyConvenienceOverlayToBasePdf(basePdf, {
-          recordId: gr.id,
-          version: gr.version,
-          recordHash: gr.recordHashSha256,
-          timestamp: ts,
-        }),
-  );
-  const renderingHashSha256 = renderingHashFromPdf(pdfBytes);
-
-  const imageAsJpeg = input.imageFormat === "jpeg";
-  const imageMime = imageAsJpeg ? "image/jpeg" : "image/png";
-  const imageOutFormat: RenderingImageFormat = imageAsJpeg ? RenderingImageFormat.JPEG : RenderingImageFormat.PNG;
-  const imageBytes = await pdfToImage(pdfBytes, {
-    asJpeg: imageAsJpeg,
-    mimeType: imageMime,
+  const mode: "CERTIFIED" | "NON_AUTHORITATIVE" =
+    input.mode === RenderingMode.CERTIFIED ? "CERTIFIED" : "NON_AUTHORITATIVE";
+  const htmlResult = await renderContract({
+    governingRecord: gr,
+    mode,
+    renderedAt: ts,
+    verifyUrl: verifyPageUrl || `https://yourdomain.com/verify/${gr.id}`,
   });
-  const imageHashSha256 = renderingHashFromImage(imageBytes);
+  const pdfBytes = await generatePDF(htmlResult.html);
+  const renderingHashSha256 = renderingHashFromPdf(pdfBytes);
 
   const attestation =
     input.mode === RenderingMode.CERTIFIED ? getCertifiedAttestationText() : getConvenienceDisclaimerText();
@@ -187,16 +236,16 @@ export async function renderContractArtifacts(input: RenderArtifactInput): Promi
         renderingHashSha256,
         outputMimeType: "application/pdf",
         outputStorageKey: null,
-        imageHashSha256,
-        imageMimeType: imageMime,
-        imageOutputFormat: imageOutFormat,
+        imageHashSha256: null,
+        imageMimeType: "application/pdf",
+        imageOutputFormat: "PDF",
         imageStorageKey: null,
         qrVerifyUrl: input.mode === RenderingMode.CERTIFIED ? verifyPageUrl : "",
-        recordHashAtRender: gr.recordHashSha256,
+        recordHashAtRender: gr.hash,
         facsimileTimestamp: ts,
         attestationText: attestation,
         requestedByUserId: input.requestedBy,
-        clientMetadataJson: { engine: "contract-renderer@3", certVisual: "pdf+raster" } as Prisma.InputJsonValue,
+        clientMetadataJson: { engine: "contract-renderer@html-pdf-v1", output: "pdf" } as Prisma.InputJsonValue,
       },
     });
   });
@@ -216,22 +265,22 @@ export async function renderContractArtifacts(input: RenderArtifactInput): Promi
     entityId: ev.id,
     resource: "GoverningRecord",
     resourceId: gr.id,
-    payload: { mode: input.mode, baseBodyHash: baseBodyHashSha256, renderingHash: renderingHashSha256, imageHash: imageHashSha256 },
+    payload: { mode: input.mode, baseBodyHash: baseBodyHashSha256, renderingHash: renderingHashSha256, imageHash: null },
   });
   return {
     renderingEventId: ev.id,
     baseBodyHashSha256,
     renderingHashSha256,
-    imageHashSha256,
-    recordHashAtRender: gr.recordHashSha256,
+    imageHashSha256: null,
+    recordHashAtRender: gr.hash,
     publicRef: gr.publicRef,
     qrVerifyUrl: input.mode === RenderingMode.CERTIFIED ? verifyPageUrl : "",
     mode: input.mode,
     recordVersion: gr.version,
     pdfBase64: pdfBytes.toString("base64"),
-    imageBase64: imageBytes.toString("base64"),
-    imageMimeType: imageMime,
-    imageOutputFormat: imageOutFormat,
+    imageBase64: null,
+    imageMimeType: null,
+    imageOutputFormat: "PDF",
     generatedAt: ts.toISOString(),
   };
 }
