@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { renderContract } from "@/lib/api";
 import { getToken } from "@/lib/session";
 
 type RecordRenderActionsProps = {
   recordId: string;
+  className?: string;
 };
 
 type RenderMode = "CERTIFIED" | "NON_AUTHORITATIVE";
@@ -28,9 +29,17 @@ function triggerDownload(pdfBase64: string, filename: string): void {
   URL.revokeObjectURL(objectUrl);
 }
 
-export function RecordRenderActions({ recordId }: RecordRenderActionsProps) {
+export function RecordRenderActions({ recordId, className }: RecordRenderActionsProps) {
   const [activeMode, setActiveMode] = useState<RenderMode | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const metadata = useMemo(
+    () => ({
+      renderingHash: "Not generated yet",
+      generatedAt: "Pending action",
+    }),
+    [],
+  );
 
   const onRender = async (mode: RenderMode) => {
     const token = getToken();
@@ -53,10 +62,21 @@ export function RecordRenderActions({ recordId }: RecordRenderActionsProps) {
   };
 
   return (
-    <div>
-      <div className="ds-table-actions">
+    <div className={className}>
+      <CardHeader />
+      <div className="ds-action-panel__meta">
+        <div>
+          <span>Latest rendering hash</span>
+          <strong className="ds-table__mono">{metadata.renderingHash}</strong>
+        </div>
+        <div>
+          <span>Generated at</span>
+          <strong>{metadata.generatedAt}</strong>
+        </div>
+      </div>
+      <div className="ds-action-panel__buttons">
         <Button onClick={() => void onRender("CERTIFIED")} disabled={Boolean(activeMode)}>
-          {activeMode === "CERTIFIED" ? "Generating Certified PDF..." : "Download Certified Rendering"}
+          {activeMode === "CERTIFIED" ? "Generating Certified Rendering..." : "Generate Certified Rendering"}
         </Button>
         <Button
           variant="secondary"
@@ -65,8 +85,22 @@ export function RecordRenderActions({ recordId }: RecordRenderActionsProps) {
         >
           {activeMode === "NON_AUTHORITATIVE" ? "Generating Copy..." : "Download Copy"}
         </Button>
+        <Button href={`/verify/${recordId}`} variant="secondary">
+          Verify Record
+        </Button>
       </div>
       {error ? <p className="ds-inline-warning">{error}</p> : null}
+    </div>
+  );
+}
+
+function CardHeader() {
+  return (
+    <div className="ds-action-panel__header">
+      <p className="ds-card-panel__title">Actions</p>
+      <p className="ds-card-panel__body">
+        Generate certified renderings and non-authoritative copies from the same governing source.
+      </p>
     </div>
   );
 }

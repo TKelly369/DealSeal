@@ -1,31 +1,6 @@
 import Link from "next/link";
 import { verifyRecord } from "@/lib/api";
 
-type VerifyResponse = {
-  code?: string;
-  message?: string;
-  verificationStatus?: string;
-  governingRecordId?: string;
-  recordId?: string;
-  version?: number;
-  status?: string;
-  recordHash?: string;
-  recordVerifies?: boolean;
-  executedAt?: string | null;
-  lockedAt?: string | null;
-  latestRenderingHash?: string | null;
-  latestImageHash?: string | null;
-  latestImageFormat?: string | null;
-  latestGeneratedAt?: string | null;
-  renderingHistory?: Array<{
-    id: string;
-    mode: string;
-    generatedAt?: string;
-    renderingHash?: string;
-    imageHash?: string | null;
-  }>;
-};
-
 function isUuid(s: string): boolean {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
     s,
@@ -36,42 +11,41 @@ async function fetchVerify(recordId: string): Promise<VerifyResponse> {
   try {
     return (await verifyRecord(recordId)) as VerifyResponse;
   } catch {
-    return { code: "UNAVAILABLE" };
+    return {
+      code: "UNAVAILABLE",
+      valid: false,
+      hashMatch: false,
+      version: 0,
+      timestamp: new Date(0).toISOString(),
+    };
   }
 }
 
 function StatusBadge({ status }: { status: string | undefined }) {
-  const s = (status ?? "").toUpperCase();
-  if (s === "VERIFIED") {
-    return <span className="badge ds-badge--verified">Verified</span>;
-  }
-  if (s === "MISMATCH") {
-    return <span className="badge ds-badge--error">Hash mismatch</span>;
-  }
-  return <span className="badge">{status ?? "—"}</span>;
+  if (status === "VERIFIED") return <span className="badge ds-badge--verified">VERIFIED</span>;
+  if (status === "INVALID") return <span className="badge ds-badge--error">INVALID</span>;
+  return <span className="badge">{status}</span>;
 }
 
-function QrNote() {
-  return (
-    <div className="ds-verify-qr-note">
-      <strong style={{ color: "var(--text)" }}>QR code on certified renderings</strong> points to this public page
-      (not a raw download). Scanning confirms you are viewing the same verification context as the PDF or image
-      facsimile. Full contract text and private signatures are never shown here.
-    </div>
-  );
-}
+type VerifyResponse = {
+  valid: boolean;
+  hashMatch: boolean;
+  version: number;
+  timestamp: string;
+  recordId?: string;
+  recordHash?: string;
+  status?: string;
+  code?: string;
+};
 
-function NotFoundOrCertified() {
+function NotFound() {
   return (
     <div className="ds-verify">
-      <h1>Record verification</h1>
-      <p className="ds-verify__lead">DealSeal public verification (read-only)</p>
-      <div className="card" style={{ borderColor: "var(--border-bright)" }}>
+      <h1>Verification</h1>
+      <p className="ds-verify__lead">DealSeal verification endpoint</p>
+      <div className="card">
         <p className="ds-card-title">Not found</p>
-        <p style={{ color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
-          Record not found or not yet certified. The governing record may not exist, or it may not be available for
-          public verification yet.
-        </p>
+        <p style={{ color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>Record not found.</p>
         <p style={{ marginTop: "1rem" }}>
           <Link className="btn btn-secondary" href="/">
             Return home
@@ -85,11 +59,11 @@ function NotFoundOrCertified() {
 function InvalidIdMessage() {
   return (
     <div className="ds-verify">
-      <h1>Record verification</h1>
+      <h1>Verification</h1>
       <p className="ds-verify__lead">A valid governing record ID is required (UUID format).</p>
       <div className="card">
         <p style={{ color: "var(--text-secondary)", margin: 0 }}>
-          Try the <Link href="/verify/test">test layout</Link> or <Link href="/">return home</Link>.
+          <Link href="/">Return home</Link>.
         </p>
       </div>
     </div>
@@ -105,136 +79,52 @@ function Unavailable() {
   );
 }
 
-function TestVerificationLayout() {
-  return (
-    <div className="ds-verify">
-      <h1>Verification preview</h1>
-      <p className="ds-verify__lead">
-        Static layout only. Replace <code>test</code> in the URL with a real governing record UUID to load live data
-        from the API.
-      </p>
-      <p style={{ marginBottom: "1rem" }}>
-        <StatusBadge status="VERIFIED" />
-        <span style={{ marginLeft: 8, color: "var(--muted)", fontSize: 13 }}>(illustrative)</span>
-      </p>
-      <QrNote />
-      <div className="card" style={{ marginTop: "1.25rem" }}>
-        <p className="ds-card-title">Record metadata</p>
-        <dl className="ds-meta-grid">
-          <dt>Governing record ID</dt>
-          <dd style={{ fontStyle: "italic", color: "var(--muted)" }}>Your UUID will appear here</dd>
-          <dt>Version / status</dt>
-          <dd>—</dd>
-        </dl>
-      </div>
-      <div className="card" style={{ marginTop: "1rem" }}>
-        <p className="ds-card-title">Digest (illustrative)</p>
-        <div className="ds-hash" aria-hidden>
-          0000…0000
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default async function VerifyPage({ params }: { params: Promise<{ recordId: string }> }) {
   const { recordId: raw } = await params;
   const recordId = decodeURIComponent(raw);
-
-  if (recordId === "test") {
-    return <TestVerificationLayout />;
-  }
 
   if (!isUuid(recordId)) {
     return <InvalidIdMessage />;
   }
 
   const data = await fetchVerify(recordId);
-  if (data.code === "UNAVAILABLE" || data.code === "ERROR") {
+  if (!data) {
     return <Unavailable />;
   }
-  if (data.code === "INVALID_ID") {
-    return <InvalidIdMessage />;
-  }
-  if (data.code === "NOT_FOUND" || !data.governingRecordId) {
-    return <NotFoundOrCertified />;
+  if (!data.recordId) {
+    return <NotFound />;
   }
 
-  const verified = data.verificationStatus === "VERIFIED";
+  const status = data.valid && data.hashMatch ? "VERIFIED" : "INVALID";
 
   return (
     <div className="ds-verify">
-      <h1>Record verification</h1>
-      <p className="ds-verify__lead">DealSeal public verification (read-only). No contract body or private signatures.</p>
-      <p style={{ marginBottom: "1rem" }}>
-        <StatusBadge status={data.verificationStatus} />
+      <h1>Record Verification</h1>
+      <p className="ds-verify__lead">
+        Independent verification of authoritative contract custody and rendering authenticity.
       </p>
-      <QrNote />
+      <p style={{ marginBottom: "1rem" }}>
+        <StatusBadge status={status} />
+      </p>
       <div className="card" style={{ marginTop: "1.25rem" }}>
-        <p className="ds-card-title">Record</p>
+        <p className="ds-card-title">Verification Result</p>
         <dl className="ds-meta-grid">
-          <dt>Verification status</dt>
-          <dd>{data.verificationStatus ?? "—"}</dd>
-          <dt>Governing record ID</dt>
-          <dd>{data.governingRecordId}</dd>
+          <dt>Record ID</dt>
+          <dd>{data.recordId ?? "—"}</dd>
+          <dt>Status</dt>
+          <dd>{status}</dd>
+          <dt>Hash match</dt>
+          <dd>{data.hashMatch ? "Yes" : "No"}</dd>
           <dt>Version</dt>
           <dd>{data.version}</dd>
-          <dt>Status</dt>
-          <dd>{data.status}</dd>
-          <dt>Executed</dt>
-          <dd>{data.executedAt ?? "—"}</dd>
-          <dt>Locked</dt>
-          <dd>{data.lockedAt ?? "—"}</dd>
-          {data.latestGeneratedAt && (
-            <>
-              <dt>Last facsimile</dt>
-              <dd>{data.latestGeneratedAt}</dd>
-            </>
-          )}
+          <dt>Timestamp</dt>
+          <dd>{new Date(data.timestamp).toLocaleString()}</dd>
         </dl>
       </div>
       <div className="card" style={{ marginTop: "1rem" }}>
         <p className="ds-card-title">Record hash (SHA-256)</p>
-        <div className="ds-hash">{data.recordHash}</div>
+        <div className="ds-hash">{data.recordHash ?? "—"}</div>
       </div>
-      {data.latestRenderingHash && (
-        <div className="card" style={{ marginTop: "1rem" }}>
-          <p className="ds-card-title">Latest rendering hash (PDF digest)</p>
-          <div className="ds-hash">{data.latestRenderingHash}</div>
-        </div>
-      )}
-      {data.latestImageHash && (
-        <div className="card" style={{ marginTop: "1rem" }}>
-          <p className="ds-card-title">Latest image digest {data.latestImageFormat ? `(${data.latestImageFormat})` : ""}</p>
-          <div className="ds-hash">{data.latestImageHash}</div>
-        </div>
-      )}
-      {data.renderingHistory && data.renderingHistory.length > 0 && (
-        <div className="card" style={{ marginTop: "1rem" }}>
-          <p className="ds-card-title">Rendering history</p>
-          <ul className="ds-history-list">
-            {data.renderingHistory.slice(0, 12).map((e) => (
-              <li key={e.id}>
-                <span style={{ color: "var(--brand-gold)", fontWeight: 600 }}>{e.mode}</span> · {e.generatedAt ?? "—"}
-                {e.imageHash && (
-                  <span style={{ color: "var(--muted)" }}>
-                    {" "}
-                    · image {e.imageHash.slice(0, 10)}…
-                  </span>
-                )}
-                <div className="ds-hash" style={{ marginTop: 6 }}>
-                  {e.renderingHash}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <p style={{ fontSize: 12, color: "var(--muted)", marginTop: "1.5rem" }}>
-        {verified
-          ? "Hash recomputation matches the stored governing record."
-          : "Hash check did not match. Use authorized Deal-Scan workflows in product."}
-      </p>
     </div>
   );
 }

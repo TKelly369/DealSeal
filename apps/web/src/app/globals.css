@@ -1023,3 +1023,252 @@ button,
   justify-content: center;
   padding: var(--space-3);
 }
+
+.ds-record-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+@media (min-width: 1200px) {
+  .ds-record-layout {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    align-items: start;
+  }
+}
+
+.ds-contract-viewer-wrap {
+  width: 100%;
+  overflow: auto;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid #2a2a2a;
+  background: #0f0f10;
+}
+
+.ds-contract-viewer-scroll {
+  max-height: calc(100vh - 180px);
+  overflow: auto;
+}
+
+.ds-contract-page {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  position: relative;
+  background: #ffffff;
+  color: #101828;
+  border-radius: 12px;
+  border: 1px solid #d0d5dd;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.38);
+  padding: 32px 34px;
+}
+
+.ds-contract-watermark {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  font-size: 88px;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  color: rgba(200, 16, 46, 0.08);
+  pointer-events: none;
+  user-select: none;
+}
+
+.ds-contract-header h1 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  color: #101828;
+}
+
+.ds-contract-subtitle {
+  margin: 8px 0 0;
+  color: #344054;
+  font-size: 14px;
+}
+
+.ds-contract-banner {
+  margin-top: 20px;
+  border: 1px solid #fecdd3;
+  border-left: 4px solid #c8102e;
+  background: #fff1f2;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.ds-contract-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+}
+
+.ds-contract-banner-grid p {
+  margin: 0;
+  font-size: 12px;
+  color: #881337;
+}
+
+.ds-contract-body {
+  margin-top: 24px;
+}
+
+.ds-contract-section + .ds-contract-section {
+  margin-top: 16px;
+}
+
+.ds-contract-section h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #111827;
+}
+
+.ds-contract-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+}
+
+.ds-contract-field {
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: #ffffff;
+}
+
+.ds-contract-field-label {
+  margin: 0;
+  color: #667085;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ds-contract-field-value {
+  margin: 4px 0 0;
+  color: #101828;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.ds-contract-footer {
+  margin-top: 24px;
+  border-top: 1px solid #e4e7ec;
+  padding-top: 16px;
+}
+
+.ds-contract-signature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ds-contract-signature-box {
+  border: 1px dashed #98a2b3;
+  border-radius: 8px;
+  min-height: 72px;
+  padding: 10px;
+}
+
+.ds-contract-signature-box p {
+  margin: 0;
+  color: #475467;
+  font-size: 12px;
+}
+
+.ds-overlay-note {
+  margin-top: 18px;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ds-overlay--certified {
+  border: 1px solid #fecdd3;
+  background: #fff1f2;
+  color: #881337;
+}
+
+.ds-overlay--copy {
+  border: 1px solid #d0d5dd;
+  background: #f8fafc;
+  color: #475467;
+}
+
+.ds-record-actions {
+  position: sticky;
+  top: calc(var(--header-height) + 16px);
+}
+
+.ds-record-preview-fallback {
+  margin-top: 14px;
+  border: 1px dashed #2a2a2a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  background: #141414;
+}
+
+.ds-verify-card {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.ds-verify-status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.ds-verify-status-item {
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 12px;
+  background: #121212;
+}
+
+.ds-verify-status-item p {
+  margin: 0;
+}
+
+.ds-verify-status-item__label {
+  color: #b8bcc2;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ds-verify-status-item__value {
+  margin-top: 6px !important;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ds-badge-verified,
+.ds-badge-invalid {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ds-badge-verified {
+  background: #0f291a;
+  border: 1px solid #1f7a44;
+  color: #8df0b8;
+}
+
+.ds-badge-invalid {
+  background: #351117;
+  border: 1px solid #8b1e2f;
+  color: #fdb2bd;
+}

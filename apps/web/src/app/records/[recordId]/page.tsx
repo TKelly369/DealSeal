@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 import { RecordRenderActions } from "@/components/RecordRenderActions";
 import { getRecord } from "@/lib/api";
+import { ContractViewer } from "@/components/contract/ContractViewer";
 
 function formatDate(value: string | null): string {
   if (!value) return "Pending";
@@ -14,11 +15,6 @@ function formatDate(value: string | null): string {
     hour: "2-digit",
     minute: "2-digit",
   });
-}
-
-function renderContractPreview(contractData: unknown): React.ReactNode {
-  const serialized = JSON.stringify(contractData, null, 2);
-  return <pre className="ds-record-preview">{serialized}</pre>;
 }
 
 export default async function RecordDetailPage({
@@ -56,9 +52,17 @@ export default async function RecordDetailPage({
         title="Contract Record Detail"
         subtitle="Authoritative governing record content and rendering controls."
       >
-        <div className="ds-dashboard-grid ds-dashboard-grid--two">
-          <Card className="ds-card-panel">
-            <p className="ds-card-panel__title">Metadata</p>
+        <div className="ds-contract-layout">
+          <ContractViewer
+            recordId={record.id}
+            hash={record.hash}
+            version={record.version}
+            timestamp={record.createdAt ?? new Date().toISOString()}
+            contractData={record.contractData}
+          />
+
+          <Card className="ds-card-panel ds-contract-side-panel">
+            <p className="ds-card-panel__title">Record Metadata</p>
             <div className="ds-status-list">
               <li>
                 <span>Record ID</span>
@@ -86,14 +90,6 @@ export default async function RecordDetailPage({
               </li>
             </div>
             <RecordRenderActions recordId={record.id} />
-          </Card>
-
-          <Card className="ds-card-panel">
-            <p className="ds-card-panel__title">Contract Preview</p>
-            <p className="ds-card-panel__body">
-              Full governing contract payload from system custody.
-            </p>
-            {renderContractPreview(record.contractData)}
           </Card>
         </div>
       </Section>
