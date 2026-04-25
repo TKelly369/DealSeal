@@ -519,6 +519,391 @@ button:hover,
   border-bottom: none;
 }
 
+/* DealSeal demo flow pages */
+.ds-home {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.ds-home__hero h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.ds-home__hero p {
+  margin: 0.45rem 0 0;
+  color: #c6cad1;
+}
+
+.ds-home__records {
+  margin-top: 1.45rem;
+}
+
+.ds-home__records h2 {
+  margin: 0 0 0.9rem;
+  color: #fff;
+  font-size: 1.08rem;
+}
+
+.ds-home__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ds-home__table th,
+.ds-home__table td {
+  border-bottom: 1px solid #33455f;
+  padding: 0.72rem 0.6rem;
+  text-align: left;
+  font-size: 0.87rem;
+  color: #ecf2fb;
+  vertical-align: top;
+}
+
+.ds-home__table th {
+  color: #c2cdde;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+}
+
+.ds-record-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.85rem 1.25rem 3rem;
+}
+
+.ds-record-header h1 {
+  margin: 0;
+  color: #fff;
+}
+
+.ds-record-header p {
+  margin: 0.5rem 0 1.2rem;
+  color: #bcc7d8;
+}
+
+.ds-record-missing p {
+  color: #c8d1de;
+  margin: 0.5rem 0 1rem;
+}
+
+.ds-metadata-panel {
+  margin-bottom: 1rem;
+}
+
+.ds-metadata-panel h3 {
+  margin: 0 0 0.75rem;
+  color: #fff;
+}
+
+.ds-metadata-panel dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+@media (max-width: 860px) {
+  .ds-metadata-panel dl {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ds-metadata-panel dl div {
+  border: 1px solid #33455f;
+  border-radius: 8px;
+  padding: 0.56rem 0.68rem;
+  background: #111c2f;
+}
+
+.ds-metadata-panel dt {
+  margin: 0;
+  color: #c0cde0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.69rem;
+}
+
+.ds-metadata-panel dd {
+  margin: 0.35rem 0 0;
+  color: #fff;
+  font-size: 0.86rem;
+}
+
+.ds-viewer-shell {
+  margin-top: 1.05rem;
+}
+
+.ds-contract-viewer {
+  width: 100%;
+}
+
+.ds-contract-paper {
+  position: relative;
+  max-width: 980px;
+  margin: 0 auto;
+  background: #fff;
+  color: #111;
+  border-radius: 10px;
+  border: 1px solid #dedede;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+  padding: 1.55rem 1.75rem 1.9rem;
+  overflow: hidden;
+}
+
+.ds-contract-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.32rem;
+}
+
+.ds-contract-header p {
+  margin: 0.35rem 0 1rem;
+  color: #475569;
+  font-size: 0.89rem;
+}
+
+.ds-contract-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem 1rem;
+}
+
+@media (max-width: 820px) {
+  .ds-contract-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ds-contract-grid h4,
+.ds-contract-section h4 {
+  margin: 0 0 0.24rem;
+  color: #334155;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ds-contract-grid p,
+.ds-contract-section p {
+  margin: 0;
+  color: #111827;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.ds-contract-section {
+  margin-top: 1rem;
+}
+
+.ds-contract-terms {
+  margin: 0;
+  padding-left: 1rem;
+  color: #0f172a;
+  font-size: 0.9rem;
+}
+
+.ds-contract-terms li + li {
+  margin-top: 0.35rem;
+}
+
+.ds-contract-overlay {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  padding: 0.88rem;
+}
+
+.ds-contract-overlay h3 {
+  margin: 0 0 0.7rem;
+  font-size: 0.79rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ds-contract-overlay dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem 0.85rem;
+  margin: 0;
+}
+
+@media (max-width: 820px) {
+  .ds-contract-overlay dl {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ds-contract-overlay dt {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.67rem;
+}
+
+.ds-contract-overlay dd {
+  margin: 0.22rem 0 0;
+  font-size: 0.77rem;
+  word-break: break-all;
+}
+
+.ds-contract-overlay p {
+  margin: 0.82rem 0 0;
+  font-size: 0.81rem;
+  line-height: 1.45;
+}
+
+.ds-contract-overlay--certified {
+  border: 1px solid #ef4444;
+  background: #fff1f2;
+}
+
+.ds-contract-overlay--certified h3 {
+  color: #991b1b;
+}
+
+.ds-contract-overlay--certified dt {
+  color: #7f1d1d;
+}
+
+.ds-contract-overlay--certified dd,
+.ds-contract-overlay--certified p {
+  color: #450a0a;
+}
+
+.ds-contract-overlay--non-authoritative {
+  border: 1px solid #ca8a04;
+  background: #fef9c3;
+}
+
+.ds-contract-overlay--non-authoritative p {
+  margin: 0;
+  color: #713f12;
+  font-size: 0.84rem;
+}
+
+.ds-contract-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(220, 38, 38, 0.08);
+  font-size: 3.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transform: rotate(-24deg);
+  pointer-events: none;
+}
+
+.ds-actions-panel {
+  margin-top: 1rem;
+}
+
+.ds-actions-panel h3 {
+  margin: 0 0 0.8rem;
+  color: #fff;
+}
+
+.ds-inline-error {
+  margin: 0.75rem 0 0;
+  color: #fecaca;
+  font-size: 0.85rem;
+}
+
+.ds-render-success {
+  margin-top: 1rem;
+  padding: 0.85rem;
+  border-radius: 8px;
+  border: 1px solid #33455f;
+  background: #101b2d;
+}
+
+.ds-render-success h4 {
+  margin: 0 0 0.6rem;
+  color: #5eead4;
+}
+
+.ds-render-success p {
+  margin: 0.45rem 0;
+  color: #dbe7f8;
+  font-size: 0.86rem;
+}
+
+.ds-render-success a {
+  word-break: break-all;
+}
+
+.ds-verify-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.95rem 1.25rem 3rem;
+}
+
+.ds-verify-panel h1 {
+  margin: 0 0 0.7rem;
+  color: #fff;
+}
+
+.ds-verify-panel .badge {
+  margin-top: 0.25rem;
+  padding: 0.55rem 1rem;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+}
+
+.ds-verify-grid {
+  margin: 1rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .ds-verify-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ds-verify-grid div {
+  border: 1px solid #33455f;
+  border-radius: 8px;
+  padding: 0.65rem;
+  background: #101b2d;
+}
+
+.ds-verify-grid dt {
+  margin: 0;
+  color: #c1cee1;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ds-verify-grid dd {
+  margin: 0.35rem 0 0;
+  color: #fff;
+  font-size: 0.88rem;
+}
+
+.ds-verify-reasons {
+  margin: 1rem 0 0;
+  padding-left: 1.15rem;
+  color: #fecaca;
+}
+
+.ds-verify-actions {
+  margin: 1.1rem 0 0;
+}
+
+.ds-mono {
+  font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
+  font-size: 0.78rem;
+}
+
 /* Auth */
 .main-auth {
   min-height: 100vh;

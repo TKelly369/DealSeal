@@ -14,7 +14,7 @@ function isVerifyPath(p: string): boolean {
  */
 export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const path = usePathname() ?? "/";
-  if (NO_SHELL.has(path) || isVerifyPath(path)) {
+  if (NO_SHELL.has(path) || isVerifyPath(path) || path.startsWith("/records/")) {
     return <>{children}</>;
   }
   return <AppShell>{children}</AppShell>;
