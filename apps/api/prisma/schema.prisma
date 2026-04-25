@@ -175,10 +175,12 @@ enum RecordStatus {
 enum RenderingMode {
   CERTIFIED
   CONVENIENCE
+  NON_AUTHORITATIVE
 }
 
 /// Raster output for a rendering event (same PDF, re-encoded)
 enum RenderingImageFormat {
+  PDF
   PNG
   JPEG
 }
