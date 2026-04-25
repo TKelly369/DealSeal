@@ -75,7 +75,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const header = getHeaderCopy(path);
 
   return (
-    <div className="ds-enterprise-shell">
+    <div className="ds-shell">
       <AppSidebar />
       <div className="ds-main-wrap">
         <AppHeader

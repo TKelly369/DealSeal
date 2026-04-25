@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/", label: "Dashboard" },
   { href: "/workspace", label: "Contracts" },
   { href: "/packages", label: "Packages" },
   { href: "/audit", label: "Audit Trail" },
@@ -14,6 +14,7 @@ const navItems = [
 ];
 
 function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/" || pathname.startsWith("/dashboard");
   if (href === "/workspace") return pathname.startsWith("/workspace");
   if (href === "/verification") return pathname.startsWith("/verification") || pathname.startsWith("/verify");
   return pathname === href || pathname.startsWith(`${href}/`);

@@ -24,7 +24,7 @@ export function AppHeader({ title, subtitle, onSignOut }: AppHeaderProps) {
   return (
     <header className="ds-header">
       <div className="ds-header__inner">
-        <div className="ds-header__title-wrap">
+        <div className="ds-header__title-group">
           <BrandLogo variant="nav" href="/" className="ds-header__logo" />
           <div>
             <h1 className="ds-header__title">{title}</h1>
