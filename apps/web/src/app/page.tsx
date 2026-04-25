@@ -1,95 +1,77 @@
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
-import { getDashboardMetrics } from "@/lib/api";
 
-const metricCards = [
-  { key: "totalContracts", label: "Total Contracts", icon: "TC" },
-  { key: "certifiedRenderings", label: "Certified Renderings", icon: "CR" },
-  { key: "verificationRequests", label: "Verification Requests", icon: "VR" },
-  { key: "activeDeals", label: "Active Deals", icon: "AD" },
+const highlights = [
+  {
+    title: "Authoritative Governing Record",
+    detail:
+      "One canonical contract record in DealSeal custody with version and hash continuity.",
+  },
+  {
+    title: "Certified Visual Rendering",
+    detail:
+      "Uniform visual output generated from the governing record for external consumption.",
+  },
+  {
+    title: "Verification & Audit Integrity",
+    detail:
+      "Record ID + hash validation with immutable event traceability across lifecycle events.",
+  },
 ] as const;
 
-export default async function Home() {
-  let metrics: Awaited<ReturnType<typeof getDashboardMetrics>> | null = null;
-  let metricsError: string | null = null;
-
-  try {
-    metrics = await getDashboardMetrics();
-  } catch (e) {
-    metricsError = e instanceof Error ? e.message : "Unable to load dashboard metrics";
-  }
+export default function Home() {
 
   return (
     <div className="ds-dashboard">
       <Section
-        title="Authoritative Contract Infrastructure"
-        subtitle="DealSeal separates the governing record, certified visual renderings, and non-authoritative convenience copies while preserving one uniform contract appearance."
+        title="DealSeal Transaction Authority Platform"
+        subtitle="Enterprise contract verification and authority controls that preserve one uniform appearance while separating governing records, certified renderings, and convenience copies."
         actions={
           <>
-            <Button href="/workspace">Create Deal</Button>
-            <Button href="/verification" variant="secondary">
-              Verify Record
+            <Button href="/dashboard">Open Dashboard</Button>
+            <Button href="/workspace" variant="secondary">
+              Open Workspace
             </Button>
-            <Button href="/certified-renderings" variant="secondary">
-              Generate Certified Rendering
+            <Button href="/verification" variant="secondary">
+              Verify Contract
             </Button>
           </>
         }
       >
         <div className="ds-dashboard-grid">
-          {metricCards.map((stat) => {
-            const value = metrics ? metrics[stat.key] : "—";
-            return (
-              <Card className="ds-stat-card" key={stat.label}>
-                <div className="ds-stat-card__top">
-                  <span className="ds-stat-card__label">{stat.label}</span>
-                  <span className="ds-stat-card__icon" aria-hidden>
-                    {stat.icon}
-                  </span>
-                </div>
-                <p className="ds-stat-card__value">
-                  {typeof value === "number" ? value.toLocaleString() : value}
-                </p>
-                <p className="ds-stat-card__description">
-                  {metrics
-                    ? "Live metrics from DealSeal system custody services."
-                    : "Metrics unavailable. Showing safe fallback while API recovers."}
-                </p>
-              </Card>
-            );
-          })}
+          {highlights.map((item) => (
+            <Card className="ds-card-panel" key={item.title}>
+              <p className="ds-card-panel__title">{item.title}</p>
+              <p className="ds-card-panel__body">{item.detail}</p>
+            </Card>
+          ))}
         </div>
-        {metricsError ? (
-          <p className="ds-inline-warning">
-            Unable to load dashboard metrics: {metricsError}
-          </p>
-        ) : null}
       </Section>
 
       <div className="ds-divider" />
 
       <Section
-        title="Contract Authority Control Center"
-        subtitle="Coordinate governing records, certified renderings, convenience-copy controls, and verification workflows from a single enterprise command surface."
+        title="Contract Verification System"
+        subtitle="DealSeal provides auditable verification workflows for governing records, certified visual renderings, and downstream package operations."
       >
         <div className="ds-dashboard-grid ds-dashboard-grid--two">
           <Card className="ds-card-panel">
-            <p className="ds-card-panel__title">Authoritative Governing Record</p>
+            <p className="ds-card-panel__title">Verification Endpoint</p>
             <p className="ds-card-panel__body">
-              Canonical contract payloads remain in system custody with version lineage, lock status, and hash continuity.
+              Validate record identity, hash parity, and version status for lenders, dealers, and servicing operations.
             </p>
-            <Button href="/governing-records" variant="secondary">
-              Open Governing Records
+            <Button href="/verification" variant="secondary">
+              Verify Now
             </Button>
           </Card>
           <Card className="ds-card-panel">
-            <p className="ds-card-panel__title">Certified Visual Rendering</p>
+            <p className="ds-card-panel__title">Governance & Audit</p>
             <p className="ds-card-panel__body">
-              Generate certified PDF/image outputs that preserve visual parity while proving authoritative source lineage.
+              Maintain end-to-end legal-grade audit integrity from record creation through rendering and verification events.
             </p>
-            <Button href="/certified-renderings" variant="secondary">
-              Manage Renderings
+            <Button href="/audit-trail" variant="secondary">
+              View Audit Trail
             </Button>
           </Card>
         </div>
