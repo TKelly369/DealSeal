@@ -18,8 +18,10 @@ import { createIntegrationsRouter } from "./integrations.js";
 import { createOutboundTestRouter } from "./webhooks-routes.js";
 import { createPartnerApiRouter } from "./partner-api.js";
 import { createGoverningRecordsRouter } from "./governing-records-routes.js";
+import { createDashboardPublicRouter } from "./dashboard-public.js";
 
 export function registerRoutes(app: Express, env: Env): void {
+  app.use("/api", createDashboardPublicRouter(env));
   app.use("/auth", createAuthRouter(env));
   app.use("/transactions", createTransactionsRouter(env));
   app.use("/documents", createDocumentsRouter(env));

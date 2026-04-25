@@ -166,19 +166,17 @@ enum SubscriptionTier {
 
 enum RecordStatus {
   DRAFT
-  EXECUTED
   LOCKED
-  VOIDED
-  SUPERSEDED
 }
 
 enum RenderingMode {
   CERTIFIED
-  CONVENIENCE
+  NON_AUTHORITATIVE
 }
 
 /// Raster output for a rendering event (same PDF, re-encoded)
 enum RenderingImageFormat {
+  PDF
   PNG
   JPEG
 }
@@ -322,6 +320,10 @@ model GoverningAgreement {
 /// Authoritative governing record: immutable after execution/lock, hash-addressed, never exposed as a raw file download.
 model GoverningRecord {
   id         String       @id @default(uuid())
+  dealId     String
+  contractData Json
+  hash       String
+  custodian  String
   publicRef  String       @unique @default(cuid())
   orgId      String
   transactionId String   @unique
@@ -349,12 +351,27 @@ model GoverningRecord {
   transaction  Transaction     @relation(fields: [transactionId], references: [id], onDelete: Cascade)
   successor   GoverningRecord? @relation("GoverningRecordSupersession", fields: [supersededById], references: [id], onDelete: SetNull)
   predecessor GoverningRecord? @relation("GoverningRecordSupersession")
+  renderEvents RenderEvent[]
   renderings   RenderingEvent[]
   auditLog     AuditLog[]
 
   @@index([orgId, status])
   @@index([publicRef])
   @@map("governing_records")
+}
+
+model RenderEvent {
+  id            String        @id @default(uuid())
+  governingId   String
+  type          RenderingMode
+  renderedAt    DateTime      @default(now())
+  renderedBy    String
+  renderingHash String
+
+  governing     GoverningRecord @relation(fields: [governingId], references: [id], onDelete: Cascade)
+
+  @@index([governingId, renderedAt])
+  @@map("render_events")
 }
 
 /// Certified visual rendering or non-authoritative convenience copy generation events.

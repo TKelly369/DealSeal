@@ -6,8 +6,12 @@ import { renderingHashFromImage } from "../lib/record-hashing.js";
 import type { GoverningRecord, RecordStatus } from "@prisma/client";
 
 function mockGr(over: Partial<GoverningRecord> = {}): GoverningRecord {
-  return {
+  const base: GoverningRecord = {
     id: "00000000-0000-4000-8000-000000000001",
+    dealId: "DEAL-001",
+    contractData: {},
+    hash: "a".repeat(64),
+    custodian: "system",
     publicRef: "ref_test",
     orgId: "00000000-0000-4000-8000-000000000002",
     transactionId: "00000000-0000-4000-8000-000000000003",
@@ -31,8 +35,8 @@ function mockGr(over: Partial<GoverningRecord> = {}): GoverningRecord {
     supersededById: null,
     createdAt: new Date(),
     updatedAt: new Date(),
-    ...over,
   };
+  return { ...base, ...over };
 }
 
 describe("contract-renderer base template", () => {

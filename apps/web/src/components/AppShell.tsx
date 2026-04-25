@@ -1,66 +1,86 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BrandLogo } from "@/components/BrandLogo";
 import { logoutServerThenLocal } from "@/lib/auth-api";
+import { AppSidebar } from "@/components/layout/AppSidebar";
+import { AppHeader } from "@/components/layout/AppHeader";
 
-const nav = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/workspace", label: "Transaction workspace" },
-  { href: "/documents", label: "Document panel" },
-  { href: "/discrepancies", label: "Discrepancy view" },
-  { href: "/approvals", label: "Approval flow" },
-  { href: "/packages", label: "Package builder" },
-  { href: "/audit", label: "Audit timeline" },
-  { href: "/billing", label: "Billing dashboard" },
-  { href: "/analytics", label: "Analytics" },
-  { href: "/integrations", label: "Integrations & API" },
-  { href: "/admin", label: "Admin console" },
+export const PRIMARY_NAV = [
+  { href: "/", label: "Dashboard" },
+  { href: "/workspace", label: "Contracts" },
+  { href: "/packages", label: "Packages" },
+  { href: "/verify", label: "Verification" },
 ];
 
-const noShell = new Set(["/login", "/register"]);
+const AUTH_PATHS = new Set(["/login", "/register"]);
+
+function getHeaderCopy(path: string): { title: string; subtitle: string } {
+  if (path.startsWith("/workspace") || path.startsWith("/records")) {
+    return {
+      title: "Contract Records",
+      subtitle: "Authoritative record lifecycle and rendering actions.",
+    };
+  }
+  if (path.startsWith("/packages")) {
+    return {
+      title: "Packages",
+      subtitle: "Certified distribution outputs and document bundles.",
+    };
+  }
+  if (path.startsWith("/verification") || path.startsWith("/verify")) {
+    return {
+      title: "Verification Endpoint",
+      subtitle: "External verification access for lenders and servicing teams.",
+    };
+  }
+  if (path.startsWith("/audit-trail") || path.startsWith("/audit")) {
+    return {
+      title: "Audit Integrity",
+      subtitle: "Immutable event history and compliance-oriented review.",
+    };
+  }
+  if (path.startsWith("/documents")) {
+    return {
+      title: "Documents",
+      subtitle: "Manage rendered outputs, packages, and operational copy workflows.",
+    };
+  }
+  if (path.startsWith("/settings")) {
+    return {
+      title: "Settings",
+      subtitle: "System custody policy and enterprise governance controls.",
+    };
+  }
+  return {
+    title: "Dashboard",
+    subtitle: "Financial-grade contract authority controls.",
+  };
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const path = usePathname() ?? "";
+  const path = usePathname() ?? "/";
   const router = useRouter();
-  const hide = noShell.has(path);
 
-  if (hide) {
+  if (AUTH_PATHS.has(path)) {
     return <main className="main-auth">{children}</main>;
   }
 
+  const header = getHeaderCopy(path);
+
   return (
-    <div className="layout">
-      <aside className="sidebar">
-        <BrandLogo variant="nav" href="/" />
-        <p style={{ margin: "0.5rem 0 0", color: "var(--muted)", fontSize: 12, lineHeight: 1.35 }}>
-          Transaction authority for auto finance
-        </p>
-        <nav>
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={path === item.href ? "page" : undefined}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <p style={{ marginTop: "1.5rem", fontSize: 12 }}>
-          <button
-            type="button"
-            onClick={async () => {
-              await logoutServerThenLocal();
-              router.replace("/login");
-            }}
-          >
-            Log out
-          </button>
-        </p>
-      </aside>
-      <main>{children}</main>
+    <div className="ds-shell">
+      <AppSidebar />
+      <div className="ds-main-wrap">
+        <AppHeader
+          title={header.title}
+          subtitle={header.subtitle}
+          onSignOut={async () => {
+            await logoutServerThenLocal();
+            router.replace("/login");
+          }}
+        />
+        <main className="ds-main">{children}</main>
+      </div>
     </div>
   );
 }

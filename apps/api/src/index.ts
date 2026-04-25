@@ -39,6 +39,7 @@ app.use(requestLoggerMiddleware());
 app.use(express.json({ limit: "2mb" }));
 
 app.use("/api/verify", createVerifyApiRouter(env));
+app.use("/verify", createVerifyApiRouter(env));
 
 app.get("/health", (_req, res) => {
   res.json({ ok: true, service: "dealseal-api", time: new Date().toISOString() });

@@ -29,6 +29,7 @@
     "jsonwebtoken": "^9.0.2",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.6.205",
+    "puppeteer": "^24.42.0",
     "qrcode": "^1.5.4",
     "stripe": "^17.0.0",
     "zod": "^3.24.0"

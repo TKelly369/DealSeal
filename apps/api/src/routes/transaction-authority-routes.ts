@@ -3,7 +3,7 @@ import { z } from "zod";
 import { PackageFormat, RenderingMode, type UserRole } from "@prisma/client";
 import type { Env } from "../config/env.js";
 import { prisma } from "../lib/prisma.js";
-import { renderContract } from "../contract-renderer/render-contract.js";
+import { renderContractArtifacts } from "../contract-renderer/render-contract.js";
 import { asyncHandler } from "../util/async-handler.js";
 import { requireRoles } from "../middleware/auth.js";
 import {
@@ -186,7 +186,7 @@ export function registerTransactionAuthorityRoutes(r: Router, _env: Env): void {
         res.status(404).json({ code: "NO_GOVERNING_RECORD", message: "No governing record for this deal yet (lock the deal first)." });
         return;
       }
-      const out = await renderContract({
+      const out = await renderContractArtifacts({
         governingRecordId: gr.id,
         orgId,
         mode: body.mode,

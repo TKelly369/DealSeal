@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState, useCallback } from "react";
+import { ActionButton } from "@/components/ActionButton";
+import { PageHeader } from "@/components/PageHeader";
+import { StatCard } from "@/components/StatCard";
 import { api } from "@/lib/api-client";
 
 type Summary = {
@@ -29,14 +31,12 @@ export default function DashboardPage() {
   }, [load]);
 
   return (
-    <div>
-      <header style={{ marginBottom: "1.5rem" }}>
-        <h1 style={{ fontSize: "1.5rem", margin: "0 0 0.35rem" }}>Operations dashboard</h1>
-        <p style={{ color: "var(--muted)", margin: 0, fontSize: 15, maxWidth: 62 * 8 }}>
-          Sealed deal metrics, usage, and shortcuts to certified outputs, convenience copies, and audit review. Governing
-          record actions run in Transaction workspace and connected APIs.
-        </p>
-      </header>
+    <div className="ds-stack">
+      <PageHeader
+        kicker="Dashboard"
+        title="Enterprise operations command center"
+        subtitle="Monitor authoritative records, certified rendering custody, and verification endpoint demand across your institution."
+      />
 
       {err && (
         <div className="card" style={{ borderColor: "var(--danger)", marginBottom: "1rem" }}>
@@ -45,19 +45,21 @@ export default function DashboardPage() {
       )}
 
       {data && (
-        <section className="row" style={{ marginBottom: "1.25rem" }}>
-          <div className="card" style={{ flex: "1 1 200px" }}>
-            <h3 style={{ fontSize: 14, color: "var(--muted)", margin: "0 0 0.5rem" }}>Sealed / late pipeline</h3>
-            <p style={{ fontSize: 28, fontWeight: 700, margin: 0, color: "var(--text)" }}>{data.sealedDeals}</p>
-            <p style={{ color: "var(--muted)", fontSize: 12, marginTop: 6 }}>Org deals in sealed or later states</p>
-          </div>
-          <div className="card" style={{ flex: "1 1 200px" }}>
-            <h3 style={{ fontSize: 14, color: "var(--muted)", margin: "0 0 0.5rem" }}>Usage (USD, all time)</h3>
-            <p style={{ fontSize: 28, fontWeight: 700, margin: 0 }}>{data.usageTotalUsd}</p>
-            <p style={{ color: "var(--muted)", fontSize: 12, marginTop: 6 }}>From usage events</p>
-          </div>
-          <div className="card" style={{ flex: "1 1 220px" }}>
-            <h3 style={{ fontSize: 14, color: "var(--muted)", margin: "0 0 0.5rem" }}>By state</h3>
+        <section className="ds-grid ds-grid--three">
+          <StatCard
+            title="Authoritative Governing Records"
+            value={String(data.sealedDeals)}
+            description="Deals in sealed-or-later custody state."
+            tone="default"
+          />
+          <StatCard
+            title="Certified Rendering Throughput"
+            value={`$${data.usageTotalUsd}`}
+            description="Institutional rendering usage (USD, all time)."
+            tone="success"
+          />
+          <div className="card">
+            <p className="ds-card-title">State distribution</p>
             <ul style={{ color: "var(--text-secondary)", fontSize: 13, paddingLeft: "1.1rem", margin: 0 }}>
               {data.transactionsByState.map((r) => (
                 <li key={r.state}>
@@ -69,58 +71,70 @@ export default function DashboardPage() {
         </section>
       )}
 
-      <section className="row" style={{ marginBottom: "1.25rem" }}>
-        <div className="card" style={{ flex: "1 1 280px" }}>
-          <p className="ds-card-title">Certified output</p>
-          <p style={{ color: "var(--text-secondary)", fontSize: 14, margin: "0 0 0.75rem" }}>
-            Generate certified PDF and image renderings (single base contract, certification overlay) from a locked
-            governing record in workspace flows.
+      <section className="ds-grid ds-grid--three">
+        <div className="card">
+          <p className="ds-card-title">System Custody</p>
+          <h3>Authoritative Governing Record control</h3>
+          <p style={{ color: "var(--text-secondary)", fontSize: 14, margin: "0 0 0.85rem" }}>
+            Maintain deterministic control of locked governing records and downstream certified rendering issuance.
           </p>
-          <Link className="btn" href="/workspace">
-            Open transaction workspace
-          </Link>
+          <ActionButton href="/workspace">Open Deals Workspace</ActionButton>
         </div>
-        <div className="card" style={{ flex: "1 1 280px", borderColor: "color-mix(in srgb, var(--warn-convenience) 35%, var(--border))" }}>
+        <div className="card">
+          <p className="ds-card-title">Verification Endpoint</p>
+          <h3>Public verification workflows</h3>
+          <p style={{ color: "var(--text-secondary)", fontSize: 14, margin: "0 0 0.85rem" }}>
+            Expose status and chain-of-custody metadata without disclosing raw contract payloads.
+          </p>
+          <ActionButton href="/verify/test" variant="secondary">
+            Open Verification Endpoint
+          </ActionButton>
+        </div>
+        <div className="card">
           <p className="ds-card-title" style={{ color: "var(--warn-convenience)" }}>
-            Convenience copy
+            Non-Authoritative Copy
           </p>
-          <p style={{ color: "var(--text-secondary)", fontSize: 14, margin: "0 0 0.75rem" }}>
-            Non-authoritative copies for reading and handoff. Clearly labeled; not a seal.
+          <h3>Operational copy handling</h3>
+          <p style={{ color: "var(--text-secondary)", fontSize: 14, margin: "0 0 0.85rem" }}>
+            Generate marked non-authoritative copies for review while preserving authoritative record primacy.
           </p>
-          <Link className="btn btn-secondary" href="/workspace">
-            Go to deals
-          </Link>
-        </div>
-        <div className="card" style={{ flex: "1 1 280px" }}>
-          <p className="ds-card-title">Verification</p>
-          <p style={{ color: "var(--text-secondary)", fontSize: 14, margin: "0 0 0.75rem" }}>
-            Public status by governing record ID: hashes, version, and rendering history—no raw contract JSON.
-          </p>
-          <Link className="btn btn-secondary" href="/verify/test">
-            Open test verify page
-          </Link>
+          <ActionButton href="/documents" variant="secondary">
+            Open Document Console
+          </ActionButton>
         </div>
       </section>
 
-      <section className="row">
-        <div className="card" style={{ flex: "1 1 300px" }}>
-          <h3 style={{ fontSize: 16, margin: "0 0 0.5rem" }}>Audit trail</h3>
-          <p style={{ color: "var(--muted)", fontSize: 14, margin: "0 0 0.75rem" }}>Immutability-stamped events and org-scoped review.</p>
-          <Link className="btn btn-secondary" href="/audit">
-            View audit timeline
-          </Link>
+      <section className="card">
+        <p className="ds-card-title">Quick actions</p>
+        <div className="row">
+          <ActionButton href="/workspace">Create Deal</ActionButton>
+          <ActionButton href="/verify/test" variant="secondary">
+            Verify Record
+          </ActionButton>
+          <ActionButton href="/documents" variant="ghost">
+            Download Certified Rendering
+          </ActionButton>
         </div>
-        <div className="card" style={{ flex: "1 1 300px" }}>
-          <h3 style={{ fontSize: 16, margin: "0 0 0.5rem" }}>Documents & packages</h3>
-          <p style={{ color: "var(--muted)", fontSize: 14, margin: "0 0 0.75rem" }}>Packages and document panels for operational follow-through.</p>
-          <div className="row" style={{ gap: "0.5rem" }}>
-            <Link className="btn btn-secondary" href="/documents">
-              Documents
-            </Link>
-            <Link className="btn btn-secondary" href="/packages">
-              Packages
-            </Link>
-          </div>
+      </section>
+
+      <section className="ds-grid ds-grid--two">
+        <div className="card">
+          <h3 style={{ marginTop: 0 }}>Audit Integrity</h3>
+          <p style={{ color: "var(--muted)", fontSize: 14, margin: "0 0 0.75rem" }}>
+            Immutability-stamped events and enterprise trail review for regulatory and investor-grade reporting.
+          </p>
+          <ActionButton href="/audit" variant="secondary">
+            View Audit Trail
+          </ActionButton>
+        </div>
+        <div className="card">
+          <h3 style={{ marginTop: 0 }}>Document governance</h3>
+          <p style={{ color: "var(--muted)", fontSize: 14, margin: "0 0 0.75rem" }}>
+            Centralized access to package composition, certified renderings, and transaction-linked document sets.
+          </p>
+          <ActionButton href="/packages" variant="secondary">
+            Manage Documents
+          </ActionButton>
         </div>
       </section>
     </div>

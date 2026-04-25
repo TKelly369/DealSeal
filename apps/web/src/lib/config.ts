@@ -12,6 +12,10 @@ export function getServerApiBaseUrl(): string {
   ).replace(/\/$/, "");
 }
 
+export function getPublicApiBaseUrl(): string {
+  return (process.env.NEXT_PUBLIC_API_URL?.trim() || "http://localhost:4000").replace(/\/$/, "");
+}
+
 export function getPublicAppOrigin(): string {
   return (process.env.NEXT_PUBLIC_APP_URL?.trim() || "http://localhost:3000").replace(/\/$/, "");
 }

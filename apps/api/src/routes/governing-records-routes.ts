@@ -5,17 +5,15 @@ import { createAuthMiddleware, requireRoles } from "../middleware/auth.js";
 import { asyncHandler } from "../util/async-handler.js";
 import { RenderingMode } from "@prisma/client";
 import { prisma } from "../lib/prisma.js";
-import { renderContract } from "../contract-renderer/render-contract.js";
+import { renderContractArtifacts } from "../contract-renderer/render-contract.js";
 import { GoverningAuditEventKind, appendGoverningRecordAudit } from "../services/governing-record-audit.js";
 
 const renderBody = z.object({
   mode: z.nativeEnum(RenderingMode),
-  imageFormat: z.enum(["png", "jpeg"]).optional(),
 });
 
 const downloadPostBody = z.object({
   mode: z.nativeEnum(RenderingMode),
-  imageFormat: z.enum(["png", "jpeg"]).optional(),
 });
 
 function filePrefix(mode: RenderingMode): "certified" | "convenience" {
@@ -58,12 +56,11 @@ export function createGoverningRecordsRouter(env: Env) {
       const orgId = req.auth!.orgId;
       const id = z.string().uuid().parse(req.params.id);
       const body = renderBody.parse(req.body);
-      const out = await renderContract({
+      const out = await renderContractArtifacts({
         governingRecordId: id,
         orgId,
         mode: body.mode,
         requestedBy: req.auth!.sub,
-        imageFormat: body.imageFormat,
       });
       res.json(out);
     }),
@@ -76,12 +73,11 @@ export function createGoverningRecordsRouter(env: Env) {
       const orgId = req.auth!.orgId;
       const id = z.string().uuid().parse(req.params.id);
       const body = downloadPostBody.parse(req.body);
-      const rendered = await renderContract({
+      const rendered = await renderContractArtifacts({
         governingRecordId: id,
         orgId,
         mode: body.mode,
         requestedBy: req.auth!.sub,
-        imageFormat: body.imageFormat,
       });
       const pdfBuffer = Buffer.from(rendered.pdfBase64, "base64");
       const filename = `DealScan-${filePrefix(body.mode)}-${rendered.publicRef}-v${rendered.recordVersion}.pdf`;
@@ -90,7 +86,7 @@ export function createGoverningRecordsRouter(env: Env) {
       res.setHeader("X-Rendering-Event-Id", rendered.renderingEventId);
       res.setHeader("X-Rendering-Hash", rendered.renderingHashSha256);
       res.setHeader("X-Record-Hash", rendered.recordHashAtRender);
-      res.setHeader("X-Image-Hash", rendered.imageHashSha256);
+      res.setHeader("X-Image-Hash", rendered.imageHashSha256 ?? "");
       res.send(pdfBuffer);
     }),
   );
@@ -102,20 +98,17 @@ export function createGoverningRecordsRouter(env: Env) {
       const orgId = req.auth!.orgId;
       const id = z.string().uuid().parse(req.params.id);
       const body = downloadPostBody.parse(req.body);
-      const rendered = await renderContract({
+      const rendered = await renderContractArtifacts({
         governingRecordId: id,
         orgId,
         mode: body.mode,
         requestedBy: req.auth!.sub,
-        imageFormat: body.imageFormat ?? "png",
       });
-      const imageBuffer = Buffer.from(rendered.imageBase64, "base64");
-      const ext = rendered.imageOutputFormat === "JPEG" ? "jpg" : "png";
-      const filename = `DealScan-${filePrefix(body.mode)}-${rendered.publicRef}-v${rendered.recordVersion}.${ext}`;
-      res.setHeader("Content-Type", rendered.imageMimeType);
+      const imageBuffer = Buffer.from(rendered.pdfBase64, "base64");
+      const filename = `DealScan-${filePrefix(body.mode)}-${rendered.publicRef}-v${rendered.recordVersion}.pdf`;
+      res.setHeader("Content-Type", "application/pdf");
       res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
       res.setHeader("X-Rendering-Event-Id", rendered.renderingEventId);
-      res.setHeader("X-Image-Hash", rendered.imageHashSha256);
       res.setHeader("X-Rendering-Hash", rendered.renderingHashSha256);
       res.setHeader("X-Record-Hash", rendered.recordHashAtRender);
       res.send(imageBuffer);

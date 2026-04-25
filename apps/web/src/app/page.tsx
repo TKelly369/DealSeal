@@ -1,41 +1,52 @@
-"use client";
+import Link from "next/link";
+import { Card } from "@/components/ui/Card";
+import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
+import { demoRecords } from "@/lib/demo-records";
 
-import { useState } from "react";
-
-export default function LoginContent() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Logging in with: ${email}`);
-  };
-
+export default function Home() {
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Login</h1>
+    <div className="ds-dashboard">
+      <Section
+        title="DealSeal"
+        subtitle="Authoritative Contract Infrastructure"
+      >
+        <Card className="ds-card-panel">
+          <p className="ds-card-panel__title">Control Center</p>
+          <p className="ds-card-panel__body">
+            Governing records, certified rendering generation, and verification
+            workflows from a single authority dashboard.
+          </p>
+        </Card>
+      </Section>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+      <Section
+        title="Recent Governing Records"
+        subtitle="Demo record available for the production verification flow."
+      >
+        <div className="ds-dashboard-grid ds-dashboard-grid--two">
+          {demoRecords.map((record) => (
+            <Card key={record.id} className="ds-card-panel">
+              <p className="ds-card-panel__title">{record.id}</p>
+              <p className="ds-card-panel__body">Deal ID: {record.dealId}</p>
+              <p className="ds-card-panel__body">Version: {record.version}</p>
+              <p className="ds-card-panel__body">Status: {record.status}</p>
+              <p className="ds-card-panel__body">
+                Hash: <span className="ds-table__mono">{record.hash.slice(0, 16)}...</span>
+              </p>
+              <div className="ds-table__actions">
+                <Button href={`/records/${record.id}`}>Open Record</Button>
+                <Link
+                  href={`/verify/${record.id}?hash=${encodeURIComponent(record.hash)}`}
+                  className="ds-ui-button ds-ui-button--secondary"
+                >
+                  Verify
+                </Link>
+              </div>
+            </Card>
+          ))}
         </div>
-
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <button type="submit">Login</button>
-      </form>
+      </Section>
     </div>
   );
 }
