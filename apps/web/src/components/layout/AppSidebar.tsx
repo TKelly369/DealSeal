@@ -31,6 +31,7 @@ export function AppSidebar() {
       <nav className="app-sidebar__nav">
         {navItems.map((item) => (
           <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined}>
+            <span className="app-sidebar__icon" aria-hidden />
             {item.label}
           </Link>
         ))}

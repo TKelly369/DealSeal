@@ -37,6 +37,12 @@ export function AppHeader({ title, subtitle, onSignOut }: AppHeaderProps) {
             DS
           </div>
           <span className="ds-account-label">Account</span>
+          <button type="button" className="ds-account-dropdown" aria-label="Open account menu">
+            ▾
+          </button>
+          <Button href="/workspace" className="ds-header__new-deal">
+            New Deal
+          </Button>
           <Button variant="secondary" onClick={() => void handleSignOut()}>
             Sign out
           </Button>
