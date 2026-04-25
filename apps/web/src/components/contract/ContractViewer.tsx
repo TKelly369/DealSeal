@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 type ViewerMode = "BASE" | "CERTIFIED" | "NON_AUTHORITATIVE";
 
@@ -10,7 +10,6 @@ type ContractViewerProps = {
   version: number;
   contractData: Record<string, unknown>;
   timestamp?: string | null;
-  renderedHtml?: string | null;
   renderedMode?: Exclude<ViewerMode, "BASE"> | null;
   renderingHash?: string | null;
   verificationUrl?: string | null;
@@ -26,7 +25,7 @@ type ContractSections = {
 };
 
 const CERTIFICATION_TEXT =
-  "This document is a Certified Visual Rendering generated from the Authoritative Governing Record maintained in Deal-Scan. The authoritative record remains in system custody. This rendering is verifiable via Record ID and hash.";
+  "This document is a Certified Visual Rendering generated from the Authoritative Governing Record maintained in DealSeal. The authoritative record remains in system custody. This rendering is verifiable via Record ID and hash.";
 
 const NON_AUTHORITATIVE_TEXT =
   "This is a non-authoritative convenience copy. It does not independently establish control, ownership, or enforceability.";
@@ -387,7 +386,6 @@ export function ContractViewer({
   version,
   contractData,
   timestamp,
-  renderedHtml,
   renderedMode,
   renderingHash,
   verificationUrl,
@@ -395,20 +393,10 @@ export function ContractViewer({
   const [mode, setMode] = useState<ViewerMode>(renderedMode ?? "BASE");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (renderedMode) {
-      setMode(renderedMode);
-      setLoading(true);
-    }
-  }, [renderedMode]);
-
   const sections = useMemo(() => extractSections(contractData), [contractData]);
   const issuedAt = timestamp ?? new Date().toISOString();
   const srcDoc = useMemo(
     () => {
-      if (renderedHtml && renderedMode && mode === renderedMode) {
-        return renderedHtml;
-      }
       return buildPaperHtml({
         mode,
         recordId,
@@ -420,7 +408,7 @@ export function ContractViewer({
         sections,
       });
     },
-    [mode, recordId, recordHash, version, issuedAt, renderingHash, verificationUrl, sections, renderedHtml, renderedMode],
+    [mode, recordId, recordHash, version, issuedAt, renderingHash, verificationUrl, sections],
   );
 
   return (
@@ -462,7 +450,7 @@ export function ContractViewer({
           </button>
         </div>
       </div>
-      {renderedHtml && renderedMode && mode === renderedMode ? (
+      {renderedMode && mode === renderedMode ? (
         <div className="contract-viewer__result-meta">
           <p>
             Rendering hash: <span className="ds-table__mono">{renderingHash ?? "—"}</span>

@@ -1,4 +1,7 @@
 {
+  "version": 2,
   "framework": "nextjs",
-  "rootDirectory": "apps/web"
+  "buildCommand": "npm run build -w @dealseal/web",
+  "installCommand": "npm install",
+  "outputDirectory": "apps/web/.next"
 }

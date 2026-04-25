@@ -2,9 +2,8 @@ import { getServerApiBaseUrl } from "./config";
 import {
   DEMO_GOVERNING_RECORD,
   DEMO_GOVERNING_RECORD_ROW,
-  getDemoRecordById,
+  getDemoRecord,
   type DemoGoverningRecord,
-  type DemoGoverningRecordRow,
 } from "./demo-records";
 
 export type DashboardMetrics = {
@@ -103,7 +102,7 @@ function mapDemoRecordToDetails(record: DemoGoverningRecord): RecordDetails {
 }
 
 export async function getRecord(recordId: string): Promise<RecordDetails> {
-  const demoRecord = getDemoRecordById(recordId);
+  const demoRecord = getDemoRecord(recordId);
   if (demoRecord) {
     return mapDemoRecordToDetails(demoRecord);
   }
@@ -125,7 +124,7 @@ export type VerifyRecordResponse = {
 };
 
 export async function verifyRecord(recordId: string): Promise<VerifyRecordResponse> {
-  const demo = getDemoRecordById(recordId) ?? DEMO_GOVERNING_RECORD;
+  const demo = getDemoRecord(recordId) ?? DEMO_GOVERNING_RECORD;
   if (recordId === demo.id) {
     return {
       valid: true,
@@ -158,9 +157,7 @@ export type RenderContractResponse = {
   recordHash: string;
   renderingHash: string;
   verificationUrl: string;
-  html: string;
-  pdfBase64?: string;
-  mode: RenderMode;
+  renderedAt: string;
 };
 
 async function sha256Hex(input: string): Promise<string> {
@@ -169,35 +166,6 @@ async function sha256Hex(input: string): Promise<string> {
   return Array.from(new Uint8Array(digest))
     .map((byte) => byte.toString(16).padStart(2, "0"))
     .join("");
-}
-
-function buildDemoContractHtml(record: DemoGoverningRecord): string {
-  const vehicle = `${record.contractData.vehicle.year} ${record.contractData.vehicle.make} ${record.contractData.vehicle.model}`;
-  return `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <style>
-      body { margin: 0; background: #f1f2f4; font-family: Inter, Arial, sans-serif; color: #101828; padding: 20px 0; }
-      .paper { max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid #d0d5dd; border-radius: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.18); padding: 30px 34px; }
-      h1 { margin: 0; font-size: 28px; }
-      p { margin: 10px 0 0; line-height: 1.5; }
-      .meta { margin-top: 18px; border-top: 1px solid #e4e7ec; padding-top: 12px; font-size: 12px; color: #344054; }
-    </style>
-  </head>
-  <body>
-    <article class="paper">
-      <h1>Authoritative Contract Instrument</h1>
-      <p><strong>Buyer:</strong> ${record.contractData.buyer.legalName}</p>
-      <p><strong>Dealer:</strong> ${record.contractData.dealer.name}</p>
-      <p><strong>Vehicle:</strong> ${vehicle} (VIN ${record.contractData.vehicle.vin})</p>
-      <p><strong>Amount Financed:</strong> $${record.contractData.financials.amountFinanced}</p>
-      <p><strong>Terms:</strong> ${record.contractData.terms}</p>
-      <p><strong>Signature Summary:</strong> ${record.contractData.signatureSummary}</p>
-      <p class="meta">Record ID ${record.id} · Version ${record.version} · Record Hash ${record.hash}</p>
-    </article>
-  </body>
-</html>`;
 }
 
 export async function renderContract(
@@ -220,9 +188,8 @@ export async function renderContract(
   }
 
   // Deterministic demo fallback for live walk-through reliability.
-  const demo = getDemoRecordById(recordId) ?? DEMO_GOVERNING_RECORD;
-  const html = buildDemoContractHtml(demo);
-  const renderingHash = await sha256Hex(`${demo.id}:${mode}:${html}`);
+  const demo = getDemoRecord(recordId) ?? DEMO_GOVERNING_RECORD;
+  const renderingHash = await sha256Hex(`${demo.id}:${mode}:${demo.hash}:${demo.version}`);
   const verificationUrl = `https://dealseal1.com/verify/${encodeURIComponent(demo.id)}?hash=${encodeURIComponent(demo.hash)}&renderingHash=${encodeURIComponent(renderingHash)}`;
 
   return {
@@ -231,8 +198,7 @@ export async function renderContract(
     recordHash: demo.hash,
     renderingHash,
     verificationUrl,
-    html,
-    mode,
+    renderedAt: new Date().toISOString(),
   };
 }
 

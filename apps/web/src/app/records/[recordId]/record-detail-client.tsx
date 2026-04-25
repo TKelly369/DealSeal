@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/Button";
 
 type RenderedState = {
   mode: "CERTIFIED";
-  html: string;
+  renderedAt: string;
   renderingHash: string;
   verificationUrl: string;
+  recordHash: string;
 };
 
 type RecordDetailClientProps = {
@@ -54,9 +55,8 @@ export function RecordDetailClient({
           recordId={recordId}
           recordHash={recordHash}
           version={version}
-          timestamp={timestamp}
+          timestamp={rendered?.renderedAt ?? timestamp}
           contractData={contractData}
-          renderedHtml={rendered?.html ?? null}
           renderedMode={rendered?.mode ?? null}
           renderingHash={rendered?.renderingHash ?? null}
           verificationUrl={rendered?.verificationUrl ?? null}
@@ -102,9 +102,10 @@ export function RecordDetailClient({
           onRendered={(payload) =>
             setRendered({
               mode: "CERTIFIED",
-              html: payload.html,
+              renderedAt: payload.renderedAt,
               renderingHash: payload.renderingHash,
               verificationUrl: payload.verificationUrl,
+              recordHash: payload.recordHash,
             })
           }
         />

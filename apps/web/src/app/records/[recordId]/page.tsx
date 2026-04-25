@@ -1,6 +1,6 @@
-import { Card } from "@/components/ui/Card";
+import { notFound } from "next/navigation";
 import { Section } from "@/components/ui/Section";
-import { getRecord } from "@/lib/api";
+import { getDemoRecord } from "@/lib/demo-records";
 import { RecordDetailClient } from "./record-detail-client";
 
 function formatDate(value: string | null): string {
@@ -22,27 +22,9 @@ export default async function RecordDetailPage({
   params: Promise<{ recordId: string }>;
 }) {
   const { recordId } = await params;
-  let record;
-  try {
-    record = await getRecord(recordId);
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "The record service is unavailable.";
-    return (
-      <div className="ds-dashboard">
-        <Section
-          title="Contract Record Detail"
-          subtitle="Authoritative governing record content and rendering controls."
-        >
-          <Card className="ds-card-panel">
-            <p className="ds-card-panel__title">Record unavailable</p>
-            <p className="ds-card-panel__body">
-              {message}
-            </p>
-          </Card>
-        </Section>
-      </div>
-    );
+  const record = getDemoRecord(recordId);
+  if (!record) {
+    notFound();
   }
 
   return (

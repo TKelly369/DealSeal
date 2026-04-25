@@ -9,7 +9,8 @@ type CertifiedRenderingActionsProps = {
   recordId: string;
   recordHash: string;
   onRendered: (payload: {
-    html: string;
+    renderedAt: string;
+    recordHash: string;
     renderingHash: string;
     verificationUrl: string;
   }) => void;
@@ -34,7 +35,8 @@ export function CertifiedRenderingActions({
       setRenderingHash(response.renderingHash);
       setVerificationUrl(response.verificationUrl);
       onRendered({
-        html: response.html,
+        renderedAt: response.renderedAt,
+        recordHash: response.recordHash,
         renderingHash: response.renderingHash,
         verificationUrl: response.verificationUrl,
       });

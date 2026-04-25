@@ -43,6 +43,16 @@ export type DemoGoverningRecord = {
   contractData: DemoContractData;
 };
 
+export type DemoGoverningRecordRow = {
+  id: string;
+  dealId: string;
+  version: number;
+  status: string;
+  hash: string;
+  createdAt: string;
+  lockedAt: string;
+};
+
 const demoContractData: DemoContractData = {
   buyer: {
     legalName: "Jordan Rivera",
@@ -119,17 +129,6 @@ export const DEMO_GOVERNING_RECORDS: DemoGoverningRecord[] = [
     hash: demoRecordHash,
   },
 ];
-
-export type DemoGoverningRecordRow = {
-  id: string;
-  dealId: string;
-  version: number;
-  status: string;
-  hash: string;
-  createdAt: string;
-  lockedAt: string;
-};
-
 export const DEMO_GOVERNING_RECORD: DemoGoverningRecord = DEMO_GOVERNING_RECORDS[0];
 
 export const DEMO_GOVERNING_RECORD_ROW: DemoGoverningRecordRow = {
@@ -144,4 +143,10 @@ export const DEMO_GOVERNING_RECORD_ROW: DemoGoverningRecordRow = {
 
 export function getDemoRecordById(recordId: string): DemoGoverningRecord | null {
   return DEMO_GOVERNING_RECORDS.find((record) => record.id === recordId) ?? null;
+}
+
+export const demoRecords: DemoGoverningRecord[] = DEMO_GOVERNING_RECORDS;
+
+export function getDemoRecord(recordId: string): DemoGoverningRecord | null {
+  return getDemoRecordById(recordId);
 }

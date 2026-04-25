@@ -1,27 +1,5 @@
 import Link from "next/link";
-import { verifyRecord } from "@/lib/api";
-
-type VerifyResponse = {
-  valid: boolean;
-  hashMatch: boolean;
-  version: number;
-  timestamp: string;
-  recordId?: string;
-  recordHash?: string;
-};
-
-async function fetchVerify(recordId: string): Promise<VerifyResponse> {
-  try {
-    return (await verifyRecord(recordId)) as VerifyResponse;
-  } catch {
-    return {
-      valid: false,
-      hashMatch: false,
-      version: 0,
-      timestamp: new Date(0).toISOString(),
-    };
-  }
-}
+import { getDemoRecord } from "@/lib/demo-records";
 
 function VerificationBadge({ valid }: { valid: boolean }) {
   return <span className={valid ? "ds-badge-verified" : "ds-badge-invalid"}>{valid ? "VALID" : "INVALID"}</span>;
@@ -36,11 +14,13 @@ export default async function VerifyPage({ params, searchParams }: VerifyPagePro
   const { recordId: raw } = await params;
   const { hash: suppliedHash, renderingHash } = await searchParams;
   const recordId = decodeURIComponent(raw);
-
-  const data = await fetchVerify(recordId);
-  const resolvedRecordId = data.recordId ?? recordId;
-  const hashMatch = suppliedHash ? suppliedHash === data.recordHash : data.hashMatch;
-  const valid = Boolean(data.valid && hashMatch && renderingHash);
+  const record = getDemoRecord(recordId);
+  const resolvedRecordId = record?.id ?? recordId;
+  const hashMatch = Boolean(record && suppliedHash && suppliedHash === record.hash);
+  const valid = Boolean(record && hashMatch && renderingHash);
+  const timestamp = record?.lockedAt ?? new Date().toISOString();
+  const version = record?.version ?? 0;
+  const displayHash = record?.hash ?? suppliedHash ?? "";
 
   return (
     <div className="ds-dashboard">
@@ -57,7 +37,7 @@ export default async function VerifyPage({ params, searchParams }: VerifyPagePro
         <div className="ds-verify-status-grid">
           <div className="ds-verify-status-item">
             <p className="ds-verify-status-item__label">Record exists</p>
-            <p className="ds-verify-status-item__value">{data.recordId ? "Confirmed" : "Not found"}</p>
+            <p className="ds-verify-status-item__value">{record ? "Confirmed" : "Not found"}</p>
           </div>
           <div className="ds-verify-status-item">
             <p className="ds-verify-status-item__label">Hash match confirmed</p>
@@ -69,7 +49,7 @@ export default async function VerifyPage({ params, searchParams }: VerifyPagePro
           </div>
           <div className="ds-verify-status-item">
             <p className="ds-verify-status-item__label">System custody confirmed</p>
-            <p className="ds-verify-status-item__value">{data.valid ? "Yes" : "No"}</p>
+            <p className="ds-verify-status-item__value">{record ? "Yes" : "No"}</p>
           </div>
           <div className="ds-verify-status-item">
             <p className="ds-verify-status-item__label">Record ID</p>
@@ -77,11 +57,11 @@ export default async function VerifyPage({ params, searchParams }: VerifyPagePro
           </div>
           <div className="ds-verify-status-item">
             <p className="ds-verify-status-item__label">Version</p>
-            <p className="ds-verify-status-item__value">{data.version}</p>
+            <p className="ds-verify-status-item__value">{version}</p>
           </div>
           <div className="ds-verify-status-item">
             <p className="ds-verify-status-item__label">Timestamp</p>
-            <p className="ds-verify-status-item__value">{new Date(data.timestamp).toLocaleString()}</p>
+            <p className="ds-verify-status-item__value">{new Date(timestamp).toLocaleString()}</p>
           </div>
           <div className="ds-verify-status-item">
             <p className="ds-verify-status-item__label">Rendering Hash</p>
@@ -94,7 +74,7 @@ export default async function VerifyPage({ params, searchParams }: VerifyPagePro
           <p className="ds-card-panel__body">
             <a
               href={`https://dealseal1.com/verify/${encodeURIComponent(resolvedRecordId)}?hash=${encodeURIComponent(
-                data.recordHash ?? "",
+                displayHash,
               )}&renderingHash=${encodeURIComponent(renderingHash ?? "")}`}
               target="_blank"
               rel="noreferrer"

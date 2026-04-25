@@ -15,23 +15,6 @@ type RecordRenderActionsProps = {
 
 type RenderMode = "CERTIFIED" | "NON_AUTHORITATIVE";
 
-function triggerDownload(pdfBase64: string, filename: string): void {
-  const binary = atob(pdfBase64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i += 1) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  const blob = new Blob([bytes], { type: "application/pdf" });
-  const objectUrl = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = objectUrl;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(objectUrl);
-}
-
 export function RecordRenderActions({
   recordId,
   className,
@@ -65,10 +48,7 @@ export function RecordRenderActions({
       const output = await renderContract(recordId, mode, token);
       setLatestRenderingHash(output.renderingHash);
       setLatestGeneratedAt(new Date().toISOString());
-      if (output.pdfBase64) {
-        const filename = `DealScan-${mode.toLowerCase()}-${recordId}.pdf`;
-        triggerDownload(output.pdfBase64, filename);
-      }
+      // Legacy download behavior is disabled in the demo route flow.
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unable to generate rendering.");
     } finally {
