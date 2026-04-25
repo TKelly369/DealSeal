@@ -91,7 +91,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const header = getHeaderCopy(path);
 
   return (
-    <div className="layout">
+    <div className="ds-shell">
       <Sidebar
         nav={PRIMARY_NAV}
         activeHref={getActiveNav(path)}
@@ -110,7 +110,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </p>
         }
       />
-      <div className="ds-content-shell">
+      <div className="ds-shell__content">
         <Header
           title={header.title}
           subtitle={header.subtitle}

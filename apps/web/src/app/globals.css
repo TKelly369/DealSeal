@@ -1,32 +1,32 @@
 :root {
   color-scheme: dark;
-  /* Core surfaces — deep navy / charcoal (legal–fintech) */
-  --bg-deep: #060a10;
-  --bg: #0a101b;
-  --bg-mid: #0d1522;
-  --surface: #111a2a;
-  --surface-elevated: #151f32;
-  --surface-soft: #1a2640;
-  --border: #2a3d5c;
-  --border-bright: #3d5680;
-  /* Brand — blue + teal + gold (seal / trust) */
-  --primary: #3a7ec4;
-  --primary-mid: #2d6aa8;
-  --secondary: #2a9d8f;
-  --teal: #2a9d8f;
-  --accent: #3db8a4;
-  --brand-gold: #c9a232;
-  --brand-gold-dim: rgba(201, 162, 50, 0.12);
+  /* Core surfaces — DealSeal black / charcoal / metallic */
+  --bg-deep: #050505;
+  --bg: #0a0a0a;
+  --bg-mid: #111111;
+  --surface: #111111;
+  --surface-elevated: #181818;
+  --surface-soft: #1f1f1f;
+  --border: #2a2a2a;
+  --border-bright: #3a3a3a;
+  /* Brand — red / white / silver */
+  --primary: #d71920;
+  --primary-mid: #b5151b;
+  --secondary: #c0c0c0;
+  --teal: #c0c0c0;
+  --accent: #ffffff;
+  --brand-gold: #c0c0c0;
+  --brand-gold-dim: rgba(192, 192, 192, 0.14);
   /* Status */
-  --verified: #5eead4;
-  --ok: #34d399;
-  --warn-convenience: #e5b85c;
-  --warning-surface: rgba(229, 184, 92, 0.1);
-  --danger: #f87171;
+  --verified: #d71920;
+  --ok: #d71920;
+  --warn-convenience: #c0c0c0;
+  --warning-surface: rgba(192, 192, 192, 0.12);
+  --danger: #d71920;
   /* Text */
-  --text: #e8eef7;
-  --text-secondary: #b8c5d8;
-  --muted: #8a9ab0;
+  --text: #ffffff;
+  --text-secondary: #b8bcc2;
+  --muted: #8e939a;
   --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
   --font-heading: "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
   --radius: 12px;
@@ -48,8 +48,8 @@ body {
   margin: 0;
   background: var(--bg-deep);
   background-image:
-    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(58, 126, 196, 0.12), transparent 50%),
-    radial-gradient(ellipse 80% 50% at 100% 50%, rgba(42, 157, 143, 0.06), transparent 45%),
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(215, 25, 32, 0.16), transparent 52%),
+    radial-gradient(ellipse 90% 60% at 100% 40%, rgba(192, 192, 192, 0.06), transparent 48%),
     linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
   color: var(--text);
   min-height: 100vh;
@@ -63,14 +63,14 @@ body {
 }
 
 a {
-  color: var(--secondary);
+  color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
 }
 
 a:hover {
   text-decoration: underline;
-  color: var(--accent);
+  color: var(--text);
 }
 
 h1,
@@ -101,7 +101,7 @@ h3 {
 
 .sidebar {
   border-right: 1px solid var(--border);
-  background: linear-gradient(195deg, var(--surface) 0%, var(--bg-mid) 100%);
+  background: linear-gradient(180deg, #0d0d0d 0%, #131313 100%);
   padding: 1.25rem 1rem 1rem;
   box-shadow: var(--shadow-inset);
   display: flex;
@@ -133,9 +133,9 @@ h3 {
   margin-top: 0.65rem;
   padding: 0.25rem 0.55rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--brand-gold) 35%, var(--border));
-  background: color-mix(in srgb, var(--brand-gold) 10%, transparent);
-  color: var(--brand-gold);
+  border: 1px solid color-mix(in srgb, var(--secondary) 45%, var(--border));
+  background: color-mix(in srgb, var(--secondary) 12%, transparent);
+  color: var(--secondary);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -158,14 +158,14 @@ h3 {
 }
 
 .sidebar a:hover {
-  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
   text-decoration: none;
   color: var(--text);
 }
 
 .sidebar a[aria-current="page"] {
-  background: color-mix(in srgb, var(--primary) 28%, transparent);
-  border: 1px solid color-mix(in srgb, var(--primary) 50%, var(--border));
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 62%, var(--border));
   color: var(--text);
 }
 
@@ -175,7 +175,7 @@ h3 {
   z-index: 30;
   min-height: var(--header-height);
   border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  background: color-mix(in srgb, #0a0a0a 90%, transparent);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
@@ -196,6 +196,7 @@ h3 {
   margin: 0;
   font-size: 1.04rem;
   letter-spacing: 0.02em;
+  color: var(--text);
 }
 
 .ds-header__meta {
@@ -237,7 +238,7 @@ main,
 
 /* Cards & glass */
 .card {
-  background: linear-gradient(165deg, var(--surface-elevated) 0%, var(--surface) 100%);
+  background: linear-gradient(165deg, #1a1a1a 0%, #111111 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.25rem 1.4rem;
@@ -246,7 +247,7 @@ main,
 }
 
 .ds-glass {
-  background: linear-gradient(160deg, rgba(21, 31, 50, 0.92) 0%, rgba(17, 26, 42, 0.88) 100%);
+  background: linear-gradient(160deg, rgba(24, 24, 24, 0.94) 0%, rgba(15, 15, 15, 0.92) 100%);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -262,9 +263,9 @@ main,
 /* Buttons */
 button,
 .btn {
-  border: 1px solid color-mix(in srgb, var(--primary) 55%, var(--border));
-  background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 75%, #1a1a1a 25%), var(--primary-mid));
-  color: #f4f8ff;
+  border: 1px solid color-mix(in srgb, var(--primary) 66%, var(--border));
+  background: linear-gradient(180deg, #e3242d 0%, var(--primary-mid) 100%);
+  color: #ffffff;
   border-radius: var(--radius-sm);
   padding: 0.55rem 1rem;
   font-weight: 600;
@@ -287,19 +288,19 @@ button:disabled,
 
 button:hover,
 .btn:hover {
-  filter: brightness(1.08);
+  filter: brightness(1.06);
   text-decoration: none;
-  color: #f4f8ff;
+  color: #ffffff;
 }
 
 .btn-secondary {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--secondary) 80%, #0d0d0d 20%), #1f6b63);
-  border: 1px solid color-mix(in srgb, var(--secondary) 45%, var(--border));
-  color: #e8fffa;
+  background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%);
+  border: 1px solid color-mix(in srgb, var(--secondary) 52%, var(--border));
+  color: var(--text);
 }
 
 .btn-quiet {
-  background: color-mix(in srgb, var(--surface-elevated) 90%, transparent);
+  background: color-mix(in srgb, #202020 92%, transparent);
   border-color: var(--border);
   color: var(--text-secondary);
 }
@@ -309,9 +310,9 @@ button:hover,
 }
 
 .btn-gold {
-  background: linear-gradient(180deg, #d4b04a, #9a7a1e);
-  border: 1px solid color-mix(in srgb, var(--brand-gold) 50%, #333);
-  color: #0a0a0a;
+  background: linear-gradient(180deg, #d0d0d0, #969696);
+  border: 1px solid color-mix(in srgb, var(--secondary) 60%, #2d2d2d);
+  color: #111111;
   font-weight: 700;
 }
 
@@ -324,14 +325,14 @@ button:hover,
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--primary) 15%, var(--surface));
+  background: color-mix(in srgb, var(--primary) 18%, var(--surface));
   color: var(--text-secondary);
 }
 
 .ds-badge--verified {
-  background: color-mix(in srgb, var(--verified) 12%, var(--surface));
-  border-color: color-mix(in srgb, var(--verified) 40%, var(--border));
-  color: var(--verified);
+  background: color-mix(in srgb, var(--primary) 20%, var(--surface));
+  border-color: color-mix(in srgb, var(--primary) 65%, var(--border));
+  color: #ffd9da;
 }
 
 .ds-badge--warning {
@@ -366,7 +367,7 @@ button:hover,
   position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  background: color-mix(in srgb, #0a0a0a 92%, transparent);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
@@ -394,14 +395,14 @@ button:hover,
 }
 
 .ds-site-header__nav a:hover {
-  color: var(--accent);
+  color: var(--text);
 }
 
 /* Site footer */
 .ds-site-footer {
   margin-top: auto;
   border-top: 1px solid var(--border);
-  background: var(--bg-mid);
+  background: #101010;
   padding: 2rem 1rem 2.5rem;
 }
 
@@ -459,7 +460,7 @@ button:hover,
   line-height: 1.15;
   max-width: 18ch;
   margin: 0 auto 1rem;
-  background: linear-gradient(135deg, #fff 0%, #b8d4f0 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #b8bcc2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -499,7 +500,7 @@ button:hover,
   padding: 1.35rem 1.25rem;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: linear-gradient(165deg, var(--surface-elevated) 0%, var(--bg-mid) 100%);
+  background: linear-gradient(165deg, #1b1b1b 0%, #121212 100%);
   text-align: left;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -512,7 +513,7 @@ button:hover,
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary), var(--teal), var(--brand-gold));
+  background: linear-gradient(90deg, var(--primary), #c53a3f, var(--secondary));
   opacity: 0.75;
 }
 
@@ -562,8 +563,8 @@ button:hover,
   color: var(--muted);
   padding: 0.9rem 1rem;
   border-radius: var(--radius-sm);
-  border: 1px dashed var(--border-bright);
-  background: color-mix(in srgb, var(--primary) 6%, var(--surface));
+  border: 1px dashed #4a4a4a;
+  background: color-mix(in srgb, var(--primary) 10%, var(--surface));
   margin: 1.25rem 0;
   line-height: 1.5;
 }
@@ -610,7 +611,7 @@ button:hover,
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--brand-gold);
+  color: var(--secondary);
   margin: 0 0 0.75rem;
 }
 
@@ -628,7 +629,7 @@ button:hover,
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--brand-gold);
+  color: var(--secondary);
   font-weight: 700;
 }
 
@@ -713,23 +714,23 @@ button:hover,
 }
 
 .ds-stat-card--primary::after {
-  border-color: color-mix(in srgb, var(--primary) 45%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 55%, transparent);
 }
 
 .ds-stat-card--teal::after {
-  border-color: color-mix(in srgb, var(--teal) 45%, transparent);
+  border-color: color-mix(in srgb, var(--secondary) 42%, transparent);
 }
 
 .ds-stat-card--gold::after {
-  border-color: color-mix(in srgb, var(--brand-gold) 50%, transparent);
+  border-color: color-mix(in srgb, var(--secondary) 56%, transparent);
 }
 
 .ds-stat-card--neutral::after {
-  border-color: color-mix(in srgb, var(--border-bright) 45%, transparent);
+  border-color: color-mix(in srgb, #444444 45%, transparent);
 }
 
 .ds-stat-card--verification::after {
-  border-color: color-mix(in srgb, var(--teal) 55%, var(--border));
+  border-color: color-mix(in srgb, var(--primary) 65%, var(--border));
 }
 
 .ds-stat-card__label {
@@ -787,7 +788,7 @@ button:hover,
 
 .ds-kicker {
   margin: 0;
-  color: var(--brand-gold);
+  color: var(--secondary);
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -867,8 +868,8 @@ button:hover,
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(120% 110% at 10% -25%, rgba(58, 126, 196, 0.26), transparent 42%),
-    radial-gradient(90% 90% at 110% 20%, rgba(42, 157, 143, 0.16), transparent 40%);
+    radial-gradient(120% 110% at 10% -25%, rgba(215, 25, 32, 0.25), transparent 42%),
+    radial-gradient(90% 90% at 110% 20%, rgba(192, 192, 192, 0.1), transparent 40%);
   pointer-events: none;
 }
 
