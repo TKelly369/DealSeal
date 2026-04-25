@@ -9,19 +9,23 @@ const toneClass: Record<StatCardTone, string> = {
 };
 
 type StatCardProps = {
-  title: string;
+  title?: string;
+  label?: string;
   value: string | number;
+  description?: string;
   detail?: string;
   trend?: string;
   tone?: StatCardTone;
 };
 
-export function StatCard({ title, value, detail, trend, tone = "default" }: StatCardProps) {
+export function StatCard({ title, label, value, description, detail, trend, tone = "default" }: StatCardProps) {
+  const heading = title ?? label ?? "Metric";
+  const body = description ?? detail;
   return (
     <article className={`card ds-stat-card ${toneClass[tone]}`}>
-      <p className="ds-stat-card__label">{title}</p>
+      <p className="ds-stat-card__label">{heading}</p>
       <p className="ds-stat-card__value">{value}</p>
-      {detail ? <p className="ds-stat-card__description">{detail}</p> : null}
+      {body ? <p className="ds-stat-card__description">{body}</p> : null}
       {trend ? <p className="ds-stat-card__description">{trend}</p> : null}
     </article>
   );
