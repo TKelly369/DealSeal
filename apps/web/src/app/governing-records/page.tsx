@@ -1,43 +1,86 @@
-import { PageHeader } from "@/components/PageHeader";
-import { ActionButton } from "@/components/ActionButton";
-import { StatCard } from "@/components/StatCard";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Section } from "@/components/ui/Section";
+
+const rows = [
+  {
+    recordId: "GR-10291",
+    dealId: "DL-8841",
+    version: "v7",
+    status: "Locked",
+    hash: "9d1af2e9c0f47be8...",
+    lockedAt: "2026-04-22 13:48 UTC",
+  },
+  {
+    recordId: "GR-10308",
+    dealId: "DL-8875",
+    version: "v2",
+    status: "Locked",
+    hash: "ef9cbe8811d0ac70...",
+    lockedAt: "2026-04-23 09:16 UTC",
+  },
+  {
+    recordId: "GR-10341",
+    dealId: "DL-8920",
+    version: "v1",
+    status: "Draft",
+    hash: "pending",
+    lockedAt: "Pending lock",
+  },
+];
 
 export default function GoverningRecordsPage() {
   return (
-    <div className="ds-stack">
-      <PageHeader
-        kicker="Records"
-        title="Authoritative Governing Record Registry"
-        subtitle="System Custody tracks canonical contract state, append-only transitions, and enterprise signing lineage."
-        actions={
-          <>
-            <ActionButton href="/workspace">Open Deal Workspace</ActionButton>
-            <ActionButton href="/audit" variant="secondary">
-              Review Audit Integrity
-            </ActionButton>
-          </>
-        }
-      />
-      <section className="ds-stat-grid">
-        <StatCard
-          title="Active Governing Records"
-          value="248"
-          detail="Canonical records held under organizational custody and lifecycle controls."
-          tone="default"
-        />
-        <StatCard
-          title="Locked to System Custody"
-          value="232"
-          detail="Records preserved with immutable state lineage and policy enforcement."
-          tone="success"
-        />
-        <StatCard
-          title="Pending Compliance Review"
-          value="16"
-          detail="Records flagged for legal or servicing validation before certification."
-          tone="warning"
-        />
-      </section>
+    <div className="ds-dashboard">
+      <Section
+        title="Authoritative Governing Records"
+        subtitle="Canonical governing records under system custody with deterministic version lineage."
+      >
+        <Card>
+          <div className="ds-table-wrap">
+            <table className="ds-table" aria-label="Authoritative governing records">
+              <thead>
+                <tr>
+                  <th>Record ID</th>
+                  <th>Deal ID</th>
+                  <th>Version</th>
+                  <th>Status</th>
+                  <th>Hash</th>
+                  <th>Locked At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.recordId}>
+                    <td>{row.recordId}</td>
+                    <td>{row.dealId}</td>
+                    <td>{row.version}</td>
+                    <td>
+                      <span className={row.status === "Locked" ? "ds-status-pill ds-status-pill--locked" : "ds-status-pill ds-status-pill--review"}>
+                        {row.status}
+                      </span>
+                    </td>
+                    <td className="ds-cell-hash">{row.hash}</td>
+                    <td>{row.lockedAt}</td>
+                    <td>
+                      <div className="ds-table-actions">
+                        <Button href="/workspace" variant="secondary">
+                          View
+                        </Button>
+                        <Button href="/certified-renderings">Certified Rendering</Button>
+                        <Button href="/documents" variant="secondary">
+                          Copy
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      </Section>
     </div>
   );
 }

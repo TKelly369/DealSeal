@@ -5,17 +5,20 @@ import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
 
 const navItems = [
-  { href: "/", label: "Dashboard" },
-  { href: "/workspace", label: "Contracts" },
-  { href: "/packages", label: "Packages" },
-  { href: "/audit", label: "Audit Trail" },
-  { href: "/verification", label: "Verification" },
-  { href: "/settings", label: "Settings" },
+  { href: "/", label: "Dashboard", icon: "DB" },
+  { href: "/governing-records", label: "Governing Records", icon: "GR" },
+  { href: "/certified-renderings", label: "Certified Renderings", icon: "CR" },
+  { href: "/verification", label: "Verification", icon: "VF" },
+  { href: "/audit-trail", label: "Audit Trail", icon: "AT" },
+  { href: "/documents", label: "Documents", icon: "DC" },
+  { href: "/settings", label: "Settings", icon: "ST" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/" || pathname.startsWith("/dashboard");
-  if (href === "/workspace") return pathname.startsWith("/workspace");
+  if (href === "/governing-records") return pathname.startsWith("/governing-records");
+  if (href === "/certified-renderings") return pathname.startsWith("/certified-renderings");
+  if (href === "/audit-trail") return pathname.startsWith("/audit-trail") || pathname.startsWith("/audit");
   if (href === "/verification") return pathname.startsWith("/verification") || pathname.startsWith("/verify");
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -31,8 +34,10 @@ export function AppSidebar() {
       <nav className="app-sidebar__nav">
         {navItems.map((item) => (
           <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined}>
-            <span className="app-sidebar__icon" aria-hidden />
-            {item.label}
+            <span className="app-sidebar__icon" aria-hidden>
+              {item.icon}
+            </span>
+            <span className="app-sidebar__label">{item.label}</span>
           </Link>
         ))}
       </nav>

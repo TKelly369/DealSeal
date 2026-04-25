@@ -7,20 +7,22 @@ import { AppHeader } from "@/components/layout/AppHeader";
 
 export const PRIMARY_NAV = [
   { href: "/", label: "Dashboard" },
-  { href: "/workspace", label: "Contracts" },
-  { href: "/packages", label: "Packages" },
-  { href: "/audit", label: "Audit Trail" },
+  { href: "/governing-records", label: "Governing Records" },
+  { href: "/certified-renderings", label: "Certified Renderings" },
   { href: "/verification", label: "Verification" },
+  { href: "/audit-trail", label: "Audit Trail" },
+  { href: "/documents", label: "Documents" },
   { href: "/settings", label: "Settings" },
 ];
 
 const AUTH_PATHS = new Set(["/login", "/register"]);
 
 function getActiveNav(path: string): string {
-  if (path.startsWith("/workspace")) return "/workspace";
-  if (path.startsWith("/packages")) return "/packages";
+  if (path.startsWith("/governing-records")) return "/governing-records";
+  if (path.startsWith("/certified-renderings")) return "/certified-renderings";
   if (path.startsWith("/verification") || path.startsWith("/verify")) return "/verification";
-  if (path.startsWith("/audit")) return "/audit";
+  if (path.startsWith("/audit-trail") || path.startsWith("/audit")) return "/audit-trail";
+  if (path.startsWith("/documents")) return "/documents";
   if (path.startsWith("/settings")) return "/settings";
   if (path.startsWith("/dashboard")) return "/";
   if (path === "/") return "/";
@@ -28,16 +30,16 @@ function getActiveNav(path: string): string {
 }
 
 function getHeaderCopy(path: string): { title: string; subtitle: string } {
-  if (path.startsWith("/workspace") || path.startsWith("/deals")) {
+  if (path.startsWith("/governing-records")) {
     return {
-      title: "Contracts",
-      subtitle: "Authoritative contract control and execution operations.",
+      title: "Authoritative Governing Records",
+      subtitle: "Canonical contract records in custody with versioned integrity controls.",
     };
   }
-  if (path.startsWith("/packages")) {
+  if (path.startsWith("/certified-renderings")) {
     return {
-      title: "Packages",
-      subtitle: "Certified package assembly and delivery management.",
+      title: "Certified Visual Renderings",
+      subtitle: "Verifiable visual outputs derived from one authoritative governing record.",
     };
   }
   if (path.startsWith("/verification") || path.startsWith("/verify")) {
@@ -46,10 +48,16 @@ function getHeaderCopy(path: string): { title: string; subtitle: string } {
       subtitle: "External verification access for lenders and servicing teams.",
     };
   }
-  if (path.startsWith("/audit")) {
+  if (path.startsWith("/audit-trail") || path.startsWith("/audit")) {
     return {
       title: "Audit Integrity",
       subtitle: "Immutable event history and compliance-oriented review.",
+    };
+  }
+  if (path.startsWith("/documents")) {
+    return {
+      title: "Documents",
+      subtitle: "Manage rendered outputs, packages, and operational copy workflows.",
     };
   }
   if (path.startsWith("/settings")) {

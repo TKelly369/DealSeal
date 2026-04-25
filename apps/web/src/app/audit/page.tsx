@@ -1,10 +1,5 @@
-import { AuditExplorer } from "./AuditExplorer";
+import { redirect } from "next/navigation";
 
 export default function AuditPage() {
-  return (
-    <div>
-      <h1>Audit timeline</h1>
-      <AuditExplorer />
-    </div>
-  );
+  redirect("/audit-trail");
 }
