@@ -2,17 +2,15 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { logoutServerThenLocal } from "@/lib/auth-api";
-import { Sidebar } from "@/components/Sidebar";
-import { Header } from "@/components/Header";
+import { AppSidebar } from "@/components/layout/AppSidebar";
+import { AppHeader } from "@/components/layout/AppHeader";
 
 export const PRIMARY_NAV = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/workspace", label: "Deals" },
-  { href: "/governing-records", label: "Governing Records" },
-  { href: "/certified-renderings", label: "Certified Renderings" },
-  { href: "/verification", label: "Verification" },
+  { href: "/", label: "Dashboard" },
+  { href: "/workspace", label: "Contracts" },
+  { href: "/packages", label: "Packages" },
   { href: "/audit", label: "Audit Trail" },
-  { href: "/documents", label: "Documents" },
+  { href: "/verification", label: "Verification" },
   { href: "/settings", label: "Settings" },
 ];
 
@@ -20,34 +18,26 @@ const AUTH_PATHS = new Set(["/login", "/register"]);
 
 function getActiveNav(path: string): string {
   if (path.startsWith("/workspace")) return "/workspace";
+  if (path.startsWith("/packages")) return "/packages";
   if (path.startsWith("/verification") || path.startsWith("/verify")) return "/verification";
   if (path.startsWith("/audit")) return "/audit";
-  if (path.startsWith("/documents")) return "/documents";
-  if (path.startsWith("/dashboard")) return "/dashboard";
-  if (path.startsWith("/governing-records")) return "/governing-records";
-  if (path.startsWith("/certified-renderings")) return "/certified-renderings";
   if (path.startsWith("/settings")) return "/settings";
-  if (path.startsWith("/")) return "/dashboard";
+  if (path.startsWith("/dashboard")) return "/";
+  if (path === "/") return "/";
   return path;
 }
 
 function getHeaderCopy(path: string): { title: string; subtitle: string } {
-  if (path.startsWith("/workspace")) {
+  if (path.startsWith("/workspace") || path.startsWith("/deals")) {
     return {
-      title: "Deals Workspace",
-      subtitle: "Manage authoritative contract execution and custody workflows.",
+      title: "Contracts",
+      subtitle: "Authoritative contract control and execution operations.",
     };
   }
-  if (path.startsWith("/governing-records")) {
+  if (path.startsWith("/packages")) {
     return {
-      title: "Authoritative Governing Records",
-      subtitle: "Canonical records and lifecycle custody controls.",
-    };
-  }
-  if (path.startsWith("/certified-renderings")) {
-    return {
-      title: "Certified Renderings",
-      subtitle: "Enterprise certification output and distribution governance.",
+      title: "Packages",
+      subtitle: "Certified package assembly and delivery management.",
     };
   }
   if (path.startsWith("/verification") || path.startsWith("/verify")) {
@@ -60,12 +50,6 @@ function getHeaderCopy(path: string): { title: string; subtitle: string } {
     return {
       title: "Audit Integrity",
       subtitle: "Immutable event history and compliance-oriented review.",
-    };
-  }
-  if (path.startsWith("/documents")) {
-    return {
-      title: "Documents",
-      subtitle: "Certified outputs and non-authoritative copy management.",
     };
   }
   if (path.startsWith("/settings")) {
@@ -91,30 +75,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const header = getHeaderCopy(path);
 
   return (
-    <div className="ds-shell">
-      <Sidebar
-        nav={PRIMARY_NAV}
-        activeHref={getActiveNav(path)}
-        footerContent={
-          <p style={{ marginTop: "1.25rem", fontSize: 12 }}>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={async () => {
-                await logoutServerThenLocal();
-                router.replace("/login");
-              }}
-            >
-              Log out
-            </button>
-          </p>
-        }
-      />
-      <div className="ds-shell__content">
-        <Header
+    <div className="ds-enterprise-shell">
+      <AppSidebar />
+      <div className="ds-main-wrap">
+        <AppHeader
           title={header.title}
           subtitle={header.subtitle}
-          statusLabel="System Custody Active"
+          onSignOut={async () => {
+            await logoutServerThenLocal();
+            router.replace("/login");
+          }}
         />
         <main className="ds-main">{children}</main>
       </div>

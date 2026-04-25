@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="ds-body">
         <AppShell>{children}</AppShell>
       </body>
     </html>
