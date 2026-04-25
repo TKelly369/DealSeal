@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getToken } from "@/lib/session";
 
@@ -9,12 +9,12 @@ const PUBLIC_PATHS = new Set(["/", "/login", "/register"]);
 function isPublicPath(path: string): boolean {
   if (PUBLIC_PATHS.has(path)) return true;
   if (path === "/verify" || path.startsWith("/verify/")) return true;
+  if (path.startsWith("/records/")) return true;
   return false;
 }
 
 export function SessionGate({ children }: { children: React.ReactNode }) {
   const path = usePathname() ?? "/";
-  const sp = useSearchParams();
   const router = useRouter();
   const [ready, setReady] = useState(false);
 
@@ -23,8 +23,7 @@ export function SessionGate({ children }: { children: React.ReactNode }) {
     if (isPublicPath(path)) {
       // Logged-in users may still use public marketing + verification; only home forwards to the app.
       if (t && path === "/") {
-        const next = sp.get("next");
-        router.replace(next && next.startsWith("/") ? next : "/dashboard");
+        router.replace("/dashboard");
         return;
       }
       setReady(true);
@@ -36,7 +35,7 @@ export function SessionGate({ children }: { children: React.ReactNode }) {
       return;
     }
     setReady(true);
-  }, [path, router, sp]);
+  }, [path, router]);
 
   if (!ready) {
     return (
