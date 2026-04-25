@@ -8,6 +8,9 @@ import { getToken } from "@/lib/session";
 type RecordRenderActionsProps = {
   recordId: string;
   className?: string;
+  recordHash?: string;
+  recordVersion?: number;
+  generatedAt?: string | null;
 };
 
 type RenderMode = "CERTIFIED" | "NON_AUTHORITATIVE";
@@ -29,16 +32,24 @@ function triggerDownload(pdfBase64: string, filename: string): void {
   URL.revokeObjectURL(objectUrl);
 }
 
-export function RecordRenderActions({ recordId, className }: RecordRenderActionsProps) {
+export function RecordRenderActions({
+  recordId,
+  className,
+  recordHash,
+  recordVersion,
+  generatedAt,
+}: RecordRenderActionsProps) {
   const [activeMode, setActiveMode] = useState<RenderMode | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [latestRenderingHash, setLatestRenderingHash] = useState<string | null>(null);
+  const [latestGeneratedAt, setLatestGeneratedAt] = useState<string | null>(generatedAt ?? null);
 
   const metadata = useMemo(
     () => ({
-      renderingHash: "Not generated yet",
-      generatedAt: "Pending action",
+      renderingHash: latestRenderingHash ?? "Not generated yet",
+      generatedAt: latestGeneratedAt ?? "Pending action",
     }),
-    [],
+    [latestGeneratedAt, latestRenderingHash],
   );
 
   const onRender = async (mode: RenderMode) => {
@@ -52,6 +63,8 @@ export function RecordRenderActions({ recordId, className }: RecordRenderActions
     setActiveMode(mode);
     try {
       const output = await renderContract(recordId, mode, token);
+      setLatestRenderingHash(output.renderingHashSha256);
+      setLatestGeneratedAt(new Date().toISOString());
       const filename = `DealScan-${mode.toLowerCase()}-${recordId}.pdf`;
       triggerDownload(output.pdfBase64, filename);
     } catch (e) {
@@ -65,6 +78,22 @@ export function RecordRenderActions({ recordId, className }: RecordRenderActions
     <div className={className}>
       <CardHeader />
       <div className="ds-action-panel__meta">
+        <div>
+          <span>Record ID</span>
+          <strong className="ds-table__mono">{recordId}</strong>
+        </div>
+        {recordVersion ? (
+          <div>
+            <span>Version</span>
+            <strong>{recordVersion}</strong>
+          </div>
+        ) : null}
+        {recordHash ? (
+          <div>
+            <span>Record hash</span>
+            <strong className="ds-table__mono">{recordHash}</strong>
+          </div>
+        ) : null}
         <div>
           <span>Latest rendering hash</span>
           <strong className="ds-table__mono">{metadata.renderingHash}</strong>

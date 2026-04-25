@@ -17,7 +17,7 @@ import { verifyRecordMessage } from "../services/governing-record-service.js";
 import { recordAudit } from "../services/audit-service.js";
 import crypto from "crypto";
 import QRCode from "qrcode";
-import puppeteer from "puppeteer";
+import { generatePDF } from "./pdf-generator.js";
 
 const _prismaClientTypeOnly: PrismaClient | undefined = undefined;
 void _prismaClientTypeOnly;
@@ -115,36 +115,11 @@ function nonAuthoritativeOverlay(): string {
   const statement =
     "This is a non-authoritative convenience copy. It does not independently establish control, ownership, or enforceability.";
   return `
-    <aside class="overlay-panel">
+    <aside class="overlay-panel overlay-convenience">
       <h4 style="color: #ffffff;">Non-Authoritative Convenience Copy</h4>
       <p class="overlay-note">${statement}</p>
     </aside>
   `;
-}
-
-export async function generatePDF(html: string): Promise<Buffer> {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-
-  try {
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true,
-      margin: {
-        top: "24px",
-        right: "24px",
-        bottom: "24px",
-        left: "24px",
-      },
-    });
-    return Buffer.from(pdfBuffer);
-  } finally {
-    await browser.close();
-  }
 }
 
 export async function renderContract({
@@ -155,7 +130,7 @@ export async function renderContract({
 }: RenderContractInput): Promise<RenderContractResult> {
   const baseHtml = buildBaseContractHTML(governingRecord);
   const timestamp = renderedAt ?? new Date();
-  const resolvedVerifyUrl = verifyUrl ?? `https://yourdomain.com/verify/${governingRecord.id}`;
+  const resolvedVerifyUrl = verifyUrl ?? `https://dealseal1.com/verify/${governingRecord.id}`;
   const baseHash = crypto.createHash("sha256").update(baseHtml).digest("hex");
   const qrCodeDataUrl =
     mode === "CERTIFIED"
@@ -219,7 +194,7 @@ export async function renderContractArtifacts(input: RenderArtifactInput): Promi
     governingRecord: gr,
     mode,
     renderedAt: ts,
-    verifyUrl: verifyPageUrl || `https://yourdomain.com/verify/${gr.id}`,
+    verifyUrl: verifyPageUrl || `https://dealseal1.com/verify/${gr.id}`,
   });
   const pdfBytes = await generatePDF(htmlResult.html);
   const renderingHashSha256 = renderingHashFromPdf(pdfBytes);

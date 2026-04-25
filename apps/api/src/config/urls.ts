@@ -8,7 +8,7 @@ export function getVerificationPublicBaseUrl(
   env: Pick<Env, "VERIFICATION_PUBLIC_BASE_URL" | "APP_PUBLIC_URL">,
   opts?: { devDefault?: string },
 ): string {
-  const fallback = opts?.devDefault ?? "http://localhost:3000";
+  const fallback = opts?.devDefault ?? "https://dealseal1.com";
   const raw = env.VERIFICATION_PUBLIC_BASE_URL?.trim() || env.APP_PUBLIC_URL?.trim() || fallback;
   return raw.replace(/\/$/, "");
 }

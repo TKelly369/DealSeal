@@ -52,6 +52,12 @@ function NotFound() {
           </Link>
         </p>
       </div>
+      <p style={{ color: "var(--text-secondary)", marginTop: "1rem" }}>
+        Verify URL:{" "}
+        <a href="https://dealseal1.com/verify" target="_blank" rel="noreferrer">
+          https://dealseal1.com/verify
+        </a>
+      </p>
     </div>
   );
 }
@@ -125,6 +131,12 @@ export default async function VerifyPage({ params }: { params: Promise<{ recordI
         <p className="ds-card-title">Record hash (SHA-256)</p>
         <div className="ds-hash">{data.recordHash ?? "—"}</div>
       </div>
+      <p style={{ color: "var(--text-secondary)", marginTop: "1rem" }}>
+        Canonical verification URL:{" "}
+        <a href={`https://dealseal1.com/verify/${recordId}`} target="_blank" rel="noreferrer">
+          {`https://dealseal1.com/verify/${recordId}`}
+        </a>
+      </p>
     </div>
   );
 }

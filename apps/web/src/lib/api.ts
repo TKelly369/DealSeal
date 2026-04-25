@@ -80,6 +80,7 @@ export type VerifyRecordResponse = {
   timestamp: string;
   recordId?: string;
   recordHash?: string;
+  verificationUrl?: string;
 };
 
 export async function verifyRecord(recordId: string): Promise<VerifyRecordResponse> {

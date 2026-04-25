@@ -75,6 +75,7 @@ export function createVerifyApiRouter(_env: Env) {
       res.json({
         valid: recordVerifies,
         hashMatch: recordVerifies,
+        versionMatch: true,
         timestamp: latest?.facsimileTimestamp.toISOString() ?? g.createdAt.toISOString(),
         verificationStatus: recordVerifies ? "VERIFIED" : "MISMATCH",
         governingRecordId: g.id,

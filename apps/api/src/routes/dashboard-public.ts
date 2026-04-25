@@ -207,7 +207,7 @@ export function createDashboardPublicRouter(_env: Env): Router {
       const rendered = await renderContractArtifacts({
         governingRecordId: governingRecord.id,
         orgId: governingRecord.orgId,
-        mode: body.mode,
+        mode: body.mode as RenderingMode,
         requestedBy: "system",
       });
 
