@@ -1,15 +1,19 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-type ViewerMode = "CERTIFIED" | "NON_AUTHORITATIVE";
+type ViewerMode = "BASE" | "CERTIFIED" | "NON_AUTHORITATIVE";
 
 type ContractViewerProps = {
   recordId: string;
-  hash: string;
+  recordHash: string;
   version: number;
   contractData: Record<string, unknown>;
   timestamp?: string | null;
+  renderedHtml?: string | null;
+  renderedMode?: Exclude<ViewerMode, "BASE"> | null;
+  renderingHash?: string | null;
+  verificationUrl?: string | null;
 };
 
 type ContractSections = {
@@ -113,29 +117,46 @@ function extractSections(contractData: Record<string, unknown>): ContractSection
 function buildPaperHtml(input: {
   mode: ViewerMode;
   recordId: string;
-  hash: string;
+  recordHash: string;
   version: number;
   timestamp: string;
+  renderingHash?: string | null;
+  verificationUrl?: string | null;
   sections: ContractSections;
 }): string {
   const isCertified = input.mode === "CERTIFIED";
+  const isCopy = input.mode === "NON_AUTHORITATIVE";
+
+  const renderingHashText = input.renderingHash ?? "pending";
+  const verifyUrlText = input.verificationUrl ?? "https://dealseal1.com/verify";
+
   const certifiedBanner = isCertified
     ? `
       <div class="overlay-banner">
         <div><span>Record ID</span><strong>${escapeHtml(input.recordId)}</strong></div>
-        <div><span>Hash</span><strong>${escapeHtml(input.hash)}</strong></div>
+        <div><span>Version</span><strong>${escapeHtml(String(input.version))}</strong></div>
+        <div><span>Record Hash</span><strong>${escapeHtml(input.recordHash)}</strong></div>
+        <div><span>Rendering Hash</span><strong>${escapeHtml(renderingHashText)}</strong></div>
         <div><span>Timestamp</span><strong>${escapeHtml(input.timestamp)}</strong></div>
+        <div><span>Verification URL</span><strong>${escapeHtml(verifyUrlText)}</strong></div>
       </div>
     `
     : "";
 
   const certifiedWatermark = isCertified
-    ? `<div class="watermark">CERTIFIED</div>`
+    ? `<div class="watermark">CERTIFIED RENDERING</div>`
     : "";
 
   const attestation = isCertified
-    ? `<div class="attestation">${escapeHtml(CERTIFICATION_TEXT)}</div>`
-    : `<div class="disclaimer">${escapeHtml(NON_AUTHORITATIVE_TEXT)}</div>`;
+    ? `
+      <div class="attestation">
+        <p>${escapeHtml(CERTIFICATION_TEXT)}</p>
+        <p><strong>Verification URL:</strong> ${escapeHtml(verifyUrlText)}</p>
+      </div>
+    `
+    : isCopy
+      ? `<div class="disclaimer">${escapeHtml(NON_AUTHORITATIVE_TEXT)}</div>`
+      : "";
 
   return `
 <!DOCTYPE html>
@@ -182,7 +203,7 @@ function buildPaperHtml(input: {
       }
       .overlay-banner {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
         border: 1px solid #d8a8af;
         border-radius: 10px;
@@ -207,7 +228,7 @@ function buildPaperHtml(input: {
         top: 48%;
         left: 50%;
         transform: translate(-50%, -50%) rotate(-24deg);
-        font-size: 128px;
+        font-size: 100px;
         letter-spacing: 0.08em;
         color: rgba(200, 16, 46, 0.08);
         font-weight: 800;
@@ -271,6 +292,12 @@ function buildPaperHtml(input: {
         color: #2d1020;
         font-size: 13px;
         line-height: 1.5;
+      }
+      .attestation p {
+        margin: 0;
+      }
+      .attestation p + p {
+        margin-top: 8px;
       }
       .disclaimer {
         margin-top: 24px;
@@ -345,7 +372,7 @@ function buildPaperHtml(input: {
 
         <div class="record-meta">
           <span>Record ID: <strong>${escapeHtml(input.recordId)}</strong></span>
-          <span>Hash: <strong>${escapeHtml(input.hash.slice(0, 16))}…</strong></span>
+          <span>Hash: <strong>${escapeHtml(input.recordHash.slice(0, 16))}…</strong></span>
         </div>
       </div>
     </article>
@@ -356,27 +383,44 @@ function buildPaperHtml(input: {
 
 export function ContractViewer({
   recordId,
-  hash,
+  recordHash,
   version,
   contractData,
   timestamp,
+  renderedHtml,
+  renderedMode,
+  renderingHash,
+  verificationUrl,
 }: ContractViewerProps) {
-  const [mode, setMode] = useState<ViewerMode>("CERTIFIED");
+  const [mode, setMode] = useState<ViewerMode>(renderedMode ?? "BASE");
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (renderedMode) {
+      setMode(renderedMode);
+      setLoading(true);
+    }
+  }, [renderedMode]);
 
   const sections = useMemo(() => extractSections(contractData), [contractData]);
   const issuedAt = timestamp ?? new Date().toISOString();
   const srcDoc = useMemo(
-    () =>
-      buildPaperHtml({
+    () => {
+      if (renderedHtml && renderedMode && mode === renderedMode) {
+        return renderedHtml;
+      }
+      return buildPaperHtml({
         mode,
         recordId,
-        hash,
+        recordHash,
         version,
         timestamp: issuedAt,
+        renderingHash,
+        verificationUrl,
         sections,
-      }),
-    [mode, recordId, hash, version, issuedAt, sections],
+      });
+    },
+    [mode, recordId, recordHash, version, issuedAt, renderingHash, verificationUrl, sections, renderedHtml, renderedMode],
   );
 
   return (
@@ -384,6 +428,16 @@ export function ContractViewer({
       <div className="contract-viewer__toolbar">
         <p className="contract-viewer__label">Viewer Mode</p>
         <div className="contract-viewer__toggle">
+          <button
+            type="button"
+            className={mode === "BASE" ? "contract-viewer__toggle-btn is-active" : "contract-viewer__toggle-btn"}
+            onClick={() => {
+              setLoading(true);
+              setMode("BASE");
+            }}
+          >
+            Base
+          </button>
           <button
             type="button"
             className={mode === "CERTIFIED" ? "contract-viewer__toggle-btn is-active" : "contract-viewer__toggle-btn"}
@@ -408,6 +462,23 @@ export function ContractViewer({
           </button>
         </div>
       </div>
+      {renderedHtml && renderedMode && mode === renderedMode ? (
+        <div className="contract-viewer__result-meta">
+          <p>
+            Rendering hash: <span className="ds-table__mono">{renderingHash ?? "—"}</span>
+          </p>
+          <p>
+            Verification URL:{" "}
+            {verificationUrl ? (
+              <a href={verificationUrl} target="_blank" rel="noreferrer">
+                {verificationUrl}
+              </a>
+            ) : (
+              "—"
+            )}
+          </p>
+        </div>
+      ) : null}
       <div className="contract-viewer__frame-wrap">
         {loading ? <p className="contract-viewer__loading">Loading contract viewer...</p> : null}
         <iframe

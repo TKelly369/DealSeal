@@ -72,6 +72,7 @@ export default async function Home() {
                   <th>Deal ID</th>
                   <th>Version</th>
                   <th>Status</th>
+                  <th>Hash Preview</th>
                   <th>Created</th>
                   <th>Actions</th>
                 </tr>
@@ -79,7 +80,7 @@ export default async function Home() {
               <tbody>
                 {recent.length === 0 ? (
                   <tr>
-                    <td colSpan={6}>No governing records available.</td>
+                    <td colSpan={7}>No governing records available.</td>
                   </tr>
                 ) : (
                   recent.map((record) => (
@@ -90,11 +91,12 @@ export default async function Home() {
                       <td>
                         <span className="ds-status-pill ds-status-pill--locked">{record.status}</span>
                       </td>
+                      <td className="ds-table__mono">{record.hash.slice(0, 16)}...</td>
                       <td>{record.createdAt ? new Date(record.createdAt).toLocaleString() : "—"}</td>
                       <td>
                         <div className="ds-table__actions">
                           <Button href={`/records/${record.id}`} variant="secondary">
-                            Open
+                            Open Record
                           </Button>
                           <Button href={`/verify/${record.id}`}>Verify</Button>
                         </div>

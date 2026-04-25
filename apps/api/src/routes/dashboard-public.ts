@@ -3,7 +3,7 @@ import { RenderingMode } from "@prisma/client";
 import type { Env } from "../config/env.js";
 import { asyncHandler } from "../util/async-handler.js";
 import { prisma } from "../lib/prisma.js";
-import { renderContractArtifacts } from "../contract-renderer/render-contract.js";
+import { renderContract } from "../contract-renderer/render-contract.js";
 
 type DashboardMetricsResponse = {
   totalContracts: number;
@@ -195,30 +195,35 @@ export function createDashboardPublicRouter(_env: Env): Router {
         return;
       }
 
-      const governingRecord = await prisma.governingRecord.findFirst({
-        where: { id: body.recordId },
-        select: { id: true, orgId: true },
-      });
+      const governingRecord = await prisma.governingRecord.findFirst({ where: { id: body.recordId } });
       if (!governingRecord) {
         res.status(404).json({ code: "NOT_FOUND", message: "Governing record not found" });
         return;
       }
 
-      const rendered = await renderContractArtifacts({
-        governingRecordId: governingRecord.id,
-        orgId: governingRecord.orgId,
-        mode: body.mode as RenderingMode,
-        requestedBy: "system",
+      const mode = body.mode === RenderingMode.CERTIFIED ? "CERTIFIED" : "NON_AUTHORITATIVE";
+      const renderedAt = new Date();
+      const rendered = await renderContract({
+        governingRecord,
+        mode,
+        renderedAt,
+        verifyUrl: `https://dealseal1.com/verify/${encodeURIComponent(governingRecord.id)}`,
       });
 
-      const pdfBuffer = Buffer.from(rendered.pdfBase64, "base64");
-      const filePrefix = body.mode === RenderingMode.CERTIFIED ? "certified" : "copy";
-      const filename = `DealSeal-${filePrefix}-${rendered.publicRef}-v${rendered.recordVersion}.pdf`;
-      res.setHeader("Content-Type", "application/pdf");
-      res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
-      res.setHeader("X-Rendering-Event-Id", rendered.renderingEventId);
-      res.setHeader("X-Rendering-Hash", rendered.renderingHashSha256);
-      res.send(pdfBuffer);
+      const recordHash = governingRecord.hash || governingRecord.recordHashSha256;
+      const verificationUrl = `https://dealseal1.com/verify/${encodeURIComponent(
+        governingRecord.id,
+      )}?hash=${encodeURIComponent(recordHash)}&renderingHash=${encodeURIComponent(rendered.renderingHash)}`;
+
+      res.json({
+        recordId: governingRecord.id,
+        version: governingRecord.version,
+        recordHash,
+        renderingHash: rendered.renderingHash,
+        verificationUrl,
+        html: rendered.html,
+        mode,
+      });
     }),
   );
 

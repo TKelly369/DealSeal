@@ -8,14 +8,16 @@ const navItems = [
   { href: "/", label: "Dashboard", icon: "DB" },
   { href: "/workspace", label: "Contracts", icon: "CT" },
   { href: "/packages", label: "Packages", icon: "PK" },
-  { href: "/verify/test", label: "Verification", icon: "VF" },
+  { href: "/audit-trail", label: "Audit Trail", icon: "AT" },
+  { href: "/verify/demo-record-001", label: "Verification", icon: "VF" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/" || pathname.startsWith("/dashboard");
   if (href === "/workspace") return pathname.startsWith("/workspace") || pathname.startsWith("/records/");
   if (href === "/packages") return pathname.startsWith("/packages");
-  if (href === "/verify/test") return pathname.startsWith("/verify") || pathname.startsWith("/verification");
+  if (href === "/audit-trail") return pathname.startsWith("/audit-trail") || pathname.startsWith("/audit");
+  if (href === "/verify/demo-record-001") return pathname.startsWith("/verify") || pathname.startsWith("/verification");
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

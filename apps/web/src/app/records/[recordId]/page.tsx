@@ -1,8 +1,7 @@
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
-import { RecordRenderActions } from "@/components/RecordRenderActions";
 import { getRecord } from "@/lib/api";
-import { ContractViewer } from "@/components/contract/ContractViewer";
+import { RecordDetailClient } from "./record-detail-client";
 
 function formatDate(value: string | null): string {
   if (!value) return "Pending";
@@ -52,46 +51,17 @@ export default async function RecordDetailPage({
         title="Contract Record Detail"
         subtitle="Authoritative governing record content and rendering controls."
       >
-        <div className="ds-contract-layout">
-          <ContractViewer
-            recordId={record.id}
-            hash={record.hash}
-            version={record.version}
-            timestamp={record.createdAt ?? new Date().toISOString()}
-            contractData={record.contractData}
-          />
-
-          <Card className="ds-card-panel ds-contract-side-panel">
-            <p className="ds-card-panel__title">Record Metadata</p>
-            <div className="ds-status-list">
-              <li>
-                <span>Record ID</span>
-                <strong className="ds-table__mono">{record.id}</strong>
-              </li>
-              <li>
-                <span>Hash</span>
-                <strong className="ds-table__mono">{record.hash}</strong>
-              </li>
-              <li>
-                <span>Version</span>
-                <strong>{record.version}</strong>
-              </li>
-              <li>
-                <span>Status</span>
-                <strong>{record.status}</strong>
-              </li>
-              <li>
-                <span>Created</span>
-                <strong>{formatDate(record.createdAt)}</strong>
-              </li>
-              <li>
-                <span>Locked</span>
-                <strong>{formatDate(record.lockedAt)}</strong>
-              </li>
-            </div>
-            <RecordRenderActions recordId={record.id} />
-          </Card>
-        </div>
+        <RecordDetailClient
+          recordId={record.id}
+          dealId={record.dealId}
+          recordHash={record.hash}
+          version={record.version}
+          status={record.status}
+          createdAtLabel={formatDate(record.createdAt)}
+          lockedAtLabel={formatDate(record.lockedAt)}
+          timestamp={record.createdAt ?? new Date().toISOString()}
+          contractData={record.contractData}
+        />
       </Section>
     </div>
   );

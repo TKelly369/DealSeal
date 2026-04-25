@@ -63,10 +63,12 @@ export function RecordRenderActions({
     setActiveMode(mode);
     try {
       const output = await renderContract(recordId, mode, token);
-      setLatestRenderingHash(output.renderingHashSha256);
+      setLatestRenderingHash(output.renderingHash);
       setLatestGeneratedAt(new Date().toISOString());
-      const filename = `DealScan-${mode.toLowerCase()}-${recordId}.pdf`;
-      triggerDownload(output.pdfBase64, filename);
+      if (output.pdfBase64) {
+        const filename = `DealScan-${mode.toLowerCase()}-${recordId}.pdf`;
+        triggerDownload(output.pdfBase64, filename);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unable to generate rendering.");
     } finally {
