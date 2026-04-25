@@ -5,6 +5,7 @@ import { canonicalStringify, baseTemplateBodyHash } from "../lib/record-hashing.
  * Single source for certified and convenience PDFs. Only overlay layers differ.
  */
 export const KIND_BASE = "Deal-Scan.ContractBaseTemplate" as const;
+const HTML_OVERLAY_SLOT = "<!-- DEALSEAL_OVERLAY_SLOT -->";
 
 export type BaseContractViewModel = {
   kind: typeof KIND_BASE;
@@ -17,7 +18,7 @@ export type BaseContractViewModel = {
 };
 
 const CERT_TEXT =
-  "This document is a Certified Visual Rendering generated from the Authoritative Governing Record maintained in Deal-Scan. The authoritative record remains in system custody and is verifiable via Record ID and hash.";
+  "This document is a Certified Visual Rendering generated from the Authoritative Governing Record maintained in Deal-Scan. The authoritative record remains in system custody. This rendering is verifiable via Record ID and hash.";
 
 const CONV_TEXT =
   "This is a non-authoritative convenience copy. It does not independently establish control, ownership, or enforceability.";
@@ -30,11 +31,265 @@ export function getConvenienceDisclaimerText(): string {
   return CONV_TEXT;
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function formatLabel(key: string): string {
+  return key
+    .replaceAll("_", " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^./, (char) => char.toUpperCase());
+}
+
+function stringifyValue(value: unknown): string {
+  if (value === null) {
+    return "null";
+  }
+  if (typeof value === "string") {
+    return value;
+  }
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+  return JSON.stringify(value);
+}
+
+function flattenObjectRows(input: unknown, prefix = ""): Array<{ label: string; value: string }> {
+  if (Array.isArray(input)) {
+    return input.flatMap((item, index) => flattenObjectRows(item, `${prefix}[${index}]`));
+  }
+
+  if (!isRecord(input)) {
+    return [{ label: prefix || "Value", value: stringifyValue(input) }];
+  }
+
+  const entries = Object.entries(input);
+  if (entries.length === 0) {
+    return [{ label: prefix || "Value", value: "{}" }];
+  }
+
+  return entries.flatMap(([key, value]) => {
+    const nextPrefix = prefix ? `${prefix}.${key}` : key;
+    if (isRecord(value) || Array.isArray(value)) {
+      return flattenObjectRows(value, nextPrefix);
+    }
+    return [{ label: nextPrefix, value: stringifyValue(value) }];
+  });
+}
+
+function getContractPayload(record: GoverningRecord): unknown {
+  if (isRecord(record.contractData) && Object.keys(record.contractData).length > 0) {
+    return record.contractData;
+  }
+  return record.recordDataJson;
+}
+
+export function buildBaseContractHTML(record: GoverningRecord): string {
+  const payload = getContractPayload(record);
+  const payloadEntries = isRecord(payload)
+    ? Object.entries(payload)
+    : [["contractPayload", payload] as const];
+
+  const sectionsHtml = payloadEntries
+    .map(([sectionKey, sectionValue]) => {
+      const rows = flattenObjectRows(sectionValue)
+        .map(
+          (row) => `
+            <tr>
+              <th>${escapeHtml(formatLabel(row.label))}</th>
+              <td>${escapeHtml(row.value)}</td>
+            </tr>
+          `,
+        )
+        .join("");
+
+      return `
+        <section class="contract-section">
+          <h3>${escapeHtml(formatLabel(sectionKey))}</h3>
+          <table class="contract-table">
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </section>
+      `;
+    })
+    .join("");
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deal-Scan Contract Rendering</title>
+    <style>
+      :root { color-scheme: light; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #f6f8fb;
+        color: #111827;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.45;
+      }
+      .contract-page {
+        max-width: 980px;
+        margin: 28px auto;
+        padding: 32px;
+        background: #ffffff;
+        border: 1px solid #d5d8de;
+        border-radius: 12px;
+      }
+      .contract-heading {
+        margin: 0 0 12px;
+        font-size: 28px;
+        letter-spacing: -0.02em;
+      }
+      .contract-subheading {
+        margin: 0;
+        color: #475467;
+        font-size: 14px;
+      }
+      .contract-meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 24px;
+        margin: 20px 0 24px;
+        padding: 16px;
+        border: 1px solid #d5d8de;
+        border-radius: 10px;
+        background: #f8fafc;
+      }
+      .contract-meta dt {
+        font-size: 12px;
+        color: #667085;
+      }
+      .contract-meta dd {
+        margin: 2px 0 0;
+        font-size: 13px;
+        color: #1f2937;
+        word-break: break-all;
+      }
+      .contract-section + .contract-section {
+        margin-top: 20px;
+      }
+      .contract-section h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+      }
+      .contract-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .contract-table th,
+      .contract-table td {
+        padding: 9px 10px;
+        border: 1px solid #e4e7ec;
+        vertical-align: top;
+      }
+      .contract-table th {
+        width: 40%;
+        text-align: left;
+        font-size: 12px;
+        color: #344054;
+        background: #f9fafb;
+      }
+      .contract-table td {
+        font-size: 13px;
+        color: #101828;
+      }
+      .overlay-panel {
+        margin-top: 28px;
+        padding: 18px;
+        border-radius: 10px;
+        border: 1px solid #d5d8de;
+      }
+      .overlay-panel h4 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+      .overlay-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 20px;
+        margin: 12px 0 0;
+      }
+      .overlay-grid p {
+        margin: 0;
+        font-size: 13px;
+        color: #334155;
+        word-break: break-all;
+      }
+      .overlay-note {
+        margin-top: 14px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="contract-page">
+      <h1 class="contract-heading">Authoritative Contract Rendering</h1>
+      <p class="contract-subheading">
+        Structured facsimile generated from the Deal-Scan governing record.
+      </p>
+
+      <dl class="contract-meta">
+        <div>
+          <dt>Governing Record ID</dt>
+          <dd>${escapeHtml(record.id)}</dd>
+        </div>
+        <div>
+          <dt>Deal ID</dt>
+          <dd>${escapeHtml(record.dealId || record.transactionId)}</dd>
+        </div>
+        <div>
+          <dt>Version</dt>
+          <dd>${escapeHtml(String(record.version))}</dd>
+        </div>
+        <div>
+          <dt>Custodian</dt>
+          <dd>${escapeHtml(record.custodian)}</dd>
+        </div>
+      </dl>
+
+      ${sectionsHtml}
+
+      ${HTML_OVERLAY_SLOT}
+    </main>
+  </body>
+</html>
+`.trim();
+}
+
+export function injectOverlayIntoBaseContractHTML(baseHtml: string, overlayHtml: string): string {
+  if (baseHtml.includes(HTML_OVERLAY_SLOT)) {
+    return baseHtml.replace(HTML_OVERLAY_SLOT, overlayHtml);
+  }
+  return `${baseHtml}\n${overlayHtml}`;
+}
+
 /**
  * Map governing record JSON to the one shared base template the renderer uses (certified and convenience).
  */
 export function buildBaseViewModelFromGoverningRecord(gr: GoverningRecord): BaseContractViewModel {
-  const data = gr.recordDataJson as {
+  const payload = getContractPayload(gr);
+  const data = (isRecord(payload) ? payload : {}) as {
     governingAgreement?: { title?: string; referenceCode?: string } | null;
     transaction?: { publicId?: string; state?: string } | null;
     buyer?: { legalName?: string } | null;

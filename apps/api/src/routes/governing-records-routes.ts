@@ -5,7 +5,7 @@ import { createAuthMiddleware, requireRoles } from "../middleware/auth.js";
 import { asyncHandler } from "../util/async-handler.js";
 import { RenderingMode } from "@prisma/client";
 import { prisma } from "../lib/prisma.js";
-import { renderContract } from "../contract-renderer/render-contract.js";
+import { renderContractArtifacts } from "../contract-renderer/render-contract.js";
 import { GoverningAuditEventKind, appendGoverningRecordAudit } from "../services/governing-record-audit.js";
 
 const renderBody = z.object({
@@ -58,7 +58,7 @@ export function createGoverningRecordsRouter(env: Env) {
       const orgId = req.auth!.orgId;
       const id = z.string().uuid().parse(req.params.id);
       const body = renderBody.parse(req.body);
-      const out = await renderContract({
+      const out = await renderContractArtifacts({
         governingRecordId: id,
         orgId,
         mode: body.mode,
@@ -76,7 +76,7 @@ export function createGoverningRecordsRouter(env: Env) {
       const orgId = req.auth!.orgId;
       const id = z.string().uuid().parse(req.params.id);
       const body = downloadPostBody.parse(req.body);
-      const rendered = await renderContract({
+      const rendered = await renderContractArtifacts({
         governingRecordId: id,
         orgId,
         mode: body.mode,
@@ -102,7 +102,7 @@ export function createGoverningRecordsRouter(env: Env) {
       const orgId = req.auth!.orgId;
       const id = z.string().uuid().parse(req.params.id);
       const body = downloadPostBody.parse(req.body);
-      const rendered = await renderContract({
+      const rendered = await renderContractArtifacts({
         governingRecordId: id,
         orgId,
         mode: body.mode,
