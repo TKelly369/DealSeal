@@ -1,15 +1,25 @@
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
+import { getDashboardMetrics } from "@/lib/api";
 
-const stats = [
-  { label: "Authoritative Governing Records", value: "1,248", icon: "GR" },
-  { label: "Certified Visual Renderings", value: "4,892", icon: "CV" },
-  { label: "Non-Authoritative Convenience Copies", value: "317", icon: "NC" },
-  { label: "Verification & Audit Integrity", value: "9,604", icon: "VA" },
-];
+const metricCards = [
+  { key: "totalContracts", label: "Total Contracts", icon: "TC" },
+  { key: "certifiedRenderings", label: "Certified Renderings", icon: "CR" },
+  { key: "verificationRequests", label: "Verification Requests", icon: "VR" },
+  { key: "activeDeals", label: "Active Deals", icon: "AD" },
+] as const;
 
-export default function Home() {
+export default async function Home() {
+  let metrics: Awaited<ReturnType<typeof getDashboardMetrics>> | null = null;
+  let metricsError: string | null = null;
+
+  try {
+    metrics = await getDashboardMetrics();
+  } catch (e) {
+    metricsError = e instanceof Error ? e.message : "Unable to load dashboard metrics";
+  }
+
   return (
     <div className="ds-dashboard">
       <Section
@@ -28,19 +38,33 @@ export default function Home() {
         }
       >
         <div className="ds-dashboard-grid">
-          {stats.map((stat) => (
-            <Card className="ds-stat-card" key={stat.label}>
-              <div className="ds-stat-card__top">
-                <span className="ds-stat-card__label">{stat.label}</span>
-                <span className="ds-stat-card__icon" aria-hidden>
-                  {stat.icon}
-                </span>
-              </div>
-              <p className="ds-stat-card__value">{stat.value}</p>
-              <p className="ds-stat-card__description">System custody and chain-of-appearance controls active.</p>
-            </Card>
-          ))}
+          {metricCards.map((stat) => {
+            const value = metrics ? metrics[stat.key] : "—";
+            return (
+              <Card className="ds-stat-card" key={stat.label}>
+                <div className="ds-stat-card__top">
+                  <span className="ds-stat-card__label">{stat.label}</span>
+                  <span className="ds-stat-card__icon" aria-hidden>
+                    {stat.icon}
+                  </span>
+                </div>
+                <p className="ds-stat-card__value">
+                  {typeof value === "number" ? value.toLocaleString() : value}
+                </p>
+                <p className="ds-stat-card__description">
+                  {metrics
+                    ? "Live metrics from DealSeal system custody services."
+                    : "Metrics unavailable. Showing safe fallback while API recovers."}
+                </p>
+              </Card>
+            );
+          })}
         </div>
+        {metricsError ? (
+          <p className="ds-inline-warning">
+            Unable to load dashboard metrics: {metricsError}
+          </p>
+        ) : null}
       </Section>
 
       <div className="ds-divider" />
