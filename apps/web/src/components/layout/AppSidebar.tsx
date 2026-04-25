@@ -6,20 +6,16 @@ import { BrandLogo } from "@/components/BrandLogo";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: "DB" },
-  { href: "/governing-records", label: "Governing Records", icon: "GR" },
-  { href: "/certified-renderings", label: "Certified Renderings", icon: "CR" },
-  { href: "/verification", label: "Verification", icon: "VF" },
-  { href: "/audit-trail", label: "Audit Trail", icon: "AT" },
-  { href: "/documents", label: "Documents", icon: "DC" },
-  { href: "/settings", label: "Settings", icon: "ST" },
+  { href: "/workspace", label: "Contracts", icon: "CT" },
+  { href: "/packages", label: "Packages", icon: "PK" },
+  { href: "/verify/test", label: "Verification", icon: "VF" },
 ];
 
 function isActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/" || pathname.startsWith("/dashboard");
-  if (href === "/governing-records") return pathname.startsWith("/governing-records");
-  if (href === "/certified-renderings") return pathname.startsWith("/certified-renderings");
-  if (href === "/audit-trail") return pathname.startsWith("/audit-trail") || pathname.startsWith("/audit");
-  if (href === "/verification") return pathname.startsWith("/verification") || pathname.startsWith("/verify");
+  if (href === "/workspace") return pathname.startsWith("/workspace") || pathname.startsWith("/records/");
+  if (href === "/packages") return pathname.startsWith("/packages");
+  if (href === "/verify/test") return pathname.startsWith("/verify") || pathname.startsWith("/verification");
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 

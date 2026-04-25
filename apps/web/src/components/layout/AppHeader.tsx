@@ -27,7 +27,7 @@ export function AppHeader({ title, subtitle, onSignOut }: AppHeaderProps) {
         <div className="ds-header__title-group">
           <BrandLogo variant="nav" href="/" className="ds-header__logo" />
           <div>
-            <h1 className="ds-header__title">{title}</h1>
+            <h1 className="ds-header__title">DealSeal</h1>
             <p className="ds-header__subtitle">{subtitle}</p>
           </div>
         </div>
@@ -41,7 +41,7 @@ export function AppHeader({ title, subtitle, onSignOut }: AppHeaderProps) {
             ▾
           </button>
           <Button href="/workspace" className="ds-header__new-deal">
-            New Deal
+            New Contract
           </Button>
           <Button variant="secondary" onClick={() => void handleSignOut()}>
             Sign out

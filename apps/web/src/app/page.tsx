@@ -1,80 +1,111 @@
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
+import { getDashboardMetrics, getRecords } from "@/lib/api";
 
-const highlights = [
-  {
-    title: "Authoritative Governing Record",
-    detail:
-      "One canonical contract record in DealSeal custody with version and hash continuity.",
-  },
-  {
-    title: "Certified Visual Rendering",
-    detail:
-      "Uniform visual output generated from the governing record for external consumption.",
-  },
-  {
-    title: "Verification & Audit Integrity",
-    detail:
-      "Record ID + hash validation with immutable event traceability across lifecycle events.",
-  },
-] as const;
+export default async function Home() {
+  let metrics = {
+    totalContracts: 0,
+    certifiedRenderings: 0,
+    verificationRequests: 0,
+    activeDeals: 0,
+  };
+  let recent: Awaited<ReturnType<typeof getRecords>> = [];
+  let dataUnavailable = false;
 
-export default function Home() {
+  try {
+    const [fetchedMetrics, fetchedRecords] = await Promise.all([getDashboardMetrics(), getRecords()]);
+    metrics = fetchedMetrics;
+    recent = fetchedRecords.slice(0, 6);
+  } catch {
+    dataUnavailable = true;
+  }
 
   return (
     <div className="ds-dashboard">
       <Section
-        title="DealSeal Transaction Authority Platform"
-        subtitle="Enterprise contract verification and authority controls that preserve one uniform appearance while separating governing records, certified renderings, and convenience copies."
+        title="DealSeal Contract Authority Dashboard"
+        subtitle="Financial-grade operations for authoritative governing records, certified visual renderings, and verification integrity."
         actions={
           <>
-            <Button href="/dashboard">Open Dashboard</Button>
-            <Button href="/workspace" variant="secondary">
-              Open Workspace
-            </Button>
-            <Button href="/verification" variant="secondary">
-              Verify Contract
+            <Button href="/workspace">Contracts</Button>
+            <Button href="/packages" variant="secondary">
+              Packages
             </Button>
           </>
         }
       >
-        <div className="ds-dashboard-grid">
-          {highlights.map((item) => (
-            <Card className="ds-card-panel" key={item.title}>
-              <p className="ds-card-panel__title">{item.title}</p>
-              <p className="ds-card-panel__body">{item.detail}</p>
-            </Card>
-          ))}
+        {dataUnavailable ? (
+          <Card className="ds-card-panel">
+            <p className="ds-card-panel__title">Live data temporarily unavailable</p>
+            <p className="ds-card-panel__body">
+              Dashboard metrics and recent contracts will repopulate automatically once API connectivity is restored.
+            </p>
+          </Card>
+        ) : null}
+        <div className="ds-dashboard-grid ds-dashboard-grid--three">
+          <Card className="ds-stat-card">
+            <p className="ds-stat-card__label">Total Contracts</p>
+            <p className="ds-stat-card__value">{metrics.totalContracts}</p>
+            <p className="ds-stat-card__description">Authoritative records under custody</p>
+          </Card>
+          <Card className="ds-stat-card">
+            <p className="ds-stat-card__label">Certified Renderings</p>
+            <p className="ds-stat-card__value">{metrics.certifiedRenderings}</p>
+            <p className="ds-stat-card__description">Certified PDF outputs generated</p>
+          </Card>
+          <Card className="ds-stat-card">
+            <p className="ds-stat-card__label">Verification Requests</p>
+            <p className="ds-stat-card__value">{metrics.verificationRequests}</p>
+            <p className="ds-stat-card__description">Public authenticity checks</p>
+          </Card>
         </div>
       </Section>
 
-      <div className="ds-divider" />
-
-      <Section
-        title="Contract Verification System"
-        subtitle="DealSeal provides auditable verification workflows for governing records, certified visual renderings, and downstream package operations."
-      >
-        <div className="ds-dashboard-grid ds-dashboard-grid--two">
-          <Card className="ds-card-panel">
-            <p className="ds-card-panel__title">Verification Endpoint</p>
-            <p className="ds-card-panel__body">
-              Validate record identity, hash parity, and version status for lenders, dealers, and servicing operations.
-            </p>
-            <Button href="/verification" variant="secondary">
-              Verify Now
-            </Button>
-          </Card>
-          <Card className="ds-card-panel">
-            <p className="ds-card-panel__title">Governance & Audit</p>
-            <p className="ds-card-panel__body">
-              Maintain end-to-end legal-grade audit integrity from record creation through rendering and verification events.
-            </p>
-            <Button href="/audit-trail" variant="secondary">
-              View Audit Trail
-            </Button>
-          </Card>
-        </div>
+      <Section title="Recent contracts" subtitle="Latest governing records available for rendering and verification.">
+        <Card>
+          <div className="ds-table-wrap">
+            <table className="ds-table" aria-label="Recent contracts">
+              <thead>
+                <tr>
+                  <th>Record ID</th>
+                  <th>Deal ID</th>
+                  <th>Version</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recent.length === 0 ? (
+                  <tr>
+                    <td colSpan={6}>No governing records available.</td>
+                  </tr>
+                ) : (
+                  recent.map((record) => (
+                    <tr key={record.id}>
+                      <td className="ds-table__mono">{record.id}</td>
+                      <td>{record.dealId}</td>
+                      <td>{record.version}</td>
+                      <td>
+                        <span className="ds-status-pill ds-status-pill--locked">{record.status}</span>
+                      </td>
+                      <td>{record.createdAt ? new Date(record.createdAt).toLocaleString() : "—"}</td>
+                      <td>
+                        <div className="ds-table__actions">
+                          <Button href={`/records/${record.id}`} variant="secondary">
+                            Open
+                          </Button>
+                          <Button href={`/verify/${record.id}`}>Verify</Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </Card>
       </Section>
     </div>
   );

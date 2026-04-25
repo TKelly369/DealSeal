@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getServerApiBaseUrl } from "@/lib/config";
+import { verifyRecord } from "@/lib/api";
 
 type VerifyResponse = {
   code?: string;
@@ -33,21 +33,11 @@ function isUuid(s: string): boolean {
 }
 
 async function fetchVerify(recordId: string): Promise<VerifyResponse> {
-  const base = getServerApiBaseUrl();
-  let res: Response;
   try {
-    res = await fetch(`${base}/api/verify/${encodeURIComponent(recordId)}`, {
-      cache: "no-store",
-      headers: { Accept: "application/json" },
-    });
+    return (await verifyRecord(recordId)) as VerifyResponse;
   } catch {
     return { code: "UNAVAILABLE" };
   }
-  const j = (await res.json().catch(() => ({}))) as VerifyResponse;
-  if (res.status === 400) return { ...j, code: "INVALID_ID" };
-  if (res.status === 404) return { ...j, code: "NOT_FOUND" };
-  if (!res.ok) return { ...j, code: j.code ?? "ERROR" };
-  return j;
 }
 
 function StatusBadge({ status }: { status: string | undefined }) {

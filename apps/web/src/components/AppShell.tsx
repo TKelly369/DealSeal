@@ -7,39 +7,24 @@ import { AppHeader } from "@/components/layout/AppHeader";
 
 export const PRIMARY_NAV = [
   { href: "/", label: "Dashboard" },
-  { href: "/governing-records", label: "Governing Records" },
-  { href: "/certified-renderings", label: "Certified Renderings" },
-  { href: "/verification", label: "Verification" },
-  { href: "/audit-trail", label: "Audit Trail" },
-  { href: "/documents", label: "Documents" },
-  { href: "/settings", label: "Settings" },
+  { href: "/workspace", label: "Contracts" },
+  { href: "/packages", label: "Packages" },
+  { href: "/verify", label: "Verification" },
 ];
 
 const AUTH_PATHS = new Set(["/login", "/register"]);
 
-function getActiveNav(path: string): string {
-  if (path.startsWith("/governing-records")) return "/governing-records";
-  if (path.startsWith("/certified-renderings")) return "/certified-renderings";
-  if (path.startsWith("/verification") || path.startsWith("/verify")) return "/verification";
-  if (path.startsWith("/audit-trail") || path.startsWith("/audit")) return "/audit-trail";
-  if (path.startsWith("/documents")) return "/documents";
-  if (path.startsWith("/settings")) return "/settings";
-  if (path.startsWith("/dashboard")) return "/";
-  if (path === "/") return "/";
-  return path;
-}
-
 function getHeaderCopy(path: string): { title: string; subtitle: string } {
-  if (path.startsWith("/governing-records")) {
+  if (path.startsWith("/workspace") || path.startsWith("/records")) {
     return {
-      title: "Authoritative Governing Records",
-      subtitle: "Canonical contract records in custody with versioned integrity controls.",
+      title: "Contract Records",
+      subtitle: "Authoritative record lifecycle and rendering actions.",
     };
   }
-  if (path.startsWith("/certified-renderings")) {
+  if (path.startsWith("/packages")) {
     return {
-      title: "Certified Visual Renderings",
-      subtitle: "Verifiable visual outputs derived from one authoritative governing record.",
+      title: "Packages",
+      subtitle: "Certified distribution outputs and document bundles.",
     };
   }
   if (path.startsWith("/verification") || path.startsWith("/verify")) {
@@ -68,7 +53,7 @@ function getHeaderCopy(path: string): { title: string; subtitle: string } {
   }
   return {
     title: "Dashboard",
-    subtitle: "Authoritative Contract Infrastructure",
+    subtitle: "Financial-grade contract authority controls.",
   };
 }
 

@@ -13,6 +13,7 @@ export type GoverningRecordRow = {
   version: number;
   status: string;
   hash: string;
+  createdAt?: string | null;
   lockedAt: string | null;
 };
 
@@ -36,12 +37,83 @@ async function fetchJson<T>(path: string): Promise<T> {
   return (await res.json()) as T;
 }
 
+async function fetchNoStoreJson<T>(path: string): Promise<T> {
+  const base = getServerApiBaseUrl();
+  const res = await fetch(`${base}${path}`, { cache: "no-store" });
+  if (!res.ok) {
+    throw new Error(`Failed request for ${path}: ${res.status} ${res.statusText}`);
+  }
+  return (await res.json()) as T;
+}
+
 export async function getDashboardMetrics(): Promise<DashboardMetrics> {
   return fetchJson<DashboardMetrics>("/api/dashboard/metrics");
 }
 
 export async function getGoverningRecords(): Promise<GoverningRecordRow[]> {
   return fetchJson<GoverningRecordRow[]>("/api/governing-records");
+}
+
+export async function getRecords(): Promise<GoverningRecordRow[]> {
+  return fetchJson<GoverningRecordRow[]>("/api/governing-records");
+}
+
+export type RecordDetails = {
+  id: string;
+  dealId: string;
+  version: number;
+  status: string;
+  hash: string;
+  createdAt: string | null;
+  lockedAt: string | null;
+  contractData: Record<string, unknown>;
+};
+
+export async function getRecord(recordId: string): Promise<RecordDetails> {
+  return fetchNoStoreJson<RecordDetails>(`/api/governing-records/${encodeURIComponent(recordId)}`);
+}
+
+export type VerifyRecordResponse = {
+  valid: boolean;
+  hashMatch: boolean;
+  version: number;
+  timestamp: string;
+  recordId?: string;
+  recordHash?: string;
+};
+
+export async function verifyRecord(recordId: string): Promise<VerifyRecordResponse> {
+  return fetchNoStoreJson<VerifyRecordResponse>(`/verify/${encodeURIComponent(recordId)}`);
+}
+
+export type RenderContractResponse = {
+  renderingEventId: string;
+  renderingHashSha256: string;
+  recordHashAtRender: string;
+  pdfBase64: string;
+  mode: RenderMode;
+};
+
+export async function renderContract(
+  recordId: string,
+  mode: RenderMode,
+  token: string,
+): Promise<RenderContractResponse> {
+  const base = getServerApiBaseUrl();
+  const response = await fetch(`${base}/governing-records/${encodeURIComponent(recordId)}/render`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ mode }),
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    const message = await response.text().catch(() => "");
+    throw new Error(message || `Render failed (${response.status})`);
+  }
+  return (await response.json()) as RenderContractResponse;
 }
 
 export async function downloadRenderingPdf({
