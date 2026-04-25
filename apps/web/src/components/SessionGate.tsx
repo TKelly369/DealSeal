@@ -6,6 +6,12 @@ import { getToken } from "@/lib/session";
 
 const PUBLIC_PATHS = new Set(["/", "/login", "/register"]);
 
+function isPublicPath(path: string): boolean {
+  if (PUBLIC_PATHS.has(path)) return true;
+  if (path === "/verify" || path.startsWith("/verify/")) return true;
+  return false;
+}
+
 export function SessionGate({ children }: { children: React.ReactNode }) {
   const path = usePathname() ?? "/";
   const sp = useSearchParams();
@@ -14,8 +20,9 @@ export function SessionGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const t = getToken();
-    if (PUBLIC_PATHS.has(path)) {
-      if (t) {
+    if (isPublicPath(path)) {
+      // Logged-in users may still use public marketing + verification; only home forwards to the app.
+      if (t && path === "/") {
         const next = sp.get("next");
         router.replace(next && next.startsWith("/") ? next : "/dashboard");
         return;

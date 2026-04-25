@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
-import { AppShell } from "@/components/AppShell";
 import { SessionGate } from "@/components/SessionGate";
+import { ConditionalLayout } from "@/components/ConditionalLayout";
 
 export const metadata: Metadata = {
   title: {
@@ -29,7 +29,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Suspense
+          fallback={
+            <div
+              className="card"
+              style={{ maxWidth: 420, margin: "4rem auto", textAlign: "center", color: "var(--muted)" }}
+            >
+              Loading…
+            </div>
+          }
+        >
+          <SessionGate>
+            <ConditionalLayout>{children}</ConditionalLayout>
+          </SessionGate>
+        </Suspense>
+      </body>
     </html>
   );
 }

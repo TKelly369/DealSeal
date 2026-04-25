@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { BrandLogo } from "@/components/BrandLogo";
 import { logoutServerThenLocal } from "@/lib/auth-api";
 
 const nav = [
@@ -32,9 +33,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="layout">
       <aside className="sidebar">
-        <strong style={{ fontSize: 20, letterSpacing: "0.02em" }}>DealSeal™</strong>
-        <p style={{ margin: "0.4rem 0 0", color: "var(--muted)", fontSize: 12 }}>
-          Transaction Authority Platform
+        <BrandLogo variant="nav" href="/" />
+        <p style={{ margin: "0.5rem 0 0", color: "var(--muted)", fontSize: 12, lineHeight: 1.35 }}>
+          Transaction authority for auto finance
         </p>
         <nav>
           {nav.map((item) => (
