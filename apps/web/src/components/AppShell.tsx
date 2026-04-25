@@ -1,66 +1,123 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { BrandLogo } from "@/components/BrandLogo";
 import { logoutServerThenLocal } from "@/lib/auth-api";
+import { Sidebar } from "@/components/Sidebar";
+import { Header } from "@/components/Header";
 
-const nav = [
+export const PRIMARY_NAV = [
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/workspace", label: "Transaction workspace" },
-  { href: "/documents", label: "Document panel" },
-  { href: "/discrepancies", label: "Discrepancy view" },
-  { href: "/approvals", label: "Approval flow" },
-  { href: "/packages", label: "Package builder" },
-  { href: "/audit", label: "Audit timeline" },
-  { href: "/billing", label: "Billing dashboard" },
-  { href: "/analytics", label: "Analytics" },
-  { href: "/integrations", label: "Integrations & API" },
-  { href: "/admin", label: "Admin console" },
+  { href: "/workspace", label: "Deals" },
+  { href: "/governing-records", label: "Governing Records" },
+  { href: "/certified-renderings", label: "Certified Renderings" },
+  { href: "/verification", label: "Verification" },
+  { href: "/audit", label: "Audit Trail" },
+  { href: "/documents", label: "Documents" },
+  { href: "/settings", label: "Settings" },
 ];
 
-const noShell = new Set(["/login", "/register"]);
+const AUTH_PATHS = new Set(["/login", "/register"]);
+
+function getActiveNav(path: string): string {
+  if (path.startsWith("/workspace")) return "/workspace";
+  if (path.startsWith("/verification") || path.startsWith("/verify")) return "/verification";
+  if (path.startsWith("/audit")) return "/audit";
+  if (path.startsWith("/documents")) return "/documents";
+  if (path.startsWith("/dashboard")) return "/dashboard";
+  if (path.startsWith("/governing-records")) return "/governing-records";
+  if (path.startsWith("/certified-renderings")) return "/certified-renderings";
+  if (path.startsWith("/settings")) return "/settings";
+  if (path.startsWith("/")) return "/dashboard";
+  return path;
+}
+
+function getHeaderCopy(path: string): { title: string; subtitle: string } {
+  if (path.startsWith("/workspace")) {
+    return {
+      title: "Deals Workspace",
+      subtitle: "Manage authoritative contract execution and custody workflows.",
+    };
+  }
+  if (path.startsWith("/governing-records")) {
+    return {
+      title: "Authoritative Governing Records",
+      subtitle: "Canonical records and lifecycle custody controls.",
+    };
+  }
+  if (path.startsWith("/certified-renderings")) {
+    return {
+      title: "Certified Renderings",
+      subtitle: "Enterprise certification output and distribution governance.",
+    };
+  }
+  if (path.startsWith("/verification") || path.startsWith("/verify")) {
+    return {
+      title: "Verification Endpoint",
+      subtitle: "External verification access for lenders and servicing teams.",
+    };
+  }
+  if (path.startsWith("/audit")) {
+    return {
+      title: "Audit Integrity",
+      subtitle: "Immutable event history and compliance-oriented review.",
+    };
+  }
+  if (path.startsWith("/documents")) {
+    return {
+      title: "Documents",
+      subtitle: "Certified outputs and non-authoritative copy management.",
+    };
+  }
+  if (path.startsWith("/settings")) {
+    return {
+      title: "Settings",
+      subtitle: "System custody policy and enterprise governance controls.",
+    };
+  }
+  return {
+    title: "Dashboard",
+    subtitle: "Authoritative Contract Infrastructure",
+  };
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const path = usePathname() ?? "";
+  const path = usePathname() ?? "/";
   const router = useRouter();
-  const hide = noShell.has(path);
 
-  if (hide) {
+  if (AUTH_PATHS.has(path)) {
     return <main className="main-auth">{children}</main>;
   }
 
+  const header = getHeaderCopy(path);
+
   return (
     <div className="layout">
-      <aside className="sidebar">
-        <BrandLogo variant="nav" href="/" />
-        <p style={{ margin: "0.5rem 0 0", color: "var(--muted)", fontSize: 12, lineHeight: 1.35 }}>
-          Transaction authority for auto finance
-        </p>
-        <nav>
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={path === item.href ? "page" : undefined}
+      <Sidebar
+        nav={PRIMARY_NAV}
+        activeHref={getActiveNav(path)}
+        footerContent={
+          <p style={{ marginTop: "1.25rem", fontSize: 12 }}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={async () => {
+                await logoutServerThenLocal();
+                router.replace("/login");
+              }}
             >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <p style={{ marginTop: "1.5rem", fontSize: 12 }}>
-          <button
-            type="button"
-            onClick={async () => {
-              await logoutServerThenLocal();
-              router.replace("/login");
-            }}
-          >
-            Log out
-          </button>
-        </p>
-      </aside>
-      <main>{children}</main>
+              Log out
+            </button>
+          </p>
+        }
+      />
+      <div className="ds-content-shell">
+        <Header
+          title={header.title}
+          subtitle={header.subtitle}
+          statusLabel="System Custody Active"
+        />
+        <main className="ds-main">{children}</main>
+      </div>
     </div>
   );
 }

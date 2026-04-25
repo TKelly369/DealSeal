@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 
-const NO_SHELL = new Set(["/", "/login", "/register"]);
+const NO_SHELL = new Set(["/login", "/register"]);
 
 function isVerifyPath(p: string): boolean {
   return p === "/verify" || p.startsWith("/verify/");
