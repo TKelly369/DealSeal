@@ -1,114 +1,38 @@
-import { Card } from "@/components/ui/Card";
-import { Section } from "@/components/ui/Section";
-import { Button } from "@/components/ui/Button";
-import { getDashboardMetrics, getRecords } from "@/lib/api";
-
-export default async function Home() {
-  let metrics = {
-    totalContracts: 0,
-    certifiedRenderings: 0,
-    verificationRequests: 0,
-    activeDeals: 0,
-  };
-  let recent: Awaited<ReturnType<typeof getRecords>> = [];
-  let dataUnavailable = false;
-
-  try {
-    const [fetchedMetrics, fetchedRecords] = await Promise.all([getDashboardMetrics(), getRecords()]);
-    metrics = fetchedMetrics;
-    recent = fetchedRecords.slice(0, 6);
-  } catch {
-    dataUnavailable = true;
-  }
-
+export default function Home() {
   return (
-    <div className="ds-dashboard">
-      <Section
-        title="DealSeal Contract Authority Dashboard"
-        subtitle="Financial-grade operations for authoritative governing records, certified visual renderings, and verification integrity."
-        actions={
-          <>
-            <Button href="/workspace">Contracts</Button>
-            <Button href="/packages" variant="secondary">
-              Packages
-            </Button>
-          </>
-        }
+    <main
+      style={{
+        background: "#000",
+        color: "#fff",
+        minHeight: "100vh",
+        padding: "40px",
+        fontFamily: "sans-serif",
+      }}
+    >
+      <h1
+        style={{
+          color: "#ff2a2a",
+        }}
       >
-        {dataUnavailable ? (
-          <Card className="ds-card-panel">
-            <p className="ds-card-panel__title">Live data temporarily unavailable</p>
-            <p className="ds-card-panel__body">
-              Dashboard metrics and recent contracts will repopulate automatically once API connectivity is restored.
-            </p>
-          </Card>
-        ) : null}
-        <div className="ds-dashboard-grid ds-dashboard-grid--three">
-          <Card className="ds-stat-card">
-            <p className="ds-stat-card__label">Total Contracts</p>
-            <p className="ds-stat-card__value">{metrics.totalContracts}</p>
-            <p className="ds-stat-card__description">Authoritative records under custody</p>
-          </Card>
-          <Card className="ds-stat-card">
-            <p className="ds-stat-card__label">Certified Renderings</p>
-            <p className="ds-stat-card__value">{metrics.certifiedRenderings}</p>
-            <p className="ds-stat-card__description">Certified PDF outputs generated</p>
-          </Card>
-          <Card className="ds-stat-card">
-            <p className="ds-stat-card__label">Verification Requests</p>
-            <p className="ds-stat-card__value">{metrics.verificationRequests}</p>
-            <p className="ds-stat-card__description">Public authenticity checks</p>
-          </Card>
-        </div>
-      </Section>
+        DealSeal
+      </h1>
 
-      <Section title="Recent contracts" subtitle="Latest governing records available for rendering and verification.">
-        <Card>
-          <div className="ds-table-wrap">
-            <table className="ds-table" aria-label="Recent contracts">
-              <thead>
-                <tr>
-                  <th>Record ID</th>
-                  <th>Deal ID</th>
-                  <th>Version</th>
-                  <th>Status</th>
-                  <th>Hash Preview</th>
-                  <th>Created</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recent.length === 0 ? (
-                  <tr>
-                    <td colSpan={7}>No governing records available.</td>
-                  </tr>
-                ) : (
-                  recent.map((record) => (
-                    <tr key={record.id}>
-                      <td className="ds-table__mono">{record.id}</td>
-                      <td>{record.dealId}</td>
-                      <td>{record.version}</td>
-                      <td>
-                        <span className="ds-status-pill ds-status-pill--locked">{record.status}</span>
-                      </td>
-                      <td className="ds-table__mono">{record.hash.slice(0, 16)}...</td>
-                      <td>{record.createdAt ? new Date(record.createdAt).toLocaleString() : "—"}</td>
-                      <td>
-                        <div className="ds-table__actions">
-                          <Button href={`/records/${record.id}`} variant="secondary">
-                            Open Record
-                          </Button>
-                          <Button href={`/verify/${record.id}`}>Verify</Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      </Section>
-    </div>
+      <p>Authoritative Contract Infrastructure</p>
+
+      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+      <a
+        href="/records/demo-record-001"
+        style={{
+          display: "inline-block",
+          marginTop: "20px",
+          padding: "12px 20px",
+          background: "#ff2a2a",
+          color: "#fff",
+          textDecoration: "none",
+        }}
+      >
+        Open Demo Record
+      </a>
+    </main>
   );
 }
