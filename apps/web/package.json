@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "prebuild": "npm run build -w @dealseal/shared",
     "build": "next build",
+    "dev": "next dev",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "lint": "next lint"
   },
   "dependencies": {
     "@dealseal/shared": "*",
