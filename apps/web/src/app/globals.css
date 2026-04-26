@@ -519,6 +519,81 @@ button:hover,
   border-bottom: none;
 }
 
+/* AI checkpoint console */
+.ds-ai-checkpoints {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.ds-ai-checkpoints__header h1 {
+  margin: 0;
+  color: #fff;
+}
+
+.ds-ai-checkpoints__header p {
+  margin: 0.5rem 0 1.2rem;
+  color: #c2cedf;
+  max-width: 78ch;
+}
+
+.ds-ai-checkpoint-card + .ds-ai-checkpoint-card {
+  margin-top: 1rem;
+}
+
+.ds-ai-checkpoint-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ds-ai-checkpoint-card__head h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.ds-ai-checkpoint-card__sub {
+  margin: 0.55rem 0 0.95rem;
+  color: #c2cedf;
+  font-size: 0.9rem;
+}
+
+.ds-checkpoint-list {
+  margin-top: 0.9rem;
+  border: 1px solid #31445f;
+  border-radius: 10px;
+  background: #111d2f;
+  padding: 0.65rem 0.8rem;
+}
+
+.ds-checkpoint-list__title {
+  margin: 0;
+  color: #fff;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ds-checkpoint-list ul {
+  margin: 0.55rem 0 0;
+  padding-left: 1.1rem;
+  color: #dbe7f8;
+  font-size: 0.84rem;
+}
+
+.ds-checkpoint-list li + li {
+  margin-top: 0.3rem;
+}
+
+.ds-checkpoint-list__empty {
+  margin: 0.45rem 0 0;
+  color: #9bb0cb;
+  font-size: 0.82rem;
+}
+
 /* Auth */
 .main-auth {
   min-height: 100vh;
