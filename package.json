@@ -10,7 +10,8 @@
     "lint": "npm run lint -w @dealseal/web",
     "typecheck": "npm run typecheck -w @dealseal/shared && npm run typecheck -w @dealseal/api && npm run typecheck -w @dealseal/web",
     "test": "npm run test -w @dealseal/api",
-    "backfill:governing-records": "npx tsx scripts/backfill-governing-records.ts"
+    "backfill:governing-records": "npx tsx scripts/backfill-governing-records.ts",
+    "db:deploy": "npm run db:deploy -w @dealseal/api"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
