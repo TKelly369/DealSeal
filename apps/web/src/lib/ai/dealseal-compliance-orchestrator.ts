@@ -1,4 +1,14 @@
 import { createHash } from "crypto";
+import {
+  AuditCustodyAgent,
+  DocumentGenerationAgent,
+  DownstreamDriftDetectionAgent,
+  FundingPackageAgent,
+  StateLawResearchAgent,
+  TitleLienFilingAgent,
+  type AgentGeneratedDocument,
+  type AgentPopulatedDocument,
+} from "@/lib/ai/internal-agents";
 
 export const DEALSEAL_COMPLIANCE_ORCHESTRATOR_ACTOR = "DealSeal Compliance Orchestrator Agent";
 
@@ -44,22 +54,8 @@ export type AuthoritativeContract = {
 };
 
 export type DocStatus = "PENDING" | "READY" | "BLOCKED";
-
-export type GeneratedDealerDocument = {
-  docType: string;
-  required: boolean;
-  sourceOfTruth: "AUTHORITATIVE_CONTRACT";
-  fieldsToPopulate: string[];
-  status: DocStatus;
-};
-
-export type PopulatedDocument = {
-  docType: string;
-  populatedFields: Record<string, unknown>;
-  missingFields: string[];
-  hashOfPopulatedDoc: string;
-  status: DocStatus;
-};
+export type GeneratedDealerDocument = AgentGeneratedDocument;
+export type PopulatedDocument = AgentPopulatedDocument;
 
 export type AuditStyleEvent = {
   eventType: string;
@@ -135,15 +131,6 @@ const NON_OVERRIDABLE_FIELDS = [
   "lenderName",
 ] as const;
 
-function toNumber(value: unknown): number {
-  if (typeof value === "number" && Number.isFinite(value)) return value;
-  if (typeof value === "string" && value.trim().length > 0) {
-    const parsed = Number(value);
-    if (Number.isFinite(parsed)) return parsed;
-  }
-  return 0;
-}
-
 function toStringValue(value: unknown): string {
   if (typeof value === "string") return value.trim();
   if (value === null || value === undefined) return "";
@@ -165,150 +152,47 @@ function hashSha256(payload: unknown): string {
   return createHash("sha256").update(stableStringify(payload)).digest("hex");
 }
 
-function createAuditEvent(eventType: string, recordId: string, result: string, payload: unknown): AuditStyleEvent {
-  const timestamp = new Date().toISOString();
-  return {
-    eventType,
-    timestamp,
-    actor: DEALSEAL_COMPLIANCE_ORCHESTRATOR_ACTOR,
-    recordId,
-    result,
-    hash: hashSha256({ eventType, recordId, result, timestamp, payload }),
-  };
-}
-
-function financialTermFields(): string[] {
-  return [
-    "cashPrice",
-    "downPayment",
-    "amountFinanced",
-    "apr",
-    "termMonths",
-    "monthlyPayment",
-    "taxes",
-    "fees",
-    "serviceContracts",
-  ];
-}
-
-function baseDocumentPlan(dealInput: DealInput): GeneratedDealerDocument[] {
-  const serviceContractRequired = dealInput.financialTerms.serviceContracts > 0;
-  const gapRequired = dealInput.financialTerms.amountFinanced > 0 && dealInput.financialTerms.termMonths >= 60;
-
-  return [
-    {
-      docType: "Retail Installment Sale Contract",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: [
-        "buyer.name",
-        "dealerId",
-        "lenderId",
-        "vehicle.vin",
-        ...financialTermFields(),
-      ],
-      status: "PENDING",
-    },
-    {
-      docType: "Buyer’s Order",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["buyer.name", "vehicle.year", "vehicle.make", "vehicle.model", ...financialTermFields()],
-      status: "PENDING",
-    },
-    {
-      docType: "Odometer Disclosure",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["vehicle.vin", "vehicle.mileage", "buyer.name", "dealerId"],
-      status: "PENDING",
-    },
-    {
-      docType: "Title Application",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["buyer.name", "buyer.address", "vehicle.vin", "lenderId", "dealerId"],
-      status: "PENDING",
-    },
-    {
-      docType: "Lien Filing Instructions",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["vehicle.vin", "lenderId", "dealerId", "buyer.name", "amountFinanced"],
-      status: "PENDING",
-    },
-    {
-      docType: "Assignment Agreement / Assignment Addendum",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["dealerId", "lenderId", "vehicle.vin", "amountFinanced", "apr", "termMonths"],
-      status: "PENDING",
-    },
-    {
-      docType: "Privacy Notice",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["buyer.name", "buyer.address", "buyer.email", "dealerId", "lenderId"],
-      status: "PENDING",
-    },
-    {
-      docType: "Credit Application",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["buyer.name", "buyer.address", "buyer.email", "amountFinanced"],
-      status: "PENDING",
-    },
-    {
-      docType: "Insurance Acknowledgment",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["buyer.name", "vehicle.vin", "lenderId", "dealerId"],
-      status: "PENDING",
-    },
-    {
-      docType: "Service Contract Disclosure",
-      required: serviceContractRequired,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["buyer.name", "vehicle.vin", "serviceContracts"],
-      status: serviceContractRequired ? "PENDING" : "READY",
-    },
-    {
-      docType: "GAP Disclosure",
-      required: gapRequired,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["buyer.name", "vehicle.vin", "amountFinanced", "termMonths"],
-      status: gapRequired ? "PENDING" : "READY",
-    },
-    {
-      docType: "State-specific notices placeholder",
-      required: true,
-      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
-      fieldsToPopulate: ["state", "buyer.name", "dealerId", "lenderId"],
-      status: "PENDING",
-    },
-  ];
-}
-
 // Attach real AI model here later.
 export function runLegalResearchAgent(state: string, dealType: "AUTO_FINANCE"): LegalResearchPlaceholder {
-  const upperState = state.trim().toUpperCase();
-  const noticesByState: Record<string, string[]> = {
-    CA: ["California disclosure bundle review"],
-    TX: ["Texas installment disclosure review"],
-    FL: ["Florida fee and optional product notice review"],
-    NY: ["New York contract notice review"],
-  };
-
+  const agent = new StateLawResearchAgent();
+  const result = agent.research(state, dealType);
   return {
-    state: upperState,
-    dealType,
-    notices: noticesByState[upperState] ?? ["General state notice review"],
-    requiredDocs: [],
-    complianceNotes: ["Deterministic placeholder legal research result. Attach model for deep statutory mapping."],
+    state: result.state,
+    dealType: result.dealType,
+    notices: result.notices,
+    requiredDocs: result.requiredFilings,
+    complianceNotes: result.complianceNotes,
   };
 }
 
 export class DealSealComplianceOrchestrator {
+  private readonly stateLawResearchAgent = new StateLawResearchAgent();
+  private readonly documentGenerationAgent = new DocumentGenerationAgent();
+  private readonly fundingPackageAgent = new FundingPackageAgent();
+  private readonly titleLienFilingAgent = new TitleLienFilingAgent();
+  private readonly downstreamDriftDetectionAgent = new DownstreamDriftDetectionAgent();
+  private readonly auditCustodyAgent = new AuditCustodyAgent();
+
+  private createAuditEvent(eventType: string, recordId: string, result: string, payload: unknown): AuditStyleEvent {
+    const timestamp = new Date().toISOString();
+    const hash = this.auditCustodyAgent.logAction({
+      eventType,
+      timestamp,
+      actor: DEALSEAL_COMPLIANCE_ORCHESTRATOR_ACTOR,
+      recordId,
+      result,
+      payload,
+    }).hash;
+    return {
+      eventType,
+      timestamp,
+      actor: DEALSEAL_COMPLIANCE_ORCHESTRATOR_ACTOR,
+      recordId,
+      result,
+      hash,
+    };
+  }
+
   reviewBeforeConsummation(dealInput: DealInput): PreConsummationCheckpointResult {
     const issues: string[] = [];
     const requiredFixes: string[] = [];
@@ -317,51 +201,47 @@ export class DealSealComplianceOrchestrator {
     const buyer = dealInput.buyer;
     const vehicle = dealInput.vehicle;
     const terms = dealInput.financialTerms;
-
     const state = toStringValue(dealInput.state).toUpperCase();
+
     if (!state) {
       issues.push("State is required.");
       requiredFixes.push("Provide transaction state before consummation.");
     }
-
     if (!toStringValue(dealInput.dealerId)) {
-      issues.push("Dealer identity is incomplete.");
+      issues.push("Dealer identity fields are incomplete.");
       requiredFixes.push("Provide valid dealerId.");
     }
-
     if (!toStringValue(dealInput.lenderId)) {
-      issues.push("Lender identity is incomplete.");
+      issues.push("Lender identity fields are incomplete.");
       requiredFixes.push("Provide valid lenderId.");
     }
-
     if (!toStringValue(buyer.name) || !toStringValue(buyer.address) || !toStringValue(buyer.email)) {
       issues.push("Buyer identity fields are incomplete.");
       requiredFixes.push("Provide buyer name, address, and email.");
     }
-
     if (!toStringValue(vehicle.make) || !toStringValue(vehicle.model) || vehicle.year <= 0) {
-      issues.push("Vehicle identity fields are incomplete.");
+      issues.push("Vehicle fields are incomplete.");
       requiredFixes.push("Provide vehicle year/make/model.");
     }
-
     if (!toStringValue(vehicle.vin)) {
       issues.push("VIN is missing.");
-      requiredFixes.push("Provide VIN before contract drafting.");
+      requiredFixes.push("Provide VIN before consummation.");
     }
-
     if (vehicle.mileage < 0) {
-      issues.push("Odometer mileage is invalid.");
+      issues.push("Odometer/mileage is invalid.");
       requiredFixes.push("Provide non-negative mileage.");
     }
-
     if (terms.apr <= 0) {
       issues.push("APR must be greater than 0.");
-      requiredFixes.push("Set valid APR before consummation.");
+      requiredFixes.push("Set a valid APR.");
     }
-
     if (terms.amountFinanced <= 0) {
       issues.push("Amount financed must be greater than 0.");
       requiredFixes.push("Set amount financed.");
+    }
+    if (terms.monthlyPayment <= 0 || terms.termMonths <= 0) {
+      issues.push("Payment schedule is incomplete.");
+      requiredFixes.push("Provide monthly payment and term.");
     }
 
     const financeCharge = terms.monthlyPayment * terms.termMonths - terms.amountFinanced;
@@ -370,40 +250,34 @@ export class DealSealComplianceOrchestrator {
       requiredFixes.push("Validate payment schedule against amount financed.");
     }
 
-    if (terms.monthlyPayment <= 0 || terms.termMonths <= 0) {
-      issues.push("Payment schedule is incomplete.");
-      requiredFixes.push("Provide monthly payment and term months.");
-    }
-
     if (terms.taxes < 0 || terms.fees < 0 || terms.serviceContracts < 0) {
       issues.push("Taxes/fees/service contract charges cannot be negative.");
-      requiredFixes.push("Normalize fee and tax values.");
+      requiredFixes.push("Normalize financial charge fields.");
     }
 
     if (!toStringValue(dealInput.dealerId) || !toStringValue(dealInput.lenderId)) {
       issues.push("Assignment readiness cannot be validated.");
-      requiredFixes.push("Ensure dealer and lender assignment identities are present.");
+      requiredFixes.push("Provide dealer and lender assignment identity anchors.");
     }
 
     if (!toStringValue(vehicle.vin) || !toStringValue(buyer.name) || terms.amountFinanced <= 0) {
       issues.push("Title/lien requirements cannot be satisfied.");
-      requiredFixes.push("Populate title-critical fields (VIN, buyer identity, lien amount).");
+      requiredFixes.push("Populate title/lien critical fields (VIN, buyer, amount financed).");
     }
 
-    const legalResearch = runLegalResearchAgent(state, "AUTO_FINANCE");
-    warnings.push(...legalResearch.complianceNotes);
-    if (legalResearch.notices.length > 0) {
-      warnings.push(`State notices identified: ${legalResearch.notices.join("; ")}`);
+    const research = this.stateLawResearchAgent.research(state || "UNKNOWN", "AUTO_FINANCE");
+    warnings.push(...research.complianceNotes);
+    if (research.notices.length > 0) {
+      warnings.push(`State notices identified: ${research.notices.join("; ")}`);
     }
-
-    warnings.push("Authoritative-record readiness requires immutable lock immediately after signing.");
+    if (research.requiredDisclosures.length > 0) {
+      warnings.push(`Required disclosures: ${research.requiredDisclosures.join("; ")}`);
+    }
+    warnings.push("Authoritative record must be locked immediately after signing.");
 
     let status: "GREEN" | "YELLOW" | "RED" = "GREEN";
-    if (issues.length > 0) {
-      status = "RED";
-    } else if (warnings.length > 0) {
-      status = "YELLOW";
-    }
+    if (issues.length > 0) status = "RED";
+    else if (warnings.length > 0) status = "YELLOW";
 
     const approvedToSign = status !== "RED";
     const checkpointPayload: Omit<PreConsummationCheckpointResult, "auditEvent"> = {
@@ -417,37 +291,42 @@ export class DealSealComplianceOrchestrator {
 
     return {
       ...checkpointPayload,
-      auditEvent: createAuditEvent(
+      auditEvent: this.createAuditEvent(
         "AI_PRE_CONSUMMATION_CHECKPOINT_EVALUATED",
         `pre-${toStringValue(dealInput.dealerId)}-${toStringValue(dealInput.lenderId)}`,
         status,
-        checkpointPayload,
+        { ...checkpointPayload, researchHash: research.outputHash },
       ),
     };
   }
 
   generateRequiredDealerDocs(dealInput: DealInput): GeneratedDealerDocument[] {
-    const documents = baseDocumentPlan(dealInput);
-    const isReadyForDrafting = toStringValue(dealInput.state) && toStringValue(dealInput.buyer.name) && toStringValue(dealInput.vehicle.vin);
-
-    return documents.map((doc) => {
-      if (!doc.required) return doc;
-      return {
-        ...doc,
-        status: isReadyForDrafting ? "READY" : "BLOCKED",
-      };
+    return this.documentGenerationAgent.generateRequiredDocuments({
+      state: dealInput.state,
+      buyerName: dealInput.buyer.name,
+      dealerId: dealInput.dealerId,
+      lenderId: dealInput.lenderId,
+      vin: dealInput.vehicle.vin,
+      amountFinanced: dealInput.financialTerms.amountFinanced,
+      termMonths: dealInput.financialTerms.termMonths,
+      serviceContracts: dealInput.financialTerms.serviceContracts,
     });
   }
 
   generateFundingPackage(authoritativeContract: AuthoritativeContract, docs: GeneratedDealerDocument[]): FundingPackageResult {
     const requiredDocTypes = docs.filter((doc) => doc.required).map((doc) => doc.docType);
-    const allReady = docs.filter((doc) => doc.required).every((doc) => doc.status !== "BLOCKED");
     const generatedAt = new Date().toISOString();
+    const fundingReadiness = this.fundingPackageAgent.validateFundingReadiness({
+      recordId: authoritativeContract.recordId,
+      contractData: authoritativeContract.contractData,
+      generatedDocs: docs,
+    });
     const packageHash = hashSha256({
       recordId: authoritativeContract.recordId,
       state: authoritativeContract.state,
       requiredDocTypes,
       generatedAt,
+      fundingReadinessHash: fundingReadiness.outputHash,
     });
 
     return {
@@ -455,7 +334,7 @@ export class DealSealComplianceOrchestrator {
       generatedAt,
       requiredDocuments: requiredDocTypes,
       packageHash,
-      status: allReady ? "READY" : "BLOCKED",
+      status: fundingReadiness.fundingReadiness === "READY" ? "READY" : "BLOCKED",
     };
   }
 
@@ -478,7 +357,6 @@ export class DealSealComplianceOrchestrator {
             continue;
           }
 
-          // Handle dotted paths in deterministic way.
           const pathChunks = field.split(".");
           let cursor: unknown = source;
           for (const chunk of pathChunks) {
@@ -513,34 +391,15 @@ export class DealSealComplianceOrchestrator {
       });
   }
 
-  validateNoDownstreamDrift(
-    authoritativeContract: AuthoritativeContract,
-    generatedDocs: PopulatedDocument[],
-  ): DriftValidationResult {
-    const mismatches: string[] = [];
-    const source = authoritativeContract.contractData;
-
-    for (const doc of generatedDocs) {
-      for (const fieldName of NON_OVERRIDABLE_FIELDS) {
-        const authoritativeValue = source[fieldName];
-        const populatedValue = doc.populatedFields[fieldName];
-        if (populatedValue === undefined || authoritativeValue === undefined) {
-          continue;
-        }
-
-        const normalizedAuthoritative = toStringValue(authoritativeValue);
-        const normalizedPopulated = toStringValue(populatedValue);
-        if (normalizedAuthoritative !== normalizedPopulated) {
-          mismatches.push(
-            `${doc.docType} drifted on ${fieldName}: authoritative=${normalizedAuthoritative} populated=${normalizedPopulated}`,
-          );
-        }
-      }
-    }
-
+  validateNoDownstreamDrift(authoritativeContract: AuthoritativeContract, generatedDocs: PopulatedDocument[]): DriftValidationResult {
+    const output = this.downstreamDriftDetectionAgent.detectDrift({
+      authoritativeContractData: authoritativeContract.contractData,
+      populatedDocs: generatedDocs,
+      nonOverridableFields: NON_OVERRIDABLE_FIELDS,
+    });
     return {
-      hasDrift: mismatches.length > 0,
-      mismatches,
+      hasDrift: output.hasDrift,
+      mismatches: output.mismatches,
     };
   }
 
@@ -559,51 +418,50 @@ export class DealSealComplianceOrchestrator {
       blockers.push("Authoritative record is not locked.");
     }
 
-    const fundingPackageGenerated = populatedDocs.length > 0;
-    if (!fundingPackageGenerated) {
-      blockers.push("Funding package was not generated.");
-    }
+    const generatedDocsForFunding: GeneratedDealerDocument[] = populatedDocs.map((doc) => ({
+      docType: doc.docType,
+      required: true,
+      sourceOfTruth: "AUTHORITATIVE_CONTRACT",
+      fieldsToPopulate: Object.keys(doc.populatedFields),
+      status: doc.status,
+    }));
 
-    const contractData = authoritativeContract.contractData;
-    const assignmentPresent =
-      toStringValue(contractData.assignmentAgreementId).length > 0 ||
-      toStringValue(contractData.lenderAssignmentReference).length > 0;
-    if (!assignmentPresent) {
-      blockers.push("Assignment data is missing.");
+    const fundingReadiness = this.fundingPackageAgent.validateFundingReadiness({
+      recordId: authoritativeContract.recordId,
+      contractData: authoritativeContract.contractData,
+      generatedDocs: generatedDocsForFunding,
+    });
+    if (fundingReadiness.fundingReadiness === "BLOCKED") {
+      blockers.push("Funding package readiness is blocked.");
     }
+    warnings.push(...fundingReadiness.warnings);
+    warnings.push(...fundingReadiness.missingSignatures);
+    warnings.push(...fundingReadiness.missingStipulations);
+    warnings.push(...fundingReadiness.missingFundingDocuments);
 
-    const lienholderPresent =
-      toStringValue(contractData.lienholderName).length > 0 || toStringValue(contractData.lenderName).length > 0;
-    if (!lienholderPresent) {
-      blockers.push("Lienholder data is missing.");
+    const titleLien = this.titleLienFilingAgent.prepareChecklist({
+      state: authoritativeContract.state,
+      contractData: authoritativeContract.contractData,
+      populatedDocs,
+    });
+    if (!titleLien.readyToFile) {
+      blockers.push("Title/lien filing checklist is incomplete.");
     }
-
-    const titleDoc = populatedDocs.find((doc) => doc.docType === "Title Application");
-    const lienDoc = populatedDocs.find((doc) => doc.docType === "Lien Filing Instructions");
-    if (!titleDoc || titleDoc.status !== "READY") {
-      blockers.push("Title Application is not fully populated.");
-    }
-    if (!lienDoc || lienDoc.status !== "READY") {
-      blockers.push("Lien Filing Instructions are not fully populated.");
-    }
+    warnings.push(...titleLien.warnings);
 
     const missingHashes = populatedDocs.filter((doc) => !toStringValue(doc.hashOfPopulatedDoc)).length;
     if (missingHashes > 0) {
       blockers.push("One or more generated documents do not have hashes.");
     }
 
-    const drift = this.validateNoDownstreamDrift(authoritativeContract, populatedDocs);
-    if (drift.hasDrift) {
+    const driftOutput = this.downstreamDriftDetectionAgent.detectDrift({
+      authoritativeContractData: authoritativeContract.contractData,
+      populatedDocs,
+      nonOverridableFields: NON_OVERRIDABLE_FIELDS,
+    });
+    if (driftOutput.hasDrift) {
       blockers.push("Downstream document drift detected.");
-      warnings.push(...drift.mismatches);
-    }
-
-    const moneyFields = ["cashPrice", "amountFinanced", "monthlyPayment", "termMonths", "apr"] as const;
-    for (const field of moneyFields) {
-      const sourceValue = contractData[field];
-      if (sourceValue === undefined) {
-        warnings.push(`Authoritative contract is missing ${field} in contractData.`);
-      }
+      warnings.push(...driftOutput.mismatches);
     }
 
     const hasAuditEvent = toStringValue(authoritativeContract.recordId).length > 0;
@@ -613,19 +471,20 @@ export class DealSealComplianceOrchestrator {
       auditSummary.push(`Audit anchor ready for record ${authoritativeContract.recordId}.`);
     }
 
-    const custodyIntact = isLocked && !drift.hasDrift;
+    const custodyIntact = isLocked && !driftOutput.hasDrift;
     if (!custodyIntact) {
       blockers.push("Custody chain is not intact.");
     } else {
       auditSummary.push("Custody chain intact from authoritative record to generated docs.");
     }
 
+    auditSummary.push(`Funding readiness hash: ${fundingReadiness.outputHash}`);
+    auditSummary.push(`Title/lien checklist hash: ${titleLien.outputHash}`);
+    auditSummary.push(`Drift detector hash: ${driftOutput.outputHash}`);
+
     let status: "GREEN" | "YELLOW" | "RED" = "GREEN";
-    if (blockers.length > 0) {
-      status = "RED";
-    } else if (warnings.length > 0) {
-      status = "YELLOW";
-    }
+    if (blockers.length > 0) status = "RED";
+    else if (warnings.length > 0) status = "YELLOW";
 
     const payload = {
       checkpoint: "POST_FUNDING" as const,
@@ -638,7 +497,7 @@ export class DealSealComplianceOrchestrator {
 
     return {
       ...payload,
-      auditEvent: createAuditEvent(
+      auditEvent: this.createAuditEvent(
         "AI_POST_FUNDING_CHECKPOINT_EVALUATED",
         authoritativeContract.recordId,
         status,
