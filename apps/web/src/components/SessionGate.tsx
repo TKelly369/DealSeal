@@ -9,6 +9,7 @@ const PUBLIC_PATHS = new Set(["/", "/login", "/register"]);
 function isPublicPath(path: string): boolean {
   if (PUBLIC_PATHS.has(path)) return true;
   if (path === "/verify" || path.startsWith("/verify/")) return true;
+  if (path.startsWith("/records/")) return true;
   return false;
 }
 

@@ -1,5 +1,7 @@
 export async function GET() {
-  return new Response(JSON.stringify({ status: "ok" }), {
-    headers: { "Content-Type": "application/json" },
+  return Response.json({
+    status: "ok",
+    app: "DealSeal",
+    domain: "dealseal1.com",
   });
 }
