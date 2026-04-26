@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HomePage() {
   return (
     <main
@@ -60,7 +62,7 @@ export default function HomePage() {
         </p>
 
         <div style={{ display: "flex", gap: "16px", marginTop: "32px" }}>
-          <a
+          <Link
             href="/records/demo-record-001"
             style={{
               background: "#C8102E",
@@ -72,9 +74,9 @@ export default function HomePage() {
             }}
           >
             Open Demo Record
-          </a>
+          </Link>
 
-          <a
+          <Link
             href="/api/health"
             style={{
               color: "#FFFFFF",
@@ -86,7 +88,7 @@ export default function HomePage() {
             }}
           >
             Check Health
-          </a>
+          </Link>
         </div>
       </section>
     </main>
