@@ -144,7 +144,8 @@ Org slug: **`demo-dealer`**. Seed also prints **transaction UUIDs** and a **part
 - **Public verify JSON:** `GET {API}/api/verify/{governingRecordId}`.
 - **Public verify page (for QR):** open `{VERIFICATION_PUBLIC_BASE_URL}/verify/{governingRecordId}` (Next.js; no raw contract JSON).
 - **Renders (auth):** `POST /governing-records/{id}/render` body `{ "mode": "CERTIFIED" | "CONVENIENCE", "imageFormat"?: "png" | "jpeg" }` — returns PDF+image (same base; certified adds authority overlay + QR; convenience = disclaimer only).
-- **Backfill** (LOCKED deals before governing records): `npm run backfill:governing-records` from repo root (see script header).
+- **Backfill** (LOCKED deals before governing records): `npm run backfill:governing-records -- --confirm` from repo root; idempotent, requires `--confirm` to run.
+- **Migrations (production):** `npm run db:deploy` (runs `prisma migrate deploy` + `generate` in `apps/api`).
 
 **Checks**
 

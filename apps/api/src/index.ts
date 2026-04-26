@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { getCorsOriginOption, loadEnv } from "./config/env.js";
+import { getVerificationPublicBaseUrl } from "./config/urls.js";
 import { setLogLevelFromEnv } from "./lib/logger.js";
 import { requestLoggerMiddleware } from "./middleware/request-logger.js";
 import { registerRoutes } from "./routes/index.js";
@@ -11,8 +12,8 @@ import { errorHandler } from "./middleware/error-handler.js";
 import { createStripeWebhookHandler } from "./routes/billing-webhook.js";
 import { createWebhooksPublicHandler } from "./routes/webhooks-routes.js";
 import { prisma } from "./lib/prisma.js";
-import { getQueueConnection } from "./queue/connection.js";
 import { logger } from "./lib/logger.js";
+import { checkLivenessWithDatabase, checkReadiness, SERVICE_ID } from "./lib/runtime-health.js";
 
 const env = loadEnv();
 setLogLevelFromEnv(env);
@@ -40,32 +41,46 @@ app.use(express.json({ limit: "2mb" }));
 
 app.use("/api/verify", createVerifyApiRouter(env));
 
-app.get("/health", (_req, res) => {
-  res.json({ ok: true, service: "dealseal-api", time: new Date().toISOString() });
+app.get("/health", async (_req, res) => {
+  const h = await checkLivenessWithDatabase();
+  if (h.ok) {
+    res.json({ ok: true, service: SERVICE_ID, time: h.time, database: true });
+  } else {
+    logger.error("health_check_db", { code: h.code });
+    res.status(503).json({ ok: false, service: SERVICE_ID, time: h.time, database: false, code: h.code });
+  }
 });
-app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, service: "dealseal-api", time: new Date().toISOString() });
+app.get("/api/health", async (_req, res) => {
+  const h = await checkLivenessWithDatabase();
+  if (h.ok) {
+    res.json({ ok: true, service: SERVICE_ID, time: h.time, database: true });
+  } else {
+    logger.error("api_health_check_db", { code: h.code });
+    res.status(503).json({ ok: false, service: SERVICE_ID, time: h.time, database: false, code: h.code });
+  }
 });
 
 app.get("/ready", async (_req, res) => {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-  } catch (e) {
-    logger.error("ready_check_db", { err: String(e) });
-    res.status(503).json({ ready: false, reason: "database" });
+  const r = await checkReadiness();
+  if (r.ok) {
+    res.json({ ok: true, service: SERVICE_ID, time: r.time, database: true, redis: r.redis });
     return;
   }
-  const q = getQueueConnection();
-  if (q) {
-    try {
-      await q.ping();
-    } catch (e) {
-      logger.error("ready_check_redis", { err: String(e) });
-      res.status(503).json({ ready: false, reason: "redis" });
-      return;
-    }
+  logger.error("ready_check", { code: r.code, redis: r.redis });
+  res
+    .status(503)
+    .json({ ok: false, service: SERVICE_ID, time: r.time, database: r.database, redis: r.redis, code: r.code });
+});
+app.get("/api/ready", async (_req, res) => {
+  const r = await checkReadiness();
+  if (r.ok) {
+    res.json({ ok: true, service: SERVICE_ID, time: r.time, database: true, redis: r.redis });
+    return;
   }
-  res.json({ ready: true, db: true, redis: q ? "ok" : "skipped" });
+  logger.error("api_ready_check", { code: r.code, redis: r.redis });
+  res
+    .status(503)
+    .json({ ok: false, service: SERVICE_ID, time: r.time, database: r.database, redis: r.redis, code: r.code });
 });
 
 app.get("/demo", async (_req, res) => {
@@ -132,6 +147,30 @@ registerRoutes(app, env);
 
 app.use(errorHandler);
 
-app.listen(env.PORT, () => {
-  logger.info("api_listen", { port: env.PORT, env: env.NODE_ENV });
+const verifyBase = getVerificationPublicBaseUrl(env);
+
+void (async function start() {
+  if (env.NODE_ENV === "production") {
+    try {
+      await prisma.$connect();
+    } catch (e) {
+      logger.error("database_startup_connect_failed", { err: String(e) });
+      process.exit(1);
+    }
+  }
+  // eslint-disable-next-line no-console -- deploy visibility: env + verification base for QR
+  console.log(
+    JSON.stringify({
+      event: "api_starting",
+      nodeEnv: env.NODE_ENV,
+      port: env.PORT,
+      verificationPublicBaseUrl: verifyBase,
+    }),
+  );
+  app.listen(env.PORT, () => {
+    logger.info("api_listen", { port: env.PORT, env: env.NODE_ENV, verificationPublicBaseUrl: verifyBase });
+  });
+})().catch((e) => {
+  logger.error("api_start_failed", { err: String(e) });
+  process.exit(1);
 });

@@ -18,6 +18,8 @@ const downloadPostBody = z.object({
   imageFormat: z.enum(["png", "jpeg"]).optional(),
 });
 
+const idParam = z.string().uuid({ message: "A valid record identifier (UUID) is required" });
+
 function filePrefix(mode: RenderingMode): "certified" | "convenience" {
   return mode === "CERTIFIED" ? "certified" : "convenience";
 }
@@ -31,7 +33,12 @@ export function createGoverningRecordsRouter(env: Env) {
     requireRoles("ADMIN", "DEALER_USER", "FINANCE_MANAGER", "COMPLIANCE_OFFICER", "AUDITOR"),
     asyncHandler(async (req, res) => {
       const orgId = req.auth!.orgId;
-      const id = z.string().uuid().parse(req.params.id);
+      const idCheck = idParam.safeParse(req.params.id);
+      if (!idCheck.success) {
+        res.status(400).json({ code: "INVALID_ID", message: idCheck.error.issues[0]?.message ?? "Invalid id" });
+        return;
+      }
+      const id = idCheck.data;
       const g = await prisma.governingRecord.findFirst({ where: { id, orgId } });
       if (!g) {
         res.status(404).json({ code: "NOT_FOUND" });
@@ -56,7 +63,12 @@ export function createGoverningRecordsRouter(env: Env) {
     requireRoles("ADMIN", "DEALER_USER", "FINANCE_MANAGER", "COMPLIANCE_OFFICER"),
     asyncHandler(async (req, res) => {
       const orgId = req.auth!.orgId;
-      const id = z.string().uuid().parse(req.params.id);
+      const idCheck = idParam.safeParse(req.params.id);
+      if (!idCheck.success) {
+        res.status(400).json({ code: "INVALID_ID", message: idCheck.error.issues[0]?.message ?? "Invalid id" });
+        return;
+      }
+      const id = idCheck.data;
       const body = renderBody.parse(req.body);
       const out = await renderContract({
         governingRecordId: id,
@@ -74,7 +86,12 @@ export function createGoverningRecordsRouter(env: Env) {
     requireRoles("ADMIN", "DEALER_USER", "FINANCE_MANAGER", "COMPLIANCE_OFFICER", "AUDITOR"),
     asyncHandler(async (req, res) => {
       const orgId = req.auth!.orgId;
-      const id = z.string().uuid().parse(req.params.id);
+      const idCheck = idParam.safeParse(req.params.id);
+      if (!idCheck.success) {
+        res.status(400).json({ code: "INVALID_ID", message: idCheck.error.issues[0]?.message ?? "Invalid id" });
+        return;
+      }
+      const id = idCheck.data;
       const body = downloadPostBody.parse(req.body);
       const rendered = await renderContract({
         governingRecordId: id,
@@ -100,7 +117,12 @@ export function createGoverningRecordsRouter(env: Env) {
     requireRoles("ADMIN", "DEALER_USER", "FINANCE_MANAGER", "COMPLIANCE_OFFICER", "AUDITOR"),
     asyncHandler(async (req, res) => {
       const orgId = req.auth!.orgId;
-      const id = z.string().uuid().parse(req.params.id);
+      const idCheck = idParam.safeParse(req.params.id);
+      if (!idCheck.success) {
+        res.status(400).json({ code: "INVALID_ID", message: idCheck.error.issues[0]?.message ?? "Invalid id" });
+        return;
+      }
+      const id = idCheck.data;
       const body = downloadPostBody.parse(req.body);
       const rendered = await renderContract({
         governingRecordId: id,

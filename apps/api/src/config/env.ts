@@ -16,9 +16,9 @@ const schema = z.object({
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   /** Stripe Price ID for Checkout (subscription) — optional; billing works without. */
   STRIPE_CHECKOUT_PRICE_ID: z.string().optional(),
-  /** Public app URL for Checkout success/cancel redirects */
+  /** Public app URL for Checkout success/cancel redirects. Required in production; dev/test default `http://localhost:3000`. */
   APP_PUBLIC_URL: z.string().url().optional(),
-  /** Public base for QR and verification links (e.g. Next.js origin with `/api/verify`). Falls back to APP_PUBLIC_URL. */
+  /** Public web origin; QR = `{base}/verify/{recordId}`. Required in production; dev/test default matches APP or localhost. */
   VERIFICATION_PUBLIC_BASE_URL: z.string().url().optional(),
   /** Per-IP requests per window for unauthenticated / integration routes */
   RATE_LIMIT_WINDOW_MS: z.coerce.number().default(60_000),
@@ -34,17 +34,51 @@ const schema = z.object({
   API_INTERNAL_URL: z.string().url().optional(),
 });
 
-export type Env = z.infer<typeof schema>;
+type BaseEnv = z.infer<typeof schema>;
+
+/** After `loadEnv`, public URL fields are always set (with dev defaults when not in production). */
+export type Env = Omit<BaseEnv, "APP_PUBLIC_URL" | "VERIFICATION_PUBLIC_BASE_URL"> & {
+  APP_PUBLIC_URL: string;
+  VERIFICATION_PUBLIC_BASE_URL: string;
+};
+
+const DEV_DEFAULT_PUBLIC = "http://localhost:3000";
+
+function resolvePublicBaseUrls(d: BaseEnv): { APP_PUBLIC_URL: string; VERIFICATION_PUBLIC_BASE_URL: string } {
+  if (d.NODE_ENV === "production") {
+    const app = d.APP_PUBLIC_URL?.trim();
+    const ver = d.VERIFICATION_PUBLIC_BASE_URL?.trim();
+    if (!app) {
+      throw new Error(
+        "Invalid env: APP_PUBLIC_URL is required in production (set to your public web app origin, e.g. https://app.example.com)",
+      );
+    }
+    if (!ver) {
+      throw new Error(
+        "Invalid env: VERIFICATION_PUBLIC_BASE_URL is required in production (set to the same public web origin as the Next app; used for certified PDF QR → /verify/{id})",
+      );
+    }
+    return {
+      APP_PUBLIC_URL: app.replace(/\/$/, ""),
+      VERIFICATION_PUBLIC_BASE_URL: ver.replace(/\/$/, ""),
+    };
+  }
+  const app = (d.APP_PUBLIC_URL?.trim() || DEV_DEFAULT_PUBLIC).replace(/\/$/, "");
+  const ver = (d.VERIFICATION_PUBLIC_BASE_URL?.trim() || app).replace(/\/$/, "");
+  return { APP_PUBLIC_URL: app, VERIFICATION_PUBLIC_BASE_URL: ver };
+}
 
 export function loadEnv(): Env {
   const parsed = schema.safeParse(process.env);
   if (!parsed.success) {
     throw new Error(`Invalid env: ${parsed.error.message}`);
   }
-  if (parsed.data.NODE_ENV === "production" && !parsed.data.CORS_ORIGIN?.trim()) {
+  const d = parsed.data;
+  if (d.NODE_ENV === "production" && !d.CORS_ORIGIN?.trim()) {
     throw new Error("Invalid env: CORS_ORIGIN is required in production");
   }
-  return parsed.data;
+  const urls = resolvePublicBaseUrls(d);
+  return { ...d, ...urls };
 }
 
 export function getCorsOriginOption(env: Env): boolean | string[] {

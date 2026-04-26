@@ -1,5 +1,20 @@
 # DealSeal Deployment (dealseal1.com)
 
+## Copy-paste go-live checklist (Deal-Scan + app)
+
+1. **Set environment variables (Railway — API)**: `NODE_ENV=production`, `PORT`, `DATABASE_URL`, `JWT_SECRET`, `CORS_ORIGIN`, `APP_PUBLIC_URL` (e.g. `https://app.dealseal1.com`), **`VERIFICATION_PUBLIC_BASE_URL` (same as public web origin — used for certified PDF QR → `/verify/{recordId}`)**, and optional `REDIS_URL`, `S3_*`, `STRIPE_*`.
+2. **Set environment variables (Vercel — web)**: `NEXT_PUBLIC_API_URL` = your API, `NEXT_PUBLIC_APP_URL` = public app; optional `API_INTERNAL_URL` if the Next server must call a private API URL.
+3. **Build & deploy the API** (e.g. Railway build: `npm install && npm run build -w @dealseal/shared && npm run build -w @dealseal/api`, start: `npm run start -w @dealseal/api` after `npm run build`).
+4. **Build & deploy the web** (e.g. Vercel root `apps/web`, or monorepo build for web as in this doc).
+5. **Run database migrations (once per environment, from repo root or `apps/api`):**  
+   `cd apps/api && npx prisma migrate deploy && npx prisma generate`  
+   Or: `npm run db:deploy` from the repository root.
+6. **Optional — governing-record backfill** (only if you have pre-feature LOCKED deals):  
+   `npm run backfill:governing-records -- --confirm`
+7. **Smoke test:** `GET {API}/health` or `GET {API}/api/health`, `GET {API}/api/ready`, then open `https://app.../verify/{governingRecordUuid}`. Generate a **certified** render and confirm the **QR** points to your **`{VERIFICATION_PUBLIC_BASE_URL}/verify/{id}`** (not a raw API URL for humans).
+
+The API process **fails at startup in production** if `APP_PUBLIC_URL` or `VERIFICATION_PUBLIC_BASE_URL` (or `DATABASE_URL` / `CORS_ORIGIN`) is missing, so misconfiguration is obvious before traffic.
+
 This is the minimum path to first live deployment while preserving the current runtime shape.
 
 Use these templates as your starting point:
@@ -111,10 +126,10 @@ npm run db:generate -w @dealseal/api
 npm run db:push -w @dealseal/api
 ```
 
-**Deal-Scan backfill** (create governing records for locked deals that predate the feature, if needed):
+**Deal-Scan backfill** (create governing records for locked deals that predate the feature, if needed — idempotent; requires confirm):
 
 ```bash
-npm run backfill:governing-records
+npm run backfill:governing-records -- --confirm
 ```
 
 For demo data (optional in prod, useful in staging):
@@ -156,9 +171,10 @@ Create these records in Namecheap Advanced DNS:
 
 ## 6) Post-deploy smoke checks
 
-- `GET https://api.dealseal1.com/health`
-- `GET https://api.dealseal1.com/api/health` (same liveness; path alias for API-prefix routing)
-- `GET https://api.dealseal1.com/ready`
+- `GET https://api.dealseal1.com/health` (requires DB — returns `ok`, `database`, `time` or 503)
+- `GET https://api.dealseal1.com/api/health` (same; path for API-prefix routing)
+- `GET https://api.dealseal1.com/ready` (DB + Redis when `REDIS_URL` is set; else Redis `skipped`)
+- `GET https://api.dealseal1.com/api/ready` (same, under `/api`)
 - `GET https://api.dealseal1.com/demo` (if demo data exists)
 - Open `https://app.dealseal1.com` and confirm investor landing renders.
 

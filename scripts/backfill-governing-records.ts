@@ -1,9 +1,11 @@
 /**
  * One-off backfill: create GoverningRecord for LOCKED deals that predate the governing-record feature.
  *
- * DO NOT run automatically. Review output, then run in the target environment:
+ * Idempotent: re-running only backfills where `governingRecord` is still missing. Safe to run multiple times.
  *
- *   npx tsx scripts/backfill-governing-records.ts
+ * Requires explicit opt-in in non-interactive / production contexts:
+ *
+ *   npm run backfill:governing-records -- --confirm
  *
  * Requires: apps/api/.env (or env) with DATABASE_URL. Run from the repository root.
  */
@@ -18,23 +20,39 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, "..");
 config({ path: join(root, "apps", "api", ".env") });
 
+const args = process.argv.slice(2);
+const hasConfirm = args.includes("--confirm");
+
 async function main(): Promise<void> {
+  if (!hasConfirm) {
+    console.warn(
+      "[backfill] Refusing to run without --confirm (prevents accidental production runs). " +
+        "Re-run: npm run backfill:governing-records -- --confirm",
+    );
+    process.exit(2);
+  }
   const locked = await prisma.transaction.findMany({
     where: { state: TransactionState.LOCKED, governingRecord: null },
     select: { id: true, publicId: true, orgId: true },
   });
-  console.log(`[backfill] Found ${locked.length} LOCKED transaction(s) with no GoverningRecord`);
-  let created = 0;
-  let skipped = 0;
-  let errored = 0;
+  const totalScanned = locked.length;
+  console.log(`[backfill] Total scanned (LOCKED, no GoverningRecord): ${totalScanned}`);
+  let totalCreated = 0;
+  let totalSkipped = 0;
+  let totalErrored = 0;
   for (const t of locked) {
     const r = await backfillSingleGoverningRecordForTransaction(t.id);
     console.log(`[backfill] publicId=${t.publicId} tx=${t.id} =>`, r);
-    if (r.status === "created") created += 1;
-    else if (r.status === "skipped") skipped += 1;
-    else errored += 1;
+    if (r.status === "created") totalCreated += 1;
+    else if (r.status === "skipped") totalSkipped += 1;
+    else totalErrored += 1;
   }
-  console.log("[backfill] summary", { created, skipped, errored, total: locked.length });
+  console.log("[backfill] summary", {
+    totalScanned,
+    totalCreated,
+    totalSkipped,
+    totalErrored,
+  });
   await prisma.$disconnect();
 }
 
