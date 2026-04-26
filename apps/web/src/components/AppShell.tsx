@@ -7,6 +7,7 @@ import { logoutServerThenLocal } from "@/lib/auth-api";
 
 const nav = [
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/ai-checkpoints", label: "AI Checkpoints" },
   { href: "/workspace", label: "Transaction workspace" },
   { href: "/documents", label: "Document panel" },
   { href: "/discrepancies", label: "Discrepancy view" },
