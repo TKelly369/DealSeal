@@ -7,6 +7,7 @@ import { AutopublishService } from "@/lib/services/autopublish.service";
 import { AmendmentReason } from "@/generated/prisma";
 import { AmendmentService } from "@/lib/services/amendment.service";
 import { DealAlertService } from "@/lib/services/deal-alert.service";
+import { AiDealOrchestratorService } from "@/lib/services/ai-deal-orchestrator.service";
 
 async function requireDealerDeal(dealId: string) {
   const session = await auth();
@@ -18,8 +19,20 @@ async function requireDealerDeal(dealId: string) {
 
 export async function acknowledgeDisclosureFormAction(formData: FormData) {
   const dealId = String(formData.get("dealId") || "");
+  const file = formData.get("file");
+  const signerName = String(formData.get("signerName") || "");
+  const dateSigned = String(formData.get("dateSigned") || "");
+  const dealerRepresentative = String(formData.get("dealerRepresentative") || "");
+  const dealershipName = String(formData.get("dealershipName") || "");
+  const stateProfile = String(formData.get("stateProfile") || "");
+  const fileName = file instanceof File && file.name ? file.name : "initial-disclosure-signed.pdf";
   const { session } = await requireDealerDeal(dealId);
-  await DealWorkflowService.acknowledgeDisclosure(dealId, session.user.id, session.user.role);
+  await DealWorkflowService.acknowledgeDisclosure(
+    dealId,
+    { signerName, dateSigned, dealerRepresentative, dealershipName, stateProfile, fileName },
+    session.user.id,
+    session.user.role,
+  );
   revalidatePath(`/dealer/deals/${dealId}`);
 }
 
@@ -48,6 +61,20 @@ export async function submitUnsignedRISCAction(formData: FormData) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
   await DealWorkflowService.submitUnsignedRISC(dealId, { fileName }, session.user.id, session.user.role);
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
+export async function generateAiDealJacketDocsFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const includeBranding = String(formData.get("includeBranding") || "") === "on";
+  const logoUrl = String(formData.get("logoUrl") || "").trim();
+  await requireDealerDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await AiDealOrchestratorService.generateDealJacketDocs(dealId, session.user.id, session.user.role, {
+    includeBranding,
+    logoUrl: logoUrl || undefined,
+  });
   revalidatePath(`/dealer/deals/${dealId}`);
 }
 

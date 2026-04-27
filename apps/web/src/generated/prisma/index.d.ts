@@ -293,9 +293,11 @@ export type DealerLenderLinkStatus = (typeof DealerLenderLinkStatus)[keyof typeo
 
 export const DealStatus: {
   DISCLOSURE_REQUIRED: 'DISCLOSURE_REQUIRED',
+  AUTHORIZED_FOR_STRUCTURING: 'AUTHORIZED_FOR_STRUCTURING',
   GREEN_STAGE: 'GREEN_STAGE',
   RISC_UNSIGNED_REVIEW: 'RISC_UNSIGNED_REVIEW',
   RISC_LENDER_FINAL: 'RISC_LENDER_FINAL',
+  FIRST_GREEN_PASSED: 'FIRST_GREEN_PASSED',
   AUTHORITATIVE_LOCK: 'AUTHORITATIVE_LOCK',
   GENERATING_CLOSING_PACKAGE: 'GENERATING_CLOSING_PACKAGE',
   CLOSING_PACKAGE_READY: 'CLOSING_PACKAGE_READY',
@@ -312,13 +314,17 @@ export const CustodyEventType: {
   MODIFIED: 'MODIFIED',
   SIGNED: 'SIGNED',
   LOCKED: 'LOCKED',
-  CERTIFIED: 'CERTIFIED'
+  CERTIFIED: 'CERTIFIED',
+  INITIAL_DISCLOSURE_ACCEPTED: 'INITIAL_DISCLOSURE_ACCEPTED',
+  CHANGE_SUMMARY_GENERATED: 'CHANGE_SUMMARY_GENERATED'
 };
 
 export type CustodyEventType = (typeof CustodyEventType)[keyof typeof CustodyEventType]
 
 
 export const DocumentType: {
+  INITIAL_DISCLOSURE_SIGNED: 'INITIAL_DISCLOSURE_SIGNED',
+  CHANGE_SUMMARY_DISCLOSURE: 'CHANGE_SUMMARY_DISCLOSURE',
   PROCESS_DISCLOSURE: 'PROCESS_DISCLOSURE',
   DEALER_UPLOAD: 'DEALER_UPLOAD',
   INSURANCE: 'INSURANCE',
@@ -16829,6 +16835,10 @@ export namespace Prisma {
     dealerLenderLinkId: string | null
     status: $Enums.DealStatus | null
     state: string | null
+    initialDisclosureAcceptedAt: Date | null
+    initialDisclosureHash: string | null
+    initialDisclosureSignerName: string | null
+    dealerRepresentativeName: string | null
     complianceStatus: $Enums.DealComplianceStatus | null
     poolId: string | null
     secondaryMarketStatus: $Enums.SecondaryMarketStatus | null
@@ -16845,6 +16855,10 @@ export namespace Prisma {
     dealerLenderLinkId: string | null
     status: $Enums.DealStatus | null
     state: string | null
+    initialDisclosureAcceptedAt: Date | null
+    initialDisclosureHash: string | null
+    initialDisclosureSignerName: string | null
+    dealerRepresentativeName: string | null
     complianceStatus: $Enums.DealComplianceStatus | null
     poolId: string | null
     secondaryMarketStatus: $Enums.SecondaryMarketStatus | null
@@ -16861,6 +16875,13 @@ export namespace Prisma {
     dealerLenderLinkId: number
     status: number
     state: number
+    initialDisclosureAcceptedAt: number
+    initialDisclosureHash: number
+    initialDisclosureSignerName: number
+    dealerRepresentativeName: number
+    governingStateProfile: number
+    preliminarySubmittedTerms: number
+    lenderApprovedTerms: number
     complianceStatus: number
     consummatedData: number
     poolId: number
@@ -16880,6 +16901,10 @@ export namespace Prisma {
     dealerLenderLinkId?: true
     status?: true
     state?: true
+    initialDisclosureAcceptedAt?: true
+    initialDisclosureHash?: true
+    initialDisclosureSignerName?: true
+    dealerRepresentativeName?: true
     complianceStatus?: true
     poolId?: true
     secondaryMarketStatus?: true
@@ -16896,6 +16921,10 @@ export namespace Prisma {
     dealerLenderLinkId?: true
     status?: true
     state?: true
+    initialDisclosureAcceptedAt?: true
+    initialDisclosureHash?: true
+    initialDisclosureSignerName?: true
+    dealerRepresentativeName?: true
     complianceStatus?: true
     poolId?: true
     secondaryMarketStatus?: true
@@ -16912,6 +16941,13 @@ export namespace Prisma {
     dealerLenderLinkId?: true
     status?: true
     state?: true
+    initialDisclosureAcceptedAt?: true
+    initialDisclosureHash?: true
+    initialDisclosureSignerName?: true
+    dealerRepresentativeName?: true
+    governingStateProfile?: true
+    preliminarySubmittedTerms?: true
+    lenderApprovedTerms?: true
     complianceStatus?: true
     consummatedData?: true
     poolId?: true
@@ -17002,6 +17038,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt: Date | null
+    initialDisclosureHash: string | null
+    initialDisclosureSignerName: string | null
+    dealerRepresentativeName: string | null
+    governingStateProfile: JsonValue | null
+    preliminarySubmittedTerms: JsonValue | null
+    lenderApprovedTerms: JsonValue | null
     complianceStatus: $Enums.DealComplianceStatus
     consummatedData: JsonValue | null
     poolId: string | null
@@ -17036,6 +17079,13 @@ export namespace Prisma {
     dealerLenderLinkId?: boolean
     status?: boolean
     state?: boolean
+    initialDisclosureAcceptedAt?: boolean
+    initialDisclosureHash?: boolean
+    initialDisclosureSignerName?: boolean
+    dealerRepresentativeName?: boolean
+    governingStateProfile?: boolean
+    preliminarySubmittedTerms?: boolean
+    lenderApprovedTerms?: boolean
     complianceStatus?: boolean
     consummatedData?: boolean
     poolId?: boolean
@@ -17072,6 +17122,13 @@ export namespace Prisma {
     dealerLenderLinkId?: boolean
     status?: boolean
     state?: boolean
+    initialDisclosureAcceptedAt?: boolean
+    initialDisclosureHash?: boolean
+    initialDisclosureSignerName?: boolean
+    dealerRepresentativeName?: boolean
+    governingStateProfile?: boolean
+    preliminarySubmittedTerms?: boolean
+    lenderApprovedTerms?: boolean
     complianceStatus?: boolean
     consummatedData?: boolean
     poolId?: boolean
@@ -17093,6 +17150,13 @@ export namespace Prisma {
     dealerLenderLinkId?: boolean
     status?: boolean
     state?: boolean
+    initialDisclosureAcceptedAt?: boolean
+    initialDisclosureHash?: boolean
+    initialDisclosureSignerName?: boolean
+    dealerRepresentativeName?: boolean
+    governingStateProfile?: boolean
+    preliminarySubmittedTerms?: boolean
+    lenderApprovedTerms?: boolean
     complianceStatus?: boolean
     consummatedData?: boolean
     poolId?: boolean
@@ -17114,6 +17178,13 @@ export namespace Prisma {
     dealerLenderLinkId?: boolean
     status?: boolean
     state?: boolean
+    initialDisclosureAcceptedAt?: boolean
+    initialDisclosureHash?: boolean
+    initialDisclosureSignerName?: boolean
+    dealerRepresentativeName?: boolean
+    governingStateProfile?: boolean
+    preliminarySubmittedTerms?: boolean
+    lenderApprovedTerms?: boolean
     complianceStatus?: boolean
     consummatedData?: boolean
     poolId?: boolean
@@ -17124,7 +17195,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DealOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealerId" | "lenderId" | "dealerLenderLinkId" | "status" | "state" | "complianceStatus" | "consummatedData" | "poolId" | "secondaryMarketStatus" | "secondaryMarketGrade" | "apiIngressKeyId" | "createdAt" | "updatedAt", ExtArgs["result"]["deal"]>
+  export type DealOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealerId" | "lenderId" | "dealerLenderLinkId" | "status" | "state" | "initialDisclosureAcceptedAt" | "initialDisclosureHash" | "initialDisclosureSignerName" | "dealerRepresentativeName" | "governingStateProfile" | "preliminarySubmittedTerms" | "lenderApprovedTerms" | "complianceStatus" | "consummatedData" | "poolId" | "secondaryMarketStatus" | "secondaryMarketGrade" | "apiIngressKeyId" | "createdAt" | "updatedAt", ExtArgs["result"]["deal"]>
   export type DealInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -17188,6 +17259,13 @@ export namespace Prisma {
       dealerLenderLinkId: string
       status: $Enums.DealStatus
       state: string
+      initialDisclosureAcceptedAt: Date | null
+      initialDisclosureHash: string | null
+      initialDisclosureSignerName: string | null
+      dealerRepresentativeName: string | null
+      governingStateProfile: Prisma.JsonValue | null
+      preliminarySubmittedTerms: Prisma.JsonValue | null
+      lenderApprovedTerms: Prisma.JsonValue | null
       complianceStatus: $Enums.DealComplianceStatus
       consummatedData: Prisma.JsonValue | null
       poolId: string | null
@@ -17643,6 +17721,13 @@ export namespace Prisma {
     readonly dealerLenderLinkId: FieldRef<"Deal", 'String'>
     readonly status: FieldRef<"Deal", 'DealStatus'>
     readonly state: FieldRef<"Deal", 'String'>
+    readonly initialDisclosureAcceptedAt: FieldRef<"Deal", 'DateTime'>
+    readonly initialDisclosureHash: FieldRef<"Deal", 'String'>
+    readonly initialDisclosureSignerName: FieldRef<"Deal", 'String'>
+    readonly dealerRepresentativeName: FieldRef<"Deal", 'String'>
+    readonly governingStateProfile: FieldRef<"Deal", 'Json'>
+    readonly preliminarySubmittedTerms: FieldRef<"Deal", 'Json'>
+    readonly lenderApprovedTerms: FieldRef<"Deal", 'Json'>
     readonly complianceStatus: FieldRef<"Deal", 'DealComplianceStatus'>
     readonly consummatedData: FieldRef<"Deal", 'Json'>
     readonly poolId: FieldRef<"Deal", 'String'>
@@ -46918,6 +47003,13 @@ export namespace Prisma {
     dealerLenderLinkId: 'dealerLenderLinkId',
     status: 'status',
     state: 'state',
+    initialDisclosureAcceptedAt: 'initialDisclosureAcceptedAt',
+    initialDisclosureHash: 'initialDisclosureHash',
+    initialDisclosureSignerName: 'initialDisclosureSignerName',
+    dealerRepresentativeName: 'dealerRepresentativeName',
+    governingStateProfile: 'governingStateProfile',
+    preliminarySubmittedTerms: 'preliminarySubmittedTerms',
+    lenderApprovedTerms: 'lenderApprovedTerms',
     complianceStatus: 'complianceStatus',
     consummatedData: 'consummatedData',
     poolId: 'poolId',
@@ -48707,6 +48799,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFilter<"Deal"> | string
     status?: EnumDealStatusFilter<"Deal"> | $Enums.DealStatus
     state?: StringFilter<"Deal"> | string
+    initialDisclosureAcceptedAt?: DateTimeNullableFilter<"Deal"> | Date | string | null
+    initialDisclosureHash?: StringNullableFilter<"Deal"> | string | null
+    initialDisclosureSignerName?: StringNullableFilter<"Deal"> | string | null
+    dealerRepresentativeName?: StringNullableFilter<"Deal"> | string | null
+    governingStateProfile?: JsonNullableFilter<"Deal">
+    preliminarySubmittedTerms?: JsonNullableFilter<"Deal">
+    lenderApprovedTerms?: JsonNullableFilter<"Deal">
     complianceStatus?: EnumDealComplianceStatusFilter<"Deal"> | $Enums.DealComplianceStatus
     consummatedData?: JsonNullableFilter<"Deal">
     poolId?: StringNullableFilter<"Deal"> | string | null
@@ -48742,6 +48841,13 @@ export namespace Prisma {
     dealerLenderLinkId?: SortOrder
     status?: SortOrder
     state?: SortOrder
+    initialDisclosureAcceptedAt?: SortOrderInput | SortOrder
+    initialDisclosureHash?: SortOrderInput | SortOrder
+    initialDisclosureSignerName?: SortOrderInput | SortOrder
+    dealerRepresentativeName?: SortOrderInput | SortOrder
+    governingStateProfile?: SortOrderInput | SortOrder
+    preliminarySubmittedTerms?: SortOrderInput | SortOrder
+    lenderApprovedTerms?: SortOrderInput | SortOrder
     complianceStatus?: SortOrder
     consummatedData?: SortOrderInput | SortOrder
     poolId?: SortOrderInput | SortOrder
@@ -48780,6 +48886,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFilter<"Deal"> | string
     status?: EnumDealStatusFilter<"Deal"> | $Enums.DealStatus
     state?: StringFilter<"Deal"> | string
+    initialDisclosureAcceptedAt?: DateTimeNullableFilter<"Deal"> | Date | string | null
+    initialDisclosureHash?: StringNullableFilter<"Deal"> | string | null
+    initialDisclosureSignerName?: StringNullableFilter<"Deal"> | string | null
+    dealerRepresentativeName?: StringNullableFilter<"Deal"> | string | null
+    governingStateProfile?: JsonNullableFilter<"Deal">
+    preliminarySubmittedTerms?: JsonNullableFilter<"Deal">
+    lenderApprovedTerms?: JsonNullableFilter<"Deal">
     complianceStatus?: EnumDealComplianceStatusFilter<"Deal"> | $Enums.DealComplianceStatus
     consummatedData?: JsonNullableFilter<"Deal">
     poolId?: StringNullableFilter<"Deal"> | string | null
@@ -48815,6 +48928,13 @@ export namespace Prisma {
     dealerLenderLinkId?: SortOrder
     status?: SortOrder
     state?: SortOrder
+    initialDisclosureAcceptedAt?: SortOrderInput | SortOrder
+    initialDisclosureHash?: SortOrderInput | SortOrder
+    initialDisclosureSignerName?: SortOrderInput | SortOrder
+    dealerRepresentativeName?: SortOrderInput | SortOrder
+    governingStateProfile?: SortOrderInput | SortOrder
+    preliminarySubmittedTerms?: SortOrderInput | SortOrder
+    lenderApprovedTerms?: SortOrderInput | SortOrder
     complianceStatus?: SortOrder
     consummatedData?: SortOrderInput | SortOrder
     poolId?: SortOrderInput | SortOrder
@@ -48838,6 +48958,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringWithAggregatesFilter<"Deal"> | string
     status?: EnumDealStatusWithAggregatesFilter<"Deal"> | $Enums.DealStatus
     state?: StringWithAggregatesFilter<"Deal"> | string
+    initialDisclosureAcceptedAt?: DateTimeNullableWithAggregatesFilter<"Deal"> | Date | string | null
+    initialDisclosureHash?: StringNullableWithAggregatesFilter<"Deal"> | string | null
+    initialDisclosureSignerName?: StringNullableWithAggregatesFilter<"Deal"> | string | null
+    dealerRepresentativeName?: StringNullableWithAggregatesFilter<"Deal"> | string | null
+    governingStateProfile?: JsonNullableWithAggregatesFilter<"Deal">
+    preliminarySubmittedTerms?: JsonNullableWithAggregatesFilter<"Deal">
+    lenderApprovedTerms?: JsonNullableWithAggregatesFilter<"Deal">
     complianceStatus?: EnumDealComplianceStatusWithAggregatesFilter<"Deal"> | $Enums.DealComplianceStatus
     consummatedData?: JsonNullableWithAggregatesFilter<"Deal">
     poolId?: StringNullableWithAggregatesFilter<"Deal"> | string | null
@@ -51677,6 +51804,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -51711,6 +51845,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -51739,6 +51880,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -51773,6 +51921,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -51804,6 +51959,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -51818,6 +51980,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -51834,6 +52003,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54825,13 +55001,6 @@ export namespace Prisma {
     notIn?: $Enums.DealStatus[] | ListEnumDealStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumDealStatusFilter<$PrismaModel> | $Enums.DealStatus
   }
-
-  export type EnumDealComplianceStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumDealComplianceStatusFilter<$PrismaModel> | $Enums.DealComplianceStatus
-  }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -54854,6 +55023,13 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type EnumDealComplianceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealComplianceStatusFilter<$PrismaModel> | $Enums.DealComplianceStatus
   }
 
   export type EnumSecondaryMarketStatusFilter<$PrismaModel = never> = {
@@ -54965,6 +55141,13 @@ export namespace Prisma {
     dealerLenderLinkId?: SortOrder
     status?: SortOrder
     state?: SortOrder
+    initialDisclosureAcceptedAt?: SortOrder
+    initialDisclosureHash?: SortOrder
+    initialDisclosureSignerName?: SortOrder
+    dealerRepresentativeName?: SortOrder
+    governingStateProfile?: SortOrder
+    preliminarySubmittedTerms?: SortOrder
+    lenderApprovedTerms?: SortOrder
     complianceStatus?: SortOrder
     consummatedData?: SortOrder
     poolId?: SortOrder
@@ -54982,6 +55165,10 @@ export namespace Prisma {
     dealerLenderLinkId?: SortOrder
     status?: SortOrder
     state?: SortOrder
+    initialDisclosureAcceptedAt?: SortOrder
+    initialDisclosureHash?: SortOrder
+    initialDisclosureSignerName?: SortOrder
+    dealerRepresentativeName?: SortOrder
     complianceStatus?: SortOrder
     poolId?: SortOrder
     secondaryMarketStatus?: SortOrder
@@ -54998,6 +55185,10 @@ export namespace Prisma {
     dealerLenderLinkId?: SortOrder
     status?: SortOrder
     state?: SortOrder
+    initialDisclosureAcceptedAt?: SortOrder
+    initialDisclosureHash?: SortOrder
+    initialDisclosureSignerName?: SortOrder
+    dealerRepresentativeName?: SortOrder
     complianceStatus?: SortOrder
     poolId?: SortOrder
     secondaryMarketStatus?: SortOrder
@@ -55015,16 +55206,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDealStatusFilter<$PrismaModel>
     _max?: NestedEnumDealStatusFilter<$PrismaModel>
-  }
-
-  export type EnumDealComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumDealComplianceStatusWithAggregatesFilter<$PrismaModel> | $Enums.DealComplianceStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumDealComplianceStatusFilter<$PrismaModel>
-    _max?: NestedEnumDealComplianceStatusFilter<$PrismaModel>
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -55051,6 +55232,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type EnumDealComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealComplianceStatusWithAggregatesFilter<$PrismaModel> | $Enums.DealComplianceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDealComplianceStatusFilter<$PrismaModel>
+    _max?: NestedEnumDealComplianceStatusFilter<$PrismaModel>
   }
 
   export type EnumSecondaryMarketStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -59874,16 +60065,6 @@ export namespace Prisma {
     _min?: NestedEnumDealStatusFilter<$PrismaModel>
     _max?: NestedEnumDealStatusFilter<$PrismaModel>
   }
-
-  export type NestedEnumDealComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumDealComplianceStatusWithAggregatesFilter<$PrismaModel> | $Enums.DealComplianceStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumDealComplianceStatusFilter<$PrismaModel>
-    _max?: NestedEnumDealComplianceStatusFilter<$PrismaModel>
-  }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -59906,6 +60087,16 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumDealComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealComplianceStatusWithAggregatesFilter<$PrismaModel> | $Enums.DealComplianceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDealComplianceStatusFilter<$PrismaModel>
+    _max?: NestedEnumDealComplianceStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumSecondaryMarketStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -61060,6 +61251,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -61092,6 +61290,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -61130,6 +61335,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -61162,6 +61374,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -61686,6 +61905,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFilter<"Deal"> | string
     status?: EnumDealStatusFilter<"Deal"> | $Enums.DealStatus
     state?: StringFilter<"Deal"> | string
+    initialDisclosureAcceptedAt?: DateTimeNullableFilter<"Deal"> | Date | string | null
+    initialDisclosureHash?: StringNullableFilter<"Deal"> | string | null
+    initialDisclosureSignerName?: StringNullableFilter<"Deal"> | string | null
+    dealerRepresentativeName?: StringNullableFilter<"Deal"> | string | null
+    governingStateProfile?: JsonNullableFilter<"Deal">
+    preliminarySubmittedTerms?: JsonNullableFilter<"Deal">
+    lenderApprovedTerms?: JsonNullableFilter<"Deal">
     complianceStatus?: EnumDealComplianceStatusFilter<"Deal"> | $Enums.DealComplianceStatus
     consummatedData?: JsonNullableFilter<"Deal">
     poolId?: StringNullableFilter<"Deal"> | string | null
@@ -62669,6 +62895,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -62701,6 +62934,13 @@ export namespace Prisma {
     lenderId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -64380,6 +64620,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -64413,6 +64660,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -64456,6 +64710,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -64489,6 +64750,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -64516,6 +64784,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -64549,6 +64824,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -64592,6 +64874,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -64625,6 +64914,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -64652,6 +64948,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -64685,6 +64988,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -64728,6 +65038,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -64761,6 +65078,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -64788,6 +65112,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -64821,6 +65152,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -64944,6 +65282,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -64977,6 +65322,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65036,6 +65388,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -65069,6 +65428,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -65139,6 +65505,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -65172,6 +65545,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65289,6 +65669,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -65322,6 +65709,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -65438,6 +65832,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -65471,6 +65872,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -65546,6 +65954,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -65579,6 +65994,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65622,6 +66044,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -65655,6 +66084,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -65763,6 +66199,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -65796,6 +66239,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65878,6 +66328,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -65911,6 +66368,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -66072,6 +66536,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -66105,6 +66576,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66345,6 +66823,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -66378,6 +66863,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -66527,6 +67019,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -66560,6 +67059,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67153,6 +67659,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -67186,6 +67699,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -67316,6 +67836,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -67349,6 +67876,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67545,6 +68079,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -67578,6 +68119,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -67768,6 +68316,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -67801,6 +68356,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67967,6 +68529,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -68000,6 +68569,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -68080,6 +68656,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -68113,6 +68696,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68263,6 +68853,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -68296,6 +68893,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -68339,6 +68943,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -68372,6 +68983,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68399,6 +69017,13 @@ export namespace Prisma {
     id?: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -68432,6 +69057,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -68475,6 +69107,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -68508,6 +69147,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69085,6 +69731,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -69101,6 +69754,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -69417,6 +70077,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -69449,6 +70116,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69479,6 +70153,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69493,6 +70174,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -69525,6 +70213,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69555,6 +70250,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69787,6 +70489,13 @@ export namespace Prisma {
     lenderId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -69801,6 +70510,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -69833,6 +70549,13 @@ export namespace Prisma {
     lenderId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69863,6 +70586,13 @@ export namespace Prisma {
     lenderId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70416,6 +71146,13 @@ export namespace Prisma {
     dealerLenderLinkId: string
     status?: $Enums.DealStatus
     state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -70429,6 +71166,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -70462,6 +71206,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -70492,6 +71243,13 @@ export namespace Prisma {
     dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
     status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
     state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus

@@ -42,7 +42,7 @@ export const NegotiableInstrumentService = {
     const ni = deal.negotiableInstrument;
     let status: HdcStatus = HdcStatus.QUALIFIED;
 
-    if (deal.status === "AUTHORITATIVE_LOCK" && ni.hdcStatus === HdcStatus.UNEVALUATED) {
+    if ((deal.status === "FIRST_GREEN_PASSED" || deal.status === "AUTHORITATIVE_LOCK") && ni.hdcStatus === HdcStatus.UNEVALUATED) {
       status = HdcStatus.REVIEW_REQUIRED;
     }
     if (!ni.payToOrderOf || ni.payToOrderOf.trim().length < 2) {

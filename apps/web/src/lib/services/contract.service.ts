@@ -3,10 +3,6 @@ import type { Prisma } from "@/generated/prisma";
 import { DealBuilderInput, DealBuilderSchema } from "@/lib/services/types";
 import { prisma } from "@/lib/db";
 
-function toDecimal(n: number) {
-  return n.toString();
-}
-
 export const AuthoritativeContractService = {
   async generateCanonicalDeal(dealData: DealBuilderInput) {
     const parsed = DealBuilderSchema.parse(dealData);
@@ -23,31 +19,31 @@ export const AuthoritativeContractService = {
             firstName: parsed.party.firstName,
             lastName: parsed.party.lastName,
             address: parsed.party.address,
-            creditTier: parsed.party.creditTier ?? null,
+            creditTier: parsed.party.contactInfo
+              ? `${parsed.party.creditTier ?? ""} | contact:${parsed.party.contactInfo}${parsed.party.coBuyerName ? ` | coBuyer:${parsed.party.coBuyerName}` : ""}`
+              : parsed.party.creditTier ?? null,
           },
         },
-        vehicle: {
-          create: {
-            year: parsed.vehicle.year,
-            make: parsed.vehicle.make,
-            model: parsed.vehicle.model,
-            vin: parsed.vehicle.vin,
-            mileage: parsed.vehicle.mileage,
-            condition: parsed.vehicle.condition,
-          },
+        dealerRepresentativeName: parsed.dealerRepresentative ?? null,
+        governingStateProfile: {
+          dealershipLocation: parsed.dealershipLocation ?? null,
+          assignedDealerUserId: parsed.assignedDealerUserId ?? null,
+          shellCreatedAt: new Date().toISOString(),
         },
-        financials: {
-          create: {
-            amountFinanced: toDecimal(parsed.financials.amountFinanced),
-            ltv: toDecimal(parsed.financials.ltv),
-            maxLtv: toDecimal(parsed.financials.maxLtv),
-            taxes: toDecimal(parsed.financials.taxes),
-            fees: toDecimal(parsed.financials.fees),
-            gap: toDecimal(parsed.financials.gap),
-            warranty: toDecimal(parsed.financials.warranty),
-            totalSalePrice: toDecimal(parsed.financials.totalSalePrice),
-          },
-        },
+        ...(parsed.vehicle.vin
+          ? {
+              vehicle: {
+                create: {
+                  year: parsed.vehicle.year ?? new Date().getFullYear(),
+                  make: parsed.vehicle.make ?? "UNKNOWN",
+                  model: parsed.vehicle.model ?? "UNKNOWN",
+                  vin: parsed.vehicle.vin,
+                  mileage: parsed.vehicle.mileage ?? 0,
+                  condition: parsed.vehicle.condition ?? "USED",
+                },
+              },
+            }
+          : {}),
       },
       include: { vehicle: true, financials: true, parties: true },
     });

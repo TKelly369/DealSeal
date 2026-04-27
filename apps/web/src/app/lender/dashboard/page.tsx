@@ -12,6 +12,7 @@ export default async function LenderDashboardPage() {
   const awaitingRisc = deals.filter((d) => d.status === "RISC_UNSIGNED_REVIEW");
   const lockedOrDone = deals.filter(
     (d) =>
+      d.status === "FIRST_GREEN_PASSED" ||
       d.status === "AUTHORITATIVE_LOCK" ||
       d.status === "GENERATING_CLOSING_PACKAGE" ||
       d.status === "CLOSING_PACKAGE_READY" ||

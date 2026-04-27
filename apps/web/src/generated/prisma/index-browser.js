@@ -242,6 +242,13 @@ exports.Prisma.DealScalarFieldEnum = {
   dealerLenderLinkId: 'dealerLenderLinkId',
   status: 'status',
   state: 'state',
+  initialDisclosureAcceptedAt: 'initialDisclosureAcceptedAt',
+  initialDisclosureHash: 'initialDisclosureHash',
+  initialDisclosureSignerName: 'initialDisclosureSignerName',
+  dealerRepresentativeName: 'dealerRepresentativeName',
+  governingStateProfile: 'governingStateProfile',
+  preliminarySubmittedTerms: 'preliminarySubmittedTerms',
+  lenderApprovedTerms: 'lenderApprovedTerms',
   complianceStatus: 'complianceStatus',
   consummatedData: 'consummatedData',
   poolId: 'poolId',
@@ -643,9 +650,11 @@ exports.DealerLenderLinkStatus = exports.$Enums.DealerLenderLinkStatus = {
 
 exports.DealStatus = exports.$Enums.DealStatus = {
   DISCLOSURE_REQUIRED: 'DISCLOSURE_REQUIRED',
+  AUTHORIZED_FOR_STRUCTURING: 'AUTHORIZED_FOR_STRUCTURING',
   GREEN_STAGE: 'GREEN_STAGE',
   RISC_UNSIGNED_REVIEW: 'RISC_UNSIGNED_REVIEW',
   RISC_LENDER_FINAL: 'RISC_LENDER_FINAL',
+  FIRST_GREEN_PASSED: 'FIRST_GREEN_PASSED',
   AUTHORITATIVE_LOCK: 'AUTHORITATIVE_LOCK',
   GENERATING_CLOSING_PACKAGE: 'GENERATING_CLOSING_PACKAGE',
   CLOSING_PACKAGE_READY: 'CLOSING_PACKAGE_READY',
@@ -723,6 +732,8 @@ exports.GeneratedDocumentType = exports.$Enums.GeneratedDocumentType = {
 };
 
 exports.DocumentType = exports.$Enums.DocumentType = {
+  INITIAL_DISCLOSURE_SIGNED: 'INITIAL_DISCLOSURE_SIGNED',
+  CHANGE_SUMMARY_DISCLOSURE: 'CHANGE_SUMMARY_DISCLOSURE',
   PROCESS_DISCLOSURE: 'PROCESS_DISCLOSURE',
   DEALER_UPLOAD: 'DEALER_UPLOAD',
   INSURANCE: 'INSURANCE',
@@ -782,7 +793,9 @@ exports.CustodyEventType = exports.$Enums.CustodyEventType = {
   MODIFIED: 'MODIFIED',
   SIGNED: 'SIGNED',
   LOCKED: 'LOCKED',
-  CERTIFIED: 'CERTIFIED'
+  CERTIFIED: 'CERTIFIED',
+  INITIAL_DISCLOSURE_ACCEPTED: 'INITIAL_DISCLOSURE_ACCEPTED',
+  CHANGE_SUMMARY_GENERATED: 'CHANGE_SUMMARY_GENERATED'
 };
 
 exports.ComplianceRuleSet = exports.$Enums.ComplianceRuleSet = {

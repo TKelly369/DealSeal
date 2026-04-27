@@ -89,7 +89,8 @@ export default async function LenderDealIntakeDetailPage({ params }: { params: P
         </div>
       ) : null}
 
-      {deal.status === "AUTHORITATIVE_LOCK" ||
+      {deal.status === "FIRST_GREEN_PASSED" ||
+      deal.status === "AUTHORITATIVE_LOCK" ||
       deal.status === "GENERATING_CLOSING_PACKAGE" ||
       deal.status === "CLOSING_PACKAGE_READY" ||
       deal.status === "CONSUMMATED" ? (
@@ -108,6 +109,7 @@ export default async function LenderDealIntakeDetailPage({ params }: { params: P
       ) : null}
 
       {deal.status !== "RISC_UNSIGNED_REVIEW" &&
+      deal.status !== "FIRST_GREEN_PASSED" &&
       deal.status !== "AUTHORITATIVE_LOCK" &&
       deal.status !== "GENERATING_CLOSING_PACKAGE" &&
       deal.status !== "CLOSING_PACKAGE_READY" &&

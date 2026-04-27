@@ -10,6 +10,7 @@ import {
   requestAmendmentFormAction,
   retryAutopublishFormAction,
   submitUnsignedRISCAction,
+  generateAiDealJacketDocsFormAction,
   uploadGreenStageDocAction,
   uploadSignedRISCAction,
 } from "./actions";
@@ -69,10 +70,10 @@ export type DealFlowSnapshot = {
 
 const STEPS = [
   "Deal details",
-  "Upload documents",
-  "Print for signatures",
+  "Gather unsigned deal jacket docs",
+  "Review lender-final contract",
   "Upload signed contract",
-  "We finish the paperwork",
+  "AI aligns full package",
   "Download closing package",
 ] as const;
 
@@ -90,12 +91,14 @@ function activeStepIndex(status: string): number {
   switch (status) {
     case "DISCLOSURE_REQUIRED":
       return 0;
+    case "AUTHORIZED_FOR_STRUCTURING":
     case "GREEN_STAGE":
       return 1;
     case "RISC_UNSIGNED_REVIEW":
       return 2;
     case "RISC_LENDER_FINAL":
       return 3;
+    case "FIRST_GREEN_PASSED":
     case "AUTHORITATIVE_LOCK":
     case "GENERATING_CLOSING_PACKAGE":
       return 4;
@@ -125,7 +128,7 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
         </Link>
       </div>
       <p style={{ color: "var(--muted)", margin: "0.5rem 0 1.25rem", fontSize: "0.9rem" }}>
-        {deal.state} · follow the steps below—we handle the rest after you upload the signed contract.
+        {deal.state} · pre-signature docs remain unsigned and estimated. Final contract signature triggers package alignment and lock.
       </p>
 
       <ol style={{ listStyle: "none", padding: 0, margin: "0 0 1.5rem", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
@@ -247,12 +250,43 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
             </li>
           </ul>
           <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
-            DealSeal needs a quick acknowledgment of how funding and signing work on the platform. Tap the button below to continue.
+            Upload the signed DealSeal Initial Disclosure to unlock structuring, compliance, and lender submission workflows.
           </p>
           <form action={acknowledgeDisclosureFormAction}>
             <input type="hidden" name="dealId" value={deal.dealId} />
+            <input
+              name="signerName"
+              required
+              placeholder="Customer signer name"
+              style={{ width: "100%", marginBottom: "0.45rem", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+            />
+            <input
+              type="date"
+              name="dateSigned"
+              required
+              style={{ width: "100%", marginBottom: "0.45rem", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+            />
+            <input
+              name="dealerRepresentative"
+              required
+              placeholder="Dealer representative"
+              style={{ width: "100%", marginBottom: "0.45rem", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+            />
+            <input
+              name="dealershipName"
+              required
+              placeholder="Dealership legal name"
+              style={{ width: "100%", marginBottom: "0.45rem", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+            />
+            <input
+              name="stateProfile"
+              required
+              placeholder="State profile key (example: tx-retail-installment)"
+              style={{ width: "100%", marginBottom: "0.45rem", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+            />
+            <input type="file" name="file" required style={{ marginBottom: "0.6rem" }} />
             <button type="submit" className="btn">
-              <SubmitLabel idle="Continue" />
+              <SubmitLabel idle="Upload signed Initial Disclosure" />
             </button>
           </form>
         </section>
@@ -269,10 +303,27 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
       )}
 
       {/* Step 2 */}
-      {deal.status === "GREEN_STAGE" ? (
+      {deal.status === "AUTHORIZED_FOR_STRUCTURING" || deal.status === "GREEN_STAGE" ? (
         <section className="card">
-          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 2 · Upload required documents</h2>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Add insurance and any stips your lender asked for.</p>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 2 · Gather unsigned deal jacket docs</h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+            Add insurance and stips. These are collection docs only and can hold estimated pricing before final contract signature.
+          </p>
+          <form action={generateAiDealJacketDocsFormAction} style={{ display: "grid", gap: "0.45rem", marginTop: "0.65rem" }}>
+            <input type="hidden" name="dealId" value={deal.dealId} />
+            <label style={{ display: "flex", alignItems: "center", gap: "0.45rem", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+              <input type="checkbox" name="includeBranding" />
+              Include dealership name/logo branding in AI-generated docs
+            </label>
+            <input
+              name="logoUrl"
+              placeholder="Optional logo URL"
+              style={{ width: "100%", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+            />
+            <button type="submit" className="btn btn-secondary">
+              <SubmitLabel idle="AI generate required deal-jacket docs" />
+            </button>
+          </form>
           <form action={uploadGreenStageDocAction} style={{ display: "grid", gap: "0.5rem", marginTop: "0.75rem" }}>
             <input type="hidden" name="dealId" value={deal.dealId} />
             <input type="hidden" name="docType" value="INSURANCE" />
@@ -293,7 +344,9 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
           </form>
           <hr style={{ borderColor: "#333", margin: "1.25rem 0" }} />
           <p style={{ fontWeight: 600, fontSize: "0.95rem" }}>Send to lender for approval</p>
-          <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>Upload your unsigned retail contract. Your lender will return a final version for signing.</p>
+          <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>
+            Upload your unsigned retail contract. The lender returns the final contract, then AI reconciles all supporting docs to match before signing.
+          </p>
           <form action={submitUnsignedRISCAction} style={{ display: "grid", gap: "0.5rem", marginTop: "0.5rem" }}>
             <input type="hidden" name="dealId" value={deal.dealId} />
             <input type="file" name="file" required />
@@ -315,9 +368,9 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
 
       {deal.status === "RISC_LENDER_FINAL" ? (
         <section className="card">
-          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 3 · Print for signatures</h2>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 3 · Review final contract, then sign once</h2>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem" }}>
-            Print the final contract, walk through it with your buyer, and collect wet signatures where required.
+            This is the only contract that should be signed. Supporting jacket documents are aligned by AI to match this governing deal before execution.
           </p>
           {finalRisc?.fileUrl ? (
             <p style={{ marginTop: "0.75rem" }}>
@@ -335,7 +388,9 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
           ) : (
             <>
               <h3 style={{ fontSize: "1rem", marginTop: "1.25rem" }}>Step 4 · Upload signed contract</h3>
-              <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>Upload the fully executed contract. After this, our system prepares your closing package automatically.</p>
+              <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>
+                Upload the fully executed governing RISC. This is the signature point that enables first green and package lock.
+              </p>
               <form action={uploadSignedRISCAction} style={{ display: "grid", gap: "0.5rem", marginTop: "0.5rem" }}>
                 <input type="hidden" name="dealId" value={deal.dealId} />
                 <input type="file" name="file" required />
@@ -348,10 +403,12 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
         </section>
       ) : null}
 
-      {deal.status === "GENERATING_CLOSING_PACKAGE" ? (
+      {deal.status === "FIRST_GREEN_PASSED" || deal.status === "GENERATING_CLOSING_PACKAGE" ? (
         <section className="card" style={{ borderColor: "#b45309" }}>
-          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 5 · We are finishing up</h2>
-          <p style={{ fontSize: "0.95rem", fontWeight: 600, color: "#fde68a" }}>Deal locked. Building your closing package and validating funding…</p>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 5 · AI aligns and validates package</h2>
+          <p style={{ fontSize: "0.95rem", fontWeight: 600, color: "#fde68a" }}>
+            Governing contract received. AI is aligning all disclosures/deal-jacket docs to match before final package release…
+          </p>
           <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>No action needed—this page updates when everything is ready.</p>
           <p style={{ fontSize: "0.8rem", color: "var(--muted)", wordBreak: "break-all" }}>Reference: {hash ?? "—"}</p>
         </section>
@@ -359,7 +416,7 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
 
       {deal.status === "AUTHORITATIVE_LOCK" ? (
         <section className="card" style={{ borderColor: "#b45309" }}>
-          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 5 · We are finishing up</h2>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 5 · AI aligns and validates package</h2>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem" }}>
             Your signed contract is saved. If the closing package does not appear within a minute, retry below.
           </p>
@@ -411,7 +468,7 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
         </section>
       ) : null}
 
-      {deal.status === "AUTHORITATIVE_LOCK" || deal.status === "CLOSING_PACKAGE_READY" ? (
+      {deal.status === "FIRST_GREEN_PASSED" || deal.status === "AUTHORITATIVE_LOCK" || deal.status === "CLOSING_PACKAGE_READY" ? (
         <section className="card">
           <h2 style={{ marginTop: 0, fontSize: "1rem" }}>Need to correct a post-signing issue?</h2>
           <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>

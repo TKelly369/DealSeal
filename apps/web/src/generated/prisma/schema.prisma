@@ -73,9 +73,11 @@ enum DealerLenderLinkStatus {
 
 enum DealStatus {
   DISCLOSURE_REQUIRED
+  AUTHORIZED_FOR_STRUCTURING
   GREEN_STAGE
   RISC_UNSIGNED_REVIEW
   RISC_LENDER_FINAL
+  FIRST_GREEN_PASSED
   AUTHORITATIVE_LOCK
   GENERATING_CLOSING_PACKAGE
   CLOSING_PACKAGE_READY
@@ -90,9 +92,13 @@ enum CustodyEventType {
   SIGNED
   LOCKED
   CERTIFIED
+  INITIAL_DISCLOSURE_ACCEPTED
+  CHANGE_SUMMARY_GENERATED
 }
 
 enum DocumentType {
+  INITIAL_DISCLOSURE_SIGNED
+  CHANGE_SUMMARY_DISCLOSURE
   PROCESS_DISCLOSURE
   DEALER_UPLOAD
   INSURANCE
@@ -383,6 +389,13 @@ model Deal {
   dealerLenderLinkId              String
   status                          DealStatus                       @default(DISCLOSURE_REQUIRED)
   state                           String
+  initialDisclosureAcceptedAt     DateTime?
+  initialDisclosureHash           String?
+  initialDisclosureSignerName     String?
+  dealerRepresentativeName        String?
+  governingStateProfile           Json?
+  preliminarySubmittedTerms       Json?
+  lenderApprovedTerms             Json?
   complianceStatus                DealComplianceStatus             @default(COMPLIANT)
   consummatedData                 Json?
   poolId                          String?

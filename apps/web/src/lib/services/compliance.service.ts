@@ -80,13 +80,51 @@ export const ComplianceEngineService = {
   async runStateCompliance(dealId: string): Promise<ComplianceResult> {
     const deal = await prisma.deal.findUnique({
       where: { id: dealId },
-      include: { financials: true },
+      include: { financials: true, parties: true, vehicle: true, dealer: true, lender: true },
     });
-    if (!deal || !deal.financials) {
+    if (!deal) {
+      return { status: "BLOCKED", checks: [] };
+    }
+    if (deal.status === "DISCLOSURE_REQUIRED" || !deal.initialDisclosureAcceptedAt) {
+      return {
+        status: "BLOCKED",
+        checks: [
+          {
+            id: `state-disclosure-gate-${dealId}`,
+            ruleSet: "STATE",
+            status: "BLOCKED",
+            affectedField: "initialDisclosure",
+            explanation: "Signed Initial Disclosure must be uploaded and accepted before compliance analysis.",
+            ruleSource: "DealSeal gating policy",
+            suggestedCorrection: "Upload signed initial disclosure and required metadata.",
+          },
+        ],
+      };
+    }
+    if (!deal.financials) {
       return { status: "BLOCKED", checks: [] };
     }
 
+    const buyer = deal.parties.find((p) => p.role === "BUYER");
+    const inferredStateProfile = {
+      dealershipState: deal.state,
+      customerAddress: buyer?.address ?? null,
+      vehicleLocationState: deal.state,
+      deliveryState: deal.state,
+      contractState: deal.state,
+      lenderProgramState: deal.state,
+    };
+
     const checks = [
+      {
+        id: `state-profile-${dealId}`,
+        ruleSet: ComplianceRuleSet.STATE,
+        status: DealComplianceStatus.COMPLIANT,
+        affectedField: "stateProfile",
+        explanation: "State profile determined from dealership, customer, vehicle, delivery, contract, and lender program states.",
+        ruleSource: `${deal.state} governing profile`,
+        suggestedCorrection: null,
+      },
       {
         id: `state-tax-${dealId}`,
         ruleSet: ComplianceRuleSet.STATE,
@@ -107,6 +145,11 @@ export const ComplianceEngineService = {
       },
     ];
 
+    await prisma.deal.update({
+      where: { id: dealId },
+      data: { governingStateProfile: inferredStateProfile as unknown as object },
+    });
+
     return {
       status: summarizeStatus(checks.map((c) => c.status)),
       checks: checks.map((c) => ({ ...c, status: c.status as "COMPLIANT" | "WARNING" | "BLOCKED" })),
@@ -120,6 +163,22 @@ export const ComplianceEngineService = {
     });
     if (!deal || !deal.financials) {
       return { status: "BLOCKED", checks: [] };
+    }
+    if (deal.status === "DISCLOSURE_REQUIRED" || !deal.initialDisclosureAcceptedAt) {
+      return {
+        status: "BLOCKED",
+        checks: [
+          {
+            id: `lender-disclosure-gate-${dealId}`,
+            ruleSet: "LENDER",
+            status: "BLOCKED",
+            affectedField: "initialDisclosure",
+            explanation: "Signed Initial Disclosure must be accepted before lender compliance checks.",
+            ruleSource: `${deal.lender.name} onboarding gate`,
+            suggestedCorrection: "Complete initial disclosure gate first.",
+          },
+        ],
+      };
     }
 
     const checks = [

@@ -11,8 +11,19 @@ import { NegotiableInstrumentService } from "@/lib/services/negotiable-instrumen
 import { WebhookService } from "@/lib/services/webhook.service";
 import { DealAlertService } from "@/lib/services/deal-alert.service";
 
+type DisclosureMetadataInput = {
+  signerName: string;
+  dateSigned: string;
+  dealerRepresentative: string;
+  dealershipName: string;
+  stateProfile: string;
+  fileName: string;
+};
+
 function legacyTypeFor(dt: DocumentType): GeneratedDocumentType {
   switch (dt) {
+    case "INITIAL_DISCLOSURE_SIGNED":
+    case "CHANGE_SUMMARY_DISCLOSURE":
     case "PROCESS_DISCLOSURE":
     case "INSURANCE":
     case "UCSP_STATE_DISCLOSURE":
@@ -74,6 +85,75 @@ function assertStatus(current: string, expected: string, action: string) {
   }
 }
 
+function captureMaterialTerms(deal: {
+  id: string;
+  state: string;
+  lenderId: string;
+  parties: Array<{ role: string; firstName: string; lastName: string; address: string }>;
+  vehicle: { vin: string; year: number; make: string; model: string } | null;
+  financials:
+    | {
+        totalSalePrice: unknown;
+        taxes: unknown;
+        fees: unknown;
+        amountFinanced: unknown;
+        gap: unknown;
+        warranty: unknown;
+      }
+    | null;
+}) {
+  const buyer = deal.parties.find((p) => p.role === "BUYER");
+  return {
+    dealId: deal.id,
+    contractState: deal.state,
+    deliveryState: deal.state,
+    lenderAssignee: deal.lenderId,
+    buyerName: buyer ? `${buyer.firstName} ${buyer.lastName}`.trim() : null,
+    buyerAddress: buyer?.address ?? null,
+    collateralVin: deal.vehicle?.vin ?? null,
+    vehicleLabel: deal.vehicle ? `${deal.vehicle.year} ${deal.vehicle.make} ${deal.vehicle.model}` : null,
+    totalSalePrice: deal.financials ? Number(deal.financials.totalSalePrice) : null,
+    taxes: deal.financials ? Number(deal.financials.taxes) : null,
+    fees: deal.financials ? Number(deal.financials.fees) : null,
+    amountFinanced: deal.financials ? Number(deal.financials.amountFinanced) : null,
+    gap: deal.financials ? Number(deal.financials.gap) : null,
+    warranty: deal.financials ? Number(deal.financials.warranty) : null,
+  };
+}
+
+function buildChangeSummary(preliminary: Record<string, unknown>, finalTerms: Record<string, unknown>) {
+  const fields = [
+    "totalSalePrice",
+    "taxes",
+    "fees",
+    "amountFinanced",
+    "gap",
+    "warranty",
+    "collateralVin",
+    "buyerName",
+    "contractState",
+    "deliveryState",
+    "lenderAssignee",
+  ];
+  const changes = fields
+    .map((field) => {
+      const from = preliminary[field];
+      const to = finalTerms[field];
+      const changed = JSON.stringify(from ?? null) !== JSON.stringify(to ?? null);
+      return {
+        field,
+        preliminary: from ?? null,
+        final: to ?? null,
+        changed,
+        explanation: changed
+          ? `Field changed from preliminary submission to lender-approved final package for ${field}.`
+          : "No material change detected.",
+      };
+    })
+    .filter((row) => row.changed);
+  return { hasChanges: changes.length > 0, changes };
+}
+
 export const DealWorkflowService = {
   async getDealForActor(dealId: string, actorWorkspaceId: string, side: "dealer" | "lender") {
     const deal = await prisma.deal.findUnique({
@@ -94,38 +174,96 @@ export const DealWorkflowService = {
     return deal;
   },
 
-  async acknowledgeDisclosure(dealId: string, userId: string, actorRole: string) {
+  async acknowledgeDisclosure(dealId: string, input: DisclosureMetadataInput, userId: string, actorRole: string) {
+    const signerName = input.signerName.trim();
+    const dateSigned = input.dateSigned.trim();
+    const dealerRepresentative = input.dealerRepresentative.trim();
+    if (!signerName || !dateSigned || !dealerRepresentative) {
+      throw new Error("Signed Initial Disclosure requires signer name, date signed, and dealer representative.");
+    }
     return prisma.$transaction(async (tx) => {
       const deal = await tx.deal.findUnique({ where: { id: dealId } });
       if (!deal) throw new Error("Deal not found.");
       assertStatus(deal.status, "DISCLOSURE_REQUIRED", "Disclosure acknowledgment");
 
-      const version = await nextDocVersion(dealId, "PROCESS_DISCLOSURE");
-      const fileUrl = `/mock-uploads/process-disclosure-${dealId}.pdf`;
+      const version = await nextDocVersion(dealId, "INITIAL_DISCLOSURE_SIGNED");
+      const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]/g, "_") || "initial-disclosure-signed.pdf";
+      const fileUrl = `/mock-uploads/${dealId}/initial-disclosure-signed-v${version}-${safeName}`;
+      const signedAt = new Date(dateSigned);
+      if (Number.isNaN(signedAt.getTime())) {
+        throw new Error("Date signed is invalid.");
+      }
+      const disclosureHash = crypto
+        .createHash("sha256")
+        .update(
+          JSON.stringify({
+            dealId,
+            signerName,
+            dateSigned: signedAt.toISOString(),
+            fileUrl,
+            dealershipName: input.dealershipName,
+            dealerRepresentative,
+            stateProfile: input.stateProfile,
+          }),
+        )
+        .digest("hex");
       const doc = await tx.generatedDocument.create({
         data: {
           dealId,
           authoritativeContractId: null,
-          type: legacyTypeFor("PROCESS_DISCLOSURE"),
-          documentType: "PROCESS_DISCLOSURE",
+          type: legacyTypeFor("INITIAL_DISCLOSURE_SIGNED"),
+          documentType: "INITIAL_DISCLOSURE_SIGNED",
           fileUrl,
           version,
-          valuesSnapshot: { title: "DealSeal Governing Process Disclosure", generatedAt: new Date().toISOString() },
+          valuesSnapshot: {
+            title: "DealSeal Initial Disclosure",
+            immutable: true,
+            signerName,
+            dateSigned: signedAt.toISOString(),
+            uploadUserId: userId,
+            dealershipName: input.dealershipName,
+            dealerRepresentative,
+            stateProfile: input.stateProfile,
+            disclosureHash,
+          },
         },
       });
 
       await logCustody(tx, {
         dealId,
         documentId: doc.id,
-        eventType: "GENERATED",
+        eventType: "INITIAL_DISCLOSURE_ACCEPTED",
         actorUserId: userId,
         actorRole,
-        metadata: { documentType: "PROCESS_DISCLOSURE", fileUrl },
+        metadata: {
+          event: "INITIAL_DISCLOSURE_ACCEPTED",
+          documentType: "INITIAL_DISCLOSURE_SIGNED",
+          fileUrl,
+          signerName,
+          dateSigned: signedAt.toISOString(),
+          disclosureHash,
+          dealershipName: input.dealershipName,
+          dealerRepresentative,
+          stateProfile: input.stateProfile,
+        },
       });
 
       return tx.deal.update({
         where: { id: dealId },
-        data: { status: "GREEN_STAGE" },
+        data: {
+          status: "AUTHORIZED_FOR_STRUCTURING",
+          initialDisclosureAcceptedAt: new Date(),
+          initialDisclosureHash: disclosureHash,
+          initialDisclosureSignerName: signerName,
+          dealerRepresentativeName: dealerRepresentative,
+          governingStateProfile: {
+            profileKey: `${deal.state}:${input.stateProfile}`.toLowerCase(),
+            selectedAt: new Date().toISOString(),
+            state: deal.state,
+            dealershipName: input.dealershipName,
+            stateProfile: input.stateProfile,
+          } as Prisma.InputJsonValue,
+        },
       });
     });
   },
@@ -140,7 +278,9 @@ export const DealWorkflowService = {
     return prisma.$transaction(async (tx) => {
       const deal = await tx.deal.findUnique({ where: { id: dealId } });
       if (!deal) throw new Error("Deal not found.");
-      assertStatus(deal.status, "GREEN_STAGE", "Green-stage document upload");
+      if (deal.status !== "AUTHORIZED_FOR_STRUCTURING" && deal.status !== "GREEN_STAGE") {
+        throw new Error(`Green-stage document upload is not allowed while deal is in ${deal.status}. Expected AUTHORIZED_FOR_STRUCTURING.`);
+      }
 
       const version = await nextDocVersion(dealId, docType);
       const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]/g, "_") || "upload.pdf";
@@ -154,7 +294,11 @@ export const DealWorkflowService = {
           documentType: docType,
           fileUrl,
           version,
-          valuesSnapshot: { originalFileName: input.fileName },
+          valuesSnapshot: {
+            originalFileName: input.fileName,
+            signatureState: "UNSIGNED",
+            pricingState: "ESTIMATED_PRE_SIGNATURE",
+          },
         },
       });
 
@@ -175,7 +319,9 @@ export const DealWorkflowService = {
     return prisma.$transaction(async (tx) => {
       const deal = await tx.deal.findUnique({ where: { id: dealId } });
       if (!deal) throw new Error("Deal not found.");
-      assertStatus(deal.status, "GREEN_STAGE", "Unsigned RISC submission");
+      if (deal.status !== "AUTHORIZED_FOR_STRUCTURING" && deal.status !== "GREEN_STAGE") {
+        throw new Error(`Unsigned RISC submission is not allowed while deal is in ${deal.status}. Expected AUTHORIZED_FOR_STRUCTURING.`);
+      }
 
       const version = await nextDocVersion(dealId, "RISC_UNSIGNED");
       const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]/g, "_") || "risc-unsigned.pdf";
@@ -189,7 +335,11 @@ export const DealWorkflowService = {
           documentType: "RISC_UNSIGNED",
           fileUrl,
           version,
-          valuesSnapshot: { originalFileName: input.fileName },
+          valuesSnapshot: {
+            originalFileName: input.fileName,
+            signatureState: "UNSIGNED",
+            pricingState: "ESTIMATED_PRE_SIGNATURE",
+          },
         },
       });
 
@@ -204,7 +354,17 @@ export const DealWorkflowService = {
 
       await tx.deal.update({
         where: { id: dealId },
-        data: { status: "RISC_UNSIGNED_REVIEW" },
+        data: {
+          status: "RISC_UNSIGNED_REVIEW",
+          preliminarySubmittedTerms: captureMaterialTerms({
+            id: deal.id,
+            state: deal.state,
+            lenderId: deal.lenderId,
+            parties: await tx.dealParty.findMany({ where: { dealId } }),
+            vehicle: await tx.vehicle.findUnique({ where: { dealId } }),
+            financials: await tx.dealFinancials.findUnique({ where: { dealId } }),
+          }) as Prisma.InputJsonValue,
+        },
       });
 
       return doc;
@@ -238,6 +398,8 @@ export const DealWorkflowService = {
             originalFileName: input.fileName,
             securityAgreementPresent: true,
             securityAgreementSummary: "Retail installment security interest in the described vehicle collateral.",
+            signatureState: "UNSIGNED_AWAITING_EXECUTION",
+            aiPackageReconciliation: "PENDING",
           },
         },
       });
@@ -253,7 +415,17 @@ export const DealWorkflowService = {
 
       await tx.deal.update({
         where: { id: dealId },
-        data: { status: "RISC_LENDER_FINAL" },
+        data: {
+          status: "RISC_LENDER_FINAL",
+          lenderApprovedTerms: captureMaterialTerms({
+            id: deal.id,
+            state: deal.state,
+            lenderId: deal.lenderId,
+            parties: await tx.dealParty.findMany({ where: { dealId } }),
+            vehicle: await tx.vehicle.findUnique({ where: { dealId } }),
+            financials: await tx.dealFinancials.findUnique({ where: { dealId } }),
+          }) as Prisma.InputJsonValue,
+        },
       });
 
       return { doc, dealerId: deal.dealerId, lenderId: deal.lenderId };
@@ -410,9 +582,59 @@ export const DealWorkflowService = {
         metadata: { documentType: "RISC_SIGNED", contentHash, fileUrl },
       });
 
+      const prelim = (deal.preliminarySubmittedTerms as Record<string, unknown> | null) ?? {};
+      const finalTerms = captureMaterialTerms({
+        id: deal.id,
+        state: deal.state,
+        lenderId: deal.lenderId,
+        parties: await tx.dealParty.findMany({ where: { dealId } }),
+        vehicle: deal.vehicle,
+        financials: deal.financials,
+      }) as Record<string, unknown>;
+      const changeSummary = buildChangeSummary(prelim, finalTerms);
+      if (changeSummary.hasChanges) {
+        const changeVersion = await nextDocVersion(dealId, "CHANGE_SUMMARY_DISCLOSURE");
+        const changeSummaryHash = crypto
+          .createHash("sha256")
+          .update(JSON.stringify({ dealId, preliminary: prelim, finalTerms, changes: changeSummary.changes }))
+          .digest("hex");
+        const changeDoc = await tx.generatedDocument.create({
+          data: {
+            dealId,
+            authoritativeContractId: authoritative.id,
+            type: "DISCLOSURE",
+            documentType: "CHANGE_SUMMARY_DISCLOSURE",
+            fileUrl: `/mock-uploads/${dealId}/change-summary-disclosure-v${changeVersion}.json`,
+            version: changeVersion,
+            isAuthoritative: true,
+            authoritativeContractHash: contentHash,
+            valuesSnapshot: {
+              preliminary: prelim,
+              finalTerms,
+              changes: changeSummary.changes,
+              acknowledgmentRequired: true,
+              generatedAt: new Date().toISOString(),
+              changeSummaryHash,
+            } as Prisma.InputJsonValue,
+          },
+        });
+        await logCustody(tx, {
+          dealId,
+          documentId: changeDoc.id,
+          eventType: "CHANGE_SUMMARY_GENERATED",
+          actorUserId: userId,
+          actorRole,
+          metadata: {
+            event: "CHANGE_SUMMARY_GENERATED",
+            changeCount: changeSummary.changes.length,
+            changeSummaryHash,
+          },
+        });
+      }
+
       await tx.deal.update({
         where: { id: dealId },
-        data: { status: "AUTHORITATIVE_LOCK" },
+        data: { status: "FIRST_GREEN_PASSED" },
       });
 
       return { doc, contentHash };
@@ -432,25 +654,25 @@ export const DealWorkflowService = {
           workspaceId: postLockDeal.lenderId,
           dealId,
           type: "DEAL_AUTHORITATIVE_LOCKED",
-          title: "Deal locked",
-          message: "A signed RISC has been locked and is ready for post-lock package processing.",
+            title: "First green passed",
+            message: "Signed governing RISC is locked and first green is passed. Package reconciliation is beginning.",
         }),
         NotificationService.createNotification({
           workspaceId: postLockDeal.dealerId,
           dealId,
           type: "DEAL_AUTHORITATIVE_LOCKED",
-          title: "Deal locked",
-          message: "Your signed contract is locked. DealSeal is generating your closing package.",
+            title: "First green passed",
+            message: "Your signed governing contract is locked and first green is passed. DealSeal is aligning the full package.",
         }),
       ]);
       await Promise.all([
         WebhookService.dispatchEvent(postLockDeal.dealerId, "DEAL_LOCKED", {
           dealId,
-          status: "AUTHORITATIVE_LOCK",
+          status: "FIRST_GREEN_PASSED",
         }),
         WebhookService.dispatchEvent(postLockDeal.lenderId, "DEAL_LOCKED", {
           dealId,
-          status: "AUTHORITATIVE_LOCK",
+          status: "FIRST_GREEN_PASSED",
         }),
       ]);
     }

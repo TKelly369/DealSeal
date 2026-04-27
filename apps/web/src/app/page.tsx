@@ -62,7 +62,7 @@ export default function HomePage() {
       <main style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: "2.5rem 1rem 2rem", width: "100%" }}>
         <section
           style={{
-            background: "linear-gradient(180deg, #000000 0%, #0a0a0a 100%)",
+            background: "#000000",
             border: "1px solid #222222",
             borderRadius: "14px",
             padding: "2.2rem 1.5rem 2rem",

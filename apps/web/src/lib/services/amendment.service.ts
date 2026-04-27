@@ -33,7 +33,11 @@ export const AmendmentService = {
       include: { authoritativeContract: true },
     });
     if (!deal || !deal.authoritativeContract) throw new Error("Deal or authoritative contract not found.");
-    if (deal.status !== "AUTHORITATIVE_LOCK" && deal.status !== "CLOSING_PACKAGE_READY") {
+    if (
+      deal.status !== "FIRST_GREEN_PASSED" &&
+      deal.status !== "AUTHORITATIVE_LOCK" &&
+      deal.status !== "CLOSING_PACKAGE_READY"
+    ) {
       throw new Error("Amendments are allowed only after authoritative lock.");
     }
 
@@ -159,7 +163,7 @@ export const AmendmentService = {
         where: { id: amendment.dealId },
         data: {
           consummatedData: mergeConsummatedData(amendment.deal.consummatedData as Prisma.JsonValue | null, amendedFields),
-          status: "AUTHORITATIVE_LOCK",
+          status: "FIRST_GREEN_PASSED",
         },
       });
 

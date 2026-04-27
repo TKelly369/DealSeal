@@ -70,6 +70,14 @@ export function DealBuilderClient({
             <input name="address" defaultValue="123 Main St, Austin TX" />
           </label>
           <label>
+            Co-Buyer Name (optional)
+            <input name="coBuyerName" defaultValue="" />
+          </label>
+          <label>
+            Contact Info
+            <input name="contactInfo" defaultValue="john@example.com / 555-0101" />
+          </label>
+          <label>
             Credit Tier
             <input name="creditTier" defaultValue="B" />
           </label>
@@ -90,6 +98,10 @@ export function DealBuilderClient({
             <input name="vin" defaultValue="VIN1234567890" />
           </label>
           <label>
+            Stock Number (optional)
+            <input name="stockNumber" defaultValue="STK-001" />
+          </label>
+          <label>
             Mileage
             <input name="mileage" defaultValue="12000" />
           </label>
@@ -101,40 +113,20 @@ export function DealBuilderClient({
             </select>
           </label>
           <label>
-            Amount Financed
-            <input name="amountFinanced" defaultValue="24000" />
+            Assigned Dealer User
+            <input name="assignedDealerUserId" defaultValue="" />
           </label>
           <label>
-            LTV
-            <input name="ltv" defaultValue="0.87" />
+            Dealer Representative
+            <input name="dealerRepresentative" defaultValue="Jane Smith" />
           </label>
           <label>
-            Max LTV
-            <input name="maxLtv" defaultValue="0.90" />
-          </label>
-          <label>
-            Taxes
-            <input name="taxes" defaultValue="1800" />
-          </label>
-          <label>
-            Fees
-            <input name="fees" defaultValue="499" />
-          </label>
-          <label>
-            GAP
-            <input name="gap" defaultValue="695" />
-          </label>
-          <label>
-            Warranty
-            <input name="warranty" defaultValue="1199" />
-          </label>
-          <label>
-            Total Sale Price
-            <input name="totalSalePrice" defaultValue="28995" />
+            Dealership Location
+            <input name="dealershipLocation" defaultValue="Austin Store #1" />
           </label>
         </div>
         <button type="submit" style={{ marginTop: "0.8rem" }}>
-          Save Canonical Deal
+          Save Deal Shell (Disclosure Required)
         </button>
         {dealId ? (
           <p style={{ color: "var(--verified)" }}>

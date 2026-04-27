@@ -133,8 +133,12 @@ export const AutopublishService = {
     if (dealCheck.status === "CLOSING_PACKAGE_READY") {
       return { skipped: true as const };
     }
-    if (dealCheck.status !== "AUTHORITATIVE_LOCK" && dealCheck.status !== "GENERATING_CLOSING_PACKAGE") {
-      throw new Error("Autopublish requires authoritative lock (or resume from generating).");
+    if (
+      dealCheck.status !== "FIRST_GREEN_PASSED" &&
+      dealCheck.status !== "AUTHORITATIVE_LOCK" &&
+      dealCheck.status !== "GENERATING_CLOSING_PACKAGE"
+    ) {
+      throw new Error("Autopublish requires first green pass (or resume from generating).");
     }
     if (!dealCheck.authoritativeContract) {
       throw new Error("Authoritative contract missing.");
@@ -278,7 +282,7 @@ export const AutopublishService = {
     } catch (e) {
       await prisma.deal.update({
         where: { id: dealId },
-        data: { status: "AUTHORITATIVE_LOCK" },
+        data: { status: "FIRST_GREEN_PASSED" },
       });
       throw e;
     }
