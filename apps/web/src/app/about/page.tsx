@@ -21,6 +21,7 @@ export default function AboutPage() {
     color: "#ffffff",
     letterSpacing: "0.01em",
     fontWeight: 600,
+    textAlign: "center",
   } as const;
 
   const dividerStyle = {
@@ -44,7 +45,15 @@ export default function AboutPage() {
         >
           About DealSeal
         </p>
-        <h1 style={{ color: "#fff", margin: "0.5rem 0 0.85rem", fontSize: "clamp(1.7rem, 4vw, 2.35rem)", lineHeight: 1.2 }}>
+        <h1
+          style={{
+            color: "#fff",
+            margin: "0.5rem 0 0.85rem",
+            fontSize: "clamp(1.7rem, 4vw, 2.35rem)",
+            lineHeight: 1.2,
+            textAlign: "center",
+          }}
+        >
           Contract Infrastructure for Auto Finance
         </h1>
         <p style={{ margin: "0 0 0.8rem", color: "var(--text-secondary)" }}>
@@ -100,7 +109,7 @@ export default function AboutPage() {
           }}
         >
           <div style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "0.85rem 0.95rem", background: "#0c0c0c" }}>
-            <h3 style={{ margin: "0 0 0.45rem", fontSize: "1rem", color: "#fff" }}>For Dealers</h3>
+            <h3 style={{ margin: "0 0 0.45rem", fontSize: "1rem", color: "#fff", textAlign: "center" }}>For Dealers</h3>
             <ul style={{ margin: 0, paddingLeft: "1.05rem", color: "var(--text-secondary)" }}>
               <li>Cleaner submissions and faster funding confidence</li>
               <li>Lower avoidable rework across front and back office</li>
@@ -108,7 +117,7 @@ export default function AboutPage() {
             </ul>
           </div>
           <div style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "0.85rem 0.95rem", background: "#0c0c0c" }}>
-            <h3 style={{ margin: "0 0 0.45rem", fontSize: "1rem", color: "#fff" }}>For Lenders</h3>
+            <h3 style={{ margin: "0 0 0.45rem", fontSize: "1rem", color: "#fff", textAlign: "center" }}>For Lenders</h3>
             <ul style={{ margin: 0, paddingLeft: "1.05rem", color: "var(--text-secondary)" }}>
               <li>Stronger pre-funding validation and package quality</li>
               <li>Better enforcement posture with consistent documentation</li>
