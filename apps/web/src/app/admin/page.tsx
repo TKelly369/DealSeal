@@ -1,13 +1,5 @@
-import { AdminClient } from "./AdminClient";
+import { redirect } from "next/navigation";
 
 export default function AdminPage() {
-  return (
-    <div>
-      <h1>Admin console</h1>
-      <p className="badge" style={{ marginBottom: 12 }}>
-        ADMIN role · holds, pricing, lenders, state logs, usage.
-      </p>
-      <AdminClient />
-    </div>
-  );
+  redirect("/admin/users");
 }

@@ -1,0 +1,629 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../apps/web/src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  DEALER_ADMIN
+  LENDER_ADMIN
+  PLATFORM_ADMIN
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum DocumentStatus {
+  PENDING
+  CERTIFIED
+  REJECTED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum WorkspaceType {
+  DEALERSHIP
+  LENDER
+}
+
+enum VehicleTypeSelection {
+  NEW
+  USED
+  BOTH
+}
+
+enum SigningMethod {
+  WET
+  E_SIGN
+  HYBRID
+}
+
+enum LenderEntityType {
+  BANK
+  CU
+  CAPTIVE
+  FINANCE
+}
+
+enum AssignmentType {
+  IMMEDIATE
+  CONDITIONAL
+  POST_FUNDING
+}
+
+enum DealerLenderLinkStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+  REJECTED
+}
+
+enum DealStatus {
+  DISCLOSURE_REQUIRED
+  GREEN_STAGE
+  RISC_UNSIGNED_REVIEW
+  RISC_LENDER_FINAL
+  AUTHORITATIVE_LOCK
+  GENERATING_CLOSING_PACKAGE
+  CLOSING_PACKAGE_READY
+  CONSUMMATED
+}
+
+enum CustodyEventType {
+  UPLOADED
+  GENERATED
+  VIEWED
+  MODIFIED
+  SIGNED
+  LOCKED
+  CERTIFIED
+}
+
+enum DocumentType {
+  PROCESS_DISCLOSURE
+  DEALER_UPLOAD
+  INSURANCE
+  RISC_UNSIGNED
+  RISC_LENDER_FINAL
+  RISC_SIGNED
+  BMV_LIEN_CERT
+  BUYER_PACKAGE
+  UCSP_BUYERS_ORDER
+  UCSP_STATE_DISCLOSURE
+  UCSP_ASSIGNMENT
+  UCSP_TITLE_APPLICATION
+  UCSP_CLOSING_MANIFEST
+}
+
+enum DealComplianceStatus {
+  COMPLIANT
+  WARNING
+  BLOCKED
+}
+
+enum ContractTransactionEventType {
+  DEALER_ASSIGNMENT_TO_LENDER
+  LENDER_SALE_TO_TRUST
+  POOL_TRANSFER
+  AMENDMENT_APPROVED
+}
+
+enum LoanPoolType {
+  WHOLE_LOAN
+  SECURITIZATION
+}
+
+enum LoanPoolStatus {
+  FORMING
+  CLOSED
+  SOLD
+}
+
+enum RecourseStatus {
+  WITH_RECOURSE
+  WITHOUT_RECOURSE
+}
+
+enum SecondaryMarketStatus {
+  HELD_FOR_INVESTMENT
+  AVAILABLE_FOR_SALE
+  SOLD
+}
+
+enum AmendmentReason {
+  BMV_REJECTION
+  VIN_CORRECTION
+  FINANCIAL_ADJUSTMENT
+}
+
+enum AmendmentStatus {
+  PENDING_LENDER_APPROVAL
+  APPROVED
+  REJECTED
+}
+
+enum NegotiableInstrumentType {
+  PROMISSORY_NOTE
+  RISC_AS_NOTE
+}
+
+enum InstrumentTransferType {
+  ENDORSEMENT
+  NEGOTIATION
+  SALE_WITHOUT_RECOURSE
+}
+
+enum DealPartyRole {
+  BUYER
+  CO_BUYER
+}
+
+enum VehicleCondition {
+  NEW
+  USED
+}
+
+enum GeneratedDocumentType {
+  CONTRACT
+  DISCLOSURE
+  BUYERS_ORDER
+  FUNDING_PACKET
+}
+
+enum ComplianceRuleSet {
+  STATE
+  LENDER
+}
+
+model User {
+  id                  String         @id @default(cuid())
+  email               String         @unique
+  name                String?
+  role                UserRole       @default(USER)
+  image               String?
+  accounts            Account[]
+  sessions            Session[]
+  memberships         Membership[]
+  requestedAmendments Amendment[]    @relation("AmendmentRequester")
+  approvedAmendments  Amendment[]    @relation("AmendmentApprover")
+  notifications       Notification[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+}
+
+model Workspace {
+  id                      String                   @id @default(cuid())
+  name                    String
+  slug                    String                   @unique
+  type                    WorkspaceType            @default(DEALERSHIP)
+  memberships             Membership[]
+  documents               Document[]
+  subscriptions           Subscription[]
+  dealerProfile           DealerProfile?
+  lenderProfile           LenderProfile?
+  dealerLinks             DealerLenderLink[]       @relation("DealerWorkspaceLinks")
+  lenderLinks             DealerLenderLink[]       @relation("LenderWorkspaceLinks")
+  dealerOnboardingAnswers DealerOnboardingAnswer[] @relation("DealerWorkspaceAnswers")
+  lenderOnboardingAnswers LenderOnboardingAnswer[] @relation("LenderWorkspaceAnswers")
+  dealerDeals             Deal[]                   @relation("DealerDeals")
+  lenderDeals             Deal[]                   @relation("LenderDeals")
+  notifications           Notification[]
+  loanPools               LoanPool[]
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+}
+
+model Membership {
+  id          String         @id @default(cuid())
+  userId      String
+  workspaceId String
+  role        MembershipRole @default(MEMBER)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@unique([userId, workspaceId])
+  @@index([workspaceId])
+}
+
+model Document {
+  id          String         @id @default(cuid())
+  workspaceId String
+  title       String
+  type        String
+  status      DocumentStatus @default(PENDING)
+  workspace   Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([workspaceId, createdAt])
+}
+
+model Subscription {
+  id                     String             @id @default(cuid())
+  workspaceId            String             @unique
+  stripeCustomerId       String?
+  stripeSubscriptionId   String?            @unique
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
+  status                 SubscriptionStatus @default(CANCELED)
+  workspace              Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+}
+
+model DealerProfile {
+  id               String               @id @default(cuid())
+  workspaceId      String               @unique
+  legalName        String
+  dba              String?
+  stateOfFormation String
+  licenseNumber    String?
+  operatingStates  String[]
+  dmsProvider      String?
+  vehicleTypes     VehicleTypeSelection @default(BOTH)
+  addOnsOffered    String[]
+  signingMethod    SigningMethod        @default(HYBRID)
+  workspace        Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+}
+
+model LenderProfile {
+  id                  String           @id @default(cuid())
+  workspaceId         String           @unique
+  legalName           String
+  entityType          LenderEntityType
+  licensedStates      String[]
+  acceptedDealerTypes String[]
+  assignmentType      AssignmentType
+  workspace           Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+}
+
+model DealerLenderLink {
+  id               String                 @id @default(cuid())
+  dealerId         String
+  lenderId         String
+  status           DealerLenderLinkStatus @default(PENDING)
+  approvedStates   String[]
+  allowedDealTypes String[]
+  lenderOverrides  Json                   @default("{}")
+  effectiveDate    DateTime?
+  expirationDate   DateTime?
+  requestedBy      String?
+  approvedBy       String?
+  auditTrail       Json                   @default("[]")
+  dealer           Workspace              @relation("DealerWorkspaceLinks", fields: [dealerId], references: [id], onDelete: Cascade)
+  lender           Workspace              @relation("LenderWorkspaceLinks", fields: [lenderId], references: [id], onDelete: Cascade)
+  deals            Deal[]
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+
+  @@unique([dealerId, lenderId])
+}
+
+model DealerOnboardingAnswer {
+  id            String    @id @default(cuid())
+  dealerId      String
+  questionKey   String
+  answerValue   Json
+  ruleInference Json      @default("{}")
+  dealer        Workspace @relation("DealerWorkspaceAnswers", fields: [dealerId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+}
+
+model LenderOnboardingAnswer {
+  id            String    @id @default(cuid())
+  lenderId      String
+  questionKey   String
+  answerValue   Json
+  ruleInference Json      @default("{}")
+  lender        Workspace @relation("LenderWorkspaceAnswers", fields: [lenderId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+}
+
+model Deal {
+  id                              String                           @id @default(cuid())
+  dealerId                        String
+  lenderId                        String
+  dealerLenderLinkId              String
+  status                          DealStatus                       @default(DISCLOSURE_REQUIRED)
+  state                           String
+  complianceStatus                DealComplianceStatus             @default(COMPLIANT)
+  consummatedData                 Json?
+  poolId                          String?
+  secondaryMarketStatus           SecondaryMarketStatus            @default(HELD_FOR_INVESTMENT)
+  secondaryMarketGrade            String?
+  dealer                          Workspace                        @relation("DealerDeals", fields: [dealerId], references: [id], onDelete: Cascade)
+  lender                          Workspace                        @relation("LenderDeals", fields: [lenderId], references: [id], onDelete: Cascade)
+  dealerLenderLink                DealerLenderLink                 @relation(fields: [dealerLenderLinkId], references: [id], onDelete: Restrict)
+  loanPool                        LoanPool?                        @relation(fields: [poolId], references: [id], onDelete: SetNull)
+  parties                         DealParty[]
+  vehicle                         Vehicle?
+  financials                      DealFinancials?
+  authoritativeContract           AuthoritativeContract?
+  generatedDocuments              GeneratedDocument[]
+  custodyEvents                   DocumentCustodyEvent[]
+  complianceChecks                ComplianceCheck[]
+  prefundingValidationCertificate PreFundingValidationCertificate?
+  contractTransactionEvents       ContractTransactionEvent[]
+  negotiableInstrument            NegotiableInstrument?
+  instrumentTransferEvents        InstrumentTransferEvent[]
+  amendments                      Amendment[]
+  notifications                   Notification[]
+  createdAt                       DateTime                         @default(now())
+  updatedAt                       DateTime                         @updatedAt
+
+  @@index([lenderId, secondaryMarketStatus])
+  @@index([poolId])
+}
+
+model DealParty {
+  id         String        @id @default(cuid())
+  dealId     String
+  role       DealPartyRole
+  firstName  String
+  lastName   String
+  address    String
+  creditTier String?
+  deal       Deal          @relation(fields: [dealId], references: [id], onDelete: Cascade)
+}
+
+model Vehicle {
+  id        String           @id @default(cuid())
+  dealId    String           @unique
+  year      Int
+  make      String
+  model     String
+  vin       String
+  mileage   Int
+  condition VehicleCondition
+  deal      Deal             @relation(fields: [dealId], references: [id], onDelete: Cascade)
+}
+
+model DealFinancials {
+  id             String  @id @default(cuid())
+  dealId         String  @unique
+  amountFinanced Decimal @db.Decimal(14, 2)
+  ltv            Decimal @db.Decimal(8, 4)
+  maxLtv         Decimal @db.Decimal(8, 4)
+  taxes          Decimal @db.Decimal(14, 2)
+  fees           Decimal @db.Decimal(14, 2)
+  gap            Decimal @db.Decimal(14, 2)
+  warranty       Decimal @db.Decimal(14, 2)
+  totalSalePrice Decimal @db.Decimal(14, 2)
+  deal           Deal    @relation(fields: [dealId], references: [id], onDelete: Cascade)
+}
+
+model AuthoritativeContract {
+  id                       String              @id @default(cuid())
+  dealId                   String              @unique
+  version                  Int                 @default(1)
+  contentHash              String
+  governingLaw             String
+  signatureStatus          String
+  isTransferableRecord     Boolean             @default(true)
+  uccCollateralDescription Json?
+  uccDebtorName            String?
+  deal                     Deal                @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  generatedDocuments       GeneratedDocument[]
+  parentAmendments         Amendment[]         @relation("ParentAuthoritativeContract")
+}
+
+model ContractTransactionEvent {
+  id                        String                       @id @default(cuid())
+  dealId                    String
+  eventType                 ContractTransactionEventType
+  fromEntityId              String
+  toEntityId                String
+  transactionDate           DateTime                     @default(now())
+  considerationAmount       Float?
+  auditHash                 String
+  instrumentTransferEventId String?
+  deal                      Deal                         @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  instrumentTransferEvent   InstrumentTransferEvent?     @relation(fields: [instrumentTransferEventId], references: [id], onDelete: SetNull)
+
+  @@index([dealId, transactionDate])
+  @@index([instrumentTransferEventId])
+}
+
+model LoanPool {
+  id             String         @id @default(cuid())
+  lenderId       String
+  poolName       String
+  poolType       LoanPoolType
+  recourseStatus RecourseStatus @default(WITHOUT_RECOURSE)
+  targetSize     Float
+  status         LoanPoolStatus @default(FORMING)
+  lender         Workspace      @relation(fields: [lenderId], references: [id], onDelete: Cascade)
+  deals          Deal[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([lenderId, status])
+}
+
+model NegotiableInstrument {
+  id                   String                    @id @default(cuid())
+  dealId               String                    @unique
+  instrumentType       NegotiableInstrumentType
+  payToOrderOf         String
+  isBearerInstrument   Boolean                   @default(false)
+  isElectronicNote     Boolean                   @default(true)
+  eNoteControlLocation String?
+  deal                 Deal                      @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  transferEvents       InstrumentTransferEvent[]
+  createdAt            DateTime                  @default(now())
+  updatedAt            DateTime                  @updatedAt
+}
+
+model InstrumentTransferEvent {
+  id                   String                     @id @default(cuid())
+  dealId               String
+  instrumentId         String
+  fromEntityId         String
+  toEntityId           String
+  transferType         InstrumentTransferType
+  transferDate         DateTime                   @default(now())
+  endorsementLanguage  String?
+  deal                 Deal                       @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  instrument           NegotiableInstrument       @relation(fields: [instrumentId], references: [id], onDelete: Cascade)
+  linkedContractEvents ContractTransactionEvent[]
+
+  @@index([dealId, transferDate])
+  @@index([instrumentId, transferDate])
+}
+
+model GeneratedDocument {
+  id                        String                 @id @default(cuid())
+  dealId                    String
+  authoritativeContractId   String?
+  amendmentId               String?
+  type                      GeneratedDocumentType
+  documentType              DocumentType?
+  fileUrl                   String?
+  version                   Int                    @default(1)
+  isAuthoritative           Boolean                @default(false)
+  authoritativeContractHash String?
+  valuesSnapshot            Json                   @default("{}")
+  deal                      Deal                   @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  authoritativeContract     AuthoritativeContract? @relation(fields: [authoritativeContractId], references: [id], onDelete: SetNull)
+  amendment                 Amendment?             @relation(fields: [amendmentId], references: [id], onDelete: SetNull)
+  versions                  DocumentVersion[]
+  custodyEvents             DocumentCustodyEvent[]
+  createdAt                 DateTime               @default(now())
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  workspaceId String
+  userId      String?
+  dealId      String?
+  type        String
+  title       String
+  message     String
+  isRead      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deal        Deal?     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, isRead, createdAt])
+  @@index([userId, isRead, createdAt])
+}
+
+model Amendment {
+  id                            String                @id @default(cuid())
+  dealId                        String
+  parentAuthoritativeContractId String
+  reason                        AmendmentReason
+  amendedFields                 Json                  @default("{}")
+  status                        AmendmentStatus       @default(PENDING_LENDER_APPROVAL)
+  requestingUserId              String
+  approvingUserId               String?
+  createdAt                     DateTime              @default(now())
+  updatedAt                     DateTime              @updatedAt
+  approvedAt                    DateTime?
+  deal                          Deal                  @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  parentAuthoritativeContract   AuthoritativeContract @relation("ParentAuthoritativeContract", fields: [parentAuthoritativeContractId], references: [id], onDelete: Restrict)
+  requestingUser                User                  @relation("AmendmentRequester", fields: [requestingUserId], references: [id], onDelete: Cascade)
+  approvingUser                 User?                 @relation("AmendmentApprover", fields: [approvingUserId], references: [id], onDelete: SetNull)
+  generatedDocuments            GeneratedDocument[]
+
+  @@index([dealId, status, createdAt])
+}
+
+model DocumentCustodyEvent {
+  id          String             @id @default(cuid())
+  dealId      String
+  documentId  String?
+  eventType   CustodyEventType
+  actorUserId String
+  actorRole   String
+  metadata    Json               @default("{}")
+  timestamp   DateTime           @default(now())
+  deal        Deal               @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  document    GeneratedDocument? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  @@index([dealId, timestamp])
+}
+
+model DocumentVersion {
+  id                  String            @id @default(cuid())
+  generatedDocumentId String
+  diff                Json              @default("{}")
+  createdBy           String?
+  createdAt           DateTime          @default(now())
+  generatedDocument   GeneratedDocument @relation(fields: [generatedDocumentId], references: [id], onDelete: Cascade)
+}
+
+model ComplianceCheck {
+  id                  String               @id @default(cuid())
+  dealId              String
+  ruleSet             ComplianceRuleSet
+  status              DealComplianceStatus
+  affectedField       String?
+  explanation         String
+  ruleSource          String
+  suggestedCorrection String?
+  deal                Deal                 @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  createdAt           DateTime             @default(now())
+}
+
+model PreFundingValidationCertificate {
+  id           String               @id @default(cuid())
+  dealId       String               @unique
+  lenderId     String
+  dealerId     String
+  status       DealComplianceStatus
+  ruleChecks   Json                 @default("[]")
+  warnings     Json                 @default("[]")
+  blockers     Json                 @default("[]")
+  documentList Json                 @default("[]")
+  contractHash String
+  auditRef     String
+  deal         Deal                 @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  createdAt    DateTime             @default(now())
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

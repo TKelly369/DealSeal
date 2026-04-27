@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
-import { SessionGate } from "@/components/SessionGate";
+import { AuthProvider } from "@/components/AuthProvider";
 import { ConditionalLayout } from "@/components/ConditionalLayout";
+import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: {
@@ -27,23 +28,24 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const sessionPromise = auth();
   return (
     <html lang="en">
       <body>
-        <Suspense
-          fallback={
-            <div
-              className="card"
-              style={{ maxWidth: 420, margin: "4rem auto", textAlign: "center", color: "var(--muted)" }}
-            >
-              Loading…
-            </div>
-          }
-        >
-          <SessionGate>
-            <ConditionalLayout>{children}</ConditionalLayout>
-          </SessionGate>
-        </Suspense>
+        <AuthProvider>
+          <Suspense
+            fallback={
+              <div
+                className="card"
+                style={{ maxWidth: 420, margin: "4rem auto", textAlign: "center", color: "var(--muted)" }}
+              >
+                Loading…
+              </div>
+            }
+          >
+            <ConditionalLayout sessionPromise={sessionPromise}>{children}</ConditionalLayout>
+          </Suspense>
+        </AuthProvider>
       </body>
     </html>
   );

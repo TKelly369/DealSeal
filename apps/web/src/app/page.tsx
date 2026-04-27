@@ -1,115 +1,206 @@
 import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
-const entryCards = [
+const valueCards = [
   {
-    icon: "🏢",
-    title: "Enter as Dealer",
-    description:
-      "Create deals, generate required dealer documents, manage funding packages, and maintain compliance through AI-assisted workflows.",
-    href: "/dashboard",
+    title: "Dealers",
+    headline: "Close Cleaner Deals.",
+    body: "AI-guided workflows ensure every contract is state-specific, lender-compliant, and fundable before you submit.",
   },
   {
-    icon: "🏦",
-    title: "Enter as Lender",
-    description:
-      "Review authoritative contracts, validate funding packages, verify certified renderings, and ensure downstream document integrity.",
-    href: "/dashboard",
+    title: "Lenders",
+    headline: "Fund with Surety.",
+    body: "Verified authoritative contracts, clean assignment trails, and integrated funding validation certificates reduce post-funding legal risk.",
   },
   {
-    icon: "🛡️",
-    title: "Enter as Admin",
-    description: "Manage system custody, audit trails, compliance checkpoints, and the full DealSeal platform infrastructure.",
-    href: "/admin",
+    title: "Consumers",
+    headline: "Transparent & Enforceable.",
+    body: "A single source of truth guarantees accurate disclosures, consistent terms, and legally sound documents.",
+  },
+];
+
+const footerColumns: { title: string; links: { label: string; href: string }[] }[] = [
+  {
+    title: "Product",
+    links: [
+      { label: "Deal Builder", href: "/dealer/deals/new" },
+      { label: "Compliance Engine", href: "/ai-checkpoints" },
+      { label: "Document Generator", href: "/documents" },
+    ],
+  },
+  {
+    title: "Roles",
+    links: [
+      { label: "Dealer Platform", href: "/dealer/dashboard" },
+      { label: "Lender Platform", href: "/lender/dashboard" },
+      { label: "Admin Oversight", href: "/admin" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Privacy Policy", href: "/legal/privacy" },
+      { label: "Terms of Service", href: "/legal/terms" },
+      { label: "Security", href: "/legal/security" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: "/about" },
+      { label: "Contact", href: "/contact" },
+      { label: "Status", href: "/status" },
+    ],
   },
 ];
 
 export default function HomePage() {
   return (
-    <div style={{ minHeight: "100vh", background: "#000000", color: "#ffffff" }}>
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "2.5rem 1rem 3rem" }}>
+    <div style={{ minHeight: "100vh", background: "#000000", color: "#ffffff", display: "flex", flexDirection: "column" }}>
+      <main style={{ flex: 1, maxWidth: 1200, margin: "0 auto", padding: "2.5rem 1rem 2rem", width: "100%" }}>
         <section
           style={{
             background: "linear-gradient(180deg, #000000 0%, #0a0a0a 100%)",
             border: "1px solid #222222",
             borderRadius: "14px",
-            padding: "2.2rem 1.5rem",
-            marginBottom: "1.5rem",
+            padding: "2.2rem 1.5rem 2rem",
+            marginBottom: "2rem",
           }}
         >
           <div
             style={{
-              display: "inline-block",
-              fontSize: "clamp(2.2rem, 8vw, 4.6rem)",
-              fontWeight: 900,
-              letterSpacing: "0.08em",
-              color: "#ffffff",
-              borderBottom: "6px solid #dc2626",
-              paddingBottom: "0.25rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              width: "100%",
+              columnGap: "clamp(1rem, 4vw, 2.75rem)",
+              rowGap: "1.25rem",
             }}
           >
-            DEALSEAL
+            <div
+              style={{
+                flexShrink: 0,
+                fontSize: "clamp(2.2rem, 8vw, 4.6rem)",
+                fontWeight: 900,
+                letterSpacing: "0.08em",
+                color: "#ffffff",
+                borderBottom: "6px solid #dc2626",
+                paddingBottom: "0.25rem",
+                lineHeight: 1,
+              }}
+            >
+              DEALSEAL
+            </div>
+            <div
+              style={{
+                flex: "1 1 300px",
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                minWidth: 0,
+                maxWidth: "100%",
+              }}
+            >
+              <Image
+                src="/brand/dealseal-lockup-official.png"
+                alt="DealSeal — Close Clean. Fund Confident."
+                width={1024}
+                height={1024}
+                sizes="(max-width: 640px) 100vw, (max-width: 1200px) 75vw, 920px"
+                unoptimized
+                priority
+                style={{
+                  width: "100%",
+                  maxWidth: "min(920px, 100%)",
+                  height: "auto",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
           </div>
-          <p style={{ margin: "0.9rem 0 0", fontSize: "1.15rem", color: "#e0e0e0", fontWeight: 600 }}>
-            Contract Authority Platform
-          </p>
-          <p style={{ margin: "1rem 0 0", color: "#c0c0c0", lineHeight: 1.7, maxWidth: 980 }}>
-            DealSeal enforces the legal and evidentiary hierarchy from Authoritative Governing Record through
-            Certified Visual Rendering to Non-Authoritative Convenience Copies. One authoritative record. Immutable
-            contract data. Cryptographic hash. Audit trail. No downstream document drift.
-          </p>
+
+          <div style={{ marginTop: "1.75rem", maxWidth: 920 }}>
+            <h1
+              style={{
+                margin: 0,
+                fontSize: "clamp(1.65rem, 4.2vw, 2.35rem)",
+                fontWeight: 800,
+                lineHeight: 1.2,
+                color: "#ffffff",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Close Deals with Certainty. Fund with Confidence.
+            </h1>
+            <p
+              style={{
+                margin: "1rem 0 0",
+                fontSize: "clamp(1rem, 2.2vw, 1.12rem)",
+                color: "#c8c8c8",
+                lineHeight: 1.75,
+                fontWeight: 500,
+              }}
+            >
+              DealSeal is the AI-controlled infrastructure model for auto finance. We eliminate illegal, inconsistent, and sloppy paperwork by enforcing a single authoritative contract record—protecting dealers from buybacks, lenders from enforcement defects, and consumers from confusion.
+            </p>
+          </div>
+
+          <div
+            style={{
+              marginTop: "1.75rem",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "0.85rem",
+            }}
+          >
+            <Button href="/onboarding?role=dealer" className="btn">
+              For Dealers
+            </Button>
+            <Button href="/onboarding?role=lender" className="btn btn-secondary">
+              For Lenders
+            </Button>
+          </div>
         </section>
 
         <section
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "0.95rem",
-            marginBottom: "1.6rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "1rem",
+            marginBottom: "2.5rem",
           }}
         >
-          {entryCards.map((card) => (
-            <Link
+          {valueCards.map((card) => (
+            <div
               key={card.title}
-              href={card.href}
-              className="dealseal-entry-card"
               style={{
-                display: "block",
-                padding: "1.15rem 1.05rem",
+                border: "1px solid #2a2a2a",
+                borderRadius: "12px",
+                padding: "1.35rem 1.2rem",
+                background: "linear-gradient(145deg, #0c0c0c 0%, #050505 100%)",
               }}
             >
-              <p style={{ margin: 0, fontSize: "1.28rem" }}>{card.icon}</p>
-              <h2 style={{ margin: "0.45rem 0 0", fontSize: "1.08rem", color: "#ffffff" }}>{card.title}</h2>
-              <p style={{ margin: "0.5rem 0 0", color: "#c0c0c0", fontSize: "0.9rem", lineHeight: 1.55 }}>
-                {card.description}
+              <p style={{ margin: 0, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.14em", color: "#dc2626" }}>
+                {card.title.toUpperCase()}
               </p>
-              <p style={{ margin: "0.75rem 0 0", color: "#e0e0e0", fontWeight: 700, fontSize: "0.86rem" }}>
-                Enter
-              </p>
-            </Link>
+              <h2 style={{ margin: "0.5rem 0 0", fontSize: "1.15rem", color: "#ffffff" }}>{card.headline}</h2>
+              <p style={{ margin: "0.65rem 0 0", color: "#b0b0b0", fontSize: "0.92rem", lineHeight: 1.65 }}>{card.body}</p>
+            </div>
           ))}
         </section>
 
-        <section className="card">
-          <h2 style={{ margin: 0, fontSize: "1.4rem", color: "#ffffff" }}>Platform</h2>
-          <div style={{ display: "grid", gap: "1.1rem", marginTop: "1rem" }}>
-            <div>
-              <p className="ds-card-title">Compliance &amp; Authority</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-                <Link href="/ai-checkpoints">AI Checkpoints</Link>
-                <Link href="/records/demo-record-001">Certified Rendering Demo</Link>
-                <Link href="/verify">Verify a Record</Link>
-              </div>
-            </div>
-            <div>
-              <p className="ds-card-title">System</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-                <Link href="/dashboard">Dashboard</Link>
-                <Link href="/audit">Audit Log</Link>
-                <Link href="/documents">Documents</Link>
-                <Link href="/integrations">Integrations</Link>
-                <Link href="/billing">Billing</Link>
-              </div>
-            </div>
+        <section className="card" style={{ marginBottom: "2rem" }}>
+          <h2 style={{ margin: 0, fontSize: "1.25rem", color: "#ffffff" }}>Platform entry</h2>
+          <p style={{ margin: "0.5rem 0 1rem", color: "#a8a8a8", fontSize: "0.9rem" }}>
+            Signed-in workspaces use the enterprise shell. Explore compliance demos without an account.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
+            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/ai-checkpoints">AI compliance checkpoints</Link>
+            <Link href="/records/demo-record-001">Certified rendering demo</Link>
+            <Link href="/verify">Verify a record</Link>
           </div>
         </section>
       </main>
@@ -117,14 +208,40 @@ export default function HomePage() {
       <footer
         style={{
           borderTop: "1px solid #222222",
-          background: "#000000",
-          color: "#c0c0c0",
-          textAlign: "center",
-          padding: "1.25rem 1rem 1.5rem",
+          background: "#050505",
+          color: "#a8a8a8",
+          padding: "2rem 1rem 2.25rem",
         }}
       >
-        <p style={{ margin: 0 }}>© 2026 DealSeal. All rights reserved.</p>
-        <p style={{ margin: "0.35rem 0 0", color: "#a0a0a0" }}>Contract Authority Platform</p>
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+            gap: "1.5rem 2rem",
+          }}
+        >
+          {footerColumns.map((col) => (
+            <div key={col.title}>
+              <p style={{ margin: 0, fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.12em", color: "#e5e5e5" }}>
+                {col.title}
+              </p>
+              <ul style={{ margin: "0.65rem 0 0", padding: 0, listStyle: "none", display: "grid", gap: "0.4rem" }}>
+                {col.links.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} style={{ color: "#b8b8b8", fontSize: "0.88rem" }}>
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p style={{ margin: "1.75rem auto 0", textAlign: "center", fontSize: "0.82rem", color: "#707070" }}>
+          © 2026 DealSeal. Contract integrity infrastructure for auto finance.
+        </p>
       </footer>
     </div>
   );
