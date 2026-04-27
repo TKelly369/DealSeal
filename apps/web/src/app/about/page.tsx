@@ -1,220 +1,133 @@
 export default function AboutPage() {
+  const shellStyle = {
+    maxWidth: 980,
+    margin: "2rem auto",
+    padding: "0 1rem 2.5rem",
+    color: "var(--text)",
+    lineHeight: 1.65,
+    fontFamily: "var(--font)",
+  } as const;
+
+  const cardStyle = {
+    border: "1px solid var(--border)",
+    borderRadius: 12,
+    padding: "1.4rem",
+    background: "linear-gradient(180deg, #0e0e0e 0%, #111111 100%)",
+  } as const;
+
+  const sectionTitleStyle = {
+    margin: "0 0 0.6rem",
+    fontSize: "1.2rem",
+    color: "#ffffff",
+    letterSpacing: "0.01em",
+    fontWeight: 600,
+  } as const;
+
+  const dividerStyle = {
+    height: 1,
+    background: "linear-gradient(90deg, transparent, var(--border-bright), transparent)",
+    margin: "1.2rem 0",
+  } as const;
+
   return (
-    <main style={{ maxWidth: 980, margin: "2rem auto", padding: "0 1rem 2rem", color: "#e5e5e5", lineHeight: 1.75 }}>
-      <section
-        style={{
-          border: "1px solid #262626",
-          borderRadius: 14,
-          padding: "1.4rem 1.2rem",
-          background: "linear-gradient(165deg, #0b0b0b 0%, #121212 100%)",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.33)",
-        }}
-      >
-        <p style={{ margin: 0, color: "#dc2626", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: "0.75rem" }}>
+    <main style={shellStyle}>
+      <section style={cardStyle}>
+        <p
+          style={{
+            margin: 0,
+            color: "var(--text-secondary)",
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            fontSize: "0.75rem",
+          }}
+        >
           About DealSeal
         </p>
-        <h1 style={{ color: "#fff", margin: "0.5rem 0 0.8rem", fontSize: "clamp(1.5rem, 3.5vw, 2.25rem)" }}>
-          Contract-Centric Infrastructure for Auto Finance
+        <h1 style={{ color: "#fff", margin: "0.5rem 0 0.85rem", fontSize: "clamp(1.7rem, 4vw, 2.35rem)", lineHeight: 1.2 }}>
+          Contract Infrastructure for Auto Finance
         </h1>
-        <p style={{ margin: 0 }}>
-          DealSeal is a next-generation infrastructure platform redefining how auto-finance transactions are structured,
-          documented, and enforced.
+        <p style={{ margin: "0 0 0.8rem", color: "var(--text-secondary)" }}>
+          DealSeal provides a contract-first operating layer for automotive finance teams that need accuracy, traceability,
+          and enforceability across the full transaction lifecycle.
         </p>
-        <p>
-          At its core, DealSeal solves a systemic industry problem: inconsistent contracts, fragmented documentation, and
-          costly compliance failures that expose both dealers and lenders to unnecessary risk.
+        <p style={{ margin: 0, color: "var(--text-secondary)" }}>
+          The platform standardizes deal structure at origination, synchronizes terms across documents, and preserves an
+          auditable source of truth through funding and servicing.
         </p>
+      </section>
+
+      <div style={dividerStyle} />
+
+      <section style={cardStyle}>
+        <h2 style={sectionTitleStyle}>What We Solve</h2>
+        <p style={{ margin: "0 0 0.75rem", color: "var(--text-secondary)" }}>
+          Many auto-finance workflows still depend on fragmented document packages and manual reconciliation between dealer,
+          lender, and compliance teams.
+        </p>
+        <ul style={{ margin: 0, paddingLeft: "1.1rem", color: "var(--text-secondary)" }}>
+          <li>Inconsistent contract data between forms and systems</li>
+          <li>Funding delays caused by preventable package defects</li>
+          <li>Higher repurchase, exception, and litigation exposure</li>
+          <li>Limited downstream confidence in document integrity</li>
+        </ul>
+      </section>
+
+      <div style={dividerStyle} />
+
+      <section style={cardStyle}>
+        <h2 style={sectionTitleStyle}>How DealSeal Works</h2>
+        <ul style={{ margin: "0 0 0.85rem", paddingLeft: "1.1rem", color: "var(--text-secondary)" }}>
+          <li>Applies rules-based structuring for jurisdiction and lender policy alignment</li>
+          <li>Generates synchronized, compliant deal documentation from a single contract baseline</li>
+          <li>Maintains certified outputs and verification pathways for defensible recordkeeping</li>
+          <li>Supports operational controls with audit-ready event history</li>
+        </ul>
+        <p style={{ margin: 0, color: "var(--text-secondary)" }}>
+          The result is a reliable process where every material term maps back to one authoritative record.
+        </p>
+      </section>
+
+      <div style={dividerStyle} />
+
+      <section style={cardStyle}>
+        <h2 style={sectionTitleStyle}>Value for Dealers and Lenders</h2>
         <div
           style={{
-            marginTop: "0.9rem",
-            borderLeft: "4px solid #dc2626",
-            padding: "0.6rem 0.75rem",
-            background: "rgba(220,38,38,0.08)",
-            borderRadius: 8,
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "0.9rem",
           }}
         >
-          <strong>
-            Every deal must originate from a legally enforceable, authoritative contract-and everything else must follow
-            from it.
-          </strong>
+          <div style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "0.85rem 0.95rem", background: "#0c0c0c" }}>
+            <h3 style={{ margin: "0 0 0.45rem", fontSize: "1rem", color: "#fff" }}>For Dealers</h3>
+            <ul style={{ margin: 0, paddingLeft: "1.05rem", color: "var(--text-secondary)" }}>
+              <li>Cleaner submissions and faster funding confidence</li>
+              <li>Lower avoidable rework across front and back office</li>
+              <li>More consistent execution across stores and teams</li>
+            </ul>
+          </div>
+          <div style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "0.85rem 0.95rem", background: "#0c0c0c" }}>
+            <h3 style={{ margin: "0 0 0.45rem", fontSize: "1rem", color: "#fff" }}>For Lenders</h3>
+            <ul style={{ margin: 0, paddingLeft: "1.05rem", color: "var(--text-secondary)" }}>
+              <li>Stronger pre-funding validation and package quality</li>
+              <li>Better enforcement posture with consistent documentation</li>
+              <li>Reduced lifecycle risk from contract-level discrepancies</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #3a3a3a, transparent)", margin: "1.4rem 0" }} />
+      <div style={dividerStyle} />
 
-      <section
-        style={{
-          border: "1px solid #242424",
-          borderRadius: 12,
-          padding: "1rem 1rem 1.1rem",
-          background: "linear-gradient(165deg, #0b0b0b 0%, #111111 100%)",
-        }}
-      >
-        <h2 style={{ color: "#fff", marginTop: 0, marginBottom: "0.55rem" }}>Built for Dealers: Precision at the Point of Sale</h2>
-        <p>
-          For dealers, DealSeal transforms the deal-making process from manual and error-prone into guided, compliant
-          execution.
+      <section style={cardStyle}>
+        <h2 style={sectionTitleStyle}>Mission</h2>
+        <p style={{ margin: "0 0 0.7rem", color: "var(--text-secondary)" }}>
+          DealSeal&apos;s mission is to establish transaction certainty in auto finance through enforceable, standardized, and
+          verifiable contract infrastructure.
         </p>
-        <p>Through AI-driven onboarding and state-specific logic, the platform:</p>
-        <ul>
-          <li>Structures each deal according to applicable laws and lender requirements</li>
-          <li>Automatically generates compliant contracts and required forms</li>
-          <li>Ensures all numbers, taxes, and terms are consistent across every document</li>
-          <li>Eliminates paperwork errors that lead to funding delays or buybacks</li>
-        </ul>
-        <p>DealSeal does not just help dealers complete deals-it ensures they are done correctly the first time.</p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "0.55rem" }}>
-          {["Faster funding", "Fewer rejected deals", "Reduced liability", "Increased operational confidence"].map((item) => (
-            <div key={item} style={{ border: "1px solid #2f2f2f", borderRadius: 8, padding: "0.5rem 0.6rem", background: "#0f0f0f" }}>
-              {item}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #3a3a3a, transparent)", margin: "1.4rem 0" }} />
-
-      <section
-        style={{
-          border: "1px solid #242424",
-          borderRadius: 12,
-          padding: "1rem 1rem 1.1rem",
-          background: "linear-gradient(165deg, #0b0b0b 0%, #111111 100%)",
-        }}
-      >
-        <h2 style={{ color: "#fff", marginTop: 0, marginBottom: "0.55rem" }}>Built for Lenders: Enforceability and Risk Control</h2>
-        <p>For lenders, DealSeal delivers something the industry has historically lacked: true contract certainty.</p>
-        <p>Every deal funded through DealSeal is built on:</p>
-        <ul>
-          <li>A verified authoritative contract</li>
-          <li>A complete and traceable chain of custody</li>
-          <li>Consistent, system-controlled documentation across all deal artifacts</li>
-        </ul>
-        <p>This structure strengthens a lender&apos;s position across the entire lifecycle:</p>
-        <ul>
-          <li>Origination: Confidence in deal integrity before funding</li>
-          <li>Servicing: Clean, consistent records</li>
-          <li>Enforcement: Legally defensible documentation in repossession, replevin, or litigation</li>
-        </ul>
-        <p>By eliminating discrepancies and documentation gaps, DealSeal reduces buybacks, legal disputes, enforcement failures, and operational friction.</p>
-        <p>It transforms contract risk into contract reliability.</p>
-      </section>
-
-      <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #3a3a3a, transparent)", margin: "1.4rem 0" }} />
-
-      <section
-        style={{
-          border: "1px solid #242424",
-          borderRadius: 12,
-          padding: "1rem 1rem 1.1rem",
-          background: "linear-gradient(165deg, #0b0b0b 0%, #111111 100%)",
-        }}
-      >
-        <h2 style={{ color: "#fff", marginTop: 0, marginBottom: "0.55rem" }}>The Infrastructure Layer the Industry Has Been Missing</h2>
-        <p>DealSeal is not just a document generator-it is a compliance and enforcement infrastructure.</p>
-        <p>Our platform integrates:</p>
-        <ul>
-          <li>AI-driven deal structuring based on jurisdiction and lender rules</li>
-          <li>Real-time compliance checkpoints before deal finalization</li>
-          <li>Authoritative contract standardization aligned with UCC principles</li>
-          <li>Certified document renderings for verifiable, court-ready records</li>
-        </ul>
-        <p>
-          Once the authoritative contract is executed, DealSeal automatically propagates all deal terms across every
-          required document-eliminating inconsistencies at the source.
-        </p>
-        <p>This creates a system where every number ties back to a single source of truth, every document is aligned, and every deal is defensible.</p>
-      </section>
-
-      <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #3a3a3a, transparent)", margin: "1.4rem 0" }} />
-
-      <section
-        style={{
-          border: "1px solid #242424",
-          borderRadius: 12,
-          padding: "1rem 1rem 1.1rem",
-          background: "linear-gradient(165deg, #0b0b0b 0%, #111111 100%)",
-        }}
-      >
-        <h2 style={{ color: "#fff", marginTop: 0, marginBottom: "0.55rem" }}>Why It Matters (Investor Perspective)</h2>
-        <p>
-          The auto-finance industry processes millions of transactions annually, yet still relies heavily on outdated,
-          fragmented documentation systems.
-        </p>
-        <p>This creates billions in downstream risk through contract defects, funding errors, buybacks, and litigation exposure.</p>
-        <div
-          style={{
-            margin: "0.8rem 0",
-            border: "1px solid rgba(220,38,38,0.35)",
-            borderRadius: 10,
-            padding: "0.65rem 0.8rem",
-            background: "rgba(220,38,38,0.09)",
-          }}
-        >
-          <strong>DealSeal introduces a new category: Contract-Centric Transaction Infrastructure</strong>
-        </div>
-        <p>By controlling how deals are structured at inception, DealSeal:</p>
-        <ul>
-          <li>Reduces systemic inefficiencies</li>
-          <li>Lowers risk across the lending ecosystem</li>
-          <li>Creates a scalable, repeatable standard for compliant deal execution</li>
-        </ul>
-        <p>As adoption grows, DealSeal has the potential to become:</p>
-        <ul>
-          <li>A required infrastructure layer for compliant auto-finance transactions</li>
-          <li>A risk-reduction standard for lenders</li>
-          <li>A deal execution engine for dealerships nationwide</li>
-        </ul>
-      </section>
-
-      <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #3a3a3a, transparent)", margin: "1.4rem 0" }} />
-
-      <section
-        style={{
-          border: "1px solid #242424",
-          borderRadius: 12,
-          padding: "1rem 1rem 1.1rem",
-          background: "linear-gradient(165deg, #0b0b0b 0%, #111111 100%)",
-        }}
-      >
-        <h2 style={{ color: "#fff", marginTop: 0, marginBottom: "0.55rem" }}>Our Mission</h2>
-        <p>
-          DealSeal&apos;s mission is to establish certainty in auto finance by ensuring every transaction is built on a legally
-          compliant, authoritative contract that remains consistent, traceable, and enforceable throughout its lifecycle.
-        </p>
-        <p>We are building a system where:</p>
-        <ul>
-          <li>Deals are structured correctly from the start</li>
-          <li>Documentation errors are eliminated at scale</li>
-          <li>Enforcement is strengthened through verifiable records</li>
-        </ul>
-        <div
-          style={{
-            marginTop: "0.8rem",
-            borderLeft: "4px solid #dc2626",
-            padding: "0.55rem 0.75rem",
-            background: "rgba(220,38,38,0.08)",
-            borderRadius: 8,
-          }}
-        >
-          <strong>Every deal. Verified. Aligned. Enforceable.</strong>
-        </div>
-      </section>
-
-      <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #3a3a3a, transparent)", margin: "1.4rem 0" }} />
-
-      <section
-        style={{
-          border: "1px solid #242424",
-          borderRadius: 12,
-          padding: "1rem 1rem 1.1rem",
-          background: "linear-gradient(165deg, #0b0b0b 0%, #111111 100%)",
-        }}
-      >
-        <h2 style={{ color: "#fff", marginTop: 0, marginBottom: "0.55rem" }}>Positioning Statement</h2>
-        <p style={{ marginBottom: 0 }}>
-          DealSeal is building the infrastructure that ensures auto-finance deals are not just completed-but proven,
-          compliant, and enforceable by design.
+        <p style={{ margin: 0, fontWeight: 600, color: "#ffffff" }}>
+          Every deal. Verified, aligned, and enforceable by design.
         </p>
       </section>
     </main>
