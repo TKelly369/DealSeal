@@ -82,21 +82,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!parsed.success) return null;
         const normalizedEmail = parsed.data.email.toLowerCase();
 
-        const override = await prisma.userLoginOverride.findUnique({
-          where: { email: normalizedEmail },
-        });
+        try {
+          const override = await prisma.userLoginOverride.findUnique({
+            where: { email: normalizedEmail },
+          });
 
-        if (override && verifySecret(parsed.data.password, override.passwordHash)) {
-          const foundOverrideUser = MOCK_USERS.find((u) => u.email.toLowerCase() === normalizedEmail);
-          if (foundOverrideUser) {
-            return {
-              id: foundOverrideUser.id,
-              email: foundOverrideUser.email,
-              name: foundOverrideUser.name,
-              role: foundOverrideUser.role,
-              workspaceId: foundOverrideUser.workspaceId,
-            };
+          if (override && verifySecret(parsed.data.password, override.passwordHash)) {
+            const foundOverrideUser = MOCK_USERS.find((u) => u.email.toLowerCase() === normalizedEmail);
+            if (foundOverrideUser) {
+              return {
+                id: foundOverrideUser.id,
+                email: foundOverrideUser.email,
+                name: foundOverrideUser.name,
+                role: foundOverrideUser.role,
+                workspaceId: foundOverrideUser.workspaceId,
+              };
+            }
           }
+        } catch {
+          // DB override lookup is optional; continue with scaffold credentials.
         }
 
         const found = MOCK_USERS.find(
