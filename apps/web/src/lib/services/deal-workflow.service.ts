@@ -7,6 +7,8 @@ import { AutopublishService } from "@/lib/services/autopublish.service";
 import { validateUCCArticle9 } from "@/lib/services/compliance.service";
 import { SecondaryMarketService } from "@/lib/services/secondary-market.service";
 import { NotificationService } from "@/lib/services/notification.service";
+import { NegotiableInstrumentService } from "@/lib/services/negotiable-instrument.service";
+import { WebhookService } from "@/lib/services/webhook.service";
 
 function legacyTypeFor(dt: DocumentType): GeneratedDocumentType {
   switch (dt) {
@@ -270,6 +272,18 @@ export const DealWorkflowService = {
       title: "Final RISC sent to dealer",
       message: "Dealer has been notified that the final RISC is ready for signatures.",
     });
+    await Promise.all([
+      WebhookService.dispatchEvent(result.dealerId, "LENDER_APPROVED", {
+        dealId,
+        lenderId: result.lenderId,
+        status: "RISC_LENDER_FINAL",
+      }),
+      WebhookService.dispatchEvent(result.lenderId, "LENDER_APPROVED", {
+        dealId,
+        lenderId: result.lenderId,
+        status: "RISC_LENDER_FINAL",
+      }),
+    ]);
 
     return result.doc;
   },
@@ -394,6 +408,7 @@ export const DealWorkflowService = {
     });
 
     await SecondaryMarketService.assignContractToLender(dealId);
+    await NegotiableInstrumentService.validateHDCRequirements(dealId);
     await SecondaryMarketService.classifyLoanForSale(dealId);
 
     const postLockDeal = await prisma.deal.findUnique({
@@ -415,6 +430,16 @@ export const DealWorkflowService = {
           type: "DEAL_AUTHORITATIVE_LOCKED",
           title: "Deal locked",
           message: "Your signed contract is locked. DealSeal is generating your closing package.",
+        }),
+      ]);
+      await Promise.all([
+        WebhookService.dispatchEvent(postLockDeal.dealerId, "DEAL_LOCKED", {
+          dealId,
+          status: "AUTHORITATIVE_LOCK",
+        }),
+        WebhookService.dispatchEvent(postLockDeal.lenderId, "DEAL_LOCKED", {
+          dealId,
+          status: "AUTHORITATIVE_LOCK",
         }),
       ]);
     }

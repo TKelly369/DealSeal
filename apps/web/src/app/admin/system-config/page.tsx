@@ -5,7 +5,7 @@ import { updateSystemConfig } from "@/app/admin/actions";
 export default async function AdminSystemConfigPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/system-config");
-  if (session.user.role !== "ADMIN") redirect("/dashboard");
+  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
 
   return (
     <div className="card">
@@ -16,7 +16,7 @@ export default async function AdminSystemConfigPage() {
           "use server";
           const session = await auth();
           if (!session?.user) redirect("/login?next=/admin/system-config");
-          if (session.user.role !== "ADMIN") redirect("/dashboard");
+          if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
           await updateSystemConfig({
             maxDocumentsPerMonth: Number(formData.get("maxDocumentsPerMonth") || 5000),
             platformFeePercent: Number(formData.get("platformFeePercent") || 2.5),

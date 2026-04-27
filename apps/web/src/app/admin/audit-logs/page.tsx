@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { getAuditLogs } from "@/app/admin/actions";
 import { AuditLogTable } from "@/components/admin/AuditLogTable";
 import { prisma } from "@/lib/db";
+import LiveDateTime24h from "@/app/LiveDateTime24h";
 
 export default async function AdminAuditLogsPage({
   searchParams,
@@ -12,7 +13,7 @@ export default async function AdminAuditLogsPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/audit-logs");
-  if (session.user.role !== "ADMIN") redirect("/dashboard");
+  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page || 1));
   const data = await getAuditLogs({ page, limit: 15 });
@@ -40,10 +41,6 @@ export default async function AdminAuditLogsPage({
         })
       : [];
   const actorById = new Map(actorUsers.map((u) => [u.id, u]));
-  const now = new Date();
-  const dateLabel = now.toLocaleDateString();
-  const timeLabel = now.toLocaleTimeString([], { hour12: false });
-
   return (
     <div style={{ display: "grid", gap: "1rem" }}>
       <div className="card">
@@ -56,9 +53,7 @@ export default async function AdminAuditLogsPage({
             priority
             style={{ height: "auto", width: "180px" }}
           />
-          <span style={{ color: "var(--muted)", fontSize: "0.88rem" }}>
-            {dateLabel} · {timeLabel} (24h)
-          </span>
+          <LiveDateTime24h />
         </div>
         <h2 style={{ marginTop: "0.85rem" }}>Admin Oversight: Documents, Custody, and Control</h2>
         <p style={{ color: "var(--muted)" }}>

@@ -1,4 +1,4 @@
-import { Prisma, InstrumentTransferType, NegotiableInstrumentType } from "@/generated/prisma";
+import { Prisma, InstrumentTransferType, NegotiableInstrumentType, HdcStatus } from "@/generated/prisma";
 import { prisma } from "@/lib/db";
 
 function toJsonValue(v: unknown): Prisma.InputJsonValue {
@@ -15,15 +15,17 @@ export const NegotiableInstrumentService = {
         payToOrderOf: payToOrderOf.trim(),
         isElectronicNote: true,
         eNoteControlLocation: "DealSeal eVault",
+        hdcStatus: HdcStatus.UNEVALUATED,
       },
       update: {
         payToOrderOf: payToOrderOf.trim(),
         eNoteControlLocation: "DealSeal eVault",
+        hdcStatus: HdcStatus.REVIEW_REQUIRED,
       },
     });
   },
 
-  async validateHDCRequirements(dealId: string): Promise<{ isHDCQualified: boolean; defects: string[] }> {
+  async validateHDCRequirements(dealId: string): Promise<{ isHDCQualified: boolean; defects: string[]; status: HdcStatus }> {
     const defects: string[] = [];
     const deal = await prisma.deal.findUnique({
       where: { id: dealId },
@@ -35,9 +37,14 @@ export const NegotiableInstrumentService = {
     });
     if (!deal?.negotiableInstrument) {
       defects.push("Negotiable instrument record is missing.");
-      return { isHDCQualified: false, defects };
+      return { isHDCQualified: false, defects, status: HdcStatus.DEFECTIVE };
     }
     const ni = deal.negotiableInstrument;
+    let status: HdcStatus = HdcStatus.QUALIFIED;
+
+    if (deal.status === "AUTHORITATIVE_LOCK" && ni.hdcStatus === HdcStatus.UNEVALUATED) {
+      status = HdcStatus.REVIEW_REQUIRED;
+    }
     if (!ni.payToOrderOf || ni.payToOrderOf.trim().length < 2) {
       defects.push("Instrument is not properly payable to an identified party.");
     }
@@ -51,7 +58,21 @@ export const NegotiableInstrumentService = {
     if (hasBlocker) {
       defects.push("Known compliance blockers may signal defenses/claims.");
     }
-    return { isHDCQualified: defects.length === 0, defects };
+    if (defects.length > 0) {
+      status = HdcStatus.DEFECTIVE;
+    } else {
+      status = HdcStatus.QUALIFIED;
+    }
+
+    await prisma.negotiableInstrument.update({
+      where: { id: ni.id },
+      data: {
+        hdcStatus: status,
+        hdcDefects: defects.length > 0 ? toJsonValue(defects) : Prisma.JsonNull,
+      },
+    });
+
+    return { isHDCQualified: status === HdcStatus.QUALIFIED, defects, status };
   },
 
   async endorseAndTransferInstrument(dealId: string, toEntityId: string, withRecourse: boolean, fromEntityId?: string) {

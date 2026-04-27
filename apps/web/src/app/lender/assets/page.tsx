@@ -73,6 +73,10 @@ export default async function LenderAssetsPage() {
             id: d.negotiableInstrument.id,
             payToOrderOf: d.negotiableInstrument.payToOrderOf,
             eNoteControlLocation: d.negotiableInstrument.eNoteControlLocation,
+            hdcStatus: d.negotiableInstrument.hdcStatus,
+            hdcDefects: Array.isArray(d.negotiableInstrument.hdcDefects)
+              ? (d.negotiableInstrument.hdcDefects as string[])
+              : [],
           }
         : null,
       instrumentEvents: d.instrumentTransferEvents.map((e) => ({

@@ -1,6 +1,8 @@
 import NextAuth, { type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
+import { prisma } from "@/lib/db";
+import { verifySecret } from "@/lib/security";
 
 declare module "next-auth" {
   interface Session {
@@ -78,9 +80,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(raw) {
         const parsed = CredentialsSchema.safeParse(raw);
         if (!parsed.success) return null;
+        const normalizedEmail = parsed.data.email.toLowerCase();
+
+        const override = await prisma.userLoginOverride.findUnique({
+          where: { email: normalizedEmail },
+        });
+
+        if (override && verifySecret(parsed.data.password, override.passwordHash)) {
+          const foundOverrideUser = MOCK_USERS.find((u) => u.email.toLowerCase() === normalizedEmail);
+          if (foundOverrideUser) {
+            return {
+              id: foundOverrideUser.id,
+              email: foundOverrideUser.email,
+              name: foundOverrideUser.name,
+              role: foundOverrideUser.role,
+              workspaceId: foundOverrideUser.workspaceId,
+            };
+          }
+        }
+
         const found = MOCK_USERS.find(
           (u) =>
-            u.email.toLowerCase() === parsed.data.email.toLowerCase() &&
+            u.email.toLowerCase() === normalizedEmail &&
             u.password === parsed.data.password,
         );
         if (!found) return null;

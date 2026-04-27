@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { addDealToPoolFormAction, approveAmendmentFormAction, rejectAmendmentFormAction } from "./actions";
+import { HDCStatusBadge } from "@/components/shared/HDCStatusBadge";
 
 export type AssetRow = {
   id: string;
@@ -37,6 +38,8 @@ export type AssetRow = {
     id: string;
     payToOrderOf: string;
     eNoteControlLocation: string | null;
+    hdcStatus: "UNEVALUATED" | "QUALIFIED" | "REVIEW_REQUIRED" | "DEFECTIVE";
+    hdcDefects: string[];
   } | null;
   instrumentEvents: {
     id: string;
@@ -123,6 +126,7 @@ export function AssetsClient({ deals, pools }: { deals: AssetRow[]; pools: PoolO
               <th style={{ padding: "0.5rem" }}>Amount</th>
               <th style={{ padding: "0.5rem" }}>Grade</th>
               <th style={{ padding: "0.5rem" }}>Status</th>
+              <th style={{ padding: "0.5rem" }}>HDC Status</th>
               <th style={{ padding: "0.5rem" }}>Pool</th>
               <th style={{ padding: "0.5rem" }}>Actions</th>
             </tr>
@@ -139,6 +143,12 @@ export function AssetsClient({ deals, pools }: { deals: AssetRow[]; pools: PoolO
                 </td>
                 <td style={{ padding: "0.5rem" }}>{d.grade ?? "—"}</td>
                 <td style={{ padding: "0.5rem" }}>{STATUS_LABEL[d.secondaryMarketStatus] ?? d.secondaryMarketStatus}</td>
+                <td style={{ padding: "0.5rem" }}>
+                  <HDCStatusBadge
+                    status={d.instrument?.hdcStatus ?? "UNEVALUATED"}
+                    defects={d.instrument?.hdcDefects ?? []}
+                  />
+                </td>
                 <td style={{ padding: "0.5rem" }}>{d.poolName ?? d.poolId ?? "—"}</td>
                 <td style={{ padding: "0.5rem" }}>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>

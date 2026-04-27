@@ -166,6 +166,13 @@ enum InstrumentTransferType {
   SALE_WITHOUT_RECOURSE
 }
 
+enum HdcStatus {
+  UNEVALUATED
+  QUALIFIED
+  REVIEW_REQUIRED
+  DEFECTIVE
+}
+
 enum DealPartyRole {
   BUYER
   CO_BUYER
@@ -188,20 +195,27 @@ enum ComplianceRuleSet {
   LENDER
 }
 
+enum WebhookDeliveryStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
 model User {
-  id                  String         @id @default(cuid())
-  email               String         @unique
+  id                  String            @id @default(cuid())
+  email               String            @unique
   name                String?
-  role                UserRole       @default(USER)
+  role                UserRole          @default(USER)
   image               String?
   accounts            Account[]
   sessions            Session[]
   memberships         Membership[]
-  requestedAmendments Amendment[]    @relation("AmendmentRequester")
-  approvedAmendments  Amendment[]    @relation("AmendmentApprover")
+  requestedAmendments Amendment[]       @relation("AmendmentRequester")
+  approvedAmendments  Amendment[]       @relation("AmendmentApprover")
   notifications       Notification[]
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
+  accessAudits        UserAccessAudit[]
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
 }
 
 model Workspace {
@@ -222,6 +236,10 @@ model Workspace {
   lenderDeals             Deal[]                   @relation("LenderDeals")
   notifications           Notification[]
   loanPools               LoanPool[]
+  apiKeys                 ApiKey[]
+  webhookEndpoints        WebhookEndpoint[]
+  accessAudits            UserAccessAudit[]
+  dealCountCurrentPeriod  Int                      @default(0)
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
 }
@@ -367,6 +385,7 @@ model Deal {
   instrumentTransferEvents        InstrumentTransferEvent[]
   amendments                      Amendment[]
   notifications                   Notification[]
+  apiIngressKeyId                 String?
   createdAt                       DateTime                         @default(now())
   updatedAt                       DateTime                         @updatedAt
 
@@ -467,6 +486,8 @@ model NegotiableInstrument {
   isBearerInstrument   Boolean                   @default(false)
   isElectronicNote     Boolean                   @default(true)
   eNoteControlLocation String?
+  hdcStatus            HdcStatus                 @default(UNEVALUATED)
+  hdcDefects           Json?
   deal                 Deal                      @relation(fields: [dealId], references: [id], onDelete: Cascade)
   transferEvents       InstrumentTransferEvent[]
   createdAt            DateTime                  @default(now())
@@ -526,6 +547,92 @@ model Notification {
 
   @@index([workspaceId, isRead, createdAt])
   @@index([userId, isRead, createdAt])
+}
+
+model ApiKey {
+  id          String    @id @default(cuid())
+  workspaceId String
+  name        String
+  prefix      String
+  scopes      String[]  @default(["deals:write"])
+  hashedKey   String    @unique
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, revokedAt, createdAt])
+}
+
+model WebhookEndpoint {
+  id          String            @id @default(cuid())
+  workspaceId String
+  url         String
+  secret      String
+  isActive    Boolean           @default(true)
+  events      String[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  deliveries  WebhookDelivery[]
+
+  @@index([workspaceId, isActive])
+}
+
+model WebhookDelivery {
+  id                 String                @id @default(cuid())
+  webhookEndpointId  String
+  eventId            String
+  payload            Json
+  responseStatusCode Int?
+  deliveryStatus     WebhookDeliveryStatus @default(PENDING)
+  retryCount         Int                   @default(0)
+  nextRetryAt        DateTime?
+  lastError          String?
+  createdAt          DateTime              @default(now())
+  webhookEndpoint    WebhookEndpoint       @relation(fields: [webhookEndpointId], references: [id], onDelete: Cascade)
+
+  @@index([webhookEndpointId, createdAt])
+  @@index([eventId])
+}
+
+model UserAccessAudit {
+  id          String    @id @default(cuid())
+  userId      String
+  workspaceId String
+  fullName    String
+  title       String?
+  phone       String?
+  ipAddress   String?
+  userAgent   String?
+  metadata    Json      @default("{}")
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([workspaceId, createdAt])
+}
+
+model AccountRecoveryToken {
+  id        String    @id @default(cuid())
+  email     String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([email, createdAt])
+  @@index([expiresAt, usedAt])
+}
+
+model UserLoginOverride {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
 }
 
 model Amendment {

@@ -10,6 +10,7 @@ import { Table, TBody, TD, TH, THead, TR } from "@/components/ui/table";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { getDashboardMetrics } from "./actions";
+import LiveDateTime24h from "../LiveDateTime24h";
 
 async function OverviewMetrics() {
   const data = await getDashboardMetrics();
@@ -107,30 +108,39 @@ async function RecentActivityFeed() {
 }
 
 export default function DashboardPage() {
-  const now = new Date();
-  const dateLabel = now.toLocaleDateString();
-  const timeLabel = now.toLocaleTimeString([], { hour12: false });
-
   return (
     <div className="ds-dashboard-page">
       <header>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "0.9rem", marginBottom: "0.45rem", flexWrap: "wrap" }}>
-          <span style={{ color: "var(--muted)", fontSize: "0.88rem" }}>
-            {dateLabel} · {timeLabel} (24h)
-          </span>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.6rem",
+            marginBottom: "0.45rem",
+          }}
+        >
           <Image
             src="/brand/dealseal-user-logo.png"
             alt="DealSeal"
-            width={120}
-            height={120}
+            width={240}
+            height={240}
             priority
-            style={{ height: "auto", width: "120px", borderRadius: 8 }}
+            style={{ height: "auto", width: "240px", borderRadius: 8 }}
           />
+          <span style={{ textAlign: "center" }}>
+            <LiveDateTime24h />
+          </span>
+          <div className="row" style={{ justifyContent: "center" }}>
+            <Link href="/login?next=/admin" className="btn btn-secondary" style={{ fontSize: "0.8rem" }}>
+              Admin Login
+            </Link>
+            <Link href="/admin" className="btn btn-secondary" style={{ fontSize: "0.8rem" }}>
+              Admin Console
+            </Link>
+          </div>
         </div>
-        <h1 style={{ marginBottom: "0.35rem" }}>Operational Command Center</h1>
-        <p style={{ color: "var(--muted)", margin: 0 }}>
-          Enterprise-level contract authority visibility with workflow controls and compliance summaries.
-        </p>
       </header>
 
       <Suspense

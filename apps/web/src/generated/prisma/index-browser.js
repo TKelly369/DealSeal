@@ -136,6 +136,7 @@ exports.Prisma.WorkspaceScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   type: 'type',
+  dealCountCurrentPeriod: 'dealCountCurrentPeriod',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -246,6 +247,7 @@ exports.Prisma.DealScalarFieldEnum = {
   poolId: 'poolId',
   secondaryMarketStatus: 'secondaryMarketStatus',
   secondaryMarketGrade: 'secondaryMarketGrade',
+  apiIngressKeyId: 'apiIngressKeyId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -328,6 +330,8 @@ exports.Prisma.NegotiableInstrumentScalarFieldEnum = {
   isBearerInstrument: 'isBearerInstrument',
   isElectronicNote: 'isElectronicNote',
   eNoteControlLocation: 'eNoteControlLocation',
+  hdcStatus: 'hdcStatus',
+  hdcDefects: 'hdcDefects',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -367,6 +371,73 @@ exports.Prisma.NotificationScalarFieldEnum = {
   title: 'title',
   message: 'message',
   isRead: 'isRead',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ApiKeyScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  name: 'name',
+  prefix: 'prefix',
+  scopes: 'scopes',
+  hashedKey: 'hashedKey',
+  lastUsedAt: 'lastUsedAt',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.WebhookEndpointScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  url: 'url',
+  secret: 'secret',
+  isActive: 'isActive',
+  events: 'events',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WebhookDeliveryScalarFieldEnum = {
+  id: 'id',
+  webhookEndpointId: 'webhookEndpointId',
+  eventId: 'eventId',
+  payload: 'payload',
+  responseStatusCode: 'responseStatusCode',
+  deliveryStatus: 'deliveryStatus',
+  retryCount: 'retryCount',
+  nextRetryAt: 'nextRetryAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserAccessAuditScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  workspaceId: 'workspaceId',
+  fullName: 'fullName',
+  title: 'title',
+  phone: 'phone',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AccountRecoveryTokenScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserLoginOverrideScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  updatedAt: 'updatedAt',
   createdAt: 'createdAt'
 };
 
@@ -605,6 +676,13 @@ exports.NegotiableInstrumentType = exports.$Enums.NegotiableInstrumentType = {
   RISC_AS_NOTE: 'RISC_AS_NOTE'
 };
 
+exports.HdcStatus = exports.$Enums.HdcStatus = {
+  UNEVALUATED: 'UNEVALUATED',
+  QUALIFIED: 'QUALIFIED',
+  REVIEW_REQUIRED: 'REVIEW_REQUIRED',
+  DEFECTIVE: 'DEFECTIVE'
+};
+
 exports.InstrumentTransferType = exports.$Enums.InstrumentTransferType = {
   ENDORSEMENT: 'ENDORSEMENT',
   NEGOTIATION: 'NEGOTIATION',
@@ -632,6 +710,12 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   UCSP_ASSIGNMENT: 'UCSP_ASSIGNMENT',
   UCSP_TITLE_APPLICATION: 'UCSP_TITLE_APPLICATION',
   UCSP_CLOSING_MANIFEST: 'UCSP_CLOSING_MANIFEST'
+};
+
+exports.WebhookDeliveryStatus = exports.$Enums.WebhookDeliveryStatus = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED'
 };
 
 exports.AmendmentReason = exports.$Enums.AmendmentReason = {
@@ -683,6 +767,12 @@ exports.Prisma.ModelName = {
   InstrumentTransferEvent: 'InstrumentTransferEvent',
   GeneratedDocument: 'GeneratedDocument',
   Notification: 'Notification',
+  ApiKey: 'ApiKey',
+  WebhookEndpoint: 'WebhookEndpoint',
+  WebhookDelivery: 'WebhookDelivery',
+  UserAccessAudit: 'UserAccessAudit',
+  AccountRecoveryToken: 'AccountRecoveryToken',
+  UserLoginOverride: 'UserLoginOverride',
   Amendment: 'Amendment',
   DocumentCustodyEvent: 'DocumentCustodyEvent',
   DocumentVersion: 'DocumentVersion',

@@ -24,6 +24,7 @@ import {
   RecourseStatus,
   NegotiableInstrumentType,
   InstrumentTransferType,
+  HdcStatus,
 } from "../apps/web/src/generated/prisma";
 
 config({ path: resolve(process.cwd(), "apps/web/.env.local") });
@@ -405,6 +406,8 @@ async function main() {
       update: {
         payToOrderOf,
         eNoteControlLocation: "DealSeal Seed eVault",
+        hdcStatus: HdcStatus.QUALIFIED,
+        hdcDefects: null,
       },
       create: {
         dealId,
@@ -413,6 +416,8 @@ async function main() {
         isBearerInstrument: false,
         isElectronicNote: true,
         eNoteControlLocation: "DealSeal Seed eVault",
+        hdcStatus: HdcStatus.QUALIFIED,
+        hdcDefects: null,
       },
     });
   }
@@ -771,6 +776,107 @@ async function main() {
     });
   }
 
+  const defectiveDealId = "seed-deal-hdc-defective";
+  await prisma.deal.upsert({
+    where: { id: defectiveDealId },
+    update: {
+      status: DealStatus.AUTHORITATIVE_LOCK,
+      secondaryMarketStatus: SecondaryMarketStatus.AVAILABLE_FOR_SALE,
+      secondaryMarketGrade: "Subprime",
+    },
+    create: {
+      id: defectiveDealId,
+      dealerId: workspace.id,
+      lenderId: lenderWorkspace.id,
+      dealerLenderLinkId: link.id,
+      status: DealStatus.AUTHORITATIVE_LOCK,
+      state: "TX",
+      secondaryMarketStatus: SecondaryMarketStatus.AVAILABLE_FOR_SALE,
+      secondaryMarketGrade: "Subprime",
+      parties: {
+        create: {
+          role: "BUYER",
+          firstName: "Casey",
+          lastName: "Defect",
+          address: "500 Risk Ave, Austin TX",
+          creditTier: "D",
+        },
+      },
+      vehicle: {
+        create: {
+          year: 2020,
+          make: "Nissan",
+          model: "Altima",
+          vin: "DEFECTVIN123456789",
+          mileage: 56000,
+          condition: VehicleCondition.USED,
+        },
+      },
+      financials: {
+        create: {
+          amountFinanced: "16000.00",
+          ltv: "0.9600",
+          maxLtv: "0.9500",
+          taxes: "1100.00",
+          fees: "550.00",
+          gap: "0.00",
+          warranty: "0.00",
+          totalSalePrice: "19000.00",
+        },
+      },
+    },
+  });
+
+  const defectiveHash = crypto.createHash("sha256").update(`seed-defective-${defectiveDealId}`).digest("hex");
+  const defectiveAuth = await prisma.authoritativeContract.upsert({
+    where: { dealId: defectiveDealId },
+    update: {},
+    create: {
+      dealId: defectiveDealId,
+      version: 1,
+      contentHash: defectiveHash,
+      governingLaw: "TX",
+      signatureStatus: "EXECUTED_RISC",
+      isTransferableRecord: true,
+      uccCollateralDescription: {
+        vin: "DEFECTVIN123456789",
+        year: 2020,
+        make: "Nissan",
+        model: "Altima",
+      },
+      uccDebtorName: "Casey Defect",
+    },
+  });
+  await ensureDoc(
+    defectiveDealId,
+    DocumentType.RISC_SIGNED,
+    GeneratedDocumentType.CONTRACT,
+    `/mock-uploads/${defectiveDealId}/risc-signed-v1.pdf`,
+    {},
+    defectiveAuth.id,
+    defectiveHash,
+  );
+  await prisma.negotiableInstrument.upsert({
+    where: { dealId: defectiveDealId },
+    update: {
+      payToOrderOf: lenderWorkspace.id,
+      isElectronicNote: true,
+      eNoteControlLocation: null,
+      hdcStatus: HdcStatus.DEFECTIVE,
+      hdcDefects: ["Missing eNote Control Location", "VIN mismatch on collateral description"],
+    },
+    create: {
+      dealId: defectiveDealId,
+      instrumentType: NegotiableInstrumentType.RISC_AS_NOTE,
+      payToOrderOf: lenderWorkspace.id,
+      isBearerInstrument: false,
+      isElectronicNote: true,
+      eNoteControlLocation: null,
+      hdcStatus: HdcStatus.DEFECTIVE,
+      hdcDefects: ["Missing eNote Control Location", "VIN mismatch on collateral description"],
+    },
+  });
+
   console.log("Seed complete:");
   console.log(`- Dealer workspace: ${workspace.name} (${workspace.id})`);
   console.log(`- Lender workspace: ${lenderWorkspace.name} (${lenderWorkspace.id})`);
@@ -778,6 +884,7 @@ async function main() {
   console.log(`- AUTHORITATIVE_LOCK demo deal id: ${lockDealId}`);
   console.log(`- CLOSING_PACKAGE_READY demo deal id: ${closingDealId}`);
   console.log(`- Pooled / consummated demo deal id: ${pooledDealId}`);
+  console.log(`- HDC defective demo deal id: ${defectiveDealId}`);
   console.log(`- Loan pool id: ${poolId}`);
   console.log(`- Admin user: ${admin.email} (${admin.id})`);
   console.log(`- Standard user: ${standardUser.email} (${standardUser.id})`);

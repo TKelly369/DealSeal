@@ -19,7 +19,7 @@ export default function LoginContent() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const sp = useSearchParams();
-  const { register, handleSubmit } = useForm<LoginInput>({
+  const { register, handleSubmit, setValue } = useForm<LoginInput>({
     defaultValues: { email: "user@dealseal1.com", password: "dealseal123" },
   });
 
@@ -41,13 +41,34 @@ export default function LoginContent() {
       setError("Invalid credentials. Use scaffolded demo accounts.");
       return;
     }
-    router.replace(sp.get("next") || "/dashboard");
+    const nextPath = sp.get("next") || "/dashboard";
+    router.replace(`/session-identity?next=${encodeURIComponent(nextPath)}`);
   });
 
   return (
     <div className="card" style={{ width: "100%", maxWidth: 420, margin: "3rem auto" }}>
       <h1 style={{ marginTop: 0 }}>Sign in</h1>
       <p style={{ color: "var(--muted)", marginTop: 0 }}>Use scaffold credentials to enter your workspace.</p>
+      <div className="row" style={{ marginBottom: "0.75rem", gap: "0.35rem" }}>
+        <button type="button" className="btn btn-secondary" onClick={() => {
+          setValue("email", "dealer.admin@dealseal1.com");
+          setValue("password", "dealseal123");
+        }}>
+          Dealer Login
+        </button>
+        <button type="button" className="btn btn-secondary" onClick={() => {
+          setValue("email", "lender.admin@dealseal1.com");
+          setValue("password", "dealseal123");
+        }}>
+          Lender Login
+        </button>
+        <button type="button" className="btn btn-secondary" onClick={() => {
+          setValue("email", "admin@dealseal1.com");
+          setValue("password", "dealseal123");
+        }}>
+          Admin Login
+        </button>
+      </div>
       <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.75rem" }}>
         <label style={{ display: "grid", gap: 6, color: "var(--text-secondary)", fontSize: 14 }}>
           Email
@@ -69,6 +90,14 @@ export default function LoginContent() {
       <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 0, marginTop: "0.75rem" }}>
         Demo user: user@dealseal1.com / dealseal123
       </p>
+      <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 0 }}>
+        Dealer: dealer.admin@dealseal1.com · Lender: lender.admin@dealseal1.com · Admin: admin@dealseal1.com
+      </p>
+      <div className="row" style={{ marginTop: "0.6rem" }}>
+        <a href="/login/recover" style={{ fontSize: 12 }}>
+          Forgot password or username?
+        </a>
+      </div>
     </div>
   );
 }

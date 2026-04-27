@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { DealerLenderLinkService } from "@/lib/services/link.service";
 import { AuthoritativeContractService } from "@/lib/services/contract.service";
 import { ComplianceEngineService } from "@/lib/services/compliance.service";
+import { BillingGateService, BillingLimitExceeded } from "@/lib/services/billing-gate.service";
+import { prisma } from "@/lib/db";
 import { DealBuilderClient } from "./DealBuilderClient";
 
 export default async function DealerDealBuilderPage() {
@@ -26,6 +28,14 @@ export default async function DealerDealBuilderPage() {
         const active = await DealerLenderLinkService.getActiveLinksForDealer(fresh.user.workspaceId);
         const match = active.find((l) => l.id === linkId);
         if (!match) throw new Error("No active lender link for selected lender.");
+        try {
+          await BillingGateService.checkDealLimit(fresh.user.workspaceId);
+        } catch (e) {
+          if (e instanceof BillingLimitExceeded) {
+            throw new Error("Upgrade to Pro to create more deals this month.");
+          }
+          throw e;
+        }
 
         const deal = await AuthoritativeContractService.generateCanonicalDeal({
           dealerId: fresh.user.workspaceId,
@@ -56,6 +66,10 @@ export default async function DealerDealBuilderPage() {
             warranty: Number(fd.get("warranty") || 0),
             totalSalePrice: Number(fd.get("totalSalePrice") || 0),
           },
+        });
+        await prisma.workspace.update({
+          where: { id: fresh.user.workspaceId },
+          data: { dealCountCurrentPeriod: { increment: 1 } },
         });
         return { dealId: deal.id };
       }}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import LiveDateTime24h from "./LiveDateTime24h";
 
 const valueCards = [
   {
@@ -70,55 +71,30 @@ export default function HomePage() {
         >
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
               width: "100%",
-              columnGap: "clamp(1rem, 4vw, 2.75rem)",
-              rowGap: "1.25rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              gap: "0.6rem",
             }}
           >
-            <div
+            <LiveDateTime24h />
+            <Image
+              src="/brand/dealseal-lockup-official.png"
+              alt="DealSeal — Close Clean. Fund Confident."
+              width={1024}
+              height={1024}
+              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 75vw, 920px"
+              unoptimized
+              priority
               style={{
-                flexShrink: 0,
-                fontSize: "clamp(2.2rem, 8vw, 4.6rem)",
-                fontWeight: 900,
-                letterSpacing: "0.08em",
-                color: "#ffffff",
-                borderBottom: "6px solid #dc2626",
-                paddingBottom: "0.25rem",
-                lineHeight: 1,
+                width: "100%",
+                maxWidth: "min(920px, 100%)",
+                height: "auto",
+                objectFit: "contain",
               }}
-            >
-              DEALSEAL
-            </div>
-            <div
-              style={{
-                flex: "1 1 300px",
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                minWidth: 0,
-                maxWidth: "100%",
-              }}
-            >
-              <Image
-                src="/brand/dealseal-lockup-official.png"
-                alt="DealSeal — Close Clean. Fund Confident."
-                width={1024}
-                height={1024}
-                sizes="(max-width: 640px) 100vw, (max-width: 1200px) 75vw, 920px"
-                unoptimized
-                priority
-                style={{
-                  width: "100%",
-                  maxWidth: "min(920px, 100%)",
-                  height: "auto",
-                  objectFit: "contain",
-                }}
-              />
-            </div>
+            />
           </div>
 
           <div style={{ marginTop: "1.75rem", maxWidth: 920 }}>

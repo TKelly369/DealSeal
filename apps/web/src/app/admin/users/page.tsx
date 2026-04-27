@@ -12,7 +12,7 @@ export default async function AdminUsersPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/users");
-  if (session.user.role !== "ADMIN") redirect("/dashboard");
+  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
 
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page || 1));

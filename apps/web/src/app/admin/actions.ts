@@ -40,7 +40,7 @@ async function requireAdminSession() {
   if (!session?.user) {
     redirect("/login?next=/admin");
   }
-  if (session.user.role !== "ADMIN") {
+  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") {
     redirect("/dashboard");
   }
   return session;
