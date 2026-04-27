@@ -230,6 +230,36 @@ async function main() {
     },
   });
 
+  const hasDealerOnboarding = await prisma.dealerOnboardingAnswer.findFirst({
+    where: { dealerId: workspace.id },
+    select: { id: true },
+  });
+  if (!hasDealerOnboarding) {
+    await prisma.dealerOnboardingAnswer.create({
+      data: {
+        dealerId: workspace.id,
+        questionKey: "seed-demo-complete",
+        answerValue: { seeded: true, note: "Demo workspace treated as onboarding-complete" },
+        ruleInference: {},
+      },
+    });
+  }
+
+  const hasLenderOnboarding = await prisma.lenderOnboardingAnswer.findFirst({
+    where: { lenderId: lenderWorkspace.id },
+    select: { id: true },
+  });
+  if (!hasLenderOnboarding) {
+    await prisma.lenderOnboardingAnswer.create({
+      data: {
+        lenderId: lenderWorkspace.id,
+        questionKey: "seed-demo-complete",
+        answerValue: { seeded: true, note: "Demo workspace treated as onboarding-complete" },
+        ruleInference: {},
+      },
+    });
+  }
+
   await prisma.subscription.upsert({
     where: { workspaceId: workspace.id },
     update: {

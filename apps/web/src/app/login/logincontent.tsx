@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { resolvePostLoginDestination } from "./actions";
 
 const LoginSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -41,7 +42,8 @@ export default function LoginContent() {
       setError("Invalid credentials. Use scaffolded demo accounts.");
       return;
     }
-    const nextPath = sp.get("next") || "/dashboard";
+    const requestedNext = sp.get("next");
+    const nextPath = await resolvePostLoginDestination(requestedNext);
     router.replace(`/session-identity?next=${encodeURIComponent(nextPath)}`);
   });
 
