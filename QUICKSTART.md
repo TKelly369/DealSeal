@@ -33,7 +33,7 @@ The marketing site links to `/dealer/dashboard`, `/lender/dashboard`, and `/admi
 npm run seed:web-billing
 ```
 
-This creates `workspace-main`, `ws-lender-demo`, users such as `dealer.admin@dealseal1.com` / `dealseal123`, and demo deals so post-login flows (including session identity) do not fail on missing database rows.
+This creates `workspace-main`, `ws-lender-demo`, users such as `dealer.admin@dealseal1.com` / `dealseal123`, and demo deals so post-login flows (including session identity) do not fail on missing database rows. It also inserts seed onboarding-answer rows so **dealer/lender demo logins land on the dashboard** after sign-in; new workspaces without those rows are sent to **onboarding first**, then to the dashboard when the wizard finishes.
 
 ## Run locally
 
