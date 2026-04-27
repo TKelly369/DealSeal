@@ -1,27 +1,25 @@
 :root {
   color-scheme: dark;
-  /* Core surfaces — deep navy / charcoal (legal–fintech) */
-  --bg-deep: #060a10;
-  --bg: #0a101b;
-  --bg-mid: #0d1522;
-  --surface: #111a2a;
-  --surface-elevated: #151f32;
-  --surface-soft: #1a2640;
-  --border: #2a3d5c;
-  --border-bright: #3d5680;
-  /* Brand — blue + teal + gold (seal / trust) */
-  --primary: #3a7ec4;
-  --primary-mid: #2d6aa8;
-  --secondary: #2a9d8f;
-  --teal: #2a9d8f;
-  --accent: #3db8a4;
-  --brand-gold: #c9a232;
-  --brand-gold-dim: rgba(201, 162, 50, 0.12);
+  --bg-deep: #000000;
+  --bg: #000000;
+  --bg-mid: #0a0a0a;
+  --surface: #111111;
+  --surface-elevated: #111111;
+  --surface-soft: #111111;
+  --border: #222222;
+  --border-bright: #333333;
+  --primary: #dc2626;
+  --primary-mid: #b91c1c;
+  --secondary: #c0c0c0;
+  --teal: #c0c0c0;
+  --accent: #e0e0e0;
+  --brand-gold: #e0e0e0;
+  --brand-gold-dim: rgba(224, 224, 224, 0.08);
   /* Status */
-  --verified: #5eead4;
+  --verified: #22c55e;
   --ok: #34d399;
-  --warn-convenience: #e5b85c;
-  --warning-surface: rgba(229, 184, 92, 0.1);
+  --warn-convenience: #e0e0e0;
+  --warning-surface: rgba(224, 224, 224, 0.08);
   --danger: #f87171;
   /* Text */
   --text: #e8eef7;
@@ -46,10 +44,7 @@ html {
 body {
   margin: 0;
   background: var(--bg-deep);
-  background-image:
-    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(58, 126, 196, 0.12), transparent 50%),
-    radial-gradient(ellipse 80% 50% at 100% 50%, rgba(42, 157, 143, 0.06), transparent 45%),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+  background-image: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
   color: var(--text);
   min-height: 100vh;
   font-family: var(--font);
@@ -58,14 +53,14 @@ body {
 }
 
 a {
-  color: var(--secondary);
+  color: #ffffff;
   text-decoration: none;
   font-weight: 500;
 }
 
 a:hover {
   text-decoration: underline;
-  color: var(--accent);
+  color: var(--primary);
 }
 
 h1,
@@ -116,14 +111,14 @@ h3 {
 }
 
 .sidebar a:hover {
-  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
   text-decoration: none;
   color: var(--text);
 }
 
 .sidebar a[aria-current="page"] {
-  background: color-mix(in srgb, var(--primary) 28%, transparent);
-  border: 1px solid color-mix(in srgb, var(--primary) 50%, var(--border));
+  background: color-mix(in srgb, var(--primary) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 45%, var(--border));
   color: var(--text);
 }
 
@@ -162,7 +157,7 @@ main {
 button,
 .btn {
   border: 1px solid color-mix(in srgb, var(--primary) 55%, var(--border));
-  background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 75%, #1a1a1a 25%), var(--primary-mid));
+  background: linear-gradient(180deg, var(--primary), var(--primary-mid));
   color: #f4f8ff;
   border-radius: var(--radius-sm);
   padding: 0.55rem 1rem;
@@ -192,15 +187,15 @@ button:hover,
 }
 
 .btn-secondary {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--secondary) 80%, #0d0d0d 20%), #1f6b63);
+  background: linear-gradient(180deg, #1a1a1a, #111111);
   border: 1px solid color-mix(in srgb, var(--secondary) 45%, var(--border));
-  color: #e8fffa;
+  color: #f5f5f5;
 }
 
 .btn-gold {
-  background: linear-gradient(180deg, #d4b04a, #9a7a1e);
+  background: linear-gradient(180deg, #e0e0e0, #a0a0a0);
   border: 1px solid color-mix(in srgb, var(--brand-gold) 50%, #333);
-  color: #0a0a0a;
+  color: #111111;
   font-weight: 700;
 }
 
@@ -213,7 +208,7 @@ button:hover,
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--primary) 15%, var(--surface));
+  background: color-mix(in srgb, var(--primary) 14%, var(--surface));
   color: var(--text-secondary);
 }
 
@@ -255,7 +250,7 @@ button:hover,
   position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
@@ -401,7 +396,7 @@ button:hover,
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary), var(--teal), var(--brand-gold));
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
   opacity: 0.75;
 }
 
@@ -499,7 +494,7 @@ button:hover,
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--brand-gold);
+  color: var(--secondary);
   margin: 0 0 0.75rem;
 }
 
@@ -526,4 +521,18 @@ button:hover,
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+}
+
+.dealseal-entry-card {
+  border: 1px solid #444444;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, #0b0b0b 0%, #111111 100%);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.dealseal-entry-card:hover {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.35), 0 10px 24px rgba(220, 38, 38, 0.15);
+  text-decoration: none;
+  transform: translateY(-1px);
 }

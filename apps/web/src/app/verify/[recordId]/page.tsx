@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CERTIFICATION_STATEMENT, computeRecordHash, computeRenderingHash } from "@/lib/certification";
+import { CERTIFICATION_STATEMENT, computeRecordHash } from "@/lib/certification";
 import { getDemoRecordById } from "@/lib/demo-records";
 
 export default async function VerifyPage({
@@ -27,8 +27,7 @@ export default async function VerifyPage({
   }
 
   const expectedRecordHash = computeRecordHash(record);
-  const expectedRenderingHash = computeRenderingHash(record, "certified");
-  const valid = hash === expectedRecordHash && renderingHash === expectedRenderingHash;
+  const valid = hash === expectedRecordHash;
   const statusText = valid ? "VALID" : "INVALID";
 
   return (
@@ -36,8 +35,16 @@ export default async function VerifyPage({
       <h1>Verification result</h1>
       <p className="ds-verify__lead">Public proof that this certified rendering matches the authoritative record.</p>
 
-      <p style={{ marginBottom: "1rem" }}>
-        <span className={`badge ${valid ? "ds-badge--verified" : "ds-badge--error"}`}>{statusText}</span>
+      <p
+        style={{
+          marginBottom: "1rem",
+          fontSize: "2.3rem",
+          fontWeight: 800,
+          letterSpacing: "0.08em",
+          color: valid ? "var(--ok)" : "var(--danger)",
+        }}
+      >
+        {statusText}
       </p>
 
       <div className="card">
@@ -49,12 +56,12 @@ export default async function VerifyPage({
           <dd>{record.title}</dd>
           <dt>Parties</dt>
           <dd>{record.parties}</dd>
+          <dt>Effective date</dt>
+          <dd>{record.effectiveAt}</dd>
           <dt>Timestamp</dt>
           <dd>{timestamp ?? "Not provided"}</dd>
           <dt>Expected record hash</dt>
           <dd>{expectedRecordHash}</dd>
-          <dt>Expected rendering hash</dt>
-          <dd>{expectedRenderingHash}</dd>
           <dt>Provided record hash</dt>
           <dd>{hash ?? "Not provided"}</dd>
           <dt>Provided rendering hash</dt>

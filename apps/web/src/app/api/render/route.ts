@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { computeRecordHash, computeRenderingHash, RenderingMode } from "@/lib/certification";
+import crypto from "crypto";
+import { computeRecordHash, RenderingMode } from "@/lib/certification";
 import { getDemoRecordById } from "@/lib/demo-records";
 
 type RenderRequest = {
@@ -23,14 +24,13 @@ export async function POST(request: NextRequest) {
   }
 
   const recordHash = computeRecordHash(record);
-  const renderingHash = computeRenderingHash(record, body.mode);
   const timestamp = new Date().toISOString();
+  const renderingHash = crypto.createHash("sha256").update(`${recordHash}:${body.mode}:${timestamp}`).digest("hex");
   const verifyParams = new URLSearchParams({
     hash: recordHash,
     renderingHash,
-    timestamp,
   });
-  const verificationUrl = `/verify/${encodeURIComponent(record.id)}?${verifyParams.toString()}`;
+  const verificationUrl = `${request.nextUrl.origin}/verify/${encodeURIComponent(record.id)}?${verifyParams.toString()}`;
 
   return NextResponse.json({
     recordHash,

@@ -79,6 +79,14 @@ export function RecordDetailClient({ record }: { record: GoverningRecord }) {
       ) : null}
 
       <ContractViewer record={record} mode={mode} overlayData={overlayData} />
+      {mode === "certified" && overlayData ? (
+        <p style={{ marginTop: "0.9rem", color: "var(--text-secondary)" }}>
+          Verification link:{" "}
+          <a href={overlayData.verificationUrl} style={{ wordBreak: "break-all" }}>
+            {overlayData.verificationUrl}
+          </a>
+        </p>
+      ) : null}
     </>
   );
 }
