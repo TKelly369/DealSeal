@@ -133,6 +133,28 @@ async function main() {
     },
   });
 
+  const dealerAdmin = await prisma.user.upsert({
+    where: { email: "dealer.admin@dealseal1.com" },
+    update: { name: "Dealer Admin", role: UserRole.DEALER_ADMIN },
+    create: {
+      id: "dealer-admin-001",
+      email: "dealer.admin@dealseal1.com",
+      name: "Dealer Admin",
+      role: UserRole.DEALER_ADMIN,
+    },
+  });
+
+  const platformAdmin = await prisma.user.upsert({
+    where: { email: "platform.admin@dealseal1.com" },
+    update: { name: "Platform Admin", role: UserRole.PLATFORM_ADMIN },
+    create: {
+      id: "platform-admin-001",
+      email: "platform.admin@dealseal1.com",
+      name: "Platform Admin",
+      role: UserRole.PLATFORM_ADMIN,
+    },
+  });
+
   await prisma.membership.upsert({
     where: {
       userId_workspaceId: {
@@ -175,6 +197,36 @@ async function main() {
       userId: lenderAdmin.id,
       workspaceId: lenderWorkspace.id,
       role: MembershipRole.OWNER,
+    },
+  });
+
+  await prisma.membership.upsert({
+    where: {
+      userId_workspaceId: {
+        userId: dealerAdmin.id,
+        workspaceId: workspace.id,
+      },
+    },
+    update: { role: MembershipRole.OWNER },
+    create: {
+      userId: dealerAdmin.id,
+      workspaceId: workspace.id,
+      role: MembershipRole.OWNER,
+    },
+  });
+
+  await prisma.membership.upsert({
+    where: {
+      userId_workspaceId: {
+        userId: platformAdmin.id,
+        workspaceId: workspace.id,
+      },
+    },
+    update: { role: MembershipRole.ADMIN },
+    create: {
+      userId: platformAdmin.id,
+      workspaceId: workspace.id,
+      role: MembershipRole.ADMIN,
     },
   });
 
@@ -889,6 +941,8 @@ async function main() {
   console.log(`- Admin user: ${admin.email} (${admin.id})`);
   console.log(`- Standard user: ${standardUser.email} (${standardUser.id})`);
   console.log(`- Lender admin: ${lenderAdmin.email} — use for lender intake workflow`);
+  console.log(`- Dealer admin: ${dealerAdmin.email} — use for dealer dashboard / Deal Builder`);
+  console.log(`- Platform admin: ${platformAdmin.email} — use for platform oversight routes`);
 }
 
 main()

@@ -13,9 +13,11 @@ export default async function SessionIdentityPage({
   const sp = await searchParams;
   const nextPath = sp.next && sp.next.startsWith("/") ? sp.next : "/dashboard";
 
-  const currentUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { name: true, email: true },
+  const currentUser = await prisma.user.findFirst({
+    where: {
+      OR: [{ id: session.user.id }, { email: session.user.email?.toLowerCase() ?? "__none__" }],
+    },
+    select: { id: true, name: true, email: true },
   });
 
   return (
@@ -33,21 +35,33 @@ export default async function SessionIdentityPage({
           const h = await headers();
           const fullName = String(fd.get("fullName") || "").trim();
           if (!fullName) throw new Error("Full name is required.");
-          await prisma.userAccessAudit.create({
-            data: {
-              userId: fresh.user.id,
-              workspaceId: fresh.user.workspaceId,
-              fullName,
-              title: String(fd.get("title") || "").trim() || null,
-              phone: String(fd.get("phone") || "").trim() || null,
-              ipAddress: h.get("x-forwarded-for")?.split(",")[0]?.trim() || null,
-              userAgent: h.get("user-agent") || null,
-              metadata: {
-                role: fresh.user.role,
-                loginPath: nextPath,
-              },
+          const dbUser = await prisma.user.findFirst({
+            where: {
+              OR: [{ id: fresh.user.id }, { email: fresh.user.email?.toLowerCase() ?? "__none__" }],
             },
+            select: { id: true },
           });
+          if (dbUser) {
+            try {
+              await prisma.userAccessAudit.create({
+                data: {
+                  userId: dbUser.id,
+                  workspaceId: fresh.user.workspaceId,
+                  fullName,
+                  title: String(fd.get("title") || "").trim() || null,
+                  phone: String(fd.get("phone") || "").trim() || null,
+                  ipAddress: h.get("x-forwarded-for")?.split(",")[0]?.trim() || null,
+                  userAgent: h.get("user-agent") || null,
+                  metadata: {
+                    role: fresh.user.role,
+                    loginPath: nextPath,
+                  },
+                },
+              });
+            } catch {
+              // Workspace or audit table may be missing in fresh environments; session can still continue.
+            }
+          }
           const cookieStore = await cookies();
           cookieStore.set("ds_identity_ok", "1", {
             httpOnly: true,

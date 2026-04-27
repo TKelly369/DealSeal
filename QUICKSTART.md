@@ -25,6 +25,16 @@ npm run db:push -w @dealseal/api
 npm run db:seed -w @dealseal/api
 ```
 
+## Next.js workspace seed (dealer / lender / admin logins)
+
+The marketing site links to `/dealer/dashboard`, `/lender/dashboard`, and `/admin`. Those routes use the Next.js Prisma schema and the scaffold accounts on `/login`. After `DATABASE_URL` points at the same database the web app uses, run:
+
+```bash
+npm run seed:web-billing
+```
+
+This creates `workspace-main`, `ws-lender-demo`, users such as `dealer.admin@dealseal1.com` / `dealseal123`, and demo deals so post-login flows (including session identity) do not fail on missing database rows.
+
 ## Run locally
 
 Backend:

@@ -68,11 +68,14 @@ export default auth(async (req) => {
     }
   }
 
-  if (
-    pathname.startsWith("/admin") &&
-    req.auth.user.role !== "ADMIN" &&
-    req.auth.user.role !== "PLATFORM_ADMIN"
-  ) {
+  if (pathname.startsWith("/admin") && req.auth.user.role !== "ADMIN" && req.auth.user.role !== "PLATFORM_ADMIN") {
+    const role = req.auth.user.role;
+    if (role === "DEALER_ADMIN") {
+      return NextResponse.redirect(new URL("/dealer/dashboard", nextUrl.origin));
+    }
+    if (role === "LENDER_ADMIN") {
+      return NextResponse.redirect(new URL("/lender/dashboard", nextUrl.origin));
+    }
     return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
   }
   return NextResponse.next();
