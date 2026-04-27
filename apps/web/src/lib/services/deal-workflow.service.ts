@@ -9,6 +9,7 @@ import { SecondaryMarketService } from "@/lib/services/secondary-market.service"
 import { NotificationService } from "@/lib/services/notification.service";
 import { NegotiableInstrumentService } from "@/lib/services/negotiable-instrument.service";
 import { WebhookService } from "@/lib/services/webhook.service";
+import { DealAlertService } from "@/lib/services/deal-alert.service";
 
 function legacyTypeFor(dt: DocumentType): GeneratedDocumentType {
   switch (dt) {
@@ -284,11 +285,21 @@ export const DealWorkflowService = {
         status: "RISC_LENDER_FINAL",
       }),
     ]);
+    await DealAlertService.generatePreSignatureAlerts(dealId, userId, actorRole);
 
     return result.doc;
   },
 
   async uploadSignedRISCAndLock(dealId: string, input: { fileName: string }, userId: string, actorRole: string) {
+    const unresolved = await prisma.dealAlert.count({
+      where: { dealId, status: "OPEN" },
+    });
+    if (unresolved > 0) {
+      throw new Error(
+        `AI monitor flagged ${unresolved} alert(s). Clear them or override with a file note before locking the governing record.`,
+      );
+    }
+
     const ucc = await validateUCCArticle9(dealId);
     if (!ucc.compliant) {
       const deal = await prisma.deal.findUnique({

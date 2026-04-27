@@ -139,6 +139,16 @@ export type WebhookDelivery = $Result.DefaultSelection<Prisma.$WebhookDeliveryPa
  */
 export type UserAccessAudit = $Result.DefaultSelection<Prisma.$UserAccessAuditPayload>
 /**
+ * Model DealAlert
+ * 
+ */
+export type DealAlert = $Result.DefaultSelection<Prisma.$DealAlertPayload>
+/**
+ * Model DealAlertAudit
+ * 
+ */
+export type DealAlertAudit = $Result.DefaultSelection<Prisma.$DealAlertAuditPayload>
+/**
  * Model AccountRecoveryToken
  * 
  */
@@ -467,6 +477,34 @@ export const WebhookDeliveryStatus: {
 
 export type WebhookDeliveryStatus = (typeof WebhookDeliveryStatus)[keyof typeof WebhookDeliveryStatus]
 
+
+export const DealAlertStatus: {
+  OPEN: 'OPEN',
+  CLEARED: 'CLEARED',
+  OVERRIDDEN: 'OVERRIDDEN'
+};
+
+export type DealAlertStatus = (typeof DealAlertStatus)[keyof typeof DealAlertStatus]
+
+
+export const DealAlertSeverity: {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  CRITICAL: 'CRITICAL'
+};
+
+export type DealAlertSeverity = (typeof DealAlertSeverity)[keyof typeof DealAlertSeverity]
+
+
+export const DealAlertAuditAction: {
+  ALERT_ISSUED: 'ALERT_ISSUED',
+  ALERT_SENT: 'ALERT_SENT',
+  CLEARED: 'CLEARED',
+  OVERRIDDEN: 'OVERRIDDEN'
+};
+
+export type DealAlertAuditAction = (typeof DealAlertAuditAction)[keyof typeof DealAlertAuditAction]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -584,6 +622,18 @@ export const ComplianceRuleSet: typeof $Enums.ComplianceRuleSet
 export type WebhookDeliveryStatus = $Enums.WebhookDeliveryStatus
 
 export const WebhookDeliveryStatus: typeof $Enums.WebhookDeliveryStatus
+
+export type DealAlertStatus = $Enums.DealAlertStatus
+
+export const DealAlertStatus: typeof $Enums.DealAlertStatus
+
+export type DealAlertSeverity = $Enums.DealAlertSeverity
+
+export const DealAlertSeverity: typeof $Enums.DealAlertSeverity
+
+export type DealAlertAuditAction = $Enums.DealAlertAuditAction
+
+export const DealAlertAuditAction: typeof $Enums.DealAlertAuditAction
 
 /**
  * ##  Prisma Client ʲˢ
@@ -952,6 +1002,26 @@ export class PrismaClient<
     * ```
     */
   get userAccessAudit(): Prisma.UserAccessAuditDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dealAlert`: Exposes CRUD operations for the **DealAlert** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DealAlerts
+    * const dealAlerts = await prisma.dealAlert.findMany()
+    * ```
+    */
+  get dealAlert(): Prisma.DealAlertDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dealAlertAudit`: Exposes CRUD operations for the **DealAlertAudit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DealAlertAudits
+    * const dealAlertAudits = await prisma.dealAlertAudit.findMany()
+    * ```
+    */
+  get dealAlertAudit(): Prisma.DealAlertAuditDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.accountRecoveryToken`: Exposes CRUD operations for the **AccountRecoveryToken** model.
@@ -1508,6 +1578,8 @@ export namespace Prisma {
     WebhookEndpoint: 'WebhookEndpoint',
     WebhookDelivery: 'WebhookDelivery',
     UserAccessAudit: 'UserAccessAudit',
+    DealAlert: 'DealAlert',
+    DealAlertAudit: 'DealAlertAudit',
     AccountRecoveryToken: 'AccountRecoveryToken',
     UserLoginOverride: 'UserLoginOverride',
     Amendment: 'Amendment',
@@ -1535,7 +1607,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "account" | "session"
+      modelProps: "user" | "workspace" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "account" | "session"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3389,6 +3461,154 @@ export namespace Prisma {
           }
         }
       }
+      DealAlert: {
+        payload: Prisma.$DealAlertPayload<ExtArgs>
+        fields: Prisma.DealAlertFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DealAlertFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DealAlertFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>
+          }
+          findFirst: {
+            args: Prisma.DealAlertFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DealAlertFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>
+          }
+          findMany: {
+            args: Prisma.DealAlertFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>[]
+          }
+          create: {
+            args: Prisma.DealAlertCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>
+          }
+          createMany: {
+            args: Prisma.DealAlertCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DealAlertCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>[]
+          }
+          delete: {
+            args: Prisma.DealAlertDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>
+          }
+          update: {
+            args: Prisma.DealAlertUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>
+          }
+          deleteMany: {
+            args: Prisma.DealAlertDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DealAlertUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DealAlertUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>[]
+          }
+          upsert: {
+            args: Prisma.DealAlertUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertPayload>
+          }
+          aggregate: {
+            args: Prisma.DealAlertAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDealAlert>
+          }
+          groupBy: {
+            args: Prisma.DealAlertGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DealAlertGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DealAlertCountArgs<ExtArgs>
+            result: $Utils.Optional<DealAlertCountAggregateOutputType> | number
+          }
+        }
+      }
+      DealAlertAudit: {
+        payload: Prisma.$DealAlertAuditPayload<ExtArgs>
+        fields: Prisma.DealAlertAuditFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DealAlertAuditFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DealAlertAuditFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>
+          }
+          findFirst: {
+            args: Prisma.DealAlertAuditFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DealAlertAuditFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>
+          }
+          findMany: {
+            args: Prisma.DealAlertAuditFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>[]
+          }
+          create: {
+            args: Prisma.DealAlertAuditCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>
+          }
+          createMany: {
+            args: Prisma.DealAlertAuditCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DealAlertAuditCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>[]
+          }
+          delete: {
+            args: Prisma.DealAlertAuditDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>
+          }
+          update: {
+            args: Prisma.DealAlertAuditUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>
+          }
+          deleteMany: {
+            args: Prisma.DealAlertAuditDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DealAlertAuditUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DealAlertAuditUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>[]
+          }
+          upsert: {
+            args: Prisma.DealAlertAuditUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAlertAuditPayload>
+          }
+          aggregate: {
+            args: Prisma.DealAlertAuditAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDealAlertAudit>
+          }
+          groupBy: {
+            args: Prisma.DealAlertAuditGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DealAlertAuditGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DealAlertAuditCountArgs<ExtArgs>
+            result: $Utils.Optional<DealAlertAuditCountAggregateOutputType> | number
+          }
+        }
+      }
       AccountRecoveryToken: {
         payload: Prisma.$AccountRecoveryTokenPayload<ExtArgs>
         fields: Prisma.AccountRecoveryTokenFieldRefs
@@ -4176,6 +4396,8 @@ export namespace Prisma {
     webhookEndpoint?: WebhookEndpointOmit
     webhookDelivery?: WebhookDeliveryOmit
     userAccessAudit?: UserAccessAuditOmit
+    dealAlert?: DealAlertOmit
+    dealAlertAudit?: DealAlertAuditOmit
     accountRecoveryToken?: AccountRecoveryTokenOmit
     userLoginOverride?: UserLoginOverrideOmit
     amendment?: AmendmentOmit
@@ -4360,6 +4582,7 @@ export namespace Prisma {
     dealerDeals: number
     lenderDeals: number
     notifications: number
+    dealAlerts: number
     loanPools: number
     apiKeys: number
     webhookEndpoints: number
@@ -4377,6 +4600,7 @@ export namespace Prisma {
     dealerDeals?: boolean | WorkspaceCountOutputTypeCountDealerDealsArgs
     lenderDeals?: boolean | WorkspaceCountOutputTypeCountLenderDealsArgs
     notifications?: boolean | WorkspaceCountOutputTypeCountNotificationsArgs
+    dealAlerts?: boolean | WorkspaceCountOutputTypeCountDealAlertsArgs
     loanPools?: boolean | WorkspaceCountOutputTypeCountLoanPoolsArgs
     apiKeys?: boolean | WorkspaceCountOutputTypeCountApiKeysArgs
     webhookEndpoints?: boolean | WorkspaceCountOutputTypeCountWebhookEndpointsArgs
@@ -4467,6 +4691,13 @@ export namespace Prisma {
   /**
    * WorkspaceCountOutputType without action
    */
+  export type WorkspaceCountOutputTypeCountDealAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealAlertWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
   export type WorkspaceCountOutputTypeCountLoanPoolsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LoanPoolWhereInput
   }
@@ -4537,6 +4768,7 @@ export namespace Prisma {
     instrumentTransferEvents: number
     amendments: number
     notifications: number
+    alerts: number
   }
 
   export type DealCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4548,6 +4780,7 @@ export namespace Prisma {
     instrumentTransferEvents?: boolean | DealCountOutputTypeCountInstrumentTransferEventsArgs
     amendments?: boolean | DealCountOutputTypeCountAmendmentsArgs
     notifications?: boolean | DealCountOutputTypeCountNotificationsArgs
+    alerts?: boolean | DealCountOutputTypeCountAlertsArgs
   }
 
   // Custom InputTypes
@@ -4615,6 +4848,13 @@ export namespace Prisma {
    */
   export type DealCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotificationWhereInput
+  }
+
+  /**
+   * DealCountOutputType without action
+   */
+  export type DealCountOutputTypeCountAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealAlertWhereInput
   }
 
 
@@ -4819,6 +5059,37 @@ export namespace Prisma {
    */
   export type WebhookEndpointCountOutputTypeCountDeliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WebhookDeliveryWhereInput
+  }
+
+
+  /**
+   * Count Type DealAlertCountOutputType
+   */
+
+  export type DealAlertCountOutputType = {
+    audits: number
+  }
+
+  export type DealAlertCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    audits?: boolean | DealAlertCountOutputTypeCountAuditsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DealAlertCountOutputType without action
+   */
+  export type DealAlertCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertCountOutputType
+     */
+    select?: DealAlertCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DealAlertCountOutputType without action
+   */
+  export type DealAlertCountOutputTypeCountAuditsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealAlertAuditWhereInput
   }
 
 
@@ -6347,6 +6618,7 @@ export namespace Prisma {
     dealerDeals?: boolean | Workspace$dealerDealsArgs<ExtArgs>
     lenderDeals?: boolean | Workspace$lenderDealsArgs<ExtArgs>
     notifications?: boolean | Workspace$notificationsArgs<ExtArgs>
+    dealAlerts?: boolean | Workspace$dealAlertsArgs<ExtArgs>
     loanPools?: boolean | Workspace$loanPoolsArgs<ExtArgs>
     apiKeys?: boolean | Workspace$apiKeysArgs<ExtArgs>
     webhookEndpoints?: boolean | Workspace$webhookEndpointsArgs<ExtArgs>
@@ -6398,6 +6670,7 @@ export namespace Prisma {
     dealerDeals?: boolean | Workspace$dealerDealsArgs<ExtArgs>
     lenderDeals?: boolean | Workspace$lenderDealsArgs<ExtArgs>
     notifications?: boolean | Workspace$notificationsArgs<ExtArgs>
+    dealAlerts?: boolean | Workspace$dealAlertsArgs<ExtArgs>
     loanPools?: boolean | Workspace$loanPoolsArgs<ExtArgs>
     apiKeys?: boolean | Workspace$apiKeysArgs<ExtArgs>
     webhookEndpoints?: boolean | Workspace$webhookEndpointsArgs<ExtArgs>
@@ -6422,6 +6695,7 @@ export namespace Prisma {
       dealerDeals: Prisma.$DealPayload<ExtArgs>[]
       lenderDeals: Prisma.$DealPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      dealAlerts: Prisma.$DealAlertPayload<ExtArgs>[]
       loanPools: Prisma.$LoanPoolPayload<ExtArgs>[]
       apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
       webhookEndpoints: Prisma.$WebhookEndpointPayload<ExtArgs>[]
@@ -6841,6 +7115,7 @@ export namespace Prisma {
     dealerDeals<T extends Workspace$dealerDealsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$dealerDealsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     lenderDeals<T extends Workspace$lenderDealsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$lenderDealsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends Workspace$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dealAlerts<T extends Workspace$dealAlertsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$dealAlertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loanPools<T extends Workspace$loanPoolsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$loanPoolsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoanPoolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     apiKeys<T extends Workspace$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     webhookEndpoints<T extends Workspace$webhookEndpointsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$webhookEndpointsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookEndpointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7544,6 +7819,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.dealAlerts
+   */
+  export type Workspace$dealAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    where?: DealAlertWhereInput
+    orderBy?: DealAlertOrderByWithRelationInput | DealAlertOrderByWithRelationInput[]
+    cursor?: DealAlertWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DealAlertScalarFieldEnum | DealAlertScalarFieldEnum[]
   }
 
   /**
@@ -16762,6 +17061,7 @@ export namespace Prisma {
     instrumentTransferEvents?: boolean | Deal$instrumentTransferEventsArgs<ExtArgs>
     amendments?: boolean | Deal$amendmentsArgs<ExtArgs>
     notifications?: boolean | Deal$notificationsArgs<ExtArgs>
+    alerts?: boolean | Deal$alertsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deal"]>
 
@@ -16843,6 +17143,7 @@ export namespace Prisma {
     instrumentTransferEvents?: boolean | Deal$instrumentTransferEventsArgs<ExtArgs>
     amendments?: boolean | Deal$amendmentsArgs<ExtArgs>
     notifications?: boolean | Deal$notificationsArgs<ExtArgs>
+    alerts?: boolean | Deal$alertsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DealIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16878,6 +17179,7 @@ export namespace Prisma {
       instrumentTransferEvents: Prisma.$InstrumentTransferEventPayload<ExtArgs>[]
       amendments: Prisma.$AmendmentPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      alerts: Prisma.$DealAlertPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17305,6 +17607,7 @@ export namespace Prisma {
     instrumentTransferEvents<T extends Deal$instrumentTransferEventsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$instrumentTransferEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstrumentTransferEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     amendments<T extends Deal$amendmentsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$amendmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmendmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends Deal$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    alerts<T extends Deal$alertsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$alertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18047,6 +18350,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Deal.alerts
+   */
+  export type Deal$alertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    where?: DealAlertWhereInput
+    orderBy?: DealAlertOrderByWithRelationInput | DealAlertOrderByWithRelationInput[]
+    cursor?: DealAlertWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DealAlertScalarFieldEnum | DealAlertScalarFieldEnum[]
   }
 
   /**
@@ -34294,6 +34621,2286 @@ export namespace Prisma {
 
 
   /**
+   * Model DealAlert
+   */
+
+  export type AggregateDealAlert = {
+    _count: DealAlertCountAggregateOutputType | null
+    _min: DealAlertMinAggregateOutputType | null
+    _max: DealAlertMaxAggregateOutputType | null
+  }
+
+  export type DealAlertMinAggregateOutputType = {
+    id: string | null
+    dealId: string | null
+    workspaceId: string | null
+    type: string | null
+    severity: $Enums.DealAlertSeverity | null
+    title: string | null
+    message: string | null
+    status: $Enums.DealAlertStatus | null
+    resolutionNote: string | null
+    createdAt: Date | null
+    resolvedAt: Date | null
+  }
+
+  export type DealAlertMaxAggregateOutputType = {
+    id: string | null
+    dealId: string | null
+    workspaceId: string | null
+    type: string | null
+    severity: $Enums.DealAlertSeverity | null
+    title: string | null
+    message: string | null
+    status: $Enums.DealAlertStatus | null
+    resolutionNote: string | null
+    createdAt: Date | null
+    resolvedAt: Date | null
+  }
+
+  export type DealAlertCountAggregateOutputType = {
+    id: number
+    dealId: number
+    workspaceId: number
+    type: number
+    severity: number
+    title: number
+    message: number
+    status: number
+    resolutionNote: number
+    metadata: number
+    createdAt: number
+    resolvedAt: number
+    _all: number
+  }
+
+
+  export type DealAlertMinAggregateInputType = {
+    id?: true
+    dealId?: true
+    workspaceId?: true
+    type?: true
+    severity?: true
+    title?: true
+    message?: true
+    status?: true
+    resolutionNote?: true
+    createdAt?: true
+    resolvedAt?: true
+  }
+
+  export type DealAlertMaxAggregateInputType = {
+    id?: true
+    dealId?: true
+    workspaceId?: true
+    type?: true
+    severity?: true
+    title?: true
+    message?: true
+    status?: true
+    resolutionNote?: true
+    createdAt?: true
+    resolvedAt?: true
+  }
+
+  export type DealAlertCountAggregateInputType = {
+    id?: true
+    dealId?: true
+    workspaceId?: true
+    type?: true
+    severity?: true
+    title?: true
+    message?: true
+    status?: true
+    resolutionNote?: true
+    metadata?: true
+    createdAt?: true
+    resolvedAt?: true
+    _all?: true
+  }
+
+  export type DealAlertAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealAlert to aggregate.
+     */
+    where?: DealAlertWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAlerts to fetch.
+     */
+    orderBy?: DealAlertOrderByWithRelationInput | DealAlertOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DealAlertWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAlerts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAlerts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DealAlerts
+    **/
+    _count?: true | DealAlertCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DealAlertMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DealAlertMaxAggregateInputType
+  }
+
+  export type GetDealAlertAggregateType<T extends DealAlertAggregateArgs> = {
+        [P in keyof T & keyof AggregateDealAlert]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDealAlert[P]>
+      : GetScalarType<T[P], AggregateDealAlert[P]>
+  }
+
+
+
+
+  export type DealAlertGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealAlertWhereInput
+    orderBy?: DealAlertOrderByWithAggregationInput | DealAlertOrderByWithAggregationInput[]
+    by: DealAlertScalarFieldEnum[] | DealAlertScalarFieldEnum
+    having?: DealAlertScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DealAlertCountAggregateInputType | true
+    _min?: DealAlertMinAggregateInputType
+    _max?: DealAlertMaxAggregateInputType
+  }
+
+  export type DealAlertGroupByOutputType = {
+    id: string
+    dealId: string
+    workspaceId: string
+    type: string
+    severity: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status: $Enums.DealAlertStatus
+    resolutionNote: string | null
+    metadata: JsonValue
+    createdAt: Date
+    resolvedAt: Date | null
+    _count: DealAlertCountAggregateOutputType | null
+    _min: DealAlertMinAggregateOutputType | null
+    _max: DealAlertMaxAggregateOutputType | null
+  }
+
+  type GetDealAlertGroupByPayload<T extends DealAlertGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DealAlertGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DealAlertGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DealAlertGroupByOutputType[P]>
+            : GetScalarType<T[P], DealAlertGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DealAlertSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    workspaceId?: boolean
+    type?: boolean
+    severity?: boolean
+    title?: boolean
+    message?: boolean
+    status?: boolean
+    resolutionNote?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    resolvedAt?: boolean
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    audits?: boolean | DealAlert$auditsArgs<ExtArgs>
+    _count?: boolean | DealAlertCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAlert"]>
+
+  export type DealAlertSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    workspaceId?: boolean
+    type?: boolean
+    severity?: boolean
+    title?: boolean
+    message?: boolean
+    status?: boolean
+    resolutionNote?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    resolvedAt?: boolean
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAlert"]>
+
+  export type DealAlertSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    workspaceId?: boolean
+    type?: boolean
+    severity?: boolean
+    title?: boolean
+    message?: boolean
+    status?: boolean
+    resolutionNote?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    resolvedAt?: boolean
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAlert"]>
+
+  export type DealAlertSelectScalar = {
+    id?: boolean
+    dealId?: boolean
+    workspaceId?: boolean
+    type?: boolean
+    severity?: boolean
+    title?: boolean
+    message?: boolean
+    status?: boolean
+    resolutionNote?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    resolvedAt?: boolean
+  }
+
+  export type DealAlertOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "workspaceId" | "type" | "severity" | "title" | "message" | "status" | "resolutionNote" | "metadata" | "createdAt" | "resolvedAt", ExtArgs["result"]["dealAlert"]>
+  export type DealAlertInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    audits?: boolean | DealAlert$auditsArgs<ExtArgs>
+    _count?: boolean | DealAlertCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DealAlertIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+  export type DealAlertIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+
+  export type $DealAlertPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DealAlert"
+    objects: {
+      deal: Prisma.$DealPayload<ExtArgs>
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      audits: Prisma.$DealAlertAuditPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dealId: string
+      workspaceId: string
+      type: string
+      severity: $Enums.DealAlertSeverity
+      title: string
+      message: string
+      status: $Enums.DealAlertStatus
+      resolutionNote: string | null
+      metadata: Prisma.JsonValue
+      createdAt: Date
+      resolvedAt: Date | null
+    }, ExtArgs["result"]["dealAlert"]>
+    composites: {}
+  }
+
+  type DealAlertGetPayload<S extends boolean | null | undefined | DealAlertDefaultArgs> = $Result.GetResult<Prisma.$DealAlertPayload, S>
+
+  type DealAlertCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DealAlertFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DealAlertCountAggregateInputType | true
+    }
+
+  export interface DealAlertDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DealAlert'], meta: { name: 'DealAlert' } }
+    /**
+     * Find zero or one DealAlert that matches the filter.
+     * @param {DealAlertFindUniqueArgs} args - Arguments to find a DealAlert
+     * @example
+     * // Get one DealAlert
+     * const dealAlert = await prisma.dealAlert.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DealAlertFindUniqueArgs>(args: SelectSubset<T, DealAlertFindUniqueArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DealAlert that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DealAlertFindUniqueOrThrowArgs} args - Arguments to find a DealAlert
+     * @example
+     * // Get one DealAlert
+     * const dealAlert = await prisma.dealAlert.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DealAlertFindUniqueOrThrowArgs>(args: SelectSubset<T, DealAlertFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DealAlert that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertFindFirstArgs} args - Arguments to find a DealAlert
+     * @example
+     * // Get one DealAlert
+     * const dealAlert = await prisma.dealAlert.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DealAlertFindFirstArgs>(args?: SelectSubset<T, DealAlertFindFirstArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DealAlert that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertFindFirstOrThrowArgs} args - Arguments to find a DealAlert
+     * @example
+     * // Get one DealAlert
+     * const dealAlert = await prisma.dealAlert.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DealAlertFindFirstOrThrowArgs>(args?: SelectSubset<T, DealAlertFindFirstOrThrowArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DealAlerts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DealAlerts
+     * const dealAlerts = await prisma.dealAlert.findMany()
+     * 
+     * // Get first 10 DealAlerts
+     * const dealAlerts = await prisma.dealAlert.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dealAlertWithIdOnly = await prisma.dealAlert.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DealAlertFindManyArgs>(args?: SelectSubset<T, DealAlertFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DealAlert.
+     * @param {DealAlertCreateArgs} args - Arguments to create a DealAlert.
+     * @example
+     * // Create one DealAlert
+     * const DealAlert = await prisma.dealAlert.create({
+     *   data: {
+     *     // ... data to create a DealAlert
+     *   }
+     * })
+     * 
+     */
+    create<T extends DealAlertCreateArgs>(args: SelectSubset<T, DealAlertCreateArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DealAlerts.
+     * @param {DealAlertCreateManyArgs} args - Arguments to create many DealAlerts.
+     * @example
+     * // Create many DealAlerts
+     * const dealAlert = await prisma.dealAlert.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DealAlertCreateManyArgs>(args?: SelectSubset<T, DealAlertCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DealAlerts and returns the data saved in the database.
+     * @param {DealAlertCreateManyAndReturnArgs} args - Arguments to create many DealAlerts.
+     * @example
+     * // Create many DealAlerts
+     * const dealAlert = await prisma.dealAlert.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DealAlerts and only return the `id`
+     * const dealAlertWithIdOnly = await prisma.dealAlert.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DealAlertCreateManyAndReturnArgs>(args?: SelectSubset<T, DealAlertCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DealAlert.
+     * @param {DealAlertDeleteArgs} args - Arguments to delete one DealAlert.
+     * @example
+     * // Delete one DealAlert
+     * const DealAlert = await prisma.dealAlert.delete({
+     *   where: {
+     *     // ... filter to delete one DealAlert
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DealAlertDeleteArgs>(args: SelectSubset<T, DealAlertDeleteArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DealAlert.
+     * @param {DealAlertUpdateArgs} args - Arguments to update one DealAlert.
+     * @example
+     * // Update one DealAlert
+     * const dealAlert = await prisma.dealAlert.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DealAlertUpdateArgs>(args: SelectSubset<T, DealAlertUpdateArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DealAlerts.
+     * @param {DealAlertDeleteManyArgs} args - Arguments to filter DealAlerts to delete.
+     * @example
+     * // Delete a few DealAlerts
+     * const { count } = await prisma.dealAlert.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DealAlertDeleteManyArgs>(args?: SelectSubset<T, DealAlertDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DealAlerts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DealAlerts
+     * const dealAlert = await prisma.dealAlert.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DealAlertUpdateManyArgs>(args: SelectSubset<T, DealAlertUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DealAlerts and returns the data updated in the database.
+     * @param {DealAlertUpdateManyAndReturnArgs} args - Arguments to update many DealAlerts.
+     * @example
+     * // Update many DealAlerts
+     * const dealAlert = await prisma.dealAlert.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DealAlerts and only return the `id`
+     * const dealAlertWithIdOnly = await prisma.dealAlert.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DealAlertUpdateManyAndReturnArgs>(args: SelectSubset<T, DealAlertUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DealAlert.
+     * @param {DealAlertUpsertArgs} args - Arguments to update or create a DealAlert.
+     * @example
+     * // Update or create a DealAlert
+     * const dealAlert = await prisma.dealAlert.upsert({
+     *   create: {
+     *     // ... data to create a DealAlert
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DealAlert we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DealAlertUpsertArgs>(args: SelectSubset<T, DealAlertUpsertArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DealAlerts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertCountArgs} args - Arguments to filter DealAlerts to count.
+     * @example
+     * // Count the number of DealAlerts
+     * const count = await prisma.dealAlert.count({
+     *   where: {
+     *     // ... the filter for the DealAlerts we want to count
+     *   }
+     * })
+    **/
+    count<T extends DealAlertCountArgs>(
+      args?: Subset<T, DealAlertCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DealAlertCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DealAlert.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DealAlertAggregateArgs>(args: Subset<T, DealAlertAggregateArgs>): Prisma.PrismaPromise<GetDealAlertAggregateType<T>>
+
+    /**
+     * Group by DealAlert.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DealAlertGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DealAlertGroupByArgs['orderBy'] }
+        : { orderBy?: DealAlertGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DealAlertGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDealAlertGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DealAlert model
+   */
+  readonly fields: DealAlertFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DealAlert.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DealAlertClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    deal<T extends DealDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DealDefaultArgs<ExtArgs>>): Prisma__DealClient<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    audits<T extends DealAlert$auditsArgs<ExtArgs> = {}>(args?: Subset<T, DealAlert$auditsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DealAlert model
+   */
+  interface DealAlertFieldRefs {
+    readonly id: FieldRef<"DealAlert", 'String'>
+    readonly dealId: FieldRef<"DealAlert", 'String'>
+    readonly workspaceId: FieldRef<"DealAlert", 'String'>
+    readonly type: FieldRef<"DealAlert", 'String'>
+    readonly severity: FieldRef<"DealAlert", 'DealAlertSeverity'>
+    readonly title: FieldRef<"DealAlert", 'String'>
+    readonly message: FieldRef<"DealAlert", 'String'>
+    readonly status: FieldRef<"DealAlert", 'DealAlertStatus'>
+    readonly resolutionNote: FieldRef<"DealAlert", 'String'>
+    readonly metadata: FieldRef<"DealAlert", 'Json'>
+    readonly createdAt: FieldRef<"DealAlert", 'DateTime'>
+    readonly resolvedAt: FieldRef<"DealAlert", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DealAlert findUnique
+   */
+  export type DealAlertFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlert to fetch.
+     */
+    where: DealAlertWhereUniqueInput
+  }
+
+  /**
+   * DealAlert findUniqueOrThrow
+   */
+  export type DealAlertFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlert to fetch.
+     */
+    where: DealAlertWhereUniqueInput
+  }
+
+  /**
+   * DealAlert findFirst
+   */
+  export type DealAlertFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlert to fetch.
+     */
+    where?: DealAlertWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAlerts to fetch.
+     */
+    orderBy?: DealAlertOrderByWithRelationInput | DealAlertOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DealAlerts.
+     */
+    cursor?: DealAlertWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAlerts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAlerts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DealAlerts.
+     */
+    distinct?: DealAlertScalarFieldEnum | DealAlertScalarFieldEnum[]
+  }
+
+  /**
+   * DealAlert findFirstOrThrow
+   */
+  export type DealAlertFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlert to fetch.
+     */
+    where?: DealAlertWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAlerts to fetch.
+     */
+    orderBy?: DealAlertOrderByWithRelationInput | DealAlertOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DealAlerts.
+     */
+    cursor?: DealAlertWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAlerts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAlerts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DealAlerts.
+     */
+    distinct?: DealAlertScalarFieldEnum | DealAlertScalarFieldEnum[]
+  }
+
+  /**
+   * DealAlert findMany
+   */
+  export type DealAlertFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlerts to fetch.
+     */
+    where?: DealAlertWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAlerts to fetch.
+     */
+    orderBy?: DealAlertOrderByWithRelationInput | DealAlertOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DealAlerts.
+     */
+    cursor?: DealAlertWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAlerts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAlerts.
+     */
+    skip?: number
+    distinct?: DealAlertScalarFieldEnum | DealAlertScalarFieldEnum[]
+  }
+
+  /**
+   * DealAlert create
+   */
+  export type DealAlertCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DealAlert.
+     */
+    data: XOR<DealAlertCreateInput, DealAlertUncheckedCreateInput>
+  }
+
+  /**
+   * DealAlert createMany
+   */
+  export type DealAlertCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DealAlerts.
+     */
+    data: DealAlertCreateManyInput | DealAlertCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DealAlert createManyAndReturn
+   */
+  export type DealAlertCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * The data used to create many DealAlerts.
+     */
+    data: DealAlertCreateManyInput | DealAlertCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DealAlert update
+   */
+  export type DealAlertUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DealAlert.
+     */
+    data: XOR<DealAlertUpdateInput, DealAlertUncheckedUpdateInput>
+    /**
+     * Choose, which DealAlert to update.
+     */
+    where: DealAlertWhereUniqueInput
+  }
+
+  /**
+   * DealAlert updateMany
+   */
+  export type DealAlertUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DealAlerts.
+     */
+    data: XOR<DealAlertUpdateManyMutationInput, DealAlertUncheckedUpdateManyInput>
+    /**
+     * Filter which DealAlerts to update
+     */
+    where?: DealAlertWhereInput
+    /**
+     * Limit how many DealAlerts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DealAlert updateManyAndReturn
+   */
+  export type DealAlertUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * The data used to update DealAlerts.
+     */
+    data: XOR<DealAlertUpdateManyMutationInput, DealAlertUncheckedUpdateManyInput>
+    /**
+     * Filter which DealAlerts to update
+     */
+    where?: DealAlertWhereInput
+    /**
+     * Limit how many DealAlerts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DealAlert upsert
+   */
+  export type DealAlertUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DealAlert to update in case it exists.
+     */
+    where: DealAlertWhereUniqueInput
+    /**
+     * In case the DealAlert found by the `where` argument doesn't exist, create a new DealAlert with this data.
+     */
+    create: XOR<DealAlertCreateInput, DealAlertUncheckedCreateInput>
+    /**
+     * In case the DealAlert was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DealAlertUpdateInput, DealAlertUncheckedUpdateInput>
+  }
+
+  /**
+   * DealAlert delete
+   */
+  export type DealAlertDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+    /**
+     * Filter which DealAlert to delete.
+     */
+    where: DealAlertWhereUniqueInput
+  }
+
+  /**
+   * DealAlert deleteMany
+   */
+  export type DealAlertDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealAlerts to delete
+     */
+    where?: DealAlertWhereInput
+    /**
+     * Limit how many DealAlerts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DealAlert.audits
+   */
+  export type DealAlert$auditsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    where?: DealAlertAuditWhereInput
+    orderBy?: DealAlertAuditOrderByWithRelationInput | DealAlertAuditOrderByWithRelationInput[]
+    cursor?: DealAlertAuditWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DealAlertAuditScalarFieldEnum | DealAlertAuditScalarFieldEnum[]
+  }
+
+  /**
+   * DealAlert without action
+   */
+  export type DealAlertDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlert
+     */
+    select?: DealAlertSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlert
+     */
+    omit?: DealAlertOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DealAlertAudit
+   */
+
+  export type AggregateDealAlertAudit = {
+    _count: DealAlertAuditCountAggregateOutputType | null
+    _min: DealAlertAuditMinAggregateOutputType | null
+    _max: DealAlertAuditMaxAggregateOutputType | null
+  }
+
+  export type DealAlertAuditMinAggregateOutputType = {
+    id: string | null
+    dealAlertId: string | null
+    action: $Enums.DealAlertAuditAction | null
+    actorUserId: string | null
+    actorRole: string | null
+    recipientUserId: string | null
+    note: string | null
+    createdAt: Date | null
+  }
+
+  export type DealAlertAuditMaxAggregateOutputType = {
+    id: string | null
+    dealAlertId: string | null
+    action: $Enums.DealAlertAuditAction | null
+    actorUserId: string | null
+    actorRole: string | null
+    recipientUserId: string | null
+    note: string | null
+    createdAt: Date | null
+  }
+
+  export type DealAlertAuditCountAggregateOutputType = {
+    id: number
+    dealAlertId: number
+    action: number
+    actorUserId: number
+    actorRole: number
+    recipientUserId: number
+    note: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DealAlertAuditMinAggregateInputType = {
+    id?: true
+    dealAlertId?: true
+    action?: true
+    actorUserId?: true
+    actorRole?: true
+    recipientUserId?: true
+    note?: true
+    createdAt?: true
+  }
+
+  export type DealAlertAuditMaxAggregateInputType = {
+    id?: true
+    dealAlertId?: true
+    action?: true
+    actorUserId?: true
+    actorRole?: true
+    recipientUserId?: true
+    note?: true
+    createdAt?: true
+  }
+
+  export type DealAlertAuditCountAggregateInputType = {
+    id?: true
+    dealAlertId?: true
+    action?: true
+    actorUserId?: true
+    actorRole?: true
+    recipientUserId?: true
+    note?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DealAlertAuditAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealAlertAudit to aggregate.
+     */
+    where?: DealAlertAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAlertAudits to fetch.
+     */
+    orderBy?: DealAlertAuditOrderByWithRelationInput | DealAlertAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DealAlertAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAlertAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAlertAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DealAlertAudits
+    **/
+    _count?: true | DealAlertAuditCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DealAlertAuditMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DealAlertAuditMaxAggregateInputType
+  }
+
+  export type GetDealAlertAuditAggregateType<T extends DealAlertAuditAggregateArgs> = {
+        [P in keyof T & keyof AggregateDealAlertAudit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDealAlertAudit[P]>
+      : GetScalarType<T[P], AggregateDealAlertAudit[P]>
+  }
+
+
+
+
+  export type DealAlertAuditGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealAlertAuditWhereInput
+    orderBy?: DealAlertAuditOrderByWithAggregationInput | DealAlertAuditOrderByWithAggregationInput[]
+    by: DealAlertAuditScalarFieldEnum[] | DealAlertAuditScalarFieldEnum
+    having?: DealAlertAuditScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DealAlertAuditCountAggregateInputType | true
+    _min?: DealAlertAuditMinAggregateInputType
+    _max?: DealAlertAuditMaxAggregateInputType
+  }
+
+  export type DealAlertAuditGroupByOutputType = {
+    id: string
+    dealAlertId: string
+    action: $Enums.DealAlertAuditAction
+    actorUserId: string | null
+    actorRole: string | null
+    recipientUserId: string | null
+    note: string | null
+    createdAt: Date
+    _count: DealAlertAuditCountAggregateOutputType | null
+    _min: DealAlertAuditMinAggregateOutputType | null
+    _max: DealAlertAuditMaxAggregateOutputType | null
+  }
+
+  type GetDealAlertAuditGroupByPayload<T extends DealAlertAuditGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DealAlertAuditGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DealAlertAuditGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DealAlertAuditGroupByOutputType[P]>
+            : GetScalarType<T[P], DealAlertAuditGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DealAlertAuditSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealAlertId?: boolean
+    action?: boolean
+    actorUserId?: boolean
+    actorRole?: boolean
+    recipientUserId?: boolean
+    note?: boolean
+    createdAt?: boolean
+    dealAlert?: boolean | DealAlertDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAlertAudit"]>
+
+  export type DealAlertAuditSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealAlertId?: boolean
+    action?: boolean
+    actorUserId?: boolean
+    actorRole?: boolean
+    recipientUserId?: boolean
+    note?: boolean
+    createdAt?: boolean
+    dealAlert?: boolean | DealAlertDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAlertAudit"]>
+
+  export type DealAlertAuditSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealAlertId?: boolean
+    action?: boolean
+    actorUserId?: boolean
+    actorRole?: boolean
+    recipientUserId?: boolean
+    note?: boolean
+    createdAt?: boolean
+    dealAlert?: boolean | DealAlertDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAlertAudit"]>
+
+  export type DealAlertAuditSelectScalar = {
+    id?: boolean
+    dealAlertId?: boolean
+    action?: boolean
+    actorUserId?: boolean
+    actorRole?: boolean
+    recipientUserId?: boolean
+    note?: boolean
+    createdAt?: boolean
+  }
+
+  export type DealAlertAuditOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealAlertId" | "action" | "actorUserId" | "actorRole" | "recipientUserId" | "note" | "createdAt", ExtArgs["result"]["dealAlertAudit"]>
+  export type DealAlertAuditInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dealAlert?: boolean | DealAlertDefaultArgs<ExtArgs>
+  }
+  export type DealAlertAuditIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dealAlert?: boolean | DealAlertDefaultArgs<ExtArgs>
+  }
+  export type DealAlertAuditIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    dealAlert?: boolean | DealAlertDefaultArgs<ExtArgs>
+  }
+
+  export type $DealAlertAuditPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DealAlertAudit"
+    objects: {
+      dealAlert: Prisma.$DealAlertPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dealAlertId: string
+      action: $Enums.DealAlertAuditAction
+      actorUserId: string | null
+      actorRole: string | null
+      recipientUserId: string | null
+      note: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["dealAlertAudit"]>
+    composites: {}
+  }
+
+  type DealAlertAuditGetPayload<S extends boolean | null | undefined | DealAlertAuditDefaultArgs> = $Result.GetResult<Prisma.$DealAlertAuditPayload, S>
+
+  type DealAlertAuditCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DealAlertAuditFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DealAlertAuditCountAggregateInputType | true
+    }
+
+  export interface DealAlertAuditDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DealAlertAudit'], meta: { name: 'DealAlertAudit' } }
+    /**
+     * Find zero or one DealAlertAudit that matches the filter.
+     * @param {DealAlertAuditFindUniqueArgs} args - Arguments to find a DealAlertAudit
+     * @example
+     * // Get one DealAlertAudit
+     * const dealAlertAudit = await prisma.dealAlertAudit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DealAlertAuditFindUniqueArgs>(args: SelectSubset<T, DealAlertAuditFindUniqueArgs<ExtArgs>>): Prisma__DealAlertAuditClient<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DealAlertAudit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DealAlertAuditFindUniqueOrThrowArgs} args - Arguments to find a DealAlertAudit
+     * @example
+     * // Get one DealAlertAudit
+     * const dealAlertAudit = await prisma.dealAlertAudit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DealAlertAuditFindUniqueOrThrowArgs>(args: SelectSubset<T, DealAlertAuditFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DealAlertAuditClient<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DealAlertAudit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertAuditFindFirstArgs} args - Arguments to find a DealAlertAudit
+     * @example
+     * // Get one DealAlertAudit
+     * const dealAlertAudit = await prisma.dealAlertAudit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DealAlertAuditFindFirstArgs>(args?: SelectSubset<T, DealAlertAuditFindFirstArgs<ExtArgs>>): Prisma__DealAlertAuditClient<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DealAlertAudit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertAuditFindFirstOrThrowArgs} args - Arguments to find a DealAlertAudit
+     * @example
+     * // Get one DealAlertAudit
+     * const dealAlertAudit = await prisma.dealAlertAudit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DealAlertAuditFindFirstOrThrowArgs>(args?: SelectSubset<T, DealAlertAuditFindFirstOrThrowArgs<ExtArgs>>): Prisma__DealAlertAuditClient<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DealAlertAudits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertAuditFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DealAlertAudits
+     * const dealAlertAudits = await prisma.dealAlertAudit.findMany()
+     * 
+     * // Get first 10 DealAlertAudits
+     * const dealAlertAudits = await prisma.dealAlertAudit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dealAlertAuditWithIdOnly = await prisma.dealAlertAudit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DealAlertAuditFindManyArgs>(args?: SelectSubset<T, DealAlertAuditFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DealAlertAudit.
+     * @param {DealAlertAuditCreateArgs} args - Arguments to create a DealAlertAudit.
+     * @example
+     * // Create one DealAlertAudit
+     * const DealAlertAudit = await prisma.dealAlertAudit.create({
+     *   data: {
+     *     // ... data to create a DealAlertAudit
+     *   }
+     * })
+     * 
+     */
+    create<T extends DealAlertAuditCreateArgs>(args: SelectSubset<T, DealAlertAuditCreateArgs<ExtArgs>>): Prisma__DealAlertAuditClient<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DealAlertAudits.
+     * @param {DealAlertAuditCreateManyArgs} args - Arguments to create many DealAlertAudits.
+     * @example
+     * // Create many DealAlertAudits
+     * const dealAlertAudit = await prisma.dealAlertAudit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DealAlertAuditCreateManyArgs>(args?: SelectSubset<T, DealAlertAuditCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DealAlertAudits and returns the data saved in the database.
+     * @param {DealAlertAuditCreateManyAndReturnArgs} args - Arguments to create many DealAlertAudits.
+     * @example
+     * // Create many DealAlertAudits
+     * const dealAlertAudit = await prisma.dealAlertAudit.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DealAlertAudits and only return the `id`
+     * const dealAlertAuditWithIdOnly = await prisma.dealAlertAudit.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DealAlertAuditCreateManyAndReturnArgs>(args?: SelectSubset<T, DealAlertAuditCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DealAlertAudit.
+     * @param {DealAlertAuditDeleteArgs} args - Arguments to delete one DealAlertAudit.
+     * @example
+     * // Delete one DealAlertAudit
+     * const DealAlertAudit = await prisma.dealAlertAudit.delete({
+     *   where: {
+     *     // ... filter to delete one DealAlertAudit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DealAlertAuditDeleteArgs>(args: SelectSubset<T, DealAlertAuditDeleteArgs<ExtArgs>>): Prisma__DealAlertAuditClient<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DealAlertAudit.
+     * @param {DealAlertAuditUpdateArgs} args - Arguments to update one DealAlertAudit.
+     * @example
+     * // Update one DealAlertAudit
+     * const dealAlertAudit = await prisma.dealAlertAudit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DealAlertAuditUpdateArgs>(args: SelectSubset<T, DealAlertAuditUpdateArgs<ExtArgs>>): Prisma__DealAlertAuditClient<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DealAlertAudits.
+     * @param {DealAlertAuditDeleteManyArgs} args - Arguments to filter DealAlertAudits to delete.
+     * @example
+     * // Delete a few DealAlertAudits
+     * const { count } = await prisma.dealAlertAudit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DealAlertAuditDeleteManyArgs>(args?: SelectSubset<T, DealAlertAuditDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DealAlertAudits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertAuditUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DealAlertAudits
+     * const dealAlertAudit = await prisma.dealAlertAudit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DealAlertAuditUpdateManyArgs>(args: SelectSubset<T, DealAlertAuditUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DealAlertAudits and returns the data updated in the database.
+     * @param {DealAlertAuditUpdateManyAndReturnArgs} args - Arguments to update many DealAlertAudits.
+     * @example
+     * // Update many DealAlertAudits
+     * const dealAlertAudit = await prisma.dealAlertAudit.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DealAlertAudits and only return the `id`
+     * const dealAlertAuditWithIdOnly = await prisma.dealAlertAudit.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DealAlertAuditUpdateManyAndReturnArgs>(args: SelectSubset<T, DealAlertAuditUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DealAlertAudit.
+     * @param {DealAlertAuditUpsertArgs} args - Arguments to update or create a DealAlertAudit.
+     * @example
+     * // Update or create a DealAlertAudit
+     * const dealAlertAudit = await prisma.dealAlertAudit.upsert({
+     *   create: {
+     *     // ... data to create a DealAlertAudit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DealAlertAudit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DealAlertAuditUpsertArgs>(args: SelectSubset<T, DealAlertAuditUpsertArgs<ExtArgs>>): Prisma__DealAlertAuditClient<$Result.GetResult<Prisma.$DealAlertAuditPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DealAlertAudits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertAuditCountArgs} args - Arguments to filter DealAlertAudits to count.
+     * @example
+     * // Count the number of DealAlertAudits
+     * const count = await prisma.dealAlertAudit.count({
+     *   where: {
+     *     // ... the filter for the DealAlertAudits we want to count
+     *   }
+     * })
+    **/
+    count<T extends DealAlertAuditCountArgs>(
+      args?: Subset<T, DealAlertAuditCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DealAlertAuditCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DealAlertAudit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertAuditAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DealAlertAuditAggregateArgs>(args: Subset<T, DealAlertAuditAggregateArgs>): Prisma.PrismaPromise<GetDealAlertAuditAggregateType<T>>
+
+    /**
+     * Group by DealAlertAudit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAlertAuditGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DealAlertAuditGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DealAlertAuditGroupByArgs['orderBy'] }
+        : { orderBy?: DealAlertAuditGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DealAlertAuditGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDealAlertAuditGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DealAlertAudit model
+   */
+  readonly fields: DealAlertAuditFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DealAlertAudit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DealAlertAuditClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    dealAlert<T extends DealAlertDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DealAlertDefaultArgs<ExtArgs>>): Prisma__DealAlertClient<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DealAlertAudit model
+   */
+  interface DealAlertAuditFieldRefs {
+    readonly id: FieldRef<"DealAlertAudit", 'String'>
+    readonly dealAlertId: FieldRef<"DealAlertAudit", 'String'>
+    readonly action: FieldRef<"DealAlertAudit", 'DealAlertAuditAction'>
+    readonly actorUserId: FieldRef<"DealAlertAudit", 'String'>
+    readonly actorRole: FieldRef<"DealAlertAudit", 'String'>
+    readonly recipientUserId: FieldRef<"DealAlertAudit", 'String'>
+    readonly note: FieldRef<"DealAlertAudit", 'String'>
+    readonly createdAt: FieldRef<"DealAlertAudit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DealAlertAudit findUnique
+   */
+  export type DealAlertAuditFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlertAudit to fetch.
+     */
+    where: DealAlertAuditWhereUniqueInput
+  }
+
+  /**
+   * DealAlertAudit findUniqueOrThrow
+   */
+  export type DealAlertAuditFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlertAudit to fetch.
+     */
+    where: DealAlertAuditWhereUniqueInput
+  }
+
+  /**
+   * DealAlertAudit findFirst
+   */
+  export type DealAlertAuditFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlertAudit to fetch.
+     */
+    where?: DealAlertAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAlertAudits to fetch.
+     */
+    orderBy?: DealAlertAuditOrderByWithRelationInput | DealAlertAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DealAlertAudits.
+     */
+    cursor?: DealAlertAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAlertAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAlertAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DealAlertAudits.
+     */
+    distinct?: DealAlertAuditScalarFieldEnum | DealAlertAuditScalarFieldEnum[]
+  }
+
+  /**
+   * DealAlertAudit findFirstOrThrow
+   */
+  export type DealAlertAuditFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlertAudit to fetch.
+     */
+    where?: DealAlertAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAlertAudits to fetch.
+     */
+    orderBy?: DealAlertAuditOrderByWithRelationInput | DealAlertAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DealAlertAudits.
+     */
+    cursor?: DealAlertAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAlertAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAlertAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DealAlertAudits.
+     */
+    distinct?: DealAlertAuditScalarFieldEnum | DealAlertAuditScalarFieldEnum[]
+  }
+
+  /**
+   * DealAlertAudit findMany
+   */
+  export type DealAlertAuditFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAlertAudits to fetch.
+     */
+    where?: DealAlertAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAlertAudits to fetch.
+     */
+    orderBy?: DealAlertAuditOrderByWithRelationInput | DealAlertAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DealAlertAudits.
+     */
+    cursor?: DealAlertAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAlertAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAlertAudits.
+     */
+    skip?: number
+    distinct?: DealAlertAuditScalarFieldEnum | DealAlertAuditScalarFieldEnum[]
+  }
+
+  /**
+   * DealAlertAudit create
+   */
+  export type DealAlertAuditCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DealAlertAudit.
+     */
+    data: XOR<DealAlertAuditCreateInput, DealAlertAuditUncheckedCreateInput>
+  }
+
+  /**
+   * DealAlertAudit createMany
+   */
+  export type DealAlertAuditCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DealAlertAudits.
+     */
+    data: DealAlertAuditCreateManyInput | DealAlertAuditCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DealAlertAudit createManyAndReturn
+   */
+  export type DealAlertAuditCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * The data used to create many DealAlertAudits.
+     */
+    data: DealAlertAuditCreateManyInput | DealAlertAuditCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DealAlertAudit update
+   */
+  export type DealAlertAuditUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DealAlertAudit.
+     */
+    data: XOR<DealAlertAuditUpdateInput, DealAlertAuditUncheckedUpdateInput>
+    /**
+     * Choose, which DealAlertAudit to update.
+     */
+    where: DealAlertAuditWhereUniqueInput
+  }
+
+  /**
+   * DealAlertAudit updateMany
+   */
+  export type DealAlertAuditUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DealAlertAudits.
+     */
+    data: XOR<DealAlertAuditUpdateManyMutationInput, DealAlertAuditUncheckedUpdateManyInput>
+    /**
+     * Filter which DealAlertAudits to update
+     */
+    where?: DealAlertAuditWhereInput
+    /**
+     * Limit how many DealAlertAudits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DealAlertAudit updateManyAndReturn
+   */
+  export type DealAlertAuditUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * The data used to update DealAlertAudits.
+     */
+    data: XOR<DealAlertAuditUpdateManyMutationInput, DealAlertAuditUncheckedUpdateManyInput>
+    /**
+     * Filter which DealAlertAudits to update
+     */
+    where?: DealAlertAuditWhereInput
+    /**
+     * Limit how many DealAlertAudits to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DealAlertAudit upsert
+   */
+  export type DealAlertAuditUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DealAlertAudit to update in case it exists.
+     */
+    where: DealAlertAuditWhereUniqueInput
+    /**
+     * In case the DealAlertAudit found by the `where` argument doesn't exist, create a new DealAlertAudit with this data.
+     */
+    create: XOR<DealAlertAuditCreateInput, DealAlertAuditUncheckedCreateInput>
+    /**
+     * In case the DealAlertAudit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DealAlertAuditUpdateInput, DealAlertAuditUncheckedUpdateInput>
+  }
+
+  /**
+   * DealAlertAudit delete
+   */
+  export type DealAlertAuditDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+    /**
+     * Filter which DealAlertAudit to delete.
+     */
+    where: DealAlertAuditWhereUniqueInput
+  }
+
+  /**
+   * DealAlertAudit deleteMany
+   */
+  export type DealAlertAuditDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealAlertAudits to delete
+     */
+    where?: DealAlertAuditWhereInput
+    /**
+     * Limit how many DealAlertAudits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DealAlertAudit without action
+   */
+  export type DealAlertAuditDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAlertAudit
+     */
+    select?: DealAlertAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAlertAudit
+     */
+    omit?: DealAlertAuditOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAlertAuditInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model AccountRecoveryToken
    */
 
@@ -44538,6 +47145,38 @@ export namespace Prisma {
   export type UserAccessAuditScalarFieldEnum = (typeof UserAccessAuditScalarFieldEnum)[keyof typeof UserAccessAuditScalarFieldEnum]
 
 
+  export const DealAlertScalarFieldEnum: {
+    id: 'id',
+    dealId: 'dealId',
+    workspaceId: 'workspaceId',
+    type: 'type',
+    severity: 'severity',
+    title: 'title',
+    message: 'message',
+    status: 'status',
+    resolutionNote: 'resolutionNote',
+    metadata: 'metadata',
+    createdAt: 'createdAt',
+    resolvedAt: 'resolvedAt'
+  };
+
+  export type DealAlertScalarFieldEnum = (typeof DealAlertScalarFieldEnum)[keyof typeof DealAlertScalarFieldEnum]
+
+
+  export const DealAlertAuditScalarFieldEnum: {
+    id: 'id',
+    dealAlertId: 'dealAlertId',
+    action: 'action',
+    actorUserId: 'actorUserId',
+    actorRole: 'actorRole',
+    recipientUserId: 'recipientUserId',
+    note: 'note',
+    createdAt: 'createdAt'
+  };
+
+  export type DealAlertAuditScalarFieldEnum = (typeof DealAlertAuditScalarFieldEnum)[keyof typeof DealAlertAuditScalarFieldEnum]
+
+
   export const AccountRecoveryTokenScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -45159,6 +47798,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DealAlertSeverity'
+   */
+  export type EnumDealAlertSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealAlertSeverity'>
+    
+
+
+  /**
+   * Reference to a field of type 'DealAlertSeverity[]'
+   */
+  export type ListEnumDealAlertSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealAlertSeverity[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DealAlertStatus'
+   */
+  export type EnumDealAlertStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealAlertStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DealAlertStatus[]'
+   */
+  export type ListEnumDealAlertStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealAlertStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DealAlertAuditAction'
+   */
+  export type EnumDealAlertAuditActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealAlertAuditAction'>
+    
+
+
+  /**
+   * Reference to a field of type 'DealAlertAuditAction[]'
+   */
+  export type ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealAlertAuditAction[]'>
+    
+
+
+  /**
    * Reference to a field of type 'AmendmentReason'
    */
   export type EnumAmendmentReasonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AmendmentReason'>
@@ -45323,6 +48004,7 @@ export namespace Prisma {
     dealerDeals?: DealListRelationFilter
     lenderDeals?: DealListRelationFilter
     notifications?: NotificationListRelationFilter
+    dealAlerts?: DealAlertListRelationFilter
     loanPools?: LoanPoolListRelationFilter
     apiKeys?: ApiKeyListRelationFilter
     webhookEndpoints?: WebhookEndpointListRelationFilter
@@ -45349,6 +48031,7 @@ export namespace Prisma {
     dealerDeals?: DealOrderByRelationAggregateInput
     lenderDeals?: DealOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
+    dealAlerts?: DealAlertOrderByRelationAggregateInput
     loanPools?: LoanPoolOrderByRelationAggregateInput
     apiKeys?: ApiKeyOrderByRelationAggregateInput
     webhookEndpoints?: WebhookEndpointOrderByRelationAggregateInput
@@ -45378,6 +48061,7 @@ export namespace Prisma {
     dealerDeals?: DealListRelationFilter
     lenderDeals?: DealListRelationFilter
     notifications?: NotificationListRelationFilter
+    dealAlerts?: DealAlertListRelationFilter
     loanPools?: LoanPoolListRelationFilter
     apiKeys?: ApiKeyListRelationFilter
     webhookEndpoints?: WebhookEndpointListRelationFilter
@@ -46048,6 +48732,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventListRelationFilter
     amendments?: AmendmentListRelationFilter
     notifications?: NotificationListRelationFilter
+    alerts?: DealAlertListRelationFilter
   }
 
   export type DealOrderByWithRelationInput = {
@@ -46082,6 +48767,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventOrderByRelationAggregateInput
     amendments?: AmendmentOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
+    alerts?: DealAlertOrderByRelationAggregateInput
   }
 
   export type DealWhereUniqueInput = Prisma.AtLeast<{
@@ -46119,6 +48805,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventListRelationFilter
     amendments?: AmendmentListRelationFilter
     notifications?: NotificationListRelationFilter
+    alerts?: DealAlertListRelationFilter
   }, "id">
 
   export type DealOrderByWithAggregationInput = {
@@ -47290,6 +49977,172 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"UserAccessAudit"> | Date | string
   }
 
+  export type DealAlertWhereInput = {
+    AND?: DealAlertWhereInput | DealAlertWhereInput[]
+    OR?: DealAlertWhereInput[]
+    NOT?: DealAlertWhereInput | DealAlertWhereInput[]
+    id?: StringFilter<"DealAlert"> | string
+    dealId?: StringFilter<"DealAlert"> | string
+    workspaceId?: StringFilter<"DealAlert"> | string
+    type?: StringFilter<"DealAlert"> | string
+    severity?: EnumDealAlertSeverityFilter<"DealAlert"> | $Enums.DealAlertSeverity
+    title?: StringFilter<"DealAlert"> | string
+    message?: StringFilter<"DealAlert"> | string
+    status?: EnumDealAlertStatusFilter<"DealAlert"> | $Enums.DealAlertStatus
+    resolutionNote?: StringNullableFilter<"DealAlert"> | string | null
+    metadata?: JsonFilter<"DealAlert">
+    createdAt?: DateTimeFilter<"DealAlert"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"DealAlert"> | Date | string | null
+    deal?: XOR<DealScalarRelationFilter, DealWhereInput>
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    audits?: DealAlertAuditListRelationFilter
+  }
+
+  export type DealAlertOrderByWithRelationInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    workspaceId?: SortOrder
+    type?: SortOrder
+    severity?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    resolutionNote?: SortOrderInput | SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    deal?: DealOrderByWithRelationInput
+    workspace?: WorkspaceOrderByWithRelationInput
+    audits?: DealAlertAuditOrderByRelationAggregateInput
+  }
+
+  export type DealAlertWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DealAlertWhereInput | DealAlertWhereInput[]
+    OR?: DealAlertWhereInput[]
+    NOT?: DealAlertWhereInput | DealAlertWhereInput[]
+    dealId?: StringFilter<"DealAlert"> | string
+    workspaceId?: StringFilter<"DealAlert"> | string
+    type?: StringFilter<"DealAlert"> | string
+    severity?: EnumDealAlertSeverityFilter<"DealAlert"> | $Enums.DealAlertSeverity
+    title?: StringFilter<"DealAlert"> | string
+    message?: StringFilter<"DealAlert"> | string
+    status?: EnumDealAlertStatusFilter<"DealAlert"> | $Enums.DealAlertStatus
+    resolutionNote?: StringNullableFilter<"DealAlert"> | string | null
+    metadata?: JsonFilter<"DealAlert">
+    createdAt?: DateTimeFilter<"DealAlert"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"DealAlert"> | Date | string | null
+    deal?: XOR<DealScalarRelationFilter, DealWhereInput>
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    audits?: DealAlertAuditListRelationFilter
+  }, "id">
+
+  export type DealAlertOrderByWithAggregationInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    workspaceId?: SortOrder
+    type?: SortOrder
+    severity?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    resolutionNote?: SortOrderInput | SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    _count?: DealAlertCountOrderByAggregateInput
+    _max?: DealAlertMaxOrderByAggregateInput
+    _min?: DealAlertMinOrderByAggregateInput
+  }
+
+  export type DealAlertScalarWhereWithAggregatesInput = {
+    AND?: DealAlertScalarWhereWithAggregatesInput | DealAlertScalarWhereWithAggregatesInput[]
+    OR?: DealAlertScalarWhereWithAggregatesInput[]
+    NOT?: DealAlertScalarWhereWithAggregatesInput | DealAlertScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DealAlert"> | string
+    dealId?: StringWithAggregatesFilter<"DealAlert"> | string
+    workspaceId?: StringWithAggregatesFilter<"DealAlert"> | string
+    type?: StringWithAggregatesFilter<"DealAlert"> | string
+    severity?: EnumDealAlertSeverityWithAggregatesFilter<"DealAlert"> | $Enums.DealAlertSeverity
+    title?: StringWithAggregatesFilter<"DealAlert"> | string
+    message?: StringWithAggregatesFilter<"DealAlert"> | string
+    status?: EnumDealAlertStatusWithAggregatesFilter<"DealAlert"> | $Enums.DealAlertStatus
+    resolutionNote?: StringNullableWithAggregatesFilter<"DealAlert"> | string | null
+    metadata?: JsonWithAggregatesFilter<"DealAlert">
+    createdAt?: DateTimeWithAggregatesFilter<"DealAlert"> | Date | string
+    resolvedAt?: DateTimeNullableWithAggregatesFilter<"DealAlert"> | Date | string | null
+  }
+
+  export type DealAlertAuditWhereInput = {
+    AND?: DealAlertAuditWhereInput | DealAlertAuditWhereInput[]
+    OR?: DealAlertAuditWhereInput[]
+    NOT?: DealAlertAuditWhereInput | DealAlertAuditWhereInput[]
+    id?: StringFilter<"DealAlertAudit"> | string
+    dealAlertId?: StringFilter<"DealAlertAudit"> | string
+    action?: EnumDealAlertAuditActionFilter<"DealAlertAudit"> | $Enums.DealAlertAuditAction
+    actorUserId?: StringNullableFilter<"DealAlertAudit"> | string | null
+    actorRole?: StringNullableFilter<"DealAlertAudit"> | string | null
+    recipientUserId?: StringNullableFilter<"DealAlertAudit"> | string | null
+    note?: StringNullableFilter<"DealAlertAudit"> | string | null
+    createdAt?: DateTimeFilter<"DealAlertAudit"> | Date | string
+    dealAlert?: XOR<DealAlertScalarRelationFilter, DealAlertWhereInput>
+  }
+
+  export type DealAlertAuditOrderByWithRelationInput = {
+    id?: SortOrder
+    dealAlertId?: SortOrder
+    action?: SortOrder
+    actorUserId?: SortOrderInput | SortOrder
+    actorRole?: SortOrderInput | SortOrder
+    recipientUserId?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    dealAlert?: DealAlertOrderByWithRelationInput
+  }
+
+  export type DealAlertAuditWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DealAlertAuditWhereInput | DealAlertAuditWhereInput[]
+    OR?: DealAlertAuditWhereInput[]
+    NOT?: DealAlertAuditWhereInput | DealAlertAuditWhereInput[]
+    dealAlertId?: StringFilter<"DealAlertAudit"> | string
+    action?: EnumDealAlertAuditActionFilter<"DealAlertAudit"> | $Enums.DealAlertAuditAction
+    actorUserId?: StringNullableFilter<"DealAlertAudit"> | string | null
+    actorRole?: StringNullableFilter<"DealAlertAudit"> | string | null
+    recipientUserId?: StringNullableFilter<"DealAlertAudit"> | string | null
+    note?: StringNullableFilter<"DealAlertAudit"> | string | null
+    createdAt?: DateTimeFilter<"DealAlertAudit"> | Date | string
+    dealAlert?: XOR<DealAlertScalarRelationFilter, DealAlertWhereInput>
+  }, "id">
+
+  export type DealAlertAuditOrderByWithAggregationInput = {
+    id?: SortOrder
+    dealAlertId?: SortOrder
+    action?: SortOrder
+    actorUserId?: SortOrderInput | SortOrder
+    actorRole?: SortOrderInput | SortOrder
+    recipientUserId?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: DealAlertAuditCountOrderByAggregateInput
+    _max?: DealAlertAuditMaxOrderByAggregateInput
+    _min?: DealAlertAuditMinOrderByAggregateInput
+  }
+
+  export type DealAlertAuditScalarWhereWithAggregatesInput = {
+    AND?: DealAlertAuditScalarWhereWithAggregatesInput | DealAlertAuditScalarWhereWithAggregatesInput[]
+    OR?: DealAlertAuditScalarWhereWithAggregatesInput[]
+    NOT?: DealAlertAuditScalarWhereWithAggregatesInput | DealAlertAuditScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DealAlertAudit"> | string
+    dealAlertId?: StringWithAggregatesFilter<"DealAlertAudit"> | string
+    action?: EnumDealAlertAuditActionWithAggregatesFilter<"DealAlertAudit"> | $Enums.DealAlertAuditAction
+    actorUserId?: StringNullableWithAggregatesFilter<"DealAlertAudit"> | string | null
+    actorRole?: StringNullableWithAggregatesFilter<"DealAlertAudit"> | string | null
+    recipientUserId?: StringNullableWithAggregatesFilter<"DealAlertAudit"> | string | null
+    note?: StringNullableWithAggregatesFilter<"DealAlertAudit"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DealAlertAudit"> | Date | string
+  }
+
   export type AccountRecoveryTokenWhereInput = {
     AND?: AccountRecoveryTokenWhereInput | AccountRecoveryTokenWhereInput[]
     OR?: AccountRecoveryTokenWhereInput[]
@@ -48050,6 +50903,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -48076,6 +50930,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -48102,6 +50957,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -48128,6 +50984,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -48844,6 +51701,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateInput = {
@@ -48874,6 +51732,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealUpdateInput = {
@@ -48904,6 +51763,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateInput = {
@@ -48934,6 +51794,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateManyInput = {
@@ -50198,6 +53059,189 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DealAlertCreateInput = {
+    id?: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    deal: DealCreateNestedOneWithoutAlertsInput
+    workspace: WorkspaceCreateNestedOneWithoutDealAlertsInput
+    audits?: DealAlertAuditCreateNestedManyWithoutDealAlertInput
+  }
+
+  export type DealAlertUncheckedCreateInput = {
+    id?: string
+    dealId: string
+    workspaceId: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    audits?: DealAlertAuditUncheckedCreateNestedManyWithoutDealAlertInput
+  }
+
+  export type DealAlertUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deal?: DealUpdateOneRequiredWithoutAlertsNestedInput
+    workspace?: WorkspaceUpdateOneRequiredWithoutDealAlertsNestedInput
+    audits?: DealAlertAuditUpdateManyWithoutDealAlertNestedInput
+  }
+
+  export type DealAlertUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    audits?: DealAlertAuditUncheckedUpdateManyWithoutDealAlertNestedInput
+  }
+
+  export type DealAlertCreateManyInput = {
+    id?: string
+    dealId: string
+    workspaceId: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+  }
+
+  export type DealAlertUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DealAlertUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DealAlertAuditCreateInput = {
+    id?: string
+    action: $Enums.DealAlertAuditAction
+    actorUserId?: string | null
+    actorRole?: string | null
+    recipientUserId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+    dealAlert: DealAlertCreateNestedOneWithoutAuditsInput
+  }
+
+  export type DealAlertAuditUncheckedCreateInput = {
+    id?: string
+    dealAlertId: string
+    action: $Enums.DealAlertAuditAction
+    actorUserId?: string | null
+    actorRole?: string | null
+    recipientUserId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAlertAuditUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumDealAlertAuditActionFieldUpdateOperationsInput | $Enums.DealAlertAuditAction
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealAlert?: DealAlertUpdateOneRequiredWithoutAuditsNestedInput
+  }
+
+  export type DealAlertAuditUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealAlertId?: StringFieldUpdateOperationsInput | string
+    action?: EnumDealAlertAuditActionFieldUpdateOperationsInput | $Enums.DealAlertAuditAction
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAlertAuditCreateManyInput = {
+    id?: string
+    dealAlertId: string
+    action: $Enums.DealAlertAuditAction
+    actorUserId?: string | null
+    actorRole?: string | null
+    recipientUserId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAlertAuditUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumDealAlertAuditActionFieldUpdateOperationsInput | $Enums.DealAlertAuditAction
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAlertAuditUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealAlertId?: StringFieldUpdateOperationsInput | string
+    action?: EnumDealAlertAuditActionFieldUpdateOperationsInput | $Enums.DealAlertAuditAction
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AccountRecoveryTokenCreateInput = {
     id?: string
     email: string
@@ -51151,6 +54195,12 @@ export namespace Prisma {
     none?: DealWhereInput
   }
 
+  export type DealAlertListRelationFilter = {
+    every?: DealAlertWhereInput
+    some?: DealAlertWhereInput
+    none?: DealAlertWhereInput
+  }
+
   export type LoanPoolListRelationFilter = {
     every?: LoanPoolWhereInput
     some?: LoanPoolWhereInput
@@ -51190,6 +54240,10 @@ export namespace Prisma {
   }
 
   export type DealOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DealAlertOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -52965,6 +56019,148 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type EnumDealAlertSeverityFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertSeverity | EnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertSeverityFilter<$PrismaModel> | $Enums.DealAlertSeverity
+  }
+
+  export type EnumDealAlertStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertStatus | EnumDealAlertStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertStatus[] | ListEnumDealAlertStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertStatus[] | ListEnumDealAlertStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertStatusFilter<$PrismaModel> | $Enums.DealAlertStatus
+  }
+
+  export type DealAlertAuditListRelationFilter = {
+    every?: DealAlertAuditWhereInput
+    some?: DealAlertAuditWhereInput
+    none?: DealAlertAuditWhereInput
+  }
+
+  export type DealAlertAuditOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DealAlertCountOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    workspaceId?: SortOrder
+    type?: SortOrder
+    severity?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    resolutionNote?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrder
+  }
+
+  export type DealAlertMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    workspaceId?: SortOrder
+    type?: SortOrder
+    severity?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    resolutionNote?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrder
+  }
+
+  export type DealAlertMinOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    workspaceId?: SortOrder
+    type?: SortOrder
+    severity?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    status?: SortOrder
+    resolutionNote?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrder
+  }
+
+  export type EnumDealAlertSeverityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertSeverity | EnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertSeverityWithAggregatesFilter<$PrismaModel> | $Enums.DealAlertSeverity
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDealAlertSeverityFilter<$PrismaModel>
+    _max?: NestedEnumDealAlertSeverityFilter<$PrismaModel>
+  }
+
+  export type EnumDealAlertStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertStatus | EnumDealAlertStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertStatus[] | ListEnumDealAlertStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertStatus[] | ListEnumDealAlertStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertStatusWithAggregatesFilter<$PrismaModel> | $Enums.DealAlertStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDealAlertStatusFilter<$PrismaModel>
+    _max?: NestedEnumDealAlertStatusFilter<$PrismaModel>
+  }
+
+  export type EnumDealAlertAuditActionFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertAuditAction | EnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertAuditAction[] | ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertAuditAction[] | ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertAuditActionFilter<$PrismaModel> | $Enums.DealAlertAuditAction
+  }
+
+  export type DealAlertScalarRelationFilter = {
+    is?: DealAlertWhereInput
+    isNot?: DealAlertWhereInput
+  }
+
+  export type DealAlertAuditCountOrderByAggregateInput = {
+    id?: SortOrder
+    dealAlertId?: SortOrder
+    action?: SortOrder
+    actorUserId?: SortOrder
+    actorRole?: SortOrder
+    recipientUserId?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DealAlertAuditMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dealAlertId?: SortOrder
+    action?: SortOrder
+    actorUserId?: SortOrder
+    actorRole?: SortOrder
+    recipientUserId?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DealAlertAuditMinOrderByAggregateInput = {
+    id?: SortOrder
+    dealAlertId?: SortOrder
+    action?: SortOrder
+    actorUserId?: SortOrder
+    actorRole?: SortOrder
+    recipientUserId?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumDealAlertAuditActionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertAuditAction | EnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertAuditAction[] | ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertAuditAction[] | ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertAuditActionWithAggregatesFilter<$PrismaModel> | $Enums.DealAlertAuditAction
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDealAlertAuditActionFilter<$PrismaModel>
+    _max?: NestedEnumDealAlertAuditActionFilter<$PrismaModel>
+  }
+
   export type AccountRecoveryTokenCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -53736,6 +56932,13 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
+  export type DealAlertCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<DealAlertCreateWithoutWorkspaceInput, DealAlertUncheckedCreateWithoutWorkspaceInput> | DealAlertCreateWithoutWorkspaceInput[] | DealAlertUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: DealAlertCreateOrConnectWithoutWorkspaceInput | DealAlertCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: DealAlertCreateManyWorkspaceInputEnvelope
+    connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+  }
+
   export type LoanPoolCreateNestedManyWithoutLenderInput = {
     create?: XOR<LoanPoolCreateWithoutLenderInput, LoanPoolUncheckedCreateWithoutLenderInput> | LoanPoolCreateWithoutLenderInput[] | LoanPoolUncheckedCreateWithoutLenderInput[]
     connectOrCreate?: LoanPoolCreateOrConnectWithoutLenderInput | LoanPoolCreateOrConnectWithoutLenderInput[]
@@ -53844,6 +57047,13 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutWorkspaceInput | NotificationCreateOrConnectWithoutWorkspaceInput[]
     createMany?: NotificationCreateManyWorkspaceInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<DealAlertCreateWithoutWorkspaceInput, DealAlertUncheckedCreateWithoutWorkspaceInput> | DealAlertCreateWithoutWorkspaceInput[] | DealAlertUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: DealAlertCreateOrConnectWithoutWorkspaceInput | DealAlertCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: DealAlertCreateManyWorkspaceInputEnvelope
+    connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
   }
 
   export type LoanPoolUncheckedCreateNestedManyWithoutLenderInput = {
@@ -54044,6 +57254,20 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutWorkspaceInput | NotificationUpdateWithWhereUniqueWithoutWorkspaceInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutWorkspaceInput | NotificationUpdateManyWithWhereWithoutWorkspaceInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type DealAlertUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<DealAlertCreateWithoutWorkspaceInput, DealAlertUncheckedCreateWithoutWorkspaceInput> | DealAlertCreateWithoutWorkspaceInput[] | DealAlertUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: DealAlertCreateOrConnectWithoutWorkspaceInput | DealAlertCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: DealAlertUpsertWithWhereUniqueWithoutWorkspaceInput | DealAlertUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: DealAlertCreateManyWorkspaceInputEnvelope
+    set?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    disconnect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    delete?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    update?: DealAlertUpdateWithWhereUniqueWithoutWorkspaceInput | DealAlertUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: DealAlertUpdateManyWithWhereWithoutWorkspaceInput | DealAlertUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: DealAlertScalarWhereInput | DealAlertScalarWhereInput[]
   }
 
   export type LoanPoolUpdateManyWithoutLenderNestedInput = {
@@ -54260,6 +57484,20 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutWorkspaceInput | NotificationUpdateWithWhereUniqueWithoutWorkspaceInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutWorkspaceInput | NotificationUpdateManyWithWhereWithoutWorkspaceInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<DealAlertCreateWithoutWorkspaceInput, DealAlertUncheckedCreateWithoutWorkspaceInput> | DealAlertCreateWithoutWorkspaceInput[] | DealAlertUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: DealAlertCreateOrConnectWithoutWorkspaceInput | DealAlertCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: DealAlertUpsertWithWhereUniqueWithoutWorkspaceInput | DealAlertUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: DealAlertCreateManyWorkspaceInputEnvelope
+    set?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    disconnect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    delete?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    update?: DealAlertUpdateWithWhereUniqueWithoutWorkspaceInput | DealAlertUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: DealAlertUpdateManyWithWhereWithoutWorkspaceInput | DealAlertUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: DealAlertScalarWhereInput | DealAlertScalarWhereInput[]
   }
 
   export type LoanPoolUncheckedUpdateManyWithoutLenderNestedInput = {
@@ -54700,6 +57938,13 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
+  export type DealAlertCreateNestedManyWithoutDealInput = {
+    create?: XOR<DealAlertCreateWithoutDealInput, DealAlertUncheckedCreateWithoutDealInput> | DealAlertCreateWithoutDealInput[] | DealAlertUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealAlertCreateOrConnectWithoutDealInput | DealAlertCreateOrConnectWithoutDealInput[]
+    createMany?: DealAlertCreateManyDealInputEnvelope
+    connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+  }
+
   export type DealPartyUncheckedCreateNestedManyWithoutDealInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -54784,6 +58029,13 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutDealInput | NotificationCreateOrConnectWithoutDealInput[]
     createMany?: NotificationCreateManyDealInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type DealAlertUncheckedCreateNestedManyWithoutDealInput = {
+    create?: XOR<DealAlertCreateWithoutDealInput, DealAlertUncheckedCreateWithoutDealInput> | DealAlertCreateWithoutDealInput[] | DealAlertUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealAlertCreateOrConnectWithoutDealInput | DealAlertCreateOrConnectWithoutDealInput[]
+    createMany?: DealAlertCreateManyDealInputEnvelope
+    connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
   }
 
   export type EnumDealStatusFieldUpdateOperationsInput = {
@@ -54994,6 +58246,20 @@ export namespace Prisma {
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
+  export type DealAlertUpdateManyWithoutDealNestedInput = {
+    create?: XOR<DealAlertCreateWithoutDealInput, DealAlertUncheckedCreateWithoutDealInput> | DealAlertCreateWithoutDealInput[] | DealAlertUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealAlertCreateOrConnectWithoutDealInput | DealAlertCreateOrConnectWithoutDealInput[]
+    upsert?: DealAlertUpsertWithWhereUniqueWithoutDealInput | DealAlertUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: DealAlertCreateManyDealInputEnvelope
+    set?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    disconnect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    delete?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    update?: DealAlertUpdateWithWhereUniqueWithoutDealInput | DealAlertUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: DealAlertUpdateManyWithWhereWithoutDealInput | DealAlertUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: DealAlertScalarWhereInput | DealAlertScalarWhereInput[]
+  }
+
   export type DealPartyUncheckedUpdateManyWithoutDealNestedInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -55154,6 +58420,20 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutDealInput | NotificationUpdateWithWhereUniqueWithoutDealInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutDealInput | NotificationUpdateManyWithWhereWithoutDealInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type DealAlertUncheckedUpdateManyWithoutDealNestedInput = {
+    create?: XOR<DealAlertCreateWithoutDealInput, DealAlertUncheckedCreateWithoutDealInput> | DealAlertCreateWithoutDealInput[] | DealAlertUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealAlertCreateOrConnectWithoutDealInput | DealAlertCreateOrConnectWithoutDealInput[]
+    upsert?: DealAlertUpsertWithWhereUniqueWithoutDealInput | DealAlertUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: DealAlertCreateManyDealInputEnvelope
+    set?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    disconnect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    delete?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+    update?: DealAlertUpdateWithWhereUniqueWithoutDealInput | DealAlertUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: DealAlertUpdateManyWithWhereWithoutDealInput | DealAlertUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: DealAlertScalarWhereInput | DealAlertScalarWhereInput[]
   }
 
   export type DealCreateNestedOneWithoutPartiesInput = {
@@ -55896,6 +59176,102 @@ export namespace Prisma {
     upsert?: WorkspaceUpsertWithoutAccessAuditsInput
     connect?: WorkspaceWhereUniqueInput
     update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutAccessAuditsInput, WorkspaceUpdateWithoutAccessAuditsInput>, WorkspaceUncheckedUpdateWithoutAccessAuditsInput>
+  }
+
+  export type DealCreateNestedOneWithoutAlertsInput = {
+    create?: XOR<DealCreateWithoutAlertsInput, DealUncheckedCreateWithoutAlertsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutAlertsInput
+    connect?: DealWhereUniqueInput
+  }
+
+  export type WorkspaceCreateNestedOneWithoutDealAlertsInput = {
+    create?: XOR<WorkspaceCreateWithoutDealAlertsInput, WorkspaceUncheckedCreateWithoutDealAlertsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutDealAlertsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type DealAlertAuditCreateNestedManyWithoutDealAlertInput = {
+    create?: XOR<DealAlertAuditCreateWithoutDealAlertInput, DealAlertAuditUncheckedCreateWithoutDealAlertInput> | DealAlertAuditCreateWithoutDealAlertInput[] | DealAlertAuditUncheckedCreateWithoutDealAlertInput[]
+    connectOrCreate?: DealAlertAuditCreateOrConnectWithoutDealAlertInput | DealAlertAuditCreateOrConnectWithoutDealAlertInput[]
+    createMany?: DealAlertAuditCreateManyDealAlertInputEnvelope
+    connect?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+  }
+
+  export type DealAlertAuditUncheckedCreateNestedManyWithoutDealAlertInput = {
+    create?: XOR<DealAlertAuditCreateWithoutDealAlertInput, DealAlertAuditUncheckedCreateWithoutDealAlertInput> | DealAlertAuditCreateWithoutDealAlertInput[] | DealAlertAuditUncheckedCreateWithoutDealAlertInput[]
+    connectOrCreate?: DealAlertAuditCreateOrConnectWithoutDealAlertInput | DealAlertAuditCreateOrConnectWithoutDealAlertInput[]
+    createMany?: DealAlertAuditCreateManyDealAlertInputEnvelope
+    connect?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+  }
+
+  export type EnumDealAlertSeverityFieldUpdateOperationsInput = {
+    set?: $Enums.DealAlertSeverity
+  }
+
+  export type EnumDealAlertStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DealAlertStatus
+  }
+
+  export type DealUpdateOneRequiredWithoutAlertsNestedInput = {
+    create?: XOR<DealCreateWithoutAlertsInput, DealUncheckedCreateWithoutAlertsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutAlertsInput
+    upsert?: DealUpsertWithoutAlertsInput
+    connect?: DealWhereUniqueInput
+    update?: XOR<XOR<DealUpdateToOneWithWhereWithoutAlertsInput, DealUpdateWithoutAlertsInput>, DealUncheckedUpdateWithoutAlertsInput>
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutDealAlertsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutDealAlertsInput, WorkspaceUncheckedCreateWithoutDealAlertsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutDealAlertsInput
+    upsert?: WorkspaceUpsertWithoutDealAlertsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutDealAlertsInput, WorkspaceUpdateWithoutDealAlertsInput>, WorkspaceUncheckedUpdateWithoutDealAlertsInput>
+  }
+
+  export type DealAlertAuditUpdateManyWithoutDealAlertNestedInput = {
+    create?: XOR<DealAlertAuditCreateWithoutDealAlertInput, DealAlertAuditUncheckedCreateWithoutDealAlertInput> | DealAlertAuditCreateWithoutDealAlertInput[] | DealAlertAuditUncheckedCreateWithoutDealAlertInput[]
+    connectOrCreate?: DealAlertAuditCreateOrConnectWithoutDealAlertInput | DealAlertAuditCreateOrConnectWithoutDealAlertInput[]
+    upsert?: DealAlertAuditUpsertWithWhereUniqueWithoutDealAlertInput | DealAlertAuditUpsertWithWhereUniqueWithoutDealAlertInput[]
+    createMany?: DealAlertAuditCreateManyDealAlertInputEnvelope
+    set?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+    disconnect?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+    delete?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+    connect?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+    update?: DealAlertAuditUpdateWithWhereUniqueWithoutDealAlertInput | DealAlertAuditUpdateWithWhereUniqueWithoutDealAlertInput[]
+    updateMany?: DealAlertAuditUpdateManyWithWhereWithoutDealAlertInput | DealAlertAuditUpdateManyWithWhereWithoutDealAlertInput[]
+    deleteMany?: DealAlertAuditScalarWhereInput | DealAlertAuditScalarWhereInput[]
+  }
+
+  export type DealAlertAuditUncheckedUpdateManyWithoutDealAlertNestedInput = {
+    create?: XOR<DealAlertAuditCreateWithoutDealAlertInput, DealAlertAuditUncheckedCreateWithoutDealAlertInput> | DealAlertAuditCreateWithoutDealAlertInput[] | DealAlertAuditUncheckedCreateWithoutDealAlertInput[]
+    connectOrCreate?: DealAlertAuditCreateOrConnectWithoutDealAlertInput | DealAlertAuditCreateOrConnectWithoutDealAlertInput[]
+    upsert?: DealAlertAuditUpsertWithWhereUniqueWithoutDealAlertInput | DealAlertAuditUpsertWithWhereUniqueWithoutDealAlertInput[]
+    createMany?: DealAlertAuditCreateManyDealAlertInputEnvelope
+    set?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+    disconnect?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+    delete?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+    connect?: DealAlertAuditWhereUniqueInput | DealAlertAuditWhereUniqueInput[]
+    update?: DealAlertAuditUpdateWithWhereUniqueWithoutDealAlertInput | DealAlertAuditUpdateWithWhereUniqueWithoutDealAlertInput[]
+    updateMany?: DealAlertAuditUpdateManyWithWhereWithoutDealAlertInput | DealAlertAuditUpdateManyWithWhereWithoutDealAlertInput[]
+    deleteMany?: DealAlertAuditScalarWhereInput | DealAlertAuditScalarWhereInput[]
+  }
+
+  export type DealAlertCreateNestedOneWithoutAuditsInput = {
+    create?: XOR<DealAlertCreateWithoutAuditsInput, DealAlertUncheckedCreateWithoutAuditsInput>
+    connectOrCreate?: DealAlertCreateOrConnectWithoutAuditsInput
+    connect?: DealAlertWhereUniqueInput
+  }
+
+  export type EnumDealAlertAuditActionFieldUpdateOperationsInput = {
+    set?: $Enums.DealAlertAuditAction
+  }
+
+  export type DealAlertUpdateOneRequiredWithoutAuditsNestedInput = {
+    create?: XOR<DealAlertCreateWithoutAuditsInput, DealAlertUncheckedCreateWithoutAuditsInput>
+    connectOrCreate?: DealAlertCreateOrConnectWithoutAuditsInput
+    upsert?: DealAlertUpsertWithoutAuditsInput
+    connect?: DealAlertWhereUniqueInput
+    update?: XOR<XOR<DealAlertUpdateToOneWithWhereWithoutAuditsInput, DealAlertUpdateWithoutAuditsInput>, DealAlertUncheckedUpdateWithoutAuditsInput>
   }
 
   export type DealCreateNestedOneWithoutAmendmentsInput = {
@@ -56845,6 +60221,57 @@ export namespace Prisma {
     _max?: NestedEnumWebhookDeliveryStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDealAlertSeverityFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertSeverity | EnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertSeverityFilter<$PrismaModel> | $Enums.DealAlertSeverity
+  }
+
+  export type NestedEnumDealAlertStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertStatus | EnumDealAlertStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertStatus[] | ListEnumDealAlertStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertStatus[] | ListEnumDealAlertStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertStatusFilter<$PrismaModel> | $Enums.DealAlertStatus
+  }
+
+  export type NestedEnumDealAlertSeverityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertSeverity | EnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertSeverityWithAggregatesFilter<$PrismaModel> | $Enums.DealAlertSeverity
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDealAlertSeverityFilter<$PrismaModel>
+    _max?: NestedEnumDealAlertSeverityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDealAlertStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertStatus | EnumDealAlertStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertStatus[] | ListEnumDealAlertStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertStatus[] | ListEnumDealAlertStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertStatusWithAggregatesFilter<$PrismaModel> | $Enums.DealAlertStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDealAlertStatusFilter<$PrismaModel>
+    _max?: NestedEnumDealAlertStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDealAlertAuditActionFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertAuditAction | EnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertAuditAction[] | ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertAuditAction[] | ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertAuditActionFilter<$PrismaModel> | $Enums.DealAlertAuditAction
+  }
+
+  export type NestedEnumDealAlertAuditActionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealAlertAuditAction | EnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    in?: $Enums.DealAlertAuditAction[] | ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealAlertAuditAction[] | ListEnumDealAlertAuditActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealAlertAuditActionWithAggregatesFilter<$PrismaModel> | $Enums.DealAlertAuditAction
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDealAlertAuditActionFilter<$PrismaModel>
+    _max?: NestedEnumDealAlertAuditActionFilter<$PrismaModel>
+  }
+
   export type NestedEnumAmendmentReasonFilter<$PrismaModel = never> = {
     equals?: $Enums.AmendmentReason | EnumAmendmentReasonFieldRefInput<$PrismaModel>
     in?: $Enums.AmendmentReason[] | ListEnumAmendmentReasonFieldRefInput<$PrismaModel>
@@ -57656,6 +61083,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerInput = {
@@ -57685,6 +61113,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerInput = {
@@ -57724,6 +61153,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLenderInput = {
@@ -57753,6 +61183,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLenderInput = {
@@ -57794,6 +61225,46 @@ export namespace Prisma {
 
   export type NotificationCreateManyWorkspaceInputEnvelope = {
     data: NotificationCreateManyWorkspaceInput | NotificationCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DealAlertCreateWithoutWorkspaceInput = {
+    id?: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    deal: DealCreateNestedOneWithoutAlertsInput
+    audits?: DealAlertAuditCreateNestedManyWithoutDealAlertInput
+  }
+
+  export type DealAlertUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    dealId: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    audits?: DealAlertAuditUncheckedCreateNestedManyWithoutDealAlertInput
+  }
+
+  export type DealAlertCreateOrConnectWithoutWorkspaceInput = {
+    where: DealAlertWhereUniqueInput
+    create: XOR<DealAlertCreateWithoutWorkspaceInput, DealAlertUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type DealAlertCreateManyWorkspaceInputEnvelope = {
+    data: DealAlertCreateManyWorkspaceInput | DealAlertCreateManyWorkspaceInput[]
     skipDuplicates?: boolean
   }
 
@@ -58257,6 +61728,40 @@ export namespace Prisma {
     data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutWorkspaceInput>
   }
 
+  export type DealAlertUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: DealAlertWhereUniqueInput
+    update: XOR<DealAlertUpdateWithoutWorkspaceInput, DealAlertUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<DealAlertCreateWithoutWorkspaceInput, DealAlertUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type DealAlertUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: DealAlertWhereUniqueInput
+    data: XOR<DealAlertUpdateWithoutWorkspaceInput, DealAlertUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type DealAlertUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: DealAlertScalarWhereInput
+    data: XOR<DealAlertUpdateManyMutationInput, DealAlertUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type DealAlertScalarWhereInput = {
+    AND?: DealAlertScalarWhereInput | DealAlertScalarWhereInput[]
+    OR?: DealAlertScalarWhereInput[]
+    NOT?: DealAlertScalarWhereInput | DealAlertScalarWhereInput[]
+    id?: StringFilter<"DealAlert"> | string
+    dealId?: StringFilter<"DealAlert"> | string
+    workspaceId?: StringFilter<"DealAlert"> | string
+    type?: StringFilter<"DealAlert"> | string
+    severity?: EnumDealAlertSeverityFilter<"DealAlert"> | $Enums.DealAlertSeverity
+    title?: StringFilter<"DealAlert"> | string
+    message?: StringFilter<"DealAlert"> | string
+    status?: EnumDealAlertStatusFilter<"DealAlert"> | $Enums.DealAlertStatus
+    resolutionNote?: StringNullableFilter<"DealAlert"> | string | null
+    metadata?: JsonFilter<"DealAlert">
+    createdAt?: DateTimeFilter<"DealAlert"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"DealAlert"> | Date | string | null
+  }
+
   export type LoanPoolUpsertWithWhereUniqueWithoutLenderInput = {
     where: LoanPoolWhereUniqueInput
     update: XOR<LoanPoolUpdateWithoutLenderInput, LoanPoolUncheckedUpdateWithoutLenderInput>
@@ -58422,6 +61927,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -58447,6 +61953,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -58531,6 +62038,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -58556,6 +62064,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -58581,6 +62090,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -58606,6 +62116,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -58647,6 +62158,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -58672,6 +62184,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -58697,6 +62210,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -58722,6 +62236,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -58763,6 +62278,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -58788,6 +62304,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -58813,6 +62330,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -58838,6 +62356,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -58879,6 +62398,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -58904,6 +62424,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -58929,6 +62450,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -58954,6 +62476,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -58995,6 +62518,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -59020,6 +62544,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -59045,6 +62570,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -59070,6 +62596,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -59100,6 +62627,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -59125,6 +62653,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -59163,6 +62692,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerLenderLinkInput = {
@@ -59192,6 +62722,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerLenderLinkInput = {
@@ -59234,6 +62765,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -59259,6 +62791,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -59295,6 +62828,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -59320,6 +62854,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -59361,6 +62896,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -59386,6 +62922,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -59427,6 +62964,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -59452,6 +62990,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -59477,6 +63016,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -59502,6 +63042,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -59543,6 +63084,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -59568,6 +63110,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -59593,6 +63136,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -59618,6 +63162,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -59648,6 +63193,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -59673,6 +63219,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -60169,6 +63716,46 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DealAlertCreateWithoutDealInput = {
+    id?: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    workspace: WorkspaceCreateNestedOneWithoutDealAlertsInput
+    audits?: DealAlertAuditCreateNestedManyWithoutDealAlertInput
+  }
+
+  export type DealAlertUncheckedCreateWithoutDealInput = {
+    id?: string
+    workspaceId: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    audits?: DealAlertAuditUncheckedCreateNestedManyWithoutDealAlertInput
+  }
+
+  export type DealAlertCreateOrConnectWithoutDealInput = {
+    where: DealAlertWhereUniqueInput
+    create: XOR<DealAlertCreateWithoutDealInput, DealAlertUncheckedCreateWithoutDealInput>
+  }
+
+  export type DealAlertCreateManyDealInputEnvelope = {
+    data: DealAlertCreateManyDealInput | DealAlertCreateManyDealInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutDealerDealsInput = {
     update: XOR<WorkspaceUpdateWithoutDealerDealsInput, WorkspaceUncheckedUpdateWithoutDealerDealsInput>
     create: XOR<WorkspaceCreateWithoutDealerDealsInput, WorkspaceUncheckedCreateWithoutDealerDealsInput>
@@ -60199,6 +63786,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -60224,6 +63812,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -60260,6 +63849,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -60285,6 +63875,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -60769,6 +64360,22 @@ export namespace Prisma {
     data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutDealInput>
   }
 
+  export type DealAlertUpsertWithWhereUniqueWithoutDealInput = {
+    where: DealAlertWhereUniqueInput
+    update: XOR<DealAlertUpdateWithoutDealInput, DealAlertUncheckedUpdateWithoutDealInput>
+    create: XOR<DealAlertCreateWithoutDealInput, DealAlertUncheckedCreateWithoutDealInput>
+  }
+
+  export type DealAlertUpdateWithWhereUniqueWithoutDealInput = {
+    where: DealAlertWhereUniqueInput
+    data: XOR<DealAlertUpdateWithoutDealInput, DealAlertUncheckedUpdateWithoutDealInput>
+  }
+
+  export type DealAlertUpdateManyWithWhereWithoutDealInput = {
+    where: DealAlertScalarWhereInput
+    data: XOR<DealAlertUpdateManyMutationInput, DealAlertUncheckedUpdateManyWithoutDealInput>
+  }
+
   export type DealCreateWithoutPartiesInput = {
     id?: string
     status?: $Enums.DealStatus
@@ -60796,6 +64403,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPartiesInput = {
@@ -60825,6 +64433,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPartiesInput = {
@@ -60870,6 +64479,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPartiesInput = {
@@ -60899,6 +64509,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutVehicleInput = {
@@ -60928,6 +64539,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutVehicleInput = {
@@ -60957,6 +64569,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutVehicleInput = {
@@ -61002,6 +64615,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutVehicleInput = {
@@ -61031,6 +64645,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutFinancialsInput = {
@@ -61060,6 +64675,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutFinancialsInput = {
@@ -61089,6 +64705,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutFinancialsInput = {
@@ -61134,6 +64751,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutFinancialsInput = {
@@ -61163,6 +64781,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutAuthoritativeContractInput = {
@@ -61192,6 +64811,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAuthoritativeContractInput = {
@@ -61221,6 +64841,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAuthoritativeContractInput = {
@@ -61346,6 +64967,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAuthoritativeContractInput = {
@@ -61375,6 +64997,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithWhereUniqueWithoutAuthoritativeContractInput = {
@@ -61436,6 +65059,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutContractTransactionEventsInput = {
@@ -61465,6 +65089,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutContractTransactionEventsInput = {
@@ -61537,6 +65162,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutContractTransactionEventsInput = {
@@ -61566,6 +65192,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithoutLinkedContractEventsInput = {
@@ -61621,6 +65248,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
@@ -61646,6 +65274,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -61683,6 +65312,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLoanPoolInput = {
@@ -61712,6 +65342,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLoanPoolInput = {
@@ -61755,6 +65386,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
@@ -61780,6 +65412,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -61828,6 +65461,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNegotiableInstrumentInput = {
@@ -61857,6 +65491,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNegotiableInstrumentInput = {
@@ -61934,6 +65569,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNegotiableInstrumentInput = {
@@ -61963,6 +65599,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithWhereUniqueWithoutInstrumentInput = {
@@ -62008,6 +65645,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutInstrumentTransferEventsInput = {
@@ -62037,6 +65675,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutInstrumentTransferEventsInput = {
@@ -62147,6 +65786,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutInstrumentTransferEventsInput = {
@@ -62176,6 +65816,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type NegotiableInstrumentUpsertWithoutTransferEventsInput = {
@@ -62260,6 +65901,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutGeneratedDocumentsInput = {
@@ -62289,6 +65931,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutGeneratedDocumentsInput = {
@@ -62452,6 +66095,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutGeneratedDocumentsInput = {
@@ -62481,6 +66125,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutGeneratedDocumentsInput = {
@@ -62621,6 +66266,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -62646,6 +66292,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -62721,6 +66368,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNotificationsInput = {
@@ -62750,6 +66398,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNotificationsInput = {
@@ -62787,6 +66436,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -62812,6 +66462,7 @@ export namespace Prisma {
     lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -62899,6 +66550,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNotificationsInput = {
@@ -62928,6 +66580,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceCreateWithoutApiKeysInput = {
@@ -62950,6 +66603,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
@@ -62975,6 +66629,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -63016,6 +66671,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
@@ -63041,6 +66697,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -63066,6 +66723,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
@@ -63091,6 +66749,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -63166,6 +66825,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
@@ -63191,6 +66851,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -63345,6 +67006,7 @@ export namespace Prisma {
     dealerDeals?: DealCreateNestedManyWithoutDealerInput
     lenderDeals?: DealCreateNestedManyWithoutLenderInput
     notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
@@ -63370,6 +67032,7 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
     lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -63454,6 +67117,7 @@ export namespace Prisma {
     dealerDeals?: DealUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
@@ -63479,9 +67143,402 @@ export namespace Prisma {
     dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
     lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type DealCreateWithoutAlertsInput = {
+    id?: string
+    status?: $Enums.DealStatus
+    state: string
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dealer: WorkspaceCreateNestedOneWithoutDealerDealsInput
+    lender: WorkspaceCreateNestedOneWithoutLenderDealsInput
+    dealerLenderLink: DealerLenderLinkCreateNestedOneWithoutDealsInput
+    loanPool?: LoanPoolCreateNestedOneWithoutDealsInput
+    parties?: DealPartyCreateNestedManyWithoutDealInput
+    vehicle?: VehicleCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
+    amendments?: AmendmentCreateNestedManyWithoutDealInput
+    notifications?: NotificationCreateNestedManyWithoutDealInput
+  }
+
+  export type DealUncheckedCreateWithoutAlertsInput = {
+    id?: string
+    dealerId: string
+    lenderId: string
+    dealerLenderLinkId: string
+    status?: $Enums.DealStatus
+    state: string
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: string | null
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parties?: DealPartyUncheckedCreateNestedManyWithoutDealInput
+    vehicle?: VehicleUncheckedCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsUncheckedCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractUncheckedCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentUncheckedCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckUncheckedCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
+    amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+  }
+
+  export type DealCreateOrConnectWithoutAlertsInput = {
+    where: DealWhereUniqueInput
+    create: XOR<DealCreateWithoutAlertsInput, DealUncheckedCreateWithoutAlertsInput>
+  }
+
+  export type WorkspaceCreateWithoutDealAlertsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutDealAlertsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutDealAlertsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutDealAlertsInput, WorkspaceUncheckedCreateWithoutDealAlertsInput>
+  }
+
+  export type DealAlertAuditCreateWithoutDealAlertInput = {
+    id?: string
+    action: $Enums.DealAlertAuditAction
+    actorUserId?: string | null
+    actorRole?: string | null
+    recipientUserId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAlertAuditUncheckedCreateWithoutDealAlertInput = {
+    id?: string
+    action: $Enums.DealAlertAuditAction
+    actorUserId?: string | null
+    actorRole?: string | null
+    recipientUserId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAlertAuditCreateOrConnectWithoutDealAlertInput = {
+    where: DealAlertAuditWhereUniqueInput
+    create: XOR<DealAlertAuditCreateWithoutDealAlertInput, DealAlertAuditUncheckedCreateWithoutDealAlertInput>
+  }
+
+  export type DealAlertAuditCreateManyDealAlertInputEnvelope = {
+    data: DealAlertAuditCreateManyDealAlertInput | DealAlertAuditCreateManyDealAlertInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DealUpsertWithoutAlertsInput = {
+    update: XOR<DealUpdateWithoutAlertsInput, DealUncheckedUpdateWithoutAlertsInput>
+    create: XOR<DealCreateWithoutAlertsInput, DealUncheckedCreateWithoutAlertsInput>
+    where?: DealWhereInput
+  }
+
+  export type DealUpdateToOneWithWhereWithoutAlertsInput = {
+    where?: DealWhereInput
+    data: XOR<DealUpdateWithoutAlertsInput, DealUncheckedUpdateWithoutAlertsInput>
+  }
+
+  export type DealUpdateWithoutAlertsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerDealsNestedInput
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderDealsNestedInput
+    dealerLenderLink?: DealerLenderLinkUpdateOneRequiredWithoutDealsNestedInput
+    loanPool?: LoanPoolUpdateOneWithoutDealsNestedInput
+    parties?: DealPartyUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUpdateManyWithoutDealNestedInput
+  }
+
+  export type DealUncheckedUpdateWithoutAlertsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parties?: DealPartyUncheckedUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUncheckedUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUncheckedUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUncheckedUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUncheckedUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUncheckedUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+  }
+
+  export type WorkspaceUpsertWithoutDealAlertsInput = {
+    update: XOR<WorkspaceUpdateWithoutDealAlertsInput, WorkspaceUncheckedUpdateWithoutDealAlertsInput>
+    create: XOR<WorkspaceCreateWithoutDealAlertsInput, WorkspaceUncheckedCreateWithoutDealAlertsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutDealAlertsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutDealAlertsInput, WorkspaceUncheckedUpdateWithoutDealAlertsInput>
+  }
+
+  export type WorkspaceUpdateWithoutDealAlertsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutDealAlertsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type DealAlertAuditUpsertWithWhereUniqueWithoutDealAlertInput = {
+    where: DealAlertAuditWhereUniqueInput
+    update: XOR<DealAlertAuditUpdateWithoutDealAlertInput, DealAlertAuditUncheckedUpdateWithoutDealAlertInput>
+    create: XOR<DealAlertAuditCreateWithoutDealAlertInput, DealAlertAuditUncheckedCreateWithoutDealAlertInput>
+  }
+
+  export type DealAlertAuditUpdateWithWhereUniqueWithoutDealAlertInput = {
+    where: DealAlertAuditWhereUniqueInput
+    data: XOR<DealAlertAuditUpdateWithoutDealAlertInput, DealAlertAuditUncheckedUpdateWithoutDealAlertInput>
+  }
+
+  export type DealAlertAuditUpdateManyWithWhereWithoutDealAlertInput = {
+    where: DealAlertAuditScalarWhereInput
+    data: XOR<DealAlertAuditUpdateManyMutationInput, DealAlertAuditUncheckedUpdateManyWithoutDealAlertInput>
+  }
+
+  export type DealAlertAuditScalarWhereInput = {
+    AND?: DealAlertAuditScalarWhereInput | DealAlertAuditScalarWhereInput[]
+    OR?: DealAlertAuditScalarWhereInput[]
+    NOT?: DealAlertAuditScalarWhereInput | DealAlertAuditScalarWhereInput[]
+    id?: StringFilter<"DealAlertAudit"> | string
+    dealAlertId?: StringFilter<"DealAlertAudit"> | string
+    action?: EnumDealAlertAuditActionFilter<"DealAlertAudit"> | $Enums.DealAlertAuditAction
+    actorUserId?: StringNullableFilter<"DealAlertAudit"> | string | null
+    actorRole?: StringNullableFilter<"DealAlertAudit"> | string | null
+    recipientUserId?: StringNullableFilter<"DealAlertAudit"> | string | null
+    note?: StringNullableFilter<"DealAlertAudit"> | string | null
+    createdAt?: DateTimeFilter<"DealAlertAudit"> | Date | string
+  }
+
+  export type DealAlertCreateWithoutAuditsInput = {
+    id?: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    deal: DealCreateNestedOneWithoutAlertsInput
+    workspace: WorkspaceCreateNestedOneWithoutDealAlertsInput
+  }
+
+  export type DealAlertUncheckedCreateWithoutAuditsInput = {
+    id?: string
+    dealId: string
+    workspaceId: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+  }
+
+  export type DealAlertCreateOrConnectWithoutAuditsInput = {
+    where: DealAlertWhereUniqueInput
+    create: XOR<DealAlertCreateWithoutAuditsInput, DealAlertUncheckedCreateWithoutAuditsInput>
+  }
+
+  export type DealAlertUpsertWithoutAuditsInput = {
+    update: XOR<DealAlertUpdateWithoutAuditsInput, DealAlertUncheckedUpdateWithoutAuditsInput>
+    create: XOR<DealAlertCreateWithoutAuditsInput, DealAlertUncheckedCreateWithoutAuditsInput>
+    where?: DealAlertWhereInput
+  }
+
+  export type DealAlertUpdateToOneWithWhereWithoutAuditsInput = {
+    where?: DealAlertWhereInput
+    data: XOR<DealAlertUpdateWithoutAuditsInput, DealAlertUncheckedUpdateWithoutAuditsInput>
+  }
+
+  export type DealAlertUpdateWithoutAuditsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deal?: DealUpdateOneRequiredWithoutAlertsNestedInput
+    workspace?: WorkspaceUpdateOneRequiredWithoutDealAlertsNestedInput
+  }
+
+  export type DealAlertUncheckedUpdateWithoutAuditsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DealCreateWithoutAmendmentsInput = {
@@ -63511,6 +67568,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAmendmentsInput = {
@@ -63540,6 +67598,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAmendmentsInput = {
@@ -63732,6 +67791,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAmendmentsInput = {
@@ -63761,6 +67821,7 @@ export namespace Prisma {
     negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutParentAmendmentsInput = {
@@ -63929,6 +67990,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCustodyEventsInput = {
@@ -63958,6 +68020,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCustodyEventsInput = {
@@ -64040,6 +68103,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCustodyEventsInput = {
@@ -64069,6 +68133,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithoutCustodyEventsInput = {
@@ -64221,6 +68286,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutComplianceChecksInput = {
@@ -64250,6 +68316,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutComplianceChecksInput = {
@@ -64295,6 +68362,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutComplianceChecksInput = {
@@ -64324,6 +68392,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutPrefundingValidationCertificateInput = {
@@ -64353,6 +68422,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPrefundingValidationCertificateInput = {
@@ -64382,6 +68452,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPrefundingValidationCertificateInput = {
@@ -64427,6 +68498,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPrefundingValidationCertificateInput = {
@@ -64456,6 +68528,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -65049,6 +69122,20 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type DealAlertCreateManyWorkspaceInput = {
+    id?: string
+    dealId: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+  }
+
   export type LoanPoolCreateManyLenderInput = {
     id?: string
     poolName: string
@@ -65353,6 +69440,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerInput = {
@@ -65382,6 +69470,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerInput = {
@@ -65427,6 +69516,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLenderInput = {
@@ -65456,6 +69546,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLenderInput = {
@@ -65505,6 +69596,50 @@ export namespace Prisma {
     message?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAlertUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deal?: DealUpdateOneRequiredWithoutAlertsNestedInput
+    audits?: DealAlertAuditUpdateManyWithoutDealAlertNestedInput
+  }
+
+  export type DealAlertUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    audits?: DealAlertAuditUncheckedUpdateManyWithoutDealAlertNestedInput
+  }
+
+  export type DealAlertUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type LoanPoolUpdateWithoutLenderInput = {
@@ -65689,6 +69824,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerLenderLinkInput = {
@@ -65718,6 +69854,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerLenderLinkInput = {
@@ -65823,6 +69960,20 @@ export namespace Prisma {
     message: string
     isRead?: boolean
     createdAt?: Date | string
+  }
+
+  export type DealAlertCreateManyDealInput = {
+    id?: string
+    workspaceId: string
+    type: string
+    severity?: $Enums.DealAlertSeverity
+    title: string
+    message: string
+    status?: $Enums.DealAlertStatus
+    resolutionNote?: string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
   }
 
   export type DealPartyUpdateWithoutDealInput = {
@@ -66100,6 +70251,50 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DealAlertUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspace?: WorkspaceUpdateOneRequiredWithoutDealAlertsNestedInput
+    audits?: DealAlertAuditUpdateManyWithoutDealAlertNestedInput
+  }
+
+  export type DealAlertUncheckedUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    audits?: DealAlertAuditUncheckedUpdateManyWithoutDealAlertNestedInput
+  }
+
+  export type DealAlertUncheckedUpdateManyWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    severity?: EnumDealAlertSeverityFieldUpdateOperationsInput | $Enums.DealAlertSeverity
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealAlertStatusFieldUpdateOperationsInput | $Enums.DealAlertStatus
+    resolutionNote?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type GeneratedDocumentCreateManyAuthoritativeContractInput = {
     id?: string
     dealId: string
@@ -66257,6 +70452,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLoanPoolInput = {
@@ -66286,6 +70482,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLoanPoolInput = {
@@ -66503,6 +70700,46 @@ export namespace Prisma {
     retryCount?: IntFieldUpdateOperationsInput | number
     nextRetryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAlertAuditCreateManyDealAlertInput = {
+    id?: string
+    action: $Enums.DealAlertAuditAction
+    actorUserId?: string | null
+    actorRole?: string | null
+    recipientUserId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAlertAuditUpdateWithoutDealAlertInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumDealAlertAuditActionFieldUpdateOperationsInput | $Enums.DealAlertAuditAction
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAlertAuditUncheckedUpdateWithoutDealAlertInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumDealAlertAuditActionFieldUpdateOperationsInput | $Enums.DealAlertAuditAction
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAlertAuditUncheckedUpdateManyWithoutDealAlertInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumDealAlertAuditActionFieldUpdateOperationsInput | $Enums.DealAlertAuditAction
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

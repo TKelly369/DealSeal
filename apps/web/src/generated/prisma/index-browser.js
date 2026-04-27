@@ -424,6 +424,32 @@ exports.Prisma.UserAccessAuditScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.DealAlertScalarFieldEnum = {
+  id: 'id',
+  dealId: 'dealId',
+  workspaceId: 'workspaceId',
+  type: 'type',
+  severity: 'severity',
+  title: 'title',
+  message: 'message',
+  status: 'status',
+  resolutionNote: 'resolutionNote',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt'
+};
+
+exports.Prisma.DealAlertAuditScalarFieldEnum = {
+  id: 'id',
+  dealAlertId: 'dealAlertId',
+  action: 'action',
+  actorUserId: 'actorUserId',
+  actorRole: 'actorRole',
+  recipientUserId: 'recipientUserId',
+  note: 'note',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AccountRecoveryTokenScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -718,6 +744,25 @@ exports.WebhookDeliveryStatus = exports.$Enums.WebhookDeliveryStatus = {
   FAILED: 'FAILED'
 };
 
+exports.DealAlertSeverity = exports.$Enums.DealAlertSeverity = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  CRITICAL: 'CRITICAL'
+};
+
+exports.DealAlertStatus = exports.$Enums.DealAlertStatus = {
+  OPEN: 'OPEN',
+  CLEARED: 'CLEARED',
+  OVERRIDDEN: 'OVERRIDDEN'
+};
+
+exports.DealAlertAuditAction = exports.$Enums.DealAlertAuditAction = {
+  ALERT_ISSUED: 'ALERT_ISSUED',
+  ALERT_SENT: 'ALERT_SENT',
+  CLEARED: 'CLEARED',
+  OVERRIDDEN: 'OVERRIDDEN'
+};
+
 exports.AmendmentReason = exports.$Enums.AmendmentReason = {
   BMV_REJECTION: 'BMV_REJECTION',
   VIN_CORRECTION: 'VIN_CORRECTION',
@@ -771,6 +816,8 @@ exports.Prisma.ModelName = {
   WebhookEndpoint: 'WebhookEndpoint',
   WebhookDelivery: 'WebhookDelivery',
   UserAccessAudit: 'UserAccessAudit',
+  DealAlert: 'DealAlert',
+  DealAlertAudit: 'DealAlertAudit',
   AccountRecoveryToken: 'AccountRecoveryToken',
   UserLoginOverride: 'UserLoginOverride',
   Amendment: 'Amendment',

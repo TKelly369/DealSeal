@@ -74,12 +74,14 @@ export default function HomePage() {
               width: "100%",
               display: "flex",
               flexDirection: "column",
-              alignItems: "flex-start",
+              alignItems: "center",
               justifyContent: "flex-start",
               gap: "0.6rem",
             }}
           >
-            <LiveDateTime24h />
+            <div style={{ width: "100%", display: "flex", justifyContent: "flex-start" }}>
+              <LiveDateTime24h />
+            </div>
             <Image
               src="/brand/dealseal-lockup-official.png"
               alt="DealSeal — Close Clean. Fund Confident."

@@ -6,6 +6,7 @@ import { DealWorkflowService } from "@/lib/services/deal-workflow.service";
 import { AutopublishService } from "@/lib/services/autopublish.service";
 import { AmendmentReason } from "@/generated/prisma";
 import { AmendmentService } from "@/lib/services/amendment.service";
+import { DealAlertService } from "@/lib/services/deal-alert.service";
 
 async function requireDealerDeal(dealId: string) {
   const session = await auth();
@@ -104,4 +105,25 @@ export async function requestAmendmentFormAction(formData: FormData) {
   revalidatePath(`/dealer/deals/${dealId}`);
   revalidatePath("/lender/assets");
   revalidatePath("/lender/intake");
+}
+
+export async function clearDealAlertFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const alertId = String(formData.get("alertId") || "");
+  await requireDealerDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await DealAlertService.clearAlert(alertId, session.user.id, session.user.role);
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
+export async function overrideDealAlertFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const alertId = String(formData.get("alertId") || "");
+  const note = String(formData.get("note") || "");
+  await requireDealerDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await DealAlertService.overrideAlert(alertId, note, session.user.id, session.user.role);
+  revalidatePath(`/dealer/deals/${dealId}`);
 }

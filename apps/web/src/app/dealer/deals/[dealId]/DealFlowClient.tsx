@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import {
   acknowledgeDisclosureFormAction,
+  clearDealAlertFormAction,
+  overrideDealAlertFormAction,
   requestAmendmentFormAction,
   retryAutopublishFormAction,
   submitUnsignedRISCAction,
@@ -44,6 +46,24 @@ export type DealFlowSnapshot = {
     actorRole: string;
     timestamp: string;
     metadata: unknown;
+  }[];
+  alerts: {
+    id: string;
+    type: string;
+    severity: string;
+    status: string;
+    title: string;
+    message: string;
+    resolutionNote: string | null;
+    createdAt: string;
+    audits: {
+      id: string;
+      action: string;
+      actorRole: string | null;
+      recipientUserId: string | null;
+      note: string | null;
+      createdAt: string;
+    }[];
   }[];
 };
 
@@ -94,6 +114,7 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
     .sort((a, b) => b.version - a.version)[0];
   const hash = deal.authoritativeHash;
   const stepIdx = activeStepIndex(deal.status);
+  const openAlerts = deal.alerts.filter((a) => a.status === "OPEN");
 
   return (
     <div className="ds-section-shell" style={{ maxWidth: "36rem", margin: "0 auto" }}>
@@ -144,6 +165,68 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
           );
         })}
       </ol>
+
+      {deal.alerts.length > 0 ? (
+        <section className="card" style={{ borderColor: openAlerts.length > 0 ? "#b45309" : "#14532d" }}>
+          <h2 style={{ marginTop: 0, fontSize: "1rem" }}>AI math & legal alerts</h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>
+            Alerts do not shut down the platform, but must be cleared or overridden with a file note before lock.
+          </p>
+          <div style={{ display: "grid", gap: "0.55rem", marginTop: "0.75rem" }}>
+            {deal.alerts.map((a) => (
+              <div key={a.id} style={{ border: "1px solid #333", borderRadius: 8, padding: "0.6rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: "0.5rem", alignItems: "center" }}>
+                  <strong>{a.title}</strong>
+                  <span className="badge">{a.status}</span>
+                </div>
+                <p style={{ margin: "0.35rem 0 0", color: "var(--text-secondary)", fontSize: "0.88rem" }}>{a.message}</p>
+                {a.status === "OPEN" ? (
+                  <div style={{ display: "grid", gap: "0.4rem", marginTop: "0.55rem" }}>
+                    <form action={clearDealAlertFormAction}>
+                      <input type="hidden" name="dealId" value={deal.dealId} />
+                      <input type="hidden" name="alertId" value={a.id} />
+                      <button type="submit" className="btn btn-secondary">
+                        <SubmitLabel idle="Mark as cleared" />
+                      </button>
+                    </form>
+                    <form action={overrideDealAlertFormAction} style={{ display: "grid", gap: "0.35rem" }}>
+                      <input type="hidden" name="dealId" value={deal.dealId} />
+                      <input type="hidden" name="alertId" value={a.id} />
+                      <input
+                        name="note"
+                        placeholder="Required file note to move forward without clearing"
+                        required
+                        style={{ width: "100%", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+                      />
+                      <button type="submit" className="btn">
+                        <SubmitLabel idle="Override with file note" />
+                      </button>
+                    </form>
+                  </div>
+                ) : null}
+                {a.resolutionNote ? (
+                  <p style={{ margin: "0.45rem 0 0", fontSize: "0.82rem", color: "#fde68a" }}>
+                    File note: {a.resolutionNote}
+                  </p>
+                ) : null}
+                <details style={{ marginTop: "0.4rem" }}>
+                  <summary style={{ cursor: "pointer", color: "var(--muted)", fontSize: "0.82rem" }}>Audit trail</summary>
+                  <ul style={{ margin: "0.35rem 0 0", paddingLeft: "1rem", fontSize: "0.8rem", color: "var(--muted)" }}>
+                    {a.audits.map((ev) => (
+                      <li key={ev.id}>
+                        {new Date(ev.createdAt).toLocaleString([], { hour12: false })} · {ev.action}
+                        {ev.actorRole ? ` · by ${ev.actorRole}` : ""}
+                        {ev.recipientUserId ? ` · to ${ev.recipientUserId}` : ""}
+                        {ev.note ? ` · ${ev.note}` : ""}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* Step 1 */}
       {deal.status === "DISCLOSURE_REQUIRED" ? (

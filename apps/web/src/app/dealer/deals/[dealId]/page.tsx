@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { DealWorkflowService } from "@/lib/services/deal-workflow.service";
 import { DealFlowClient, type ConsummatedSummary, type DealFlowSnapshot } from "./DealFlowClient";
+import { DealAlertService } from "@/lib/services/deal-alert.service";
 
 function buildConsummatedSummary(raw: unknown): ConsummatedSummary {
   if (!raw || typeof raw !== "object") return null;
@@ -31,6 +32,7 @@ export default async function DealerDealLifecyclePage({ params }: { params: Prom
   const { dealId } = await params;
   const deal = await DealWorkflowService.getDealForActor(dealId, session.user.workspaceId, "dealer");
   if (!deal) redirect("/dealer/dashboard");
+  const alerts = await DealAlertService.getAlertsForDeal(dealId);
 
   const buyer = deal.parties.find((p) => p.role === "BUYER");
   const buyerDisplay = buyer ? `${buyer.firstName} ${buyer.lastName}` : "—";
@@ -65,6 +67,24 @@ export default async function DealerDealLifecyclePage({ params }: { params: Prom
       actorRole: e.actorRole,
       timestamp: e.timestamp.toISOString(),
       metadata: e.metadata,
+    })),
+    alerts: alerts.map((a) => ({
+      id: a.id,
+      type: a.type,
+      severity: a.severity,
+      status: a.status,
+      title: a.title,
+      message: a.message,
+      resolutionNote: a.resolutionNote,
+      createdAt: a.createdAt.toISOString(),
+      audits: a.audits.map((ev) => ({
+        id: ev.id,
+        action: ev.action,
+        actorRole: ev.actorRole,
+        recipientUserId: ev.recipientUserId,
+        note: ev.note,
+        createdAt: ev.createdAt.toISOString(),
+      })),
     })),
   };
 

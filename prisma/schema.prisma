@@ -201,6 +201,25 @@ enum WebhookDeliveryStatus {
   FAILED
 }
 
+enum DealAlertStatus {
+  OPEN
+  CLEARED
+  OVERRIDDEN
+}
+
+enum DealAlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum DealAlertAuditAction {
+  ALERT_ISSUED
+  ALERT_SENT
+  CLEARED
+  OVERRIDDEN
+}
+
 model User {
   id          String       @id @default(cuid())
   email       String       @unique
@@ -235,6 +254,7 @@ model Workspace {
   dealerDeals   Deal[] @relation("DealerDeals")
   lenderDeals   Deal[] @relation("LenderDeals")
   notifications Notification[]
+  dealAlerts    DealAlert[]
   loanPools     LoanPool[]
   apiKeys       ApiKey[]
   webhookEndpoints WebhookEndpoint[]
@@ -386,6 +406,7 @@ model Deal {
   instrumentTransferEvents InstrumentTransferEvent[]
   amendments         Amendment[]
   notifications      Notification[]
+  alerts             DealAlert[]
   apiIngressKeyId    String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
@@ -614,6 +635,41 @@ model UserAccessAudit {
 
   @@index([userId, createdAt])
   @@index([workspaceId, createdAt])
+}
+
+model DealAlert {
+  id            String          @id @default(cuid())
+  dealId         String
+  workspaceId    String
+  type           String
+  severity       DealAlertSeverity @default(WARNING)
+  title          String
+  message        String
+  status         DealAlertStatus @default(OPEN)
+  resolutionNote String?
+  metadata       Json            @default("{}")
+  createdAt      DateTime        @default(now())
+  resolvedAt     DateTime?
+  deal           Deal            @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  workspace      Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  audits         DealAlertAudit[]
+
+  @@index([dealId, status, createdAt])
+  @@index([workspaceId, status, createdAt])
+}
+
+model DealAlertAudit {
+  id              String              @id @default(cuid())
+  dealAlertId      String
+  action           DealAlertAuditAction
+  actorUserId      String?
+  actorRole        String?
+  recipientUserId  String?
+  note             String?
+  createdAt        DateTime           @default(now())
+  dealAlert        DealAlert          @relation(fields: [dealAlertId], references: [id], onDelete: Cascade)
+
+  @@index([dealAlertId, createdAt])
 }
 
 model AccountRecoveryToken {

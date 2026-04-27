@@ -45,6 +45,10 @@ export default function RootLayout({
           >
             <ConditionalLayout sessionPromise={sessionPromise}>{children}</ConditionalLayout>
           </Suspense>
+          <div className="ds-demo-watermark" aria-hidden>
+            <span>Demo Infrastructure</span>
+            <span>Patent Pending</span>
+          </div>
         </AuthProvider>
       </body>
     </html>
