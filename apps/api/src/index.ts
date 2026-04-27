@@ -20,7 +20,22 @@ setLogLevelFromEnv(env);
 
 const app = express();
 
-app.use(helmet());
+app.disable("x-powered-by");
+app.set("trust proxy", 1);
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    hsts: env.NODE_ENV === "production"
+      ? {
+          maxAge: 31536000,
+          includeSubDomains: true,
+          preload: true,
+        }
+      : false,
+    referrerPolicy: { policy: "no-referrer" },
+  }),
+);
 app.use(
   cors({ origin: getCorsOriginOption(env), credentials: true }),
 );
