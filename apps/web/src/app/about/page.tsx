@@ -112,6 +112,43 @@ export default function AboutPage() {
       <div style={dividerStyle} />
 
       <section style={cardStyle}>
+        <h2 style={sectionTitleStyle}>Core Platform Systems</h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "0.9rem",
+            marginBottom: "0.85rem",
+          }}
+        >
+          <div style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "0.85rem 0.95rem", background: "#0c0c0c" }}>
+            <h3 style={{ margin: "0 0 0.45rem", fontSize: "1rem", color: "#fff" }}>Deal Builder</h3>
+            <p style={{ margin: 0, color: "var(--text-secondary)" }}>
+              The dealer execution platform used to structure, assemble, submit, and close deals correctly with guided
+              compliance and workflow controls.
+            </p>
+          </div>
+          <div style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "0.85rem 0.95rem", background: "#0c0c0c" }}>
+            <h3 style={{ margin: "0 0 0.45rem", fontSize: "1rem", color: "#fff" }}>Deal Scan</h3>
+            <p style={{ margin: 0, color: "var(--text-secondary)" }}>
+              The intake and verification platform used for document upload, scan, and indexing into the DealSeal system for
+              audit-ready traceability.
+            </p>
+          </div>
+        </div>
+        <p style={centeredBodyTextStyle}>
+          These components are designed as proprietary system architecture, including patentable workflow and verification
+          methods across deal assembly and deal-scanning operations.
+        </p>
+        <p style={{ margin: 0, color: "var(--text-secondary)", textAlign: "center" }}>
+          The Document Generator AI Agent is also a core system function, producing synchronized contract packages and related
+          artifacts from authoritative deal data.
+        </p>
+      </section>
+
+      <div style={dividerStyle} />
+
+      <section style={cardStyle}>
         <h2 style={sectionTitleStyle}>Value for Dealers and Lenders</h2>
         <div
           style={{
