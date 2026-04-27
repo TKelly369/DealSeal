@@ -1,10 +1,14 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import {
+  getWorkspaceType,
+  hasCompletedDealerOnboarding,
+  hasCompletedLenderOnboarding,
+} from "@/lib/onboarding-status";
 
 /**
- * After credentials sign-in, choose onboarding vs dashboard for dealer/lender admins.
+ * After credentials sign-in, choose onboarding vs dashboard for dealer/lender workspaces.
  * Preserves explicit deep links (anything other than generic role home paths).
  */
 export async function resolvePostLoginDestination(requestedNext: string | null): Promise<string> {
@@ -15,37 +19,36 @@ export async function resolvePostLoginDestination(requestedNext: string | null):
   const next = raw.startsWith("/") ? raw : "";
 
   const { role, workspaceId } = session.user;
+  const wsType = await getWorkspaceType(workspaceId);
 
-  if (role === "DEALER_ADMIN") {
-    if (
-      !next ||
-      next === "/dashboard" ||
-      next === "/dealer/dashboard" ||
-      next === "/dealer/onboarding"
-    ) {
-      const completed = await prisma.dealerOnboardingAnswer.findFirst({
-        where: { dealerId: workspaceId },
-        select: { id: true },
-      });
-      return completed ? "/dealer/dashboard" : "/dealer/onboarding";
-    }
-    return next;
+  const isGenericDealerEntry =
+    !next ||
+    next === "/dashboard" ||
+    next === "/dealer/dashboard" ||
+    next === "/dealer/onboarding";
+
+  const isGenericLenderEntry =
+    !next ||
+    next === "/dashboard" ||
+    next === "/lender/dashboard" ||
+    next === "/lender/onboarding";
+
+  if (
+    wsType === "DEALERSHIP" &&
+    (role === "DEALER_ADMIN" || role === "USER") &&
+    isGenericDealerEntry
+  ) {
+    const completed = await hasCompletedDealerOnboarding(workspaceId);
+    return completed ? "/dealer/dashboard" : "/dealer/onboarding";
   }
 
-  if (role === "LENDER_ADMIN") {
-    if (
-      !next ||
-      next === "/dashboard" ||
-      next === "/lender/dashboard" ||
-      next === "/lender/onboarding"
-    ) {
-      const completed = await prisma.lenderOnboardingAnswer.findFirst({
-        where: { lenderId: workspaceId },
-        select: { id: true },
-      });
-      return completed ? "/lender/dashboard" : "/lender/onboarding";
-    }
-    return next;
+  if (
+    wsType === "LENDER" &&
+    (role === "LENDER_ADMIN" || role === "USER") &&
+    isGenericLenderEntry
+  ) {
+    const completed = await hasCompletedLenderOnboarding(workspaceId);
+    return completed ? "/lender/dashboard" : "/lender/onboarding";
   }
 
   return next || "/dashboard";

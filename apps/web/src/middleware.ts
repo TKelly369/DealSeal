@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis/cloudflare";
@@ -17,6 +18,12 @@ const rateLimiter = hasUpstashConfig
       prefix: "dealseal:api:v1",
     })
   : null;
+
+function nextWithPathname(req: NextRequest, pathname: string) {
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-dealseal-pathname", pathname);
+  return NextResponse.next({ request: { headers: requestHeaders } });
+}
 
 export default auth(async (req) => {
   const { nextUrl } = req;
@@ -78,7 +85,7 @@ export default auth(async (req) => {
     }
     return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
   }
-  return NextResponse.next();
+  return nextWithPathname(req, pathname);
 });
 
 export const config = {
