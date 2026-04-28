@@ -1,8 +1,10 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { DealWorkflowService } from "@/lib/services/deal-workflow.service";
-import { DealFlowClient, type ConsummatedSummary, type DealFlowSnapshot } from "./DealFlowClient";
+import type { ConsummatedSummary, DealFlowSnapshot } from "./DealFlowClient";
 import { DealAlertService } from "@/lib/services/deal-alert.service";
+import { CommentService } from "@/lib/services/comment.service";
+import { DealDealsWorkspace } from "./DealDealsWorkspace";
 
 function buildConsummatedSummary(raw: unknown): ConsummatedSummary {
   if (!raw || typeof raw !== "object") return null;
@@ -86,7 +88,25 @@ export default async function DealerDealLifecyclePage({ params }: { params: Prom
         createdAt: ev.createdAt.toISOString(),
       })),
     })),
+    complianceChecks: deal.complianceChecks.map((c) => ({
+      id: c.id,
+      status: c.status,
+      explanation: c.explanation,
+      ruleSet: c.ruleSet,
+    })),
+    hdcStatus: deal.negotiableInstrument?.hdcStatus ?? null,
   };
 
-  return <DealFlowClient deal={snapshot} />;
+  const timeline = await CommentService.listTimelineForDeal(
+    dealId,
+    deal.custodyEvents.map((e) => ({
+      id: e.id,
+      eventType: e.eventType,
+      actorRole: e.actorRole,
+      timestamp: e.timestamp,
+      metadata: e.metadata,
+    })),
+  );
+
+  return <DealDealsWorkspace deal={snapshot} timeline={timeline} currentUserId={session.user.id} />;
 }

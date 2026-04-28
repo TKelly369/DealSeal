@@ -25,6 +25,8 @@ import {
   NegotiableInstrumentType,
   InstrumentTransferType,
   HdcStatus,
+  DealComplianceStatus,
+  ComplianceRuleSet,
 } from "../apps/web/src/generated/prisma";
 
 config({ path: resolve(process.cwd(), "apps/web/.env.local") });
@@ -956,6 +958,77 @@ async function main() {
       eNoteControlLocation: null,
       hdcStatus: HdcStatus.DEFECTIVE,
       hdcDefects: ["Missing eNote Control Location", "VIN mismatch on collateral description"],
+    },
+  });
+
+  const lockDealCommentId = "seed-dealcomment-lock-1";
+  const hdcBlockedCheckId = "seed-compliance-hdc-blocked-1";
+  const hdcExceptionOpenId = "seed-dealcomment-hdc-exception-open";
+  const hdcExceptionResolvedId = "seed-dealcomment-hdc-exception-resolved";
+
+  await prisma.dealComment.upsert({
+    where: { id: lockDealCommentId },
+    update: {},
+    create: {
+      id: lockDealCommentId,
+      dealId: lockDealId,
+      authorId: dealerAdmin.id,
+      body: `Authoritative lock in place. Can you confirm pool assignment timing? @userId:${lenderAdmin.id}`,
+      isException: false,
+      isResolved: false,
+    },
+  });
+
+  await prisma.complianceCheck.upsert({
+    where: { id: hdcBlockedCheckId },
+    update: {
+      status: DealComplianceStatus.BLOCKED,
+    },
+    create: {
+      id: hdcBlockedCheckId,
+      dealId: defectiveDealId,
+      ruleSet: ComplianceRuleSet.LENDER,
+      status: DealComplianceStatus.BLOCKED,
+      affectedField: "negotiableInstrument.hdcStatus",
+      explanation: "HDC in DEFECTIVE state: eNote control and collateral need lender review.",
+      ruleSource: "SEED:HDC_DEFECTIVE",
+      suggestedCorrection: "Cure eNote control location and verify VIN on collateral before approval.",
+    },
+  });
+
+  await prisma.dealComment.upsert({
+    where: { id: hdcExceptionOpenId },
+    update: {
+      isException: true,
+      isResolved: false,
+    },
+    create: {
+      id: hdcExceptionOpenId,
+      dealId: defectiveDealId,
+      authorId: lenderAdmin.id,
+      body: `HDC defect holds funding — need corrected collateral description and eNote path before this deal can move. @userId:${dealerAdmin.id}`,
+      linkedEntityType: "COMPLIANCE_CHECK",
+      linkedEntityId: hdcBlockedCheckId,
+      isException: true,
+      isResolved: false,
+    },
+  });
+
+  await prisma.dealComment.upsert({
+    where: { id: hdcExceptionResolvedId },
+    update: {
+      isException: true,
+      isResolved: true,
+    },
+    create: {
+      id: hdcExceptionResolvedId,
+      dealId: defectiveDealId,
+      authorId: dealerAdmin.id,
+      body: "Sent DMV title with matching VIN and eNote system screenshot for Lender sign-off (seed).",
+      isException: true,
+      isResolved: true,
+      resolvedById: lenderAdmin.id,
+      resolvedAt: new Date("2026-01-10T16:00:00.000Z"),
     },
   });
 

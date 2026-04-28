@@ -1,14 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { auth } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { createAuthConfig } from "@/lib/auth.config";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis/cloudflare";
 
 let warnedRateLimitBypass = false;
+let rateLimiter: Ratelimit | null = null;
 
-const hasUpstashConfig = Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
-const rateLimiter = hasUpstashConfig
-  ? new Ratelimit({
+const hasUpstashConfig = Boolean(
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN,
+);
+
+if (hasUpstashConfig) {
+  try {
+    rateLimiter = new Ratelimit({
       redis: new Redis({
         url: process.env.UPSTASH_REDIS_REST_URL!,
         token: process.env.UPSTASH_REDIS_REST_TOKEN!,
@@ -16,8 +22,30 @@ const rateLimiter = hasUpstashConfig
       limiter: Ratelimit.slidingWindow(10, "10 s"),
       analytics: true,
       prefix: "dealseal:api:v1",
-    })
-  : null;
+    });
+  } catch (e) {
+    console.warn("Upstash rate limiter init failed, bypassing /api/v1 rate limits.", e);
+    rateLimiter = null;
+  }
+}
+
+/**
+ * Best-effort client id for rate limiting (prefer first hop in x-forwarded-for, then x-real-ip).
+ * `req.ip` is not always set on the Edge request object.
+ */
+function getRateLimitId(req: NextRequest): string {
+  const fromForwarded = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (fromForwarded) return fromForwarded.slice(0, 64);
+  const fromReal = req.headers.get("x-real-ip")?.trim();
+  if (fromReal) return fromReal.slice(0, 64);
+  return "anonymous";
+}
+
+/**
+ * One NextAuth instance for middleware: Edge-safe config only (from `createAuthConfig`).
+ * `apps/web/src/lib/auth.ts` (Prisma) must never be imported here.
+ */
+const { auth } = NextAuth(createAuthConfig());
 
 function nextWithPathname(req: NextRequest, pathname: string) {
   const requestHeaders = new Headers(req.headers);
@@ -28,22 +56,21 @@ function nextWithPathname(req: NextRequest, pathname: string) {
 export default auth(async (req) => {
   const { nextUrl } = req;
   const pathname = nextUrl.pathname;
-  const isApiV1 = pathname.startsWith("/api/v1/");
 
-  if (isApiV1) {
+  // 1) /api/v1: rate limit first, then hand off to the route (401/403 is handled in route handlers, not here).
+  if (pathname.startsWith("/api/v1/")) {
     if (!rateLimiter) {
       if (!warnedRateLimitBypass) {
-        console.warn("Rate limiting bypassed: missing UPSTASH_REDIS_REST_URL or UPSTASH_REDIS_REST_TOKEN");
+        console.warn(
+          "Rate limiting bypassed: missing/invalid Upstash (UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN) or init failed",
+        );
         warnedRateLimitBypass = true;
       }
       return NextResponse.next();
     }
     const authHeader = req.headers.get("authorization") || "";
     const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
-    const identifier =
-      (token ? token.slice(0, 16) : "") ||
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      "anonymous";
+    const identifier = (token ? token.slice(0, 16) : "") || getRateLimitId(req) || "anonymous";
     const result = await rateLimiter.limit(identifier);
     if (!result.success) {
       return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
@@ -51,6 +78,12 @@ export default auth(async (req) => {
     return NextResponse.next();
   }
 
+  // 2) Logged-in users hitting the main sign-in page are sent to the app (exact /login only).
+  if (pathname === "/login" && req.auth?.user) {
+    return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
+  }
+
+  // 3) App shell routes: role checks, session-identity, admin splits.
   const isProtected =
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/settings") ||
@@ -88,6 +121,10 @@ export default auth(async (req) => {
   return nextWithPathname(req, pathname);
 });
 
+/**
+ * `/api/auth/*` is intentionally excluded so sign-in and CSRF are not run through this middleware
+ * (NextAuth must run in `runtime = "nodejs"` in the route handler, not the Edge path here).
+ */
 export const config = {
   matcher: [
     "/api/v1/:path*",
@@ -97,5 +134,6 @@ export const config = {
     "/dealer/:path*",
     "/lender/:path*",
     "/session-identity",
+    "/login",
   ],
 };

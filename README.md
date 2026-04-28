@@ -8,7 +8,7 @@ Production-oriented SaaS for **transaction authority**, full deal lifecycle, doc
    ```bash
    copy .env.example apps\api\.env
    copy apps\web\.env.example apps\web\.env.local
-   # Edit .env files with DATABASE_URL, JWT_SECRET, etc.
+   # Edit .env files with DATABASE_URL, JWT_SECRET, AUTH_SECRET (web), etc.
    ```
 
 2. **Install and seed**:
@@ -32,7 +32,21 @@ Production-oriented SaaS for **transaction authority**, full deal lifecycle, doc
 
 1. **PostgreSQL 14+** and **Redis 7+** (optional but needed for workers/BullMQ).
 
-2. **Environment file for the API** (copy and edit):
+2. **Prisma (Next.js `apps/web`)** — the web app uses the **root** schema at `prisma/schema.prisma` (client output: `apps/web/src/generated/prisma`). From the **repository root** use:
+
+   - `npm run db:generate` — `rimraf` the previous client output, then `prisma generate` (avoids common Windows `EPERM` on `query_engine-windows.dll.node` when the dev server is not holding the file).
+   - `npm run db:push` — `prisma db push`
+   - `npm run db:seed` — `scripts/seed-web-billing` (web billing / demo data)
+   - `npm run db:reset` — **destructive** (`db push --force-reset` + seed); dev only.
+
+   The same names exist under `apps/web` (`cd ../.. && npm run db:…`).
+
+   **Windows DevEx / schema changes:**  
+   - Stop **`next dev`** (and any `node` using Prisma) *before* `db:generate` or `db:push` after a schema change, so nothing locks the Prisma engine DLL.  
+   - After pulling a branch that changes the schema: stop dev → `npm run db:generate` → `npm run db:push` (→ `db:seed` if needed) → start dev.  
+   - You cannot hot-replace the Prisma engine while `next dev` is running; the `rimraf` pre-step prevents leftover `.tmp` and stale output **once nothing holds the file**. If `EPERM` still appears, ensure all `node` processes are stopped, then run `npm run db:generate` again.
+
+3. **Environment file for the API** (copy and edit):
 
    ```bash
    copy .env.example apps\api\.env
@@ -41,7 +55,7 @@ Production-oriented SaaS for **transaction authority**, full deal lifecycle, doc
 
    Set at minimum: `DATABASE_URL`, `JWT_SECRET` (16+ characters), and optionally `REDIS_URL`.
 
-3. **Web** public API URL (copy):
+4. **Web** public API URL (copy):
 
    ```bash
    copy apps\web\.env.example apps\web\.env.local
@@ -49,18 +63,24 @@ Production-oriented SaaS for **transaction authority**, full deal lifecycle, doc
 
    Set `NEXT_PUBLIC_API_URL=http://localhost:4000` (or your API URL). For **dealseal1.com** deployment use `https://api.dealseal1.com`.
 
-4. **Install and sync schema**:
+   Set **`AUTH_SECRET`** in `apps/web/.env.local` to a long random string (required for NextAuth login). If it is missing, login shows a generic “server configuration” error. You can generate one with: `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`. Optionally duplicate the secret as **`NEXTAUTH_SECRET`**. **Leave `AUTH_URL` / `NEXTAUTH_URL` unset in local dev** (NextAuth uses the request `Host`, so any `next dev` port works). In production, set both to your public app origin.
+
+5. **Install and sync schema**:
 
    ```bash
    npm install
-   cd apps/api
-   npx prisma generate
-   npx prisma db push
-   npx prisma db seed
-   cd ../..
+   # Next.js web: root Prisma (required for /apps/web; see step 2)
+   npm run db:generate
+   npm run db:push
+   npm run db:seed
+   # API (separate Prisma under apps/api) — if you run the API:
+   # cd apps/api
+   # npx prisma generate
+   # npx prisma db push
+   # npx prisma db seed
    ```
 
-5. **Start everything** (API + web):
+6. **Start everything** (API + web):
 
    ```bash
    npm run dev
@@ -71,13 +91,13 @@ Production-oriented SaaS for **transaction authority**, full deal lifecycle, doc
    - **API:** [http://localhost:4000/health](http://localhost:4000/health)
    - **API demo payload:** [http://localhost:4000/demo](http://localhost:4000/demo)
 
-6. **Production-style run** (after `npm run build`):
+7. **Production-style run** (after `npm run build`):
 
    ```bash
    npm start
    ```
 
-7. **Worker** (queues — requires Redis): `npm run worker`
+8. **Worker** (queues — requires Redis): `npm run worker`
 
 ## Seed / demo logins
 

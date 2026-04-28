@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { secureSessionCookies } from "@/lib/cookie-security";
 import { prisma } from "@/lib/db";
 import { cookies, headers } from "next/headers";
 
@@ -13,12 +14,17 @@ export default async function SessionIdentityPage({
   const sp = await searchParams;
   const nextPath = sp.next && sp.next.startsWith("/") ? sp.next : "/dashboard";
 
-  const currentUser = await prisma.user.findFirst({
-    where: {
-      OR: [{ id: session.user.id }, { email: session.user.email?.toLowerCase() ?? "__none__" }],
-    },
-    select: { id: true, name: true, email: true },
-  });
+  let currentUser: { id: string; name: string | null; email: string } | null = null;
+  try {
+    currentUser = await prisma.user.findFirst({
+      where: {
+        OR: [{ id: session.user.id }, { email: session.user.email?.toLowerCase() ?? "__none__" }],
+      },
+      select: { id: true, name: true, email: true },
+    });
+  } catch {
+    // Prisma/DB may be unavailable; session + form defaults still work for scaffold logins.
+  }
 
   return (
     <div className="card" style={{ maxWidth: 560, margin: "2rem auto" }}>
@@ -66,7 +72,7 @@ export default async function SessionIdentityPage({
           cookieStore.set("ds_identity_ok", "1", {
             httpOnly: true,
             sameSite: "lax",
-            secure: process.env.NODE_ENV === "production",
+            secure: secureSessionCookies(),
             path: "/",
             maxAge: 60 * 60 * 12,
           });

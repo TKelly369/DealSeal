@@ -161,6 +161,8 @@ export const DealWorkflowService = {
       include: {
         generatedDocuments: { orderBy: { createdAt: "asc" } },
         custodyEvents: { orderBy: { timestamp: "asc" } },
+        complianceChecks: { orderBy: { createdAt: "asc" } },
+        negotiableInstrument: { select: { hdcStatus: true, hdcDefects: true } },
         authoritativeContract: true,
         vehicle: true,
         parties: true,

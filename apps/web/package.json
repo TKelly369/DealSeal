@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "npm run build -w @dealseal/shared",
+    "prebuild": "npm run build -w @dealseal/shared && node scripts/sync-prisma-runtime-path.mjs",
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "cd ../.. && npm run db:generate",
+    "db:push": "cd ../.. && npm run db:push",
+    "db:seed": "cd ../.. && npm run db:seed",
+    "db:reset": "cd ../.. && npm run db:reset"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.71",

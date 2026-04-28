@@ -1025,3 +1025,10 @@ input:focus-visible,
     grid-template-columns: 1fr;
   }
 }
+
+/* Deal view: activity panel beside main; stack on narrow viewports */
+@media (min-width: 960px) {
+  .ds-deal-workspace-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.36fr) !important;
+  }
+}

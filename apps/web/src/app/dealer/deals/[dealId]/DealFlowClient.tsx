@@ -66,6 +66,8 @@ export type DealFlowSnapshot = {
       createdAt: string;
     }[];
   }[];
+  complianceChecks: { id: string; status: string; explanation: string; ruleSet: string }[];
+  hdcStatus: string | null;
 };
 
 const STEPS = [
@@ -110,7 +112,13 @@ function activeStepIndex(status: string): number {
   }
 }
 
-export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
+export function DealFlowClient({
+  deal,
+  onRequestCommentOnEntity,
+}: {
+  deal: DealFlowSnapshot;
+  onRequestCommentOnEntity?: (entityType: string, entityId: string) => void;
+}) {
   const [printedExplained, setPrintedExplained] = useState(false);
   const finalRisc = deal.documents
     .filter((d) => d.documentType === "RISC_LENDER_FINAL")
@@ -120,7 +128,7 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
   const openAlerts = deal.alerts.filter((a) => a.status === "OPEN");
 
   return (
-    <div className="ds-section-shell" style={{ maxWidth: "36rem", margin: "0 auto" }}>
+    <div className="ds-section-shell" style={{ maxWidth: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "0.5rem" }}>
         <h1 style={{ margin: 0, fontSize: "1.35rem" }}>Your deal</h1>
         <Link href="/dealer/dashboard" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
@@ -168,6 +176,52 @@ export function DealFlowClient({ deal }: { deal: DealFlowSnapshot }) {
           );
         })}
       </ol>
+
+      {deal.complianceChecks.length > 0 ? (
+        <section className="card" style={{ borderColor: "#3f3f46" }}>
+          <h2 style={{ marginTop: 0, fontSize: "1rem" }}>Compliance checks</h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
+            HDC status: <strong>{deal.hdcStatus ?? "—"}</strong>
+          </p>
+          <ul style={{ listStyle: "none", padding: 0, margin: "0.5rem 0 0", display: "grid", gap: "0.5rem" }}>
+            {deal.complianceChecks.map((c) => {
+              const blocked = c.status === "BLOCKED";
+              return (
+                <li
+                  key={c.id}
+                  style={{
+                    padding: "0.5rem 0.6rem",
+                    borderRadius: 8,
+                    border: `1px solid ${blocked ? "#b91c1c" : "#3f3f46"}`,
+                    background: blocked ? "rgba(127, 29, 29, 0.2)" : "transparent",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.5rem" }}>
+                    <div>
+                      <span className="badge" style={{ marginRight: 8 }}>
+                        {c.ruleSet}
+                      </span>
+                      <span className="badge">{c.status}</span>
+                      <p style={{ margin: "0.4rem 0 0", fontSize: "0.88rem", color: "var(--text-secondary)" }}>{c.explanation}</p>
+                    </div>
+                    {onRequestCommentOnEntity ? (
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        title="Comment on this check"
+                        style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem", flexShrink: 0 }}
+                        onClick={() => onRequestCommentOnEntity("COMPLIANCE_CHECK", c.id)}
+                      >
+                        Comment
+                      </button>
+                    ) : null}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ) : null}
 
       {deal.alerts.length > 0 ? (
         <section className="card" style={{ borderColor: openAlerts.length > 0 ? "#b45309" : "#14532d" }}>

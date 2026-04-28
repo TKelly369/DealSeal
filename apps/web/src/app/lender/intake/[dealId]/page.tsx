@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { DealWorkflowService } from "@/lib/services/deal-workflow.service";
 import { lenderFinalRISCFormAction, approveAmendmentIntakeFormAction, rejectAmendmentIntakeFormAction } from "./actions";
 import { prisma } from "@/lib/db";
+import { CommentService } from "@/lib/services/comment.service";
+import { LenderIntakeWithActivity } from "./LenderIntakeWithActivity";
 
 export default async function LenderDealIntakeDetailPage({ params }: { params: Promise<{ dealId: string }> }) {
   const session = await auth();
@@ -21,8 +23,20 @@ export default async function LenderDealIntakeDetailPage({ params }: { params: P
     .filter((d) => d.documentType === "RISC_UNSIGNED")
     .sort((a, b) => b.version - a.version)[0];
 
+  const timeline = await CommentService.listTimelineForDeal(
+    dealId,
+    deal.custodyEvents.map((e) => ({
+      id: e.id,
+      eventType: e.eventType,
+      actorRole: e.actorRole,
+      timestamp: e.timestamp,
+      metadata: e.metadata,
+    })),
+  );
+
   return (
-    <div className="ds-section-shell">
+    <LenderIntakeWithActivity dealId={dealId} timeline={timeline} currentUserId={session.user.id}>
+      <div className="ds-section-shell" style={{ maxWidth: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "0.5rem" }}>
         <h1 style={{ marginTop: 0 }}>Deal intake</h1>
         <Link href="/lender/intake" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
@@ -121,16 +135,8 @@ export default async function LenderDealIntakeDetailPage({ params }: { params: P
         </div>
       ) : null}
 
-      <div className="card">
-        <h3 style={{ marginTop: 0 }}>Custody timeline</h3>
-        <ul style={{ margin: 0, paddingLeft: "1.1rem", fontSize: "0.88rem", color: "var(--text-secondary)" }}>
-          {deal.custodyEvents.map((e) => (
-            <li key={e.id}>
-              {e.timestamp.toLocaleString()} — {e.eventType} ({e.actorRole})
-            </li>
-          ))}
-        </ul>
+      <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>Use the Activity panel for custody events and team comments.</p>
       </div>
-    </div>
+    </LenderIntakeWithActivity>
   );
 }

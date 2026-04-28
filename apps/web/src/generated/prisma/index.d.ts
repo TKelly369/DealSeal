@@ -139,6 +139,11 @@ export type WebhookDelivery = $Result.DefaultSelection<Prisma.$WebhookDeliveryPa
  */
 export type UserAccessAudit = $Result.DefaultSelection<Prisma.$UserAccessAuditPayload>
 /**
+ * Model DealComment
+ * 
+ */
+export type DealComment = $Result.DefaultSelection<Prisma.$DealCommentPayload>
+/**
  * Model DealAlert
  * 
  */
@@ -1010,6 +1015,16 @@ export class PrismaClient<
   get userAccessAudit(): Prisma.UserAccessAuditDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.dealComment`: Exposes CRUD operations for the **DealComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DealComments
+    * const dealComments = await prisma.dealComment.findMany()
+    * ```
+    */
+  get dealComment(): Prisma.DealCommentDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.dealAlert`: Exposes CRUD operations for the **DealAlert** model.
     * Example usage:
     * ```ts
@@ -1584,6 +1599,7 @@ export namespace Prisma {
     WebhookEndpoint: 'WebhookEndpoint',
     WebhookDelivery: 'WebhookDelivery',
     UserAccessAudit: 'UserAccessAudit',
+    DealComment: 'DealComment',
     DealAlert: 'DealAlert',
     DealAlertAudit: 'DealAlertAudit',
     AccountRecoveryToken: 'AccountRecoveryToken',
@@ -1613,7 +1629,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "account" | "session"
+      modelProps: "user" | "workspace" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "account" | "session"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3467,6 +3483,80 @@ export namespace Prisma {
           }
         }
       }
+      DealComment: {
+        payload: Prisma.$DealCommentPayload<ExtArgs>
+        fields: Prisma.DealCommentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DealCommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DealCommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>
+          }
+          findFirst: {
+            args: Prisma.DealCommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DealCommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>
+          }
+          findMany: {
+            args: Prisma.DealCommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>[]
+          }
+          create: {
+            args: Prisma.DealCommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>
+          }
+          createMany: {
+            args: Prisma.DealCommentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DealCommentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>[]
+          }
+          delete: {
+            args: Prisma.DealCommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>
+          }
+          update: {
+            args: Prisma.DealCommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>
+          }
+          deleteMany: {
+            args: Prisma.DealCommentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DealCommentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DealCommentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>[]
+          }
+          upsert: {
+            args: Prisma.DealCommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealCommentPayload>
+          }
+          aggregate: {
+            args: Prisma.DealCommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDealComment>
+          }
+          groupBy: {
+            args: Prisma.DealCommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DealCommentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DealCommentCountArgs<ExtArgs>
+            result: $Utils.Optional<DealCommentCountAggregateOutputType> | number
+          }
+        }
+      }
       DealAlert: {
         payload: Prisma.$DealAlertPayload<ExtArgs>
         fields: Prisma.DealAlertFieldRefs
@@ -4402,6 +4492,7 @@ export namespace Prisma {
     webhookEndpoint?: WebhookEndpointOmit
     webhookDelivery?: WebhookDeliveryOmit
     userAccessAudit?: UserAccessAuditOmit
+    dealComment?: DealCommentOmit
     dealAlert?: DealAlertOmit
     dealAlertAudit?: DealAlertAuditOmit
     accountRecoveryToken?: AccountRecoveryTokenOmit
@@ -4500,6 +4591,8 @@ export namespace Prisma {
     approvedAmendments: number
     notifications: number
     accessAudits: number
+    dealCommentsAuthored: number
+    dealCommentsResolved: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4510,6 +4603,8 @@ export namespace Prisma {
     approvedAmendments?: boolean | UserCountOutputTypeCountApprovedAmendmentsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     accessAudits?: boolean | UserCountOutputTypeCountAccessAuditsArgs
+    dealCommentsAuthored?: boolean | UserCountOutputTypeCountDealCommentsAuthoredArgs
+    dealCommentsResolved?: boolean | UserCountOutputTypeCountDealCommentsResolvedArgs
   }
 
   // Custom InputTypes
@@ -4570,6 +4665,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAccessAuditsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserAccessAuditWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDealCommentsAuthoredArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealCommentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDealCommentsResolvedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealCommentWhereInput
   }
 
 
@@ -4775,6 +4884,7 @@ export namespace Prisma {
     amendments: number
     notifications: number
     alerts: number
+    comments: number
   }
 
   export type DealCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4787,6 +4897,7 @@ export namespace Prisma {
     amendments?: boolean | DealCountOutputTypeCountAmendmentsArgs
     notifications?: boolean | DealCountOutputTypeCountNotificationsArgs
     alerts?: boolean | DealCountOutputTypeCountAlertsArgs
+    comments?: boolean | DealCountOutputTypeCountCommentsArgs
   }
 
   // Custom InputTypes
@@ -4861,6 +4972,13 @@ export namespace Prisma {
    */
   export type DealCountOutputTypeCountAlertsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DealAlertWhereInput
+  }
+
+  /**
+   * DealCountOutputType without action
+   */
+  export type DealCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealCommentWhereInput
   }
 
 
@@ -5065,6 +5183,37 @@ export namespace Prisma {
    */
   export type WebhookEndpointCountOutputTypeCountDeliveriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WebhookDeliveryWhereInput
+  }
+
+
+  /**
+   * Count Type DealCommentCountOutputType
+   */
+
+  export type DealCommentCountOutputType = {
+    replies: number
+  }
+
+  export type DealCommentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    replies?: boolean | DealCommentCountOutputTypeCountRepliesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DealCommentCountOutputType without action
+   */
+  export type DealCommentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealCommentCountOutputType
+     */
+    select?: DealCommentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DealCommentCountOutputType without action
+   */
+  export type DealCommentCountOutputTypeCountRepliesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealCommentWhereInput
   }
 
 
@@ -5321,6 +5470,8 @@ export namespace Prisma {
     approvedAmendments?: boolean | User$approvedAmendmentsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     accessAudits?: boolean | User$accessAuditsArgs<ExtArgs>
+    dealCommentsAuthored?: boolean | User$dealCommentsAuthoredArgs<ExtArgs>
+    dealCommentsResolved?: boolean | User$dealCommentsResolvedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5363,6 +5514,8 @@ export namespace Prisma {
     approvedAmendments?: boolean | User$approvedAmendmentsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     accessAudits?: boolean | User$accessAuditsArgs<ExtArgs>
+    dealCommentsAuthored?: boolean | User$dealCommentsAuthoredArgs<ExtArgs>
+    dealCommentsResolved?: boolean | User$dealCommentsResolvedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5378,6 +5531,8 @@ export namespace Prisma {
       approvedAmendments: Prisma.$AmendmentPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       accessAudits: Prisma.$UserAccessAuditPayload<ExtArgs>[]
+      dealCommentsAuthored: Prisma.$DealCommentPayload<ExtArgs>[]
+      dealCommentsResolved: Prisma.$DealCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5788,6 +5943,8 @@ export namespace Prisma {
     approvedAmendments<T extends User$approvedAmendmentsArgs<ExtArgs> = {}>(args?: Subset<T, User$approvedAmendmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmendmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accessAudits<T extends User$accessAuditsArgs<ExtArgs> = {}>(args?: Subset<T, User$accessAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserAccessAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dealCommentsAuthored<T extends User$dealCommentsAuthoredArgs<ExtArgs> = {}>(args?: Subset<T, User$dealCommentsAuthoredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dealCommentsResolved<T extends User$dealCommentsResolvedArgs<ExtArgs> = {}>(args?: Subset<T, User$dealCommentsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6377,6 +6534,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserAccessAuditScalarFieldEnum | UserAccessAuditScalarFieldEnum[]
+  }
+
+  /**
+   * User.dealCommentsAuthored
+   */
+  export type User$dealCommentsAuthoredArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    where?: DealCommentWhereInput
+    orderBy?: DealCommentOrderByWithRelationInput | DealCommentOrderByWithRelationInput[]
+    cursor?: DealCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DealCommentScalarFieldEnum | DealCommentScalarFieldEnum[]
+  }
+
+  /**
+   * User.dealCommentsResolved
+   */
+  export type User$dealCommentsResolvedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    where?: DealCommentWhereInput
+    orderBy?: DealCommentOrderByWithRelationInput | DealCommentOrderByWithRelationInput[]
+    cursor?: DealCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DealCommentScalarFieldEnum | DealCommentScalarFieldEnum[]
   }
 
   /**
@@ -17112,6 +17317,7 @@ export namespace Prisma {
     amendments?: boolean | Deal$amendmentsArgs<ExtArgs>
     notifications?: boolean | Deal$notificationsArgs<ExtArgs>
     alerts?: boolean | Deal$alertsArgs<ExtArgs>
+    comments?: boolean | Deal$commentsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deal"]>
 
@@ -17215,6 +17421,7 @@ export namespace Prisma {
     amendments?: boolean | Deal$amendmentsArgs<ExtArgs>
     notifications?: boolean | Deal$notificationsArgs<ExtArgs>
     alerts?: boolean | Deal$alertsArgs<ExtArgs>
+    comments?: boolean | Deal$commentsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DealIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17251,6 +17458,7 @@ export namespace Prisma {
       amendments: Prisma.$AmendmentPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       alerts: Prisma.$DealAlertPayload<ExtArgs>[]
+      comments: Prisma.$DealCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17686,6 +17894,7 @@ export namespace Prisma {
     amendments<T extends Deal$amendmentsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$amendmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmendmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends Deal$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     alerts<T extends Deal$alertsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$alertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    comments<T extends Deal$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18459,6 +18668,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DealAlertScalarFieldEnum | DealAlertScalarFieldEnum[]
+  }
+
+  /**
+   * Deal.comments
+   */
+  export type Deal$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    where?: DealCommentWhereInput
+    orderBy?: DealCommentOrderByWithRelationInput | DealCommentOrderByWithRelationInput[]
+    cursor?: DealCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DealCommentScalarFieldEnum | DealCommentScalarFieldEnum[]
   }
 
   /**
@@ -34706,6 +34939,1260 @@ export namespace Prisma {
 
 
   /**
+   * Model DealComment
+   */
+
+  export type AggregateDealComment = {
+    _count: DealCommentCountAggregateOutputType | null
+    _min: DealCommentMinAggregateOutputType | null
+    _max: DealCommentMaxAggregateOutputType | null
+  }
+
+  export type DealCommentMinAggregateOutputType = {
+    id: string | null
+    dealId: string | null
+    authorId: string | null
+    parentCommentId: string | null
+    linkedEntityType: string | null
+    linkedEntityId: string | null
+    body: string | null
+    isException: boolean | null
+    isResolved: boolean | null
+    resolvedById: string | null
+    resolvedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DealCommentMaxAggregateOutputType = {
+    id: string | null
+    dealId: string | null
+    authorId: string | null
+    parentCommentId: string | null
+    linkedEntityType: string | null
+    linkedEntityId: string | null
+    body: string | null
+    isException: boolean | null
+    isResolved: boolean | null
+    resolvedById: string | null
+    resolvedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DealCommentCountAggregateOutputType = {
+    id: number
+    dealId: number
+    authorId: number
+    parentCommentId: number
+    linkedEntityType: number
+    linkedEntityId: number
+    body: number
+    isException: number
+    isResolved: number
+    resolvedById: number
+    resolvedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DealCommentMinAggregateInputType = {
+    id?: true
+    dealId?: true
+    authorId?: true
+    parentCommentId?: true
+    linkedEntityType?: true
+    linkedEntityId?: true
+    body?: true
+    isException?: true
+    isResolved?: true
+    resolvedById?: true
+    resolvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DealCommentMaxAggregateInputType = {
+    id?: true
+    dealId?: true
+    authorId?: true
+    parentCommentId?: true
+    linkedEntityType?: true
+    linkedEntityId?: true
+    body?: true
+    isException?: true
+    isResolved?: true
+    resolvedById?: true
+    resolvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DealCommentCountAggregateInputType = {
+    id?: true
+    dealId?: true
+    authorId?: true
+    parentCommentId?: true
+    linkedEntityType?: true
+    linkedEntityId?: true
+    body?: true
+    isException?: true
+    isResolved?: true
+    resolvedById?: true
+    resolvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DealCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealComment to aggregate.
+     */
+    where?: DealCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealComments to fetch.
+     */
+    orderBy?: DealCommentOrderByWithRelationInput | DealCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DealCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DealComments
+    **/
+    _count?: true | DealCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DealCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DealCommentMaxAggregateInputType
+  }
+
+  export type GetDealCommentAggregateType<T extends DealCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateDealComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDealComment[P]>
+      : GetScalarType<T[P], AggregateDealComment[P]>
+  }
+
+
+
+
+  export type DealCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealCommentWhereInput
+    orderBy?: DealCommentOrderByWithAggregationInput | DealCommentOrderByWithAggregationInput[]
+    by: DealCommentScalarFieldEnum[] | DealCommentScalarFieldEnum
+    having?: DealCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DealCommentCountAggregateInputType | true
+    _min?: DealCommentMinAggregateInputType
+    _max?: DealCommentMaxAggregateInputType
+  }
+
+  export type DealCommentGroupByOutputType = {
+    id: string
+    dealId: string
+    authorId: string
+    parentCommentId: string | null
+    linkedEntityType: string | null
+    linkedEntityId: string | null
+    body: string
+    isException: boolean
+    isResolved: boolean
+    resolvedById: string | null
+    resolvedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DealCommentCountAggregateOutputType | null
+    _min: DealCommentMinAggregateOutputType | null
+    _max: DealCommentMaxAggregateOutputType | null
+  }
+
+  type GetDealCommentGroupByPayload<T extends DealCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DealCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DealCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DealCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], DealCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DealCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    authorId?: boolean
+    parentCommentId?: boolean
+    linkedEntityType?: boolean
+    linkedEntityId?: boolean
+    body?: boolean
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    parent?: boolean | DealComment$parentArgs<ExtArgs>
+    replies?: boolean | DealComment$repliesArgs<ExtArgs>
+    resolvedBy?: boolean | DealComment$resolvedByArgs<ExtArgs>
+    _count?: boolean | DealCommentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dealComment"]>
+
+  export type DealCommentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    authorId?: boolean
+    parentCommentId?: boolean
+    linkedEntityType?: boolean
+    linkedEntityId?: boolean
+    body?: boolean
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    parent?: boolean | DealComment$parentArgs<ExtArgs>
+    resolvedBy?: boolean | DealComment$resolvedByArgs<ExtArgs>
+  }, ExtArgs["result"]["dealComment"]>
+
+  export type DealCommentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    authorId?: boolean
+    parentCommentId?: boolean
+    linkedEntityType?: boolean
+    linkedEntityId?: boolean
+    body?: boolean
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    parent?: boolean | DealComment$parentArgs<ExtArgs>
+    resolvedBy?: boolean | DealComment$resolvedByArgs<ExtArgs>
+  }, ExtArgs["result"]["dealComment"]>
+
+  export type DealCommentSelectScalar = {
+    id?: boolean
+    dealId?: boolean
+    authorId?: boolean
+    parentCommentId?: boolean
+    linkedEntityType?: boolean
+    linkedEntityId?: boolean
+    body?: boolean
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: boolean
+    resolvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DealCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "authorId" | "parentCommentId" | "linkedEntityType" | "linkedEntityId" | "body" | "isException" | "isResolved" | "resolvedById" | "resolvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["dealComment"]>
+  export type DealCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    parent?: boolean | DealComment$parentArgs<ExtArgs>
+    replies?: boolean | DealComment$repliesArgs<ExtArgs>
+    resolvedBy?: boolean | DealComment$resolvedByArgs<ExtArgs>
+    _count?: boolean | DealCommentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DealCommentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    parent?: boolean | DealComment$parentArgs<ExtArgs>
+    resolvedBy?: boolean | DealComment$resolvedByArgs<ExtArgs>
+  }
+  export type DealCommentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    parent?: boolean | DealComment$parentArgs<ExtArgs>
+    resolvedBy?: boolean | DealComment$resolvedByArgs<ExtArgs>
+  }
+
+  export type $DealCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DealComment"
+    objects: {
+      deal: Prisma.$DealPayload<ExtArgs>
+      author: Prisma.$UserPayload<ExtArgs>
+      parent: Prisma.$DealCommentPayload<ExtArgs> | null
+      replies: Prisma.$DealCommentPayload<ExtArgs>[]
+      resolvedBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dealId: string
+      authorId: string
+      parentCommentId: string | null
+      linkedEntityType: string | null
+      linkedEntityId: string | null
+      body: string
+      isException: boolean
+      isResolved: boolean
+      resolvedById: string | null
+      resolvedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["dealComment"]>
+    composites: {}
+  }
+
+  type DealCommentGetPayload<S extends boolean | null | undefined | DealCommentDefaultArgs> = $Result.GetResult<Prisma.$DealCommentPayload, S>
+
+  type DealCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DealCommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DealCommentCountAggregateInputType | true
+    }
+
+  export interface DealCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DealComment'], meta: { name: 'DealComment' } }
+    /**
+     * Find zero or one DealComment that matches the filter.
+     * @param {DealCommentFindUniqueArgs} args - Arguments to find a DealComment
+     * @example
+     * // Get one DealComment
+     * const dealComment = await prisma.dealComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DealCommentFindUniqueArgs>(args: SelectSubset<T, DealCommentFindUniqueArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DealComment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DealCommentFindUniqueOrThrowArgs} args - Arguments to find a DealComment
+     * @example
+     * // Get one DealComment
+     * const dealComment = await prisma.dealComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DealCommentFindUniqueOrThrowArgs>(args: SelectSubset<T, DealCommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DealComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealCommentFindFirstArgs} args - Arguments to find a DealComment
+     * @example
+     * // Get one DealComment
+     * const dealComment = await prisma.dealComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DealCommentFindFirstArgs>(args?: SelectSubset<T, DealCommentFindFirstArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DealComment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealCommentFindFirstOrThrowArgs} args - Arguments to find a DealComment
+     * @example
+     * // Get one DealComment
+     * const dealComment = await prisma.dealComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DealCommentFindFirstOrThrowArgs>(args?: SelectSubset<T, DealCommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DealComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealCommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DealComments
+     * const dealComments = await prisma.dealComment.findMany()
+     * 
+     * // Get first 10 DealComments
+     * const dealComments = await prisma.dealComment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dealCommentWithIdOnly = await prisma.dealComment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DealCommentFindManyArgs>(args?: SelectSubset<T, DealCommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DealComment.
+     * @param {DealCommentCreateArgs} args - Arguments to create a DealComment.
+     * @example
+     * // Create one DealComment
+     * const DealComment = await prisma.dealComment.create({
+     *   data: {
+     *     // ... data to create a DealComment
+     *   }
+     * })
+     * 
+     */
+    create<T extends DealCommentCreateArgs>(args: SelectSubset<T, DealCommentCreateArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DealComments.
+     * @param {DealCommentCreateManyArgs} args - Arguments to create many DealComments.
+     * @example
+     * // Create many DealComments
+     * const dealComment = await prisma.dealComment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DealCommentCreateManyArgs>(args?: SelectSubset<T, DealCommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DealComments and returns the data saved in the database.
+     * @param {DealCommentCreateManyAndReturnArgs} args - Arguments to create many DealComments.
+     * @example
+     * // Create many DealComments
+     * const dealComment = await prisma.dealComment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DealComments and only return the `id`
+     * const dealCommentWithIdOnly = await prisma.dealComment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DealCommentCreateManyAndReturnArgs>(args?: SelectSubset<T, DealCommentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DealComment.
+     * @param {DealCommentDeleteArgs} args - Arguments to delete one DealComment.
+     * @example
+     * // Delete one DealComment
+     * const DealComment = await prisma.dealComment.delete({
+     *   where: {
+     *     // ... filter to delete one DealComment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DealCommentDeleteArgs>(args: SelectSubset<T, DealCommentDeleteArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DealComment.
+     * @param {DealCommentUpdateArgs} args - Arguments to update one DealComment.
+     * @example
+     * // Update one DealComment
+     * const dealComment = await prisma.dealComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DealCommentUpdateArgs>(args: SelectSubset<T, DealCommentUpdateArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DealComments.
+     * @param {DealCommentDeleteManyArgs} args - Arguments to filter DealComments to delete.
+     * @example
+     * // Delete a few DealComments
+     * const { count } = await prisma.dealComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DealCommentDeleteManyArgs>(args?: SelectSubset<T, DealCommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DealComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DealComments
+     * const dealComment = await prisma.dealComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DealCommentUpdateManyArgs>(args: SelectSubset<T, DealCommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DealComments and returns the data updated in the database.
+     * @param {DealCommentUpdateManyAndReturnArgs} args - Arguments to update many DealComments.
+     * @example
+     * // Update many DealComments
+     * const dealComment = await prisma.dealComment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DealComments and only return the `id`
+     * const dealCommentWithIdOnly = await prisma.dealComment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DealCommentUpdateManyAndReturnArgs>(args: SelectSubset<T, DealCommentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DealComment.
+     * @param {DealCommentUpsertArgs} args - Arguments to update or create a DealComment.
+     * @example
+     * // Update or create a DealComment
+     * const dealComment = await prisma.dealComment.upsert({
+     *   create: {
+     *     // ... data to create a DealComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DealComment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DealCommentUpsertArgs>(args: SelectSubset<T, DealCommentUpsertArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DealComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealCommentCountArgs} args - Arguments to filter DealComments to count.
+     * @example
+     * // Count the number of DealComments
+     * const count = await prisma.dealComment.count({
+     *   where: {
+     *     // ... the filter for the DealComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends DealCommentCountArgs>(
+      args?: Subset<T, DealCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DealCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DealComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DealCommentAggregateArgs>(args: Subset<T, DealCommentAggregateArgs>): Prisma.PrismaPromise<GetDealCommentAggregateType<T>>
+
+    /**
+     * Group by DealComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DealCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DealCommentGroupByArgs['orderBy'] }
+        : { orderBy?: DealCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DealCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDealCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DealComment model
+   */
+  readonly fields: DealCommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DealComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DealCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    deal<T extends DealDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DealDefaultArgs<ExtArgs>>): Prisma__DealClient<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    parent<T extends DealComment$parentArgs<ExtArgs> = {}>(args?: Subset<T, DealComment$parentArgs<ExtArgs>>): Prisma__DealCommentClient<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    replies<T extends DealComment$repliesArgs<ExtArgs> = {}>(args?: Subset<T, DealComment$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    resolvedBy<T extends DealComment$resolvedByArgs<ExtArgs> = {}>(args?: Subset<T, DealComment$resolvedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DealComment model
+   */
+  interface DealCommentFieldRefs {
+    readonly id: FieldRef<"DealComment", 'String'>
+    readonly dealId: FieldRef<"DealComment", 'String'>
+    readonly authorId: FieldRef<"DealComment", 'String'>
+    readonly parentCommentId: FieldRef<"DealComment", 'String'>
+    readonly linkedEntityType: FieldRef<"DealComment", 'String'>
+    readonly linkedEntityId: FieldRef<"DealComment", 'String'>
+    readonly body: FieldRef<"DealComment", 'String'>
+    readonly isException: FieldRef<"DealComment", 'Boolean'>
+    readonly isResolved: FieldRef<"DealComment", 'Boolean'>
+    readonly resolvedById: FieldRef<"DealComment", 'String'>
+    readonly resolvedAt: FieldRef<"DealComment", 'DateTime'>
+    readonly createdAt: FieldRef<"DealComment", 'DateTime'>
+    readonly updatedAt: FieldRef<"DealComment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DealComment findUnique
+   */
+  export type DealCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which DealComment to fetch.
+     */
+    where: DealCommentWhereUniqueInput
+  }
+
+  /**
+   * DealComment findUniqueOrThrow
+   */
+  export type DealCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which DealComment to fetch.
+     */
+    where: DealCommentWhereUniqueInput
+  }
+
+  /**
+   * DealComment findFirst
+   */
+  export type DealCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which DealComment to fetch.
+     */
+    where?: DealCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealComments to fetch.
+     */
+    orderBy?: DealCommentOrderByWithRelationInput | DealCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DealComments.
+     */
+    cursor?: DealCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DealComments.
+     */
+    distinct?: DealCommentScalarFieldEnum | DealCommentScalarFieldEnum[]
+  }
+
+  /**
+   * DealComment findFirstOrThrow
+   */
+  export type DealCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which DealComment to fetch.
+     */
+    where?: DealCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealComments to fetch.
+     */
+    orderBy?: DealCommentOrderByWithRelationInput | DealCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DealComments.
+     */
+    cursor?: DealCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DealComments.
+     */
+    distinct?: DealCommentScalarFieldEnum | DealCommentScalarFieldEnum[]
+  }
+
+  /**
+   * DealComment findMany
+   */
+  export type DealCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which DealComments to fetch.
+     */
+    where?: DealCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealComments to fetch.
+     */
+    orderBy?: DealCommentOrderByWithRelationInput | DealCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DealComments.
+     */
+    cursor?: DealCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealComments.
+     */
+    skip?: number
+    distinct?: DealCommentScalarFieldEnum | DealCommentScalarFieldEnum[]
+  }
+
+  /**
+   * DealComment create
+   */
+  export type DealCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DealComment.
+     */
+    data: XOR<DealCommentCreateInput, DealCommentUncheckedCreateInput>
+  }
+
+  /**
+   * DealComment createMany
+   */
+  export type DealCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DealComments.
+     */
+    data: DealCommentCreateManyInput | DealCommentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DealComment createManyAndReturn
+   */
+  export type DealCommentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * The data used to create many DealComments.
+     */
+    data: DealCommentCreateManyInput | DealCommentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DealComment update
+   */
+  export type DealCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DealComment.
+     */
+    data: XOR<DealCommentUpdateInput, DealCommentUncheckedUpdateInput>
+    /**
+     * Choose, which DealComment to update.
+     */
+    where: DealCommentWhereUniqueInput
+  }
+
+  /**
+   * DealComment updateMany
+   */
+  export type DealCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DealComments.
+     */
+    data: XOR<DealCommentUpdateManyMutationInput, DealCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which DealComments to update
+     */
+    where?: DealCommentWhereInput
+    /**
+     * Limit how many DealComments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DealComment updateManyAndReturn
+   */
+  export type DealCommentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * The data used to update DealComments.
+     */
+    data: XOR<DealCommentUpdateManyMutationInput, DealCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which DealComments to update
+     */
+    where?: DealCommentWhereInput
+    /**
+     * Limit how many DealComments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DealComment upsert
+   */
+  export type DealCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DealComment to update in case it exists.
+     */
+    where: DealCommentWhereUniqueInput
+    /**
+     * In case the DealComment found by the `where` argument doesn't exist, create a new DealComment with this data.
+     */
+    create: XOR<DealCommentCreateInput, DealCommentUncheckedCreateInput>
+    /**
+     * In case the DealComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DealCommentUpdateInput, DealCommentUncheckedUpdateInput>
+  }
+
+  /**
+   * DealComment delete
+   */
+  export type DealCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    /**
+     * Filter which DealComment to delete.
+     */
+    where: DealCommentWhereUniqueInput
+  }
+
+  /**
+   * DealComment deleteMany
+   */
+  export type DealCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealComments to delete
+     */
+    where?: DealCommentWhereInput
+    /**
+     * Limit how many DealComments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DealComment.parent
+   */
+  export type DealComment$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    where?: DealCommentWhereInput
+  }
+
+  /**
+   * DealComment.replies
+   */
+  export type DealComment$repliesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+    where?: DealCommentWhereInput
+    orderBy?: DealCommentOrderByWithRelationInput | DealCommentOrderByWithRelationInput[]
+    cursor?: DealCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DealCommentScalarFieldEnum | DealCommentScalarFieldEnum[]
+  }
+
+  /**
+   * DealComment.resolvedBy
+   */
+  export type DealComment$resolvedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * DealComment without action
+   */
+  export type DealCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealComment
+     */
+    select?: DealCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealComment
+     */
+    omit?: DealCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealCommentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model DealAlert
    */
 
@@ -47237,6 +48724,25 @@ export namespace Prisma {
   export type UserAccessAuditScalarFieldEnum = (typeof UserAccessAuditScalarFieldEnum)[keyof typeof UserAccessAuditScalarFieldEnum]
 
 
+  export const DealCommentScalarFieldEnum: {
+    id: 'id',
+    dealId: 'dealId',
+    authorId: 'authorId',
+    parentCommentId: 'parentCommentId',
+    linkedEntityType: 'linkedEntityType',
+    linkedEntityId: 'linkedEntityId',
+    body: 'body',
+    isException: 'isException',
+    isResolved: 'isResolved',
+    resolvedById: 'resolvedById',
+    resolvedAt: 'resolvedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DealCommentScalarFieldEnum = (typeof DealCommentScalarFieldEnum)[keyof typeof DealCommentScalarFieldEnum]
+
+
   export const DealAlertScalarFieldEnum: {
     id: 'id',
     dealId: 'dealId',
@@ -48008,6 +49514,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentListRelationFilter
     notifications?: NotificationListRelationFilter
     accessAudits?: UserAccessAuditListRelationFilter
+    dealCommentsAuthored?: DealCommentListRelationFilter
+    dealCommentsResolved?: DealCommentListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -48025,6 +49533,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     accessAudits?: UserAccessAuditOrderByRelationAggregateInput
+    dealCommentsAuthored?: DealCommentOrderByRelationAggregateInput
+    dealCommentsResolved?: DealCommentOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -48045,6 +49555,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentListRelationFilter
     notifications?: NotificationListRelationFilter
     accessAudits?: UserAccessAuditListRelationFilter
+    dealCommentsAuthored?: DealCommentListRelationFilter
+    dealCommentsResolved?: DealCommentListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -48832,6 +50344,7 @@ export namespace Prisma {
     amendments?: AmendmentListRelationFilter
     notifications?: NotificationListRelationFilter
     alerts?: DealAlertListRelationFilter
+    comments?: DealCommentListRelationFilter
   }
 
   export type DealOrderByWithRelationInput = {
@@ -48874,6 +50387,7 @@ export namespace Prisma {
     amendments?: AmendmentOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     alerts?: DealAlertOrderByRelationAggregateInput
+    comments?: DealCommentOrderByRelationAggregateInput
   }
 
   export type DealWhereUniqueInput = Prisma.AtLeast<{
@@ -48919,6 +50433,7 @@ export namespace Prisma {
     amendments?: AmendmentListRelationFilter
     notifications?: NotificationListRelationFilter
     alerts?: DealAlertListRelationFilter
+    comments?: DealCommentListRelationFilter
   }, "id">
 
   export type DealOrderByWithAggregationInput = {
@@ -50104,6 +51619,113 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"UserAccessAudit"> | Date | string
   }
 
+  export type DealCommentWhereInput = {
+    AND?: DealCommentWhereInput | DealCommentWhereInput[]
+    OR?: DealCommentWhereInput[]
+    NOT?: DealCommentWhereInput | DealCommentWhereInput[]
+    id?: StringFilter<"DealComment"> | string
+    dealId?: StringFilter<"DealComment"> | string
+    authorId?: StringFilter<"DealComment"> | string
+    parentCommentId?: StringNullableFilter<"DealComment"> | string | null
+    linkedEntityType?: StringNullableFilter<"DealComment"> | string | null
+    linkedEntityId?: StringNullableFilter<"DealComment"> | string | null
+    body?: StringFilter<"DealComment"> | string
+    isException?: BoolFilter<"DealComment"> | boolean
+    isResolved?: BoolFilter<"DealComment"> | boolean
+    resolvedById?: StringNullableFilter<"DealComment"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"DealComment"> | Date | string | null
+    createdAt?: DateTimeFilter<"DealComment"> | Date | string
+    updatedAt?: DateTimeFilter<"DealComment"> | Date | string
+    deal?: XOR<DealScalarRelationFilter, DealWhereInput>
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    parent?: XOR<DealCommentNullableScalarRelationFilter, DealCommentWhereInput> | null
+    replies?: DealCommentListRelationFilter
+    resolvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type DealCommentOrderByWithRelationInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    authorId?: SortOrder
+    parentCommentId?: SortOrderInput | SortOrder
+    linkedEntityType?: SortOrderInput | SortOrder
+    linkedEntityId?: SortOrderInput | SortOrder
+    body?: SortOrder
+    isException?: SortOrder
+    isResolved?: SortOrder
+    resolvedById?: SortOrderInput | SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deal?: DealOrderByWithRelationInput
+    author?: UserOrderByWithRelationInput
+    parent?: DealCommentOrderByWithRelationInput
+    replies?: DealCommentOrderByRelationAggregateInput
+    resolvedBy?: UserOrderByWithRelationInput
+  }
+
+  export type DealCommentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DealCommentWhereInput | DealCommentWhereInput[]
+    OR?: DealCommentWhereInput[]
+    NOT?: DealCommentWhereInput | DealCommentWhereInput[]
+    dealId?: StringFilter<"DealComment"> | string
+    authorId?: StringFilter<"DealComment"> | string
+    parentCommentId?: StringNullableFilter<"DealComment"> | string | null
+    linkedEntityType?: StringNullableFilter<"DealComment"> | string | null
+    linkedEntityId?: StringNullableFilter<"DealComment"> | string | null
+    body?: StringFilter<"DealComment"> | string
+    isException?: BoolFilter<"DealComment"> | boolean
+    isResolved?: BoolFilter<"DealComment"> | boolean
+    resolvedById?: StringNullableFilter<"DealComment"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"DealComment"> | Date | string | null
+    createdAt?: DateTimeFilter<"DealComment"> | Date | string
+    updatedAt?: DateTimeFilter<"DealComment"> | Date | string
+    deal?: XOR<DealScalarRelationFilter, DealWhereInput>
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    parent?: XOR<DealCommentNullableScalarRelationFilter, DealCommentWhereInput> | null
+    replies?: DealCommentListRelationFilter
+    resolvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type DealCommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    authorId?: SortOrder
+    parentCommentId?: SortOrderInput | SortOrder
+    linkedEntityType?: SortOrderInput | SortOrder
+    linkedEntityId?: SortOrderInput | SortOrder
+    body?: SortOrder
+    isException?: SortOrder
+    isResolved?: SortOrder
+    resolvedById?: SortOrderInput | SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DealCommentCountOrderByAggregateInput
+    _max?: DealCommentMaxOrderByAggregateInput
+    _min?: DealCommentMinOrderByAggregateInput
+  }
+
+  export type DealCommentScalarWhereWithAggregatesInput = {
+    AND?: DealCommentScalarWhereWithAggregatesInput | DealCommentScalarWhereWithAggregatesInput[]
+    OR?: DealCommentScalarWhereWithAggregatesInput[]
+    NOT?: DealCommentScalarWhereWithAggregatesInput | DealCommentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DealComment"> | string
+    dealId?: StringWithAggregatesFilter<"DealComment"> | string
+    authorId?: StringWithAggregatesFilter<"DealComment"> | string
+    parentCommentId?: StringNullableWithAggregatesFilter<"DealComment"> | string | null
+    linkedEntityType?: StringNullableWithAggregatesFilter<"DealComment"> | string | null
+    linkedEntityId?: StringNullableWithAggregatesFilter<"DealComment"> | string | null
+    body?: StringWithAggregatesFilter<"DealComment"> | string
+    isException?: BoolWithAggregatesFilter<"DealComment"> | boolean
+    isResolved?: BoolWithAggregatesFilter<"DealComment"> | boolean
+    resolvedById?: StringNullableWithAggregatesFilter<"DealComment"> | string | null
+    resolvedAt?: DateTimeNullableWithAggregatesFilter<"DealComment"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DealComment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DealComment"> | Date | string
+  }
+
   export type DealAlertWhereInput = {
     AND?: DealAlertWhereInput | DealAlertWhereInput[]
     OR?: DealAlertWhereInput[]
@@ -50927,6 +52549,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -50944,6 +52568,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUpdateInput = {
@@ -50961,6 +52587,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -50978,6 +52606,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -51836,6 +53466,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateInput = {
@@ -51874,6 +53505,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealUpdateInput = {
@@ -51912,6 +53544,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateInput = {
@@ -51950,6 +53583,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateManyInput = {
@@ -53235,6 +54869,118 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DealCommentCreateInput = {
+    id?: string
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deal: DealCreateNestedOneWithoutCommentsInput
+    author: UserCreateNestedOneWithoutDealCommentsAuthoredInput
+    parent?: DealCommentCreateNestedOneWithoutRepliesInput
+    replies?: DealCommentCreateNestedManyWithoutParentInput
+    resolvedBy?: UserCreateNestedOneWithoutDealCommentsResolvedInput
+  }
+
+  export type DealCommentUncheckedCreateInput = {
+    id?: string
+    dealId: string
+    authorId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: DealCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type DealCommentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deal?: DealUpdateOneRequiredWithoutCommentsNestedInput
+    author?: UserUpdateOneRequiredWithoutDealCommentsAuthoredNestedInput
+    parent?: DealCommentUpdateOneWithoutRepliesNestedInput
+    replies?: DealCommentUpdateManyWithoutParentNestedInput
+    resolvedBy?: UserUpdateOneWithoutDealCommentsResolvedNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: DealCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type DealCommentCreateManyInput = {
+    id?: string
+    dealId: string
+    authorId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DealCommentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealCommentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DealAlertCreateInput = {
     id?: string
     type: string
@@ -54188,6 +55934,12 @@ export namespace Prisma {
     none?: UserAccessAuditWhereInput
   }
 
+  export type DealCommentListRelationFilter = {
+    every?: DealCommentWhereInput
+    some?: DealCommentWhereInput
+    none?: DealCommentWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -54214,6 +55966,10 @@ export namespace Prisma {
   }
 
   export type UserAccessAuditOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DealCommentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -56210,6 +57966,59 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type DealCommentNullableScalarRelationFilter = {
+    is?: DealCommentWhereInput | null
+    isNot?: DealCommentWhereInput | null
+  }
+
+  export type DealCommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    authorId?: SortOrder
+    parentCommentId?: SortOrder
+    linkedEntityType?: SortOrder
+    linkedEntityId?: SortOrder
+    body?: SortOrder
+    isException?: SortOrder
+    isResolved?: SortOrder
+    resolvedById?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DealCommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    authorId?: SortOrder
+    parentCommentId?: SortOrder
+    linkedEntityType?: SortOrder
+    linkedEntityId?: SortOrder
+    body?: SortOrder
+    isException?: SortOrder
+    isResolved?: SortOrder
+    resolvedById?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DealCommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    authorId?: SortOrder
+    parentCommentId?: SortOrder
+    linkedEntityType?: SortOrder
+    linkedEntityId?: SortOrder
+    body?: SortOrder
+    isException?: SortOrder
+    isResolved?: SortOrder
+    resolvedById?: SortOrder
+    resolvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type EnumDealAlertSeverityFilter<$PrismaModel = never> = {
     equals?: $Enums.DealAlertSeverity | EnumDealAlertSeverityFieldRefInput<$PrismaModel>
     in?: $Enums.DealAlertSeverity[] | ListEnumDealAlertSeverityFieldRefInput<$PrismaModel>
@@ -56780,6 +58589,20 @@ export namespace Prisma {
     connect?: UserAccessAuditWhereUniqueInput | UserAccessAuditWhereUniqueInput[]
   }
 
+  export type DealCommentCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<DealCommentCreateWithoutAuthorInput, DealCommentUncheckedCreateWithoutAuthorInput> | DealCommentCreateWithoutAuthorInput[] | DealCommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutAuthorInput | DealCommentCreateOrConnectWithoutAuthorInput[]
+    createMany?: DealCommentCreateManyAuthorInputEnvelope
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+  }
+
+  export type DealCommentCreateNestedManyWithoutResolvedByInput = {
+    create?: XOR<DealCommentCreateWithoutResolvedByInput, DealCommentUncheckedCreateWithoutResolvedByInput> | DealCommentCreateWithoutResolvedByInput[] | DealCommentUncheckedCreateWithoutResolvedByInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutResolvedByInput | DealCommentCreateOrConnectWithoutResolvedByInput[]
+    createMany?: DealCommentCreateManyResolvedByInputEnvelope
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -56827,6 +58650,20 @@ export namespace Prisma {
     connectOrCreate?: UserAccessAuditCreateOrConnectWithoutUserInput | UserAccessAuditCreateOrConnectWithoutUserInput[]
     createMany?: UserAccessAuditCreateManyUserInputEnvelope
     connect?: UserAccessAuditWhereUniqueInput | UserAccessAuditWhereUniqueInput[]
+  }
+
+  export type DealCommentUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<DealCommentCreateWithoutAuthorInput, DealCommentUncheckedCreateWithoutAuthorInput> | DealCommentCreateWithoutAuthorInput[] | DealCommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutAuthorInput | DealCommentCreateOrConnectWithoutAuthorInput[]
+    createMany?: DealCommentCreateManyAuthorInputEnvelope
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+  }
+
+  export type DealCommentUncheckedCreateNestedManyWithoutResolvedByInput = {
+    create?: XOR<DealCommentCreateWithoutResolvedByInput, DealCommentUncheckedCreateWithoutResolvedByInput> | DealCommentCreateWithoutResolvedByInput[] | DealCommentUncheckedCreateWithoutResolvedByInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutResolvedByInput | DealCommentCreateOrConnectWithoutResolvedByInput[]
+    createMany?: DealCommentCreateManyResolvedByInputEnvelope
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -56943,6 +58780,34 @@ export namespace Prisma {
     deleteMany?: UserAccessAuditScalarWhereInput | UserAccessAuditScalarWhereInput[]
   }
 
+  export type DealCommentUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<DealCommentCreateWithoutAuthorInput, DealCommentUncheckedCreateWithoutAuthorInput> | DealCommentCreateWithoutAuthorInput[] | DealCommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutAuthorInput | DealCommentCreateOrConnectWithoutAuthorInput[]
+    upsert?: DealCommentUpsertWithWhereUniqueWithoutAuthorInput | DealCommentUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: DealCommentCreateManyAuthorInputEnvelope
+    set?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    disconnect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    delete?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    update?: DealCommentUpdateWithWhereUniqueWithoutAuthorInput | DealCommentUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: DealCommentUpdateManyWithWhereWithoutAuthorInput | DealCommentUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+  }
+
+  export type DealCommentUpdateManyWithoutResolvedByNestedInput = {
+    create?: XOR<DealCommentCreateWithoutResolvedByInput, DealCommentUncheckedCreateWithoutResolvedByInput> | DealCommentCreateWithoutResolvedByInput[] | DealCommentUncheckedCreateWithoutResolvedByInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutResolvedByInput | DealCommentCreateOrConnectWithoutResolvedByInput[]
+    upsert?: DealCommentUpsertWithWhereUniqueWithoutResolvedByInput | DealCommentUpsertWithWhereUniqueWithoutResolvedByInput[]
+    createMany?: DealCommentCreateManyResolvedByInputEnvelope
+    set?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    disconnect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    delete?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    update?: DealCommentUpdateWithWhereUniqueWithoutResolvedByInput | DealCommentUpdateWithWhereUniqueWithoutResolvedByInput[]
+    updateMany?: DealCommentUpdateManyWithWhereWithoutResolvedByInput | DealCommentUpdateManyWithWhereWithoutResolvedByInput[]
+    deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -57039,6 +58904,34 @@ export namespace Prisma {
     update?: UserAccessAuditUpdateWithWhereUniqueWithoutUserInput | UserAccessAuditUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserAccessAuditUpdateManyWithWhereWithoutUserInput | UserAccessAuditUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserAccessAuditScalarWhereInput | UserAccessAuditScalarWhereInput[]
+  }
+
+  export type DealCommentUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<DealCommentCreateWithoutAuthorInput, DealCommentUncheckedCreateWithoutAuthorInput> | DealCommentCreateWithoutAuthorInput[] | DealCommentUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutAuthorInput | DealCommentCreateOrConnectWithoutAuthorInput[]
+    upsert?: DealCommentUpsertWithWhereUniqueWithoutAuthorInput | DealCommentUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: DealCommentCreateManyAuthorInputEnvelope
+    set?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    disconnect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    delete?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    update?: DealCommentUpdateWithWhereUniqueWithoutAuthorInput | DealCommentUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: DealCommentUpdateManyWithWhereWithoutAuthorInput | DealCommentUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+  }
+
+  export type DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput = {
+    create?: XOR<DealCommentCreateWithoutResolvedByInput, DealCommentUncheckedCreateWithoutResolvedByInput> | DealCommentCreateWithoutResolvedByInput[] | DealCommentUncheckedCreateWithoutResolvedByInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutResolvedByInput | DealCommentCreateOrConnectWithoutResolvedByInput[]
+    upsert?: DealCommentUpsertWithWhereUniqueWithoutResolvedByInput | DealCommentUpsertWithWhereUniqueWithoutResolvedByInput[]
+    createMany?: DealCommentCreateManyResolvedByInputEnvelope
+    set?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    disconnect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    delete?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    update?: DealCommentUpdateWithWhereUniqueWithoutResolvedByInput | DealCommentUpdateWithWhereUniqueWithoutResolvedByInput[]
+    updateMany?: DealCommentUpdateManyWithWhereWithoutResolvedByInput | DealCommentUpdateManyWithWhereWithoutResolvedByInput[]
+    deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
   }
 
   export type MembershipCreateNestedManyWithoutWorkspaceInput = {
@@ -58136,6 +60029,13 @@ export namespace Prisma {
     connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
   }
 
+  export type DealCommentCreateNestedManyWithoutDealInput = {
+    create?: XOR<DealCommentCreateWithoutDealInput, DealCommentUncheckedCreateWithoutDealInput> | DealCommentCreateWithoutDealInput[] | DealCommentUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutDealInput | DealCommentCreateOrConnectWithoutDealInput[]
+    createMany?: DealCommentCreateManyDealInputEnvelope
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+  }
+
   export type DealPartyUncheckedCreateNestedManyWithoutDealInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -58227,6 +60127,13 @@ export namespace Prisma {
     connectOrCreate?: DealAlertCreateOrConnectWithoutDealInput | DealAlertCreateOrConnectWithoutDealInput[]
     createMany?: DealAlertCreateManyDealInputEnvelope
     connect?: DealAlertWhereUniqueInput | DealAlertWhereUniqueInput[]
+  }
+
+  export type DealCommentUncheckedCreateNestedManyWithoutDealInput = {
+    create?: XOR<DealCommentCreateWithoutDealInput, DealCommentUncheckedCreateWithoutDealInput> | DealCommentCreateWithoutDealInput[] | DealCommentUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutDealInput | DealCommentCreateOrConnectWithoutDealInput[]
+    createMany?: DealCommentCreateManyDealInputEnvelope
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
   }
 
   export type EnumDealStatusFieldUpdateOperationsInput = {
@@ -58451,6 +60358,20 @@ export namespace Prisma {
     deleteMany?: DealAlertScalarWhereInput | DealAlertScalarWhereInput[]
   }
 
+  export type DealCommentUpdateManyWithoutDealNestedInput = {
+    create?: XOR<DealCommentCreateWithoutDealInput, DealCommentUncheckedCreateWithoutDealInput> | DealCommentCreateWithoutDealInput[] | DealCommentUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutDealInput | DealCommentCreateOrConnectWithoutDealInput[]
+    upsert?: DealCommentUpsertWithWhereUniqueWithoutDealInput | DealCommentUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: DealCommentCreateManyDealInputEnvelope
+    set?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    disconnect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    delete?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    update?: DealCommentUpdateWithWhereUniqueWithoutDealInput | DealCommentUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: DealCommentUpdateManyWithWhereWithoutDealInput | DealCommentUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+  }
+
   export type DealPartyUncheckedUpdateManyWithoutDealNestedInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -58625,6 +60546,20 @@ export namespace Prisma {
     update?: DealAlertUpdateWithWhereUniqueWithoutDealInput | DealAlertUpdateWithWhereUniqueWithoutDealInput[]
     updateMany?: DealAlertUpdateManyWithWhereWithoutDealInput | DealAlertUpdateManyWithWhereWithoutDealInput[]
     deleteMany?: DealAlertScalarWhereInput | DealAlertScalarWhereInput[]
+  }
+
+  export type DealCommentUncheckedUpdateManyWithoutDealNestedInput = {
+    create?: XOR<DealCommentCreateWithoutDealInput, DealCommentUncheckedCreateWithoutDealInput> | DealCommentCreateWithoutDealInput[] | DealCommentUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutDealInput | DealCommentCreateOrConnectWithoutDealInput[]
+    upsert?: DealCommentUpsertWithWhereUniqueWithoutDealInput | DealCommentUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: DealCommentCreateManyDealInputEnvelope
+    set?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    disconnect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    delete?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    update?: DealCommentUpdateWithWhereUniqueWithoutDealInput | DealCommentUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: DealCommentUpdateManyWithWhereWithoutDealInput | DealCommentUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
   }
 
   export type DealCreateNestedOneWithoutPartiesInput = {
@@ -59367,6 +61302,108 @@ export namespace Prisma {
     upsert?: WorkspaceUpsertWithoutAccessAuditsInput
     connect?: WorkspaceWhereUniqueInput
     update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutAccessAuditsInput, WorkspaceUpdateWithoutAccessAuditsInput>, WorkspaceUncheckedUpdateWithoutAccessAuditsInput>
+  }
+
+  export type DealCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<DealCreateWithoutCommentsInput, DealUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutCommentsInput
+    connect?: DealWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutDealCommentsAuthoredInput = {
+    create?: XOR<UserCreateWithoutDealCommentsAuthoredInput, UserUncheckedCreateWithoutDealCommentsAuthoredInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDealCommentsAuthoredInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DealCommentCreateNestedOneWithoutRepliesInput = {
+    create?: XOR<DealCommentCreateWithoutRepliesInput, DealCommentUncheckedCreateWithoutRepliesInput>
+    connectOrCreate?: DealCommentCreateOrConnectWithoutRepliesInput
+    connect?: DealCommentWhereUniqueInput
+  }
+
+  export type DealCommentCreateNestedManyWithoutParentInput = {
+    create?: XOR<DealCommentCreateWithoutParentInput, DealCommentUncheckedCreateWithoutParentInput> | DealCommentCreateWithoutParentInput[] | DealCommentUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutParentInput | DealCommentCreateOrConnectWithoutParentInput[]
+    createMany?: DealCommentCreateManyParentInputEnvelope
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutDealCommentsResolvedInput = {
+    create?: XOR<UserCreateWithoutDealCommentsResolvedInput, UserUncheckedCreateWithoutDealCommentsResolvedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDealCommentsResolvedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DealCommentUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<DealCommentCreateWithoutParentInput, DealCommentUncheckedCreateWithoutParentInput> | DealCommentCreateWithoutParentInput[] | DealCommentUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutParentInput | DealCommentCreateOrConnectWithoutParentInput[]
+    createMany?: DealCommentCreateManyParentInputEnvelope
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+  }
+
+  export type DealUpdateOneRequiredWithoutCommentsNestedInput = {
+    create?: XOR<DealCreateWithoutCommentsInput, DealUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutCommentsInput
+    upsert?: DealUpsertWithoutCommentsInput
+    connect?: DealWhereUniqueInput
+    update?: XOR<XOR<DealUpdateToOneWithWhereWithoutCommentsInput, DealUpdateWithoutCommentsInput>, DealUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutDealCommentsAuthoredNestedInput = {
+    create?: XOR<UserCreateWithoutDealCommentsAuthoredInput, UserUncheckedCreateWithoutDealCommentsAuthoredInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDealCommentsAuthoredInput
+    upsert?: UserUpsertWithoutDealCommentsAuthoredInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDealCommentsAuthoredInput, UserUpdateWithoutDealCommentsAuthoredInput>, UserUncheckedUpdateWithoutDealCommentsAuthoredInput>
+  }
+
+  export type DealCommentUpdateOneWithoutRepliesNestedInput = {
+    create?: XOR<DealCommentCreateWithoutRepliesInput, DealCommentUncheckedCreateWithoutRepliesInput>
+    connectOrCreate?: DealCommentCreateOrConnectWithoutRepliesInput
+    upsert?: DealCommentUpsertWithoutRepliesInput
+    disconnect?: DealCommentWhereInput | boolean
+    delete?: DealCommentWhereInput | boolean
+    connect?: DealCommentWhereUniqueInput
+    update?: XOR<XOR<DealCommentUpdateToOneWithWhereWithoutRepliesInput, DealCommentUpdateWithoutRepliesInput>, DealCommentUncheckedUpdateWithoutRepliesInput>
+  }
+
+  export type DealCommentUpdateManyWithoutParentNestedInput = {
+    create?: XOR<DealCommentCreateWithoutParentInput, DealCommentUncheckedCreateWithoutParentInput> | DealCommentCreateWithoutParentInput[] | DealCommentUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutParentInput | DealCommentCreateOrConnectWithoutParentInput[]
+    upsert?: DealCommentUpsertWithWhereUniqueWithoutParentInput | DealCommentUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: DealCommentCreateManyParentInputEnvelope
+    set?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    disconnect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    delete?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    update?: DealCommentUpdateWithWhereUniqueWithoutParentInput | DealCommentUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: DealCommentUpdateManyWithWhereWithoutParentInput | DealCommentUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+  }
+
+  export type UserUpdateOneWithoutDealCommentsResolvedNestedInput = {
+    create?: XOR<UserCreateWithoutDealCommentsResolvedInput, UserUncheckedCreateWithoutDealCommentsResolvedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDealCommentsResolvedInput
+    upsert?: UserUpsertWithoutDealCommentsResolvedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDealCommentsResolvedInput, UserUpdateWithoutDealCommentsResolvedInput>, UserUncheckedUpdateWithoutDealCommentsResolvedInput>
+  }
+
+  export type DealCommentUncheckedUpdateManyWithoutParentNestedInput = {
+    create?: XOR<DealCommentCreateWithoutParentInput, DealCommentUncheckedCreateWithoutParentInput> | DealCommentCreateWithoutParentInput[] | DealCommentUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DealCommentCreateOrConnectWithoutParentInput | DealCommentCreateOrConnectWithoutParentInput[]
+    upsert?: DealCommentUpsertWithWhereUniqueWithoutParentInput | DealCommentUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: DealCommentCreateManyParentInputEnvelope
+    set?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    disconnect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    delete?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+    update?: DealCommentUpdateWithWhereUniqueWithoutParentInput | DealCommentUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: DealCommentUpdateManyWithWhereWithoutParentInput | DealCommentUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
   }
 
   export type DealCreateNestedOneWithoutAlertsInput = {
@@ -60759,6 +62796,90 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DealCommentCreateWithoutAuthorInput = {
+    id?: string
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deal: DealCreateNestedOneWithoutCommentsInput
+    parent?: DealCommentCreateNestedOneWithoutRepliesInput
+    replies?: DealCommentCreateNestedManyWithoutParentInput
+    resolvedBy?: UserCreateNestedOneWithoutDealCommentsResolvedInput
+  }
+
+  export type DealCommentUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    dealId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: DealCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type DealCommentCreateOrConnectWithoutAuthorInput = {
+    where: DealCommentWhereUniqueInput
+    create: XOR<DealCommentCreateWithoutAuthorInput, DealCommentUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type DealCommentCreateManyAuthorInputEnvelope = {
+    data: DealCommentCreateManyAuthorInput | DealCommentCreateManyAuthorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DealCommentCreateWithoutResolvedByInput = {
+    id?: string
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deal: DealCreateNestedOneWithoutCommentsInput
+    author: UserCreateNestedOneWithoutDealCommentsAuthoredInput
+    parent?: DealCommentCreateNestedOneWithoutRepliesInput
+    replies?: DealCommentCreateNestedManyWithoutParentInput
+  }
+
+  export type DealCommentUncheckedCreateWithoutResolvedByInput = {
+    id?: string
+    dealId: string
+    authorId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: DealCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type DealCommentCreateOrConnectWithoutResolvedByInput = {
+    where: DealCommentWhereUniqueInput
+    create: XOR<DealCommentCreateWithoutResolvedByInput, DealCommentUncheckedCreateWithoutResolvedByInput>
+  }
+
+  export type DealCommentCreateManyResolvedByInputEnvelope = {
+    data: DealCommentCreateManyResolvedByInput | DealCommentCreateManyResolvedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -60957,6 +63078,57 @@ export namespace Prisma {
     userAgent?: StringNullableFilter<"UserAccessAudit"> | string | null
     metadata?: JsonFilter<"UserAccessAudit">
     createdAt?: DateTimeFilter<"UserAccessAudit"> | Date | string
+  }
+
+  export type DealCommentUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: DealCommentWhereUniqueInput
+    update: XOR<DealCommentUpdateWithoutAuthorInput, DealCommentUncheckedUpdateWithoutAuthorInput>
+    create: XOR<DealCommentCreateWithoutAuthorInput, DealCommentUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type DealCommentUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: DealCommentWhereUniqueInput
+    data: XOR<DealCommentUpdateWithoutAuthorInput, DealCommentUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type DealCommentUpdateManyWithWhereWithoutAuthorInput = {
+    where: DealCommentScalarWhereInput
+    data: XOR<DealCommentUpdateManyMutationInput, DealCommentUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type DealCommentScalarWhereInput = {
+    AND?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+    OR?: DealCommentScalarWhereInput[]
+    NOT?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+    id?: StringFilter<"DealComment"> | string
+    dealId?: StringFilter<"DealComment"> | string
+    authorId?: StringFilter<"DealComment"> | string
+    parentCommentId?: StringNullableFilter<"DealComment"> | string | null
+    linkedEntityType?: StringNullableFilter<"DealComment"> | string | null
+    linkedEntityId?: StringNullableFilter<"DealComment"> | string | null
+    body?: StringFilter<"DealComment"> | string
+    isException?: BoolFilter<"DealComment"> | boolean
+    isResolved?: BoolFilter<"DealComment"> | boolean
+    resolvedById?: StringNullableFilter<"DealComment"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"DealComment"> | Date | string | null
+    createdAt?: DateTimeFilter<"DealComment"> | Date | string
+    updatedAt?: DateTimeFilter<"DealComment"> | Date | string
+  }
+
+  export type DealCommentUpsertWithWhereUniqueWithoutResolvedByInput = {
+    where: DealCommentWhereUniqueInput
+    update: XOR<DealCommentUpdateWithoutResolvedByInput, DealCommentUncheckedUpdateWithoutResolvedByInput>
+    create: XOR<DealCommentCreateWithoutResolvedByInput, DealCommentUncheckedCreateWithoutResolvedByInput>
+  }
+
+  export type DealCommentUpdateWithWhereUniqueWithoutResolvedByInput = {
+    where: DealCommentWhereUniqueInput
+    data: XOR<DealCommentUpdateWithoutResolvedByInput, DealCommentUncheckedUpdateWithoutResolvedByInput>
+  }
+
+  export type DealCommentUpdateManyWithWhereWithoutResolvedByInput = {
+    where: DealCommentScalarWhereInput
+    data: XOR<DealCommentUpdateManyMutationInput, DealCommentUncheckedUpdateManyWithoutResolvedByInput>
   }
 
   export type MembershipCreateWithoutWorkspaceInput = {
@@ -61282,6 +63454,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerInput = {
@@ -61319,6 +63492,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerInput = {
@@ -61366,6 +63540,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLenderInput = {
@@ -61403,6 +63578,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLenderInput = {
@@ -62111,6 +64287,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -62127,6 +64305,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -62216,6 +64396,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -62232,6 +64414,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type WorkspaceUpsertWithoutMembershipsInput = {
@@ -62926,6 +65110,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerLenderLinkInput = {
@@ -62963,6 +65148,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerLenderLinkInput = {
@@ -63996,6 +66182,48 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DealCommentCreateWithoutDealInput = {
+    id?: string
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    author: UserCreateNestedOneWithoutDealCommentsAuthoredInput
+    parent?: DealCommentCreateNestedOneWithoutRepliesInput
+    replies?: DealCommentCreateNestedManyWithoutParentInput
+    resolvedBy?: UserCreateNestedOneWithoutDealCommentsResolvedInput
+  }
+
+  export type DealCommentUncheckedCreateWithoutDealInput = {
+    id?: string
+    authorId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: DealCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type DealCommentCreateOrConnectWithoutDealInput = {
+    where: DealCommentWhereUniqueInput
+    create: XOR<DealCommentCreateWithoutDealInput, DealCommentUncheckedCreateWithoutDealInput>
+  }
+
+  export type DealCommentCreateManyDealInputEnvelope = {
+    data: DealCommentCreateManyDealInput | DealCommentCreateManyDealInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutDealerDealsInput = {
     update: XOR<WorkspaceUpdateWithoutDealerDealsInput, WorkspaceUncheckedUpdateWithoutDealerDealsInput>
     create: XOR<WorkspaceCreateWithoutDealerDealsInput, WorkspaceUncheckedCreateWithoutDealerDealsInput>
@@ -64616,6 +66844,22 @@ export namespace Prisma {
     data: XOR<DealAlertUpdateManyMutationInput, DealAlertUncheckedUpdateManyWithoutDealInput>
   }
 
+  export type DealCommentUpsertWithWhereUniqueWithoutDealInput = {
+    where: DealCommentWhereUniqueInput
+    update: XOR<DealCommentUpdateWithoutDealInput, DealCommentUncheckedUpdateWithoutDealInput>
+    create: XOR<DealCommentCreateWithoutDealInput, DealCommentUncheckedCreateWithoutDealInput>
+  }
+
+  export type DealCommentUpdateWithWhereUniqueWithoutDealInput = {
+    where: DealCommentWhereUniqueInput
+    data: XOR<DealCommentUpdateWithoutDealInput, DealCommentUncheckedUpdateWithoutDealInput>
+  }
+
+  export type DealCommentUpdateManyWithWhereWithoutDealInput = {
+    where: DealCommentScalarWhereInput
+    data: XOR<DealCommentUpdateManyMutationInput, DealCommentUncheckedUpdateManyWithoutDealInput>
+  }
+
   export type DealCreateWithoutPartiesInput = {
     id?: string
     status?: $Enums.DealStatus
@@ -64651,6 +66895,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPartiesInput = {
@@ -64688,6 +66933,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPartiesInput = {
@@ -64741,6 +66987,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPartiesInput = {
@@ -64778,6 +67025,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutVehicleInput = {
@@ -64815,6 +67063,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutVehicleInput = {
@@ -64852,6 +67101,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutVehicleInput = {
@@ -64905,6 +67155,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutVehicleInput = {
@@ -64942,6 +67193,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutFinancialsInput = {
@@ -64979,6 +67231,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutFinancialsInput = {
@@ -65016,6 +67269,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutFinancialsInput = {
@@ -65069,6 +67323,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutFinancialsInput = {
@@ -65106,6 +67361,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutAuthoritativeContractInput = {
@@ -65143,6 +67399,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAuthoritativeContractInput = {
@@ -65180,6 +67437,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAuthoritativeContractInput = {
@@ -65313,6 +67571,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAuthoritativeContractInput = {
@@ -65350,6 +67609,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithWhereUniqueWithoutAuthoritativeContractInput = {
@@ -65419,6 +67679,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutContractTransactionEventsInput = {
@@ -65456,6 +67717,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutContractTransactionEventsInput = {
@@ -65536,6 +67798,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutContractTransactionEventsInput = {
@@ -65573,6 +67836,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithoutLinkedContractEventsInput = {
@@ -65700,6 +67964,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLoanPoolInput = {
@@ -65737,6 +68002,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLoanPoolInput = {
@@ -65863,6 +68129,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNegotiableInstrumentInput = {
@@ -65900,6 +68167,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNegotiableInstrumentInput = {
@@ -65985,6 +68253,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNegotiableInstrumentInput = {
@@ -66022,6 +68291,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithWhereUniqueWithoutInstrumentInput = {
@@ -66075,6 +68345,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutInstrumentTransferEventsInput = {
@@ -66112,6 +68383,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutInstrumentTransferEventsInput = {
@@ -66230,6 +68502,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutInstrumentTransferEventsInput = {
@@ -66267,6 +68540,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type NegotiableInstrumentUpsertWithoutTransferEventsInput = {
@@ -66359,6 +68633,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutGeneratedDocumentsInput = {
@@ -66396,6 +68671,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutGeneratedDocumentsInput = {
@@ -66567,6 +68843,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutGeneratedDocumentsInput = {
@@ -66604,6 +68881,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutGeneratedDocumentsInput = {
@@ -66796,6 +69074,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
     approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -66812,6 +69092,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUncheckedCreateNestedManyWithoutRequestingUserInput
     approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -66854,6 +69136,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNotificationsInput = {
@@ -66891,6 +69174,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNotificationsInput = {
@@ -66986,6 +69270,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
     approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -67002,6 +69288,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUncheckedUpdateManyWithoutRequestingUserNestedInput
     approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type DealUpsertWithoutNotificationsInput = {
@@ -67050,6 +69338,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNotificationsInput = {
@@ -67087,6 +69376,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceCreateWithoutApiKeysInput = {
@@ -67469,6 +69759,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
     approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUncheckedCreateWithoutAccessAuditsInput = {
@@ -67485,6 +69777,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUncheckedCreateNestedManyWithoutRequestingUserInput
     approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserCreateOrConnectWithoutAccessAuditsInput = {
@@ -67574,6 +69868,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
     approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccessAuditsInput = {
@@ -67590,6 +69886,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUncheckedUpdateManyWithoutRequestingUserNestedInput
     approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type WorkspaceUpsertWithoutAccessAuditsInput = {
@@ -67655,6 +69953,488 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
+  export type DealCreateWithoutCommentsInput = {
+    id?: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dealer: WorkspaceCreateNestedOneWithoutDealerDealsInput
+    lender: WorkspaceCreateNestedOneWithoutLenderDealsInput
+    dealerLenderLink: DealerLenderLinkCreateNestedOneWithoutDealsInput
+    loanPool?: LoanPoolCreateNestedOneWithoutDealsInput
+    parties?: DealPartyCreateNestedManyWithoutDealInput
+    vehicle?: VehicleCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
+    amendments?: AmendmentCreateNestedManyWithoutDealInput
+    notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
+  }
+
+  export type DealUncheckedCreateWithoutCommentsInput = {
+    id?: string
+    dealerId: string
+    lenderId: string
+    dealerLenderLinkId: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: string | null
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parties?: DealPartyUncheckedCreateNestedManyWithoutDealInput
+    vehicle?: VehicleUncheckedCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsUncheckedCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractUncheckedCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentUncheckedCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckUncheckedCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
+    amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+  }
+
+  export type DealCreateOrConnectWithoutCommentsInput = {
+    where: DealWhereUniqueInput
+    create: XOR<DealCreateWithoutCommentsInput, DealUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type UserCreateWithoutDealCommentsAuthoredInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    memberships?: MembershipCreateNestedManyWithoutUserInput
+    requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
+    approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+  }
+
+  export type UserUncheckedCreateWithoutDealCommentsAuthoredInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    requestedAmendments?: AmendmentUncheckedCreateNestedManyWithoutRequestingUserInput
+    approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+  }
+
+  export type UserCreateOrConnectWithoutDealCommentsAuthoredInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDealCommentsAuthoredInput, UserUncheckedCreateWithoutDealCommentsAuthoredInput>
+  }
+
+  export type DealCommentCreateWithoutRepliesInput = {
+    id?: string
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deal: DealCreateNestedOneWithoutCommentsInput
+    author: UserCreateNestedOneWithoutDealCommentsAuthoredInput
+    parent?: DealCommentCreateNestedOneWithoutRepliesInput
+    resolvedBy?: UserCreateNestedOneWithoutDealCommentsResolvedInput
+  }
+
+  export type DealCommentUncheckedCreateWithoutRepliesInput = {
+    id?: string
+    dealId: string
+    authorId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DealCommentCreateOrConnectWithoutRepliesInput = {
+    where: DealCommentWhereUniqueInput
+    create: XOR<DealCommentCreateWithoutRepliesInput, DealCommentUncheckedCreateWithoutRepliesInput>
+  }
+
+  export type DealCommentCreateWithoutParentInput = {
+    id?: string
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deal: DealCreateNestedOneWithoutCommentsInput
+    author: UserCreateNestedOneWithoutDealCommentsAuthoredInput
+    replies?: DealCommentCreateNestedManyWithoutParentInput
+    resolvedBy?: UserCreateNestedOneWithoutDealCommentsResolvedInput
+  }
+
+  export type DealCommentUncheckedCreateWithoutParentInput = {
+    id?: string
+    dealId: string
+    authorId: string
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    replies?: DealCommentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type DealCommentCreateOrConnectWithoutParentInput = {
+    where: DealCommentWhereUniqueInput
+    create: XOR<DealCommentCreateWithoutParentInput, DealCommentUncheckedCreateWithoutParentInput>
+  }
+
+  export type DealCommentCreateManyParentInputEnvelope = {
+    data: DealCommentCreateManyParentInput | DealCommentCreateManyParentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutDealCommentsResolvedInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    memberships?: MembershipCreateNestedManyWithoutUserInput
+    requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
+    approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserUncheckedCreateWithoutDealCommentsResolvedInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    requestedAmendments?: AmendmentUncheckedCreateNestedManyWithoutRequestingUserInput
+    approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutDealCommentsResolvedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDealCommentsResolvedInput, UserUncheckedCreateWithoutDealCommentsResolvedInput>
+  }
+
+  export type DealUpsertWithoutCommentsInput = {
+    update: XOR<DealUpdateWithoutCommentsInput, DealUncheckedUpdateWithoutCommentsInput>
+    create: XOR<DealCreateWithoutCommentsInput, DealUncheckedCreateWithoutCommentsInput>
+    where?: DealWhereInput
+  }
+
+  export type DealUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: DealWhereInput
+    data: XOR<DealUpdateWithoutCommentsInput, DealUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type DealUpdateWithoutCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerDealsNestedInput
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderDealsNestedInput
+    dealerLenderLink?: DealerLenderLinkUpdateOneRequiredWithoutDealsNestedInput
+    loanPool?: LoanPoolUpdateOneWithoutDealsNestedInput
+    parties?: DealPartyUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
+  }
+
+  export type DealUncheckedUpdateWithoutCommentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parties?: DealPartyUncheckedUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUncheckedUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUncheckedUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUncheckedUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUncheckedUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUncheckedUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+  }
+
+  export type UserUpsertWithoutDealCommentsAuthoredInput = {
+    update: XOR<UserUpdateWithoutDealCommentsAuthoredInput, UserUncheckedUpdateWithoutDealCommentsAuthoredInput>
+    create: XOR<UserCreateWithoutDealCommentsAuthoredInput, UserUncheckedCreateWithoutDealCommentsAuthoredInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDealCommentsAuthoredInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDealCommentsAuthoredInput, UserUncheckedUpdateWithoutDealCommentsAuthoredInput>
+  }
+
+  export type UserUpdateWithoutDealCommentsAuthoredInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
+    approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDealCommentsAuthoredInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    requestedAmendments?: AmendmentUncheckedUpdateManyWithoutRequestingUserNestedInput
+    approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+  }
+
+  export type DealCommentUpsertWithoutRepliesInput = {
+    update: XOR<DealCommentUpdateWithoutRepliesInput, DealCommentUncheckedUpdateWithoutRepliesInput>
+    create: XOR<DealCommentCreateWithoutRepliesInput, DealCommentUncheckedCreateWithoutRepliesInput>
+    where?: DealCommentWhereInput
+  }
+
+  export type DealCommentUpdateToOneWithWhereWithoutRepliesInput = {
+    where?: DealCommentWhereInput
+    data: XOR<DealCommentUpdateWithoutRepliesInput, DealCommentUncheckedUpdateWithoutRepliesInput>
+  }
+
+  export type DealCommentUpdateWithoutRepliesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deal?: DealUpdateOneRequiredWithoutCommentsNestedInput
+    author?: UserUpdateOneRequiredWithoutDealCommentsAuthoredNestedInput
+    parent?: DealCommentUpdateOneWithoutRepliesNestedInput
+    resolvedBy?: UserUpdateOneWithoutDealCommentsResolvedNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateWithoutRepliesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealCommentUpsertWithWhereUniqueWithoutParentInput = {
+    where: DealCommentWhereUniqueInput
+    update: XOR<DealCommentUpdateWithoutParentInput, DealCommentUncheckedUpdateWithoutParentInput>
+    create: XOR<DealCommentCreateWithoutParentInput, DealCommentUncheckedCreateWithoutParentInput>
+  }
+
+  export type DealCommentUpdateWithWhereUniqueWithoutParentInput = {
+    where: DealCommentWhereUniqueInput
+    data: XOR<DealCommentUpdateWithoutParentInput, DealCommentUncheckedUpdateWithoutParentInput>
+  }
+
+  export type DealCommentUpdateManyWithWhereWithoutParentInput = {
+    where: DealCommentScalarWhereInput
+    data: XOR<DealCommentUpdateManyMutationInput, DealCommentUncheckedUpdateManyWithoutParentInput>
+  }
+
+  export type UserUpsertWithoutDealCommentsResolvedInput = {
+    update: XOR<UserUpdateWithoutDealCommentsResolvedInput, UserUncheckedUpdateWithoutDealCommentsResolvedInput>
+    create: XOR<UserCreateWithoutDealCommentsResolvedInput, UserUncheckedCreateWithoutDealCommentsResolvedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDealCommentsResolvedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDealCommentsResolvedInput, UserUncheckedUpdateWithoutDealCommentsResolvedInput>
+  }
+
+  export type UserUpdateWithoutDealCommentsResolvedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
+    approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDealCommentsResolvedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    requestedAmendments?: AmendmentUncheckedUpdateManyWithoutRequestingUserNestedInput
+    approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
   export type DealCreateWithoutAlertsInput = {
     id?: string
     status?: $Enums.DealStatus
@@ -67690,6 +70470,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAlertsInput = {
@@ -67727,6 +70508,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAlertsInput = {
@@ -67867,6 +70649,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAlertsInput = {
@@ -67904,6 +70687,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceUpsertWithoutDealAlertsInput = {
@@ -68110,6 +70894,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAmendmentsInput = {
@@ -68147,6 +70932,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAmendmentsInput = {
@@ -68199,6 +70985,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUncheckedCreateWithoutRequestedAmendmentsInput = {
@@ -68215,6 +71003,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserCreateOrConnectWithoutRequestedAmendmentsInput = {
@@ -68236,6 +71026,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUncheckedCreateWithoutApprovedAmendmentsInput = {
@@ -68252,6 +71044,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUncheckedCreateNestedManyWithoutRequestingUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserCreateOrConnectWithoutApprovedAmendmentsInput = {
@@ -68347,6 +71141,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAmendmentsInput = {
@@ -68384,6 +71179,7 @@ export namespace Prisma {
     instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutParentAmendmentsInput = {
@@ -68448,6 +71244,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRequestedAmendmentsInput = {
@@ -68464,6 +71262,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUpsertWithoutApprovedAmendmentsInput = {
@@ -68491,6 +71291,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApprovedAmendmentsInput = {
@@ -68507,6 +71309,8 @@ export namespace Prisma {
     requestedAmendments?: AmendmentUncheckedUpdateManyWithoutRequestingUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type GeneratedDocumentUpsertWithWhereUniqueWithoutAmendmentInput = {
@@ -68560,6 +71364,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCustodyEventsInput = {
@@ -68597,6 +71402,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCustodyEventsInput = {
@@ -68687,6 +71493,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCustodyEventsInput = {
@@ -68724,6 +71531,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithoutCustodyEventsInput = {
@@ -68884,6 +71692,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutComplianceChecksInput = {
@@ -68921,6 +71730,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutComplianceChecksInput = {
@@ -68974,6 +71784,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutComplianceChecksInput = {
@@ -69011,6 +71822,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutPrefundingValidationCertificateInput = {
@@ -69048,6 +71860,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPrefundingValidationCertificateInput = {
@@ -69085,6 +71898,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPrefundingValidationCertificateInput = {
@@ -69138,6 +71952,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPrefundingValidationCertificateInput = {
@@ -69175,6 +71990,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -69191,6 +72007,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -69207,6 +72025,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -69239,6 +72059,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -69255,6 +72077,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -69271,6 +72095,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -69287,6 +72113,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -69319,6 +72147,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -69335,6 +72165,8 @@ export namespace Prisma {
     approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -69412,6 +72244,36 @@ export namespace Prisma {
     userAgent?: string | null
     metadata?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
+  }
+
+  export type DealCommentCreateManyAuthorInput = {
+    id?: string
+    dealId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DealCommentCreateManyResolvedByInput = {
+    id?: string
+    dealId: string
+    authorId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -69647,6 +72509,100 @@ export namespace Prisma {
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealCommentUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deal?: DealUpdateOneRequiredWithoutCommentsNestedInput
+    parent?: DealCommentUpdateOneWithoutRepliesNestedInput
+    replies?: DealCommentUpdateManyWithoutParentNestedInput
+    resolvedBy?: UserUpdateOneWithoutDealCommentsResolvedNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: DealCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealCommentUpdateWithoutResolvedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deal?: DealUpdateOneRequiredWithoutCommentsNestedInput
+    author?: UserUpdateOneRequiredWithoutDealCommentsAuthoredNestedInput
+    parent?: DealCommentUpdateOneWithoutRepliesNestedInput
+    replies?: DealCommentUpdateManyWithoutParentNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateWithoutResolvedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: DealCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateManyWithoutResolvedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MembershipCreateManyWorkspaceInput = {
@@ -70108,6 +73064,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerInput = {
@@ -70145,6 +73102,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerInput = {
@@ -70205,6 +73163,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLenderInput = {
@@ -70242,6 +73201,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLenderInput = {
@@ -70541,6 +73501,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerLenderLinkInput = {
@@ -70578,6 +73539,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerLenderLinkInput = {
@@ -70704,6 +73666,21 @@ export namespace Prisma {
     metadata?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     resolvedAt?: Date | string | null
+  }
+
+  export type DealCommentCreateManyDealInput = {
+    id?: string
+    authorId: string
+    parentCommentId?: string | null
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DealPartyUpdateWithoutDealInput = {
@@ -71025,6 +74002,53 @@ export namespace Prisma {
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type DealCommentUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    author?: UserUpdateOneRequiredWithoutDealCommentsAuthoredNestedInput
+    parent?: DealCommentUpdateOneWithoutRepliesNestedInput
+    replies?: DealCommentUpdateManyWithoutParentNestedInput
+    resolvedBy?: UserUpdateOneWithoutDealCommentsResolvedNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: DealCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateManyWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    parentCommentId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GeneratedDocumentCreateManyAuthoritativeContractInput = {
     id?: string
     dealId: string
@@ -71197,6 +74221,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLoanPoolInput = {
@@ -71234,6 +74259,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLoanPoolInput = {
@@ -71459,6 +74485,68 @@ export namespace Prisma {
     nextRetryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastError?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealCommentCreateManyParentInput = {
+    id?: string
+    dealId: string
+    authorId: string
+    linkedEntityType?: string | null
+    linkedEntityId?: string | null
+    body: string
+    isException?: boolean
+    isResolved?: boolean
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DealCommentUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deal?: DealUpdateOneRequiredWithoutCommentsNestedInput
+    author?: UserUpdateOneRequiredWithoutDealCommentsAuthoredNestedInput
+    replies?: DealCommentUpdateManyWithoutParentNestedInput
+    resolvedBy?: UserUpdateOneWithoutDealCommentsResolvedNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    replies?: DealCommentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type DealCommentUncheckedUpdateManyWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    linkedEntityType?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedEntityId?: NullableStringFieldUpdateOperationsInput | string | null
+    body?: StringFieldUpdateOperationsInput | string
+    isException?: BoolFieldUpdateOperationsInput | boolean
+    isResolved?: BoolFieldUpdateOperationsInput | boolean
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DealAlertAuditCreateManyDealAlertInput = {

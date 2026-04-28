@@ -431,6 +431,22 @@ exports.Prisma.UserAccessAuditScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.DealCommentScalarFieldEnum = {
+  id: 'id',
+  dealId: 'dealId',
+  authorId: 'authorId',
+  parentCommentId: 'parentCommentId',
+  linkedEntityType: 'linkedEntityType',
+  linkedEntityId: 'linkedEntityId',
+  body: 'body',
+  isException: 'isException',
+  isResolved: 'isResolved',
+  resolvedById: 'resolvedById',
+  resolvedAt: 'resolvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.DealAlertScalarFieldEnum = {
   id: 'id',
   dealId: 'dealId',
@@ -829,6 +845,7 @@ exports.Prisma.ModelName = {
   WebhookEndpoint: 'WebhookEndpoint',
   WebhookDelivery: 'WebhookDelivery',
   UserAccessAudit: 'UserAccessAudit',
+  DealComment: 'DealComment',
   DealAlert: 'DealAlert',
   DealAlertAudit: 'DealAlertAudit',
   AccountRecoveryToken: 'AccountRecoveryToken',

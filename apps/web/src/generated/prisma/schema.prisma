@@ -1,6 +1,8 @@
+// Prisma client for `apps/web` (Next.js). Path must match `db:generate` in root package.json (rimraf target).
 generator client {
-  provider = "prisma-client-js"
-  output   = "../apps/web/src/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../apps/web/src/generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -227,20 +229,22 @@ enum DealAlertAuditAction {
 }
 
 model User {
-  id                  String            @id @default(cuid())
-  email               String            @unique
-  name                String?
-  role                UserRole          @default(USER)
-  image               String?
-  accounts            Account[]
-  sessions            Session[]
-  memberships         Membership[]
-  requestedAmendments Amendment[]       @relation("AmendmentRequester")
-  approvedAmendments  Amendment[]       @relation("AmendmentApprover")
-  notifications       Notification[]
-  accessAudits        UserAccessAudit[]
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
+  id                   String            @id @default(cuid())
+  email                String            @unique
+  name                 String?
+  role                 UserRole          @default(USER)
+  image                String?
+  accounts             Account[]
+  sessions             Session[]
+  memberships          Membership[]
+  requestedAmendments  Amendment[]       @relation("AmendmentRequester")
+  approvedAmendments   Amendment[]       @relation("AmendmentApprover")
+  notifications        Notification[]
+  accessAudits         UserAccessAudit[]
+  dealCommentsAuthored DealComment[]     @relation("DealCommentAuthor")
+  dealCommentsResolved DealComment[]     @relation("DealCommentResolver")
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
 }
 
 model Workspace {
@@ -420,6 +424,7 @@ model Deal {
   notifications                   Notification[]
   alerts                          DealAlert[]
   apiIngressKeyId                 String?
+  comments                        DealComment[]
   createdAt                       DateTime                         @default(now())
   updatedAt                       DateTime                         @updatedAt
 
@@ -647,6 +652,31 @@ model UserAccessAudit {
 
   @@index([userId, createdAt])
   @@index([workspaceId, createdAt])
+}
+
+model DealComment {
+  id               String        @id @default(cuid())
+  dealId           String
+  authorId         String
+  parentCommentId  String?
+  linkedEntityType String?
+  linkedEntityId   String?
+  body             String        @db.Text
+  isException      Boolean       @default(false)
+  isResolved       Boolean       @default(false)
+  resolvedById     String?
+  resolvedAt       DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  deal             Deal          @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  author           User          @relation("DealCommentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  parent           DealComment?  @relation("DealCommentThread", fields: [parentCommentId], references: [id], onDelete: SetNull)
+  replies          DealComment[] @relation("DealCommentThread")
+  resolvedBy       User?         @relation("DealCommentResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+
+  @@index([dealId, createdAt])
+  @@index([authorId, createdAt])
+  @@index([parentCommentId])
 }
 
 model DealAlert {

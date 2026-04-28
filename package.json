@@ -12,12 +12,17 @@
     "test": "npm run test -w @dealseal/api",
     "backfill:governing-records": "npx tsx scripts/backfill-governing-records.ts",
     "db:deploy": "npm run db:deploy -w @dealseal/api",
+    "db:generate": "rimraf apps/web/src/generated/prisma && prisma generate --schema=prisma/schema.prisma",
+    "db:push": "prisma db push --schema=prisma/schema.prisma",
+    "db:seed": "npm run seed:web-billing",
+    "db:reset": "rimraf apps/web/src/generated/prisma && prisma db push --force-reset --schema=prisma/schema.prisma && npm run db:seed",
     "seed:web-billing": "dotenv -e .env -- tsx scripts/seed-web-billing.ts"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
     "dotenv-cli": "^8.0.0",
     "prisma": "^6.19.3",
+    "rimraf": "^6.1.3",
     "tsx": "^4.19.0"
   }
 }

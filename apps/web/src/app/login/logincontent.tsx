@@ -15,6 +15,19 @@ const LoginSchema = z.object({
 
 type LoginInput = z.infer<typeof LoginSchema>;
 
+function signInErrorToMessage(err: string | undefined): string {
+  if (!err) {
+    return "Sign-in could not start (network or config). Check the browser devtools console and that /api/auth responds.";
+  }
+  if (err === "CredentialsSignin" || err === "CallbackRouteError") {
+    return "Invalid credentials. Use the scaffolded demo accounts below.";
+  }
+  if (err === "Configuration" || err === "MissingSecret") {
+    return "Server auth is misconfigured: set AUTH_SECRET (or NEXTAUTH_SECRET) in apps/web/.env.local and restart. In development, a built-in dev secret is used if those are empty.";
+  }
+  return `Sign-in failed: ${err}`;
+}
+
 export default function LoginContent() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -32,14 +45,27 @@ export default function LoginContent() {
       return;
     }
     setLoading(true);
-    const res = await signIn("credentials", {
-      email: parsed.data.email,
-      password: parsed.data.password,
-      redirect: false,
-    });
+    let res: Awaited<ReturnType<typeof signIn>> | null = null;
+    try {
+      res = await signIn("credentials", {
+        email: parsed.data.email,
+        password: parsed.data.password,
+        redirect: false,
+      });
+    } catch (e) {
+      setLoading(false);
+      setError(e instanceof Error ? e.message : "Sign-in failed to complete.");
+      return;
+    }
     setLoading(false);
-    if (res?.error) {
-      setError("Invalid credentials. Use scaffolded demo accounts.");
+    if (res == null) {
+      setError(
+        "Sign-in did not return a result (e.g. provider not loaded). If the page reloaded, check the URL for error=; otherwise confirm AUTH_SECRET in .env.local and restart the dev server.",
+      );
+      return;
+    }
+    if (res.error || res.ok === false) {
+      setError(signInErrorToMessage(res.error));
       return;
     }
     const requestedNext = sp.get("next");
@@ -70,6 +96,12 @@ export default function LoginContent() {
         }}>
           Admin Login
         </button>
+        <button type="button" className="btn btn-secondary" onClick={() => {
+          setValue("email", "platform.admin@dealseal1.com");
+          setValue("password", "dealseal123");
+        }}>
+          Platform Admin
+        </button>
       </div>
       <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.75rem" }}>
         <label style={{ display: "grid", gap: 6, color: "var(--text-secondary)", fontSize: 14 }}>
@@ -93,7 +125,7 @@ export default function LoginContent() {
         Demo user: user@dealseal1.com / dealseal123
       </p>
       <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 0 }}>
-        Dealer: dealer.admin@dealseal1.com · Lender: lender.admin@dealseal1.com · Admin: admin@dealseal1.com
+        Dealer: dealer.admin@dealseal1.com · Lender: lender.admin@dealseal1.com · Admin: admin@dealseal1.com · Platform: platform.admin@dealseal1.com
       </p>
       <div className="row" style={{ marginTop: "0.6rem" }}>
         <a href="/login/recover" style={{ fontSize: 12 }}>
