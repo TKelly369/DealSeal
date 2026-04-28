@@ -8,6 +8,7 @@ import {
   UserAdminRoleSchema,
   UserAdminUpdateSchema,
 } from "@/lib/types";
+import { prisma } from "@/lib/db";
 
 export type AdminUserRow = {
   id: string;
@@ -179,6 +180,158 @@ export async function getAuditLogs({ page = 1, limit = 15 }: { page?: number; li
     limit,
     total: MOCK_AUDIT_LOGS.length,
     pageCount: Math.max(1, Math.ceil(MOCK_AUDIT_LOGS.length / limit)),
+  };
+}
+
+const GOVERNING_CONTRACT_RETENTION_YEARS = 10;
+const DEAL_JACKET_RETENTION_YEARS = 7;
+
+function yearsAgo(years: number): Date {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - years);
+  return d;
+}
+
+export type CustodialPerformanceReport = {
+  policy: {
+    governingContractYears: number;
+    dealJacketYears: number;
+  };
+  inventory: {
+    signedLockedGoverningContracts: number;
+    completedDealJackets: number;
+  };
+  eligible: {
+    governingContracts: number;
+    dealJackets: number;
+  };
+};
+
+export async function getCustodialPerformanceReport(): Promise<CustodialPerformanceReport> {
+  await requireAdminSession();
+  const governingCutoff = yearsAgo(GOVERNING_CONTRACT_RETENTION_YEARS);
+  const jacketCutoff = yearsAgo(DEAL_JACKET_RETENTION_YEARS);
+
+  const [signedLockedGoverningContracts, completedDealJackets, eligibleGoverningContracts, eligibleDealJackets] =
+    await Promise.all([
+      prisma.authoritativeContract.count({
+        where: {
+          deal: { status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] } },
+          signatureStatus: { in: ["SIGNED", "LOCKED"] },
+        },
+      }),
+      prisma.generatedDocument.count({
+        where: {
+          deal: { status: "CONSUMMATED" },
+        },
+      }),
+      prisma.authoritativeContract.count({
+        where: {
+          deal: {
+            status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] },
+            updatedAt: { lt: governingCutoff },
+          },
+          signatureStatus: { in: ["SIGNED", "LOCKED"] },
+        },
+      }),
+      prisma.generatedDocument.count({
+        where: {
+          deal: { status: "CONSUMMATED", updatedAt: { lt: jacketCutoff } },
+        },
+      }),
+    ]);
+
+  return {
+    policy: {
+      governingContractYears: GOVERNING_CONTRACT_RETENTION_YEARS,
+      dealJacketYears: DEAL_JACKET_RETENTION_YEARS,
+    },
+    inventory: {
+      signedLockedGoverningContracts,
+      completedDealJackets,
+    },
+    eligible: {
+      governingContracts: eligibleGoverningContracts,
+      dealJackets: eligibleDealJackets,
+    },
+  };
+}
+
+export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { governingContracts: number; dealJackets: number } }> {
+  const session = await requireAdminSession();
+  const governingCutoff = yearsAgo(GOVERNING_CONTRACT_RETENTION_YEARS);
+  const jacketCutoff = yearsAgo(DEAL_JACKET_RETENTION_YEARS);
+
+  // Contract retention: after legal window, mark status as purged while preserving hash chain.
+  const governing = await prisma.authoritativeContract.updateMany({
+    where: {
+      deal: {
+        status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] },
+        updatedAt: { lt: governingCutoff },
+      },
+      signatureStatus: { in: ["SIGNED", "LOCKED"] },
+    },
+    data: {
+      signatureStatus: "PURGED_AFTER_RETENTION",
+    },
+  });
+
+  // Deal jacket retention: strip direct file URL pointers after legal retention window.
+  const jacketRows = await prisma.generatedDocument.findMany({
+    where: {
+      deal: {
+        status: "CONSUMMATED",
+        updatedAt: { lt: jacketCutoff },
+      },
+    },
+    select: { id: true, valuesSnapshot: true },
+  });
+
+  for (const row of jacketRows) {
+    const snapshot =
+      row.valuesSnapshot && typeof row.valuesSnapshot === "object" && !Array.isArray(row.valuesSnapshot)
+        ? (row.valuesSnapshot as Record<string, unknown>)
+        : {};
+    await prisma.generatedDocument.update({
+      where: { id: row.id },
+      data: {
+        fileUrl: null,
+        valuesSnapshot: {
+          ...snapshot,
+          custodyPurgedAt: new Date().toISOString(),
+          custodyPurgeReason: `Retention met (${DEAL_JACKET_RETENTION_YEARS}y)`,
+        },
+      },
+    });
+  }
+
+  try {
+    await prisma.userAccessAudit.create({
+      data: {
+        userId: session.user.id,
+        workspaceId: session.user.workspaceId,
+        fullName: session.user.name ?? session.user.email ?? "Dealseal Admin",
+        title: "SYSTEM_ADMIN",
+        metadata: {
+          eventType: "CUSTODIAL_PURGE_RUN",
+          governingContractsPurged: governing.count,
+          dealJacketsPurged: jacketRows.length,
+          governingRetentionYears: GOVERNING_CONTRACT_RETENTION_YEARS,
+          dealJacketRetentionYears: DEAL_JACKET_RETENTION_YEARS,
+          source: "/admin/system-config",
+        },
+      },
+    });
+  } catch {
+    // Purge run should not fail if audit write is unavailable.
+  }
+
+  return {
+    ok: true,
+    purged: {
+      governingContracts: governing.count,
+      dealJackets: jacketRows.length,
+    },
   };
 }
 
