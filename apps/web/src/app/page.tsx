@@ -213,9 +213,6 @@ export default function HomePage() {
             />
           </div>
           <div style={{ display: "flex", gap: "0.65rem", flexWrap: "wrap", marginTop: "0.95rem" }}>
-            <Button href="/login?next=/dealer/deals/new" className="btn">
-              Open Deal Builder
-            </Button>
             <Button href="/ai-checkpoints" className="btn btn-secondary">
               View Compliance Engine
             </Button>
