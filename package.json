@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build -w @dealseal/web",
+    "build": "npm run build -w @dealseal/shared && npm run build -w @dealseal/web",
     "lint": "npm run lint -w @dealseal/web",
     "typecheck": "npm run build -w @dealseal/shared && npm run prisma:generate -w @dealseal/api && npm run typecheck -w @dealseal/api && npm run typecheck -w @dealseal/web",
     "test": "npm run test -w @dealseal/api",
