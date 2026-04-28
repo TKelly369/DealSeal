@@ -8,10 +8,18 @@ export default async function DealerDashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/dealer/dashboard");
   const dealerId = session.user.workspaceId;
-  const [deals, links] = await Promise.all([
-    DealService.listDealsForDealer(dealerId),
-    DealerLenderLinkService.getActiveLinksForDealer(dealerId),
-  ]);
+  let deals: Awaited<ReturnType<typeof DealService.listDealsForDealer>> = [];
+  let links: Awaited<ReturnType<typeof DealerLenderLinkService.getActiveLinksForDealer>> = [];
+  let dataWarning: string | null = null;
+  try {
+    [deals, links] = await Promise.all([
+      DealService.listDealsForDealer(dealerId),
+      DealerLenderLinkService.getActiveLinksForDealer(dealerId),
+    ]);
+  } catch (error) {
+    console.error("[DealSeal] Dealer dashboard data fallback", error);
+    dataWarning = "Some dashboard data is temporarily unavailable. You can still access dealer workflows.";
+  }
 
   return (
     <div className="ds-section-shell">
@@ -38,6 +46,9 @@ export default async function DealerDashboardPage() {
           Lender Network
         </Link>
       </div>
+      {dataWarning ? (
+        <p style={{ marginTop: "0.8rem", color: "var(--muted)" }}>{dataWarning}</p>
+      ) : null}
       <div className="card" style={{ marginTop: "1.25rem" }}>
         <p className="ds-card-title">Your deals</p>
         {deals.length === 0 ? (

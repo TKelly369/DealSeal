@@ -8,7 +8,18 @@ export default async function LenderDashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/lender/dashboard");
   const lenderId = session.user.workspaceId;
-  const deals = await DealService.listDealsForLender(lenderId);
+  let deals: Awaited<ReturnType<typeof DealService.listDealsForLender>> = [];
+  let exceptions = 0;
+  let dataWarning: string | null = null;
+  try {
+    deals = await DealService.listDealsForLender(lenderId);
+    exceptions = await prisma.complianceCheck.count({
+      where: { deal: { lenderId }, status: "BLOCKED" },
+    });
+  } catch (error) {
+    console.error("[DealSeal] Lender dashboard data fallback", error);
+    dataWarning = "Some dashboard data is temporarily unavailable. You can still access lender workflows.";
+  }
   const awaitingRisc = deals.filter((d) => d.status === "RISC_UNSIGNED_REVIEW");
   const lockedOrDone = deals.filter(
     (d) =>
@@ -18,10 +29,6 @@ export default async function LenderDashboardPage() {
       d.status === "CLOSING_PACKAGE_READY" ||
       d.status === "CONSUMMATED",
   );
-  const exceptions = await prisma.complianceCheck.count({
-    where: { deal: { lenderId }, status: "BLOCKED" },
-  });
-
   return (
     <div className="ds-section-shell">
       <h1 style={{ marginTop: 0 }}>Lender Dashboard</h1>
@@ -50,6 +57,9 @@ export default async function LenderDashboardPage() {
           Lender Rules
         </Link>
       </div>
+      {dataWarning ? (
+        <p style={{ marginTop: "0.8rem", color: "var(--muted)" }}>{dataWarning}</p>
+      ) : null}
     </div>
   );
 }
