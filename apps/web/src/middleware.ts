@@ -101,6 +101,7 @@ export default auth(async (req) => {
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/settings") ||
     pathname.startsWith("/admin") ||
+    pathname.startsWith("/audit") ||
     pathname.startsWith("/dealer") ||
     pathname.startsWith("/lender");
 
@@ -121,7 +122,11 @@ export default auth(async (req) => {
     }
   }
 
-  if (pathname.startsWith("/admin") && req.auth.user.role !== "ADMIN" && req.auth.user.role !== "PLATFORM_ADMIN") {
+  if (
+    (pathname.startsWith("/admin") || pathname.startsWith("/audit")) &&
+    req.auth.user.role !== "ADMIN" &&
+    req.auth.user.role !== "PLATFORM_ADMIN"
+  ) {
     const role = req.auth.user.role;
     if (role === "DEALER_ADMIN") {
       return NextResponse.redirect(new URL("/dealer/dashboard", nextUrl.origin));
@@ -130,6 +135,9 @@ export default auth(async (req) => {
       return NextResponse.redirect(new URL("/lender/dashboard", nextUrl.origin));
     }
     return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
+  }
+  if (pathname === "/audit") {
+    return NextResponse.redirect(new URL("/admin/audit", nextUrl.origin));
   }
   return nextWithPathname(req, pathname);
 });
@@ -144,6 +152,7 @@ export const config = {
     "/dashboard/:path*",
     "/settings/:path*",
     "/admin/:path*",
+    "/audit/:path*",
     "/dealer/:path*",
     "/lender/:path*",
     "/session-identity",
