@@ -175,7 +175,7 @@ export default function HomePage() {
             Signed-in workspaces use the enterprise shell. Explore compliance demos without an account.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/login?next=/dashboard">Dashboard</Link>
             <Link href="/ai-checkpoints">AI compliance checkpoints</Link>
             <Link href="/records/demo-record-001">Certified rendering demo</Link>
             <Link href="/verify">Verify a record</Link>

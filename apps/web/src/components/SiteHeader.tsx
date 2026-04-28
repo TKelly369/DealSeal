@@ -9,7 +9,7 @@ export function SiteHeader() {
       <div className="ds-site-header__inner">
         <BrandLogo variant="nav" href="/" />
         <nav className="ds-site-header__nav" aria-label="Primary">
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/login?next=/dashboard">Dashboard</Link>
           <Link href="/verify/test">Verify</Link>
           <a href={`${apiBase}/health`} target="_blank" rel="noreferrer">
             API health
