@@ -42,6 +42,18 @@ function roleFallbackDestination(
   return next || "/dashboard";
 }
 
+async function isWorkspaceOwner(userId: string, workspaceId: string): Promise<boolean> {
+  try {
+    const membership = await prisma.membership.findUnique({
+      where: { userId_workspaceId: { userId, workspaceId } },
+      select: { role: true },
+    });
+    return membership?.role === "OWNER";
+  } catch {
+    return false;
+  }
+}
+
 export async function resolvePostLoginDestination(requestedNext: string | null): Promise<string> {
   const session = await auth();
   if (!session?.user) return "/login";
@@ -88,6 +100,69 @@ export async function resolvePostLoginDestination(requestedNext: string | null):
   } catch (e) {
     console.error("[DealSeal] resolvePostLoginDestination: database unavailable, using role fallback", e);
     return roleFallbackDestination(role, workspaceId, next);
+  }
+}
+
+type ResolvePostLoginInput = {
+  requestedNext: string | null;
+  userId: string;
+  role: string;
+  workspaceId: string;
+};
+
+/**
+ * Role-aware destination resolver for combined login flow.
+ * New/master accounts (workspace OWNER) go to onboarding when incomplete.
+ * Employee accounts (ADMIN/MEMBER) skip onboarding and go to role dashboards.
+ */
+export async function resolvePostLoginDestinationForSession(input: ResolvePostLoginInput): Promise<string> {
+  const raw = input.requestedNext?.trim() || "";
+  const next = raw.startsWith("/") ? raw : "";
+
+  const isGenericDealerEntry =
+    !next ||
+    next === "/dashboard" ||
+    next === "/dealer/dashboard" ||
+    next === "/dealer/onboarding";
+
+  const isGenericLenderEntry =
+    !next ||
+    next === "/dashboard" ||
+    next === "/lender/dashboard" ||
+    next === "/lender/onboarding";
+
+  try {
+    const wsType = await getWorkspaceType(input.workspaceId);
+    const owner = await isWorkspaceOwner(input.userId, input.workspaceId);
+
+    if (
+      wsType === "DEALERSHIP" &&
+      (input.role === "DEALER_ADMIN" || input.role === "USER") &&
+      isGenericDealerEntry
+    ) {
+      if (!owner) {
+        return "/dealer/dashboard";
+      }
+      const completed = await hasCompletedDealerOnboarding(input.workspaceId);
+      return completed ? "/dealer/dashboard" : "/dealer/onboarding";
+    }
+
+    if (
+      wsType === "LENDER" &&
+      (input.role === "LENDER_ADMIN" || input.role === "USER") &&
+      isGenericLenderEntry
+    ) {
+      if (!owner) {
+        return "/lender/dashboard";
+      }
+      const completed = await hasCompletedLenderOnboarding(input.workspaceId);
+      return completed ? "/lender/dashboard" : "/lender/onboarding";
+    }
+
+    return next || roleFallbackDestination(input.role, input.workspaceId, next);
+  } catch (e) {
+    console.error("[DealSeal] resolvePostLoginDestinationForSession: fallback", e);
+    return roleFallbackDestination(input.role, input.workspaceId, next);
   }
 }
 

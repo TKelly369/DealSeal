@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { beginLoginAuditTrail } from "./actions";
+import { beginLoginAuditTrail, resolvePostLoginDestinationForSession } from "./actions";
 
 const LoginSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -82,7 +82,18 @@ export default function LoginContent() {
       setError(signInErrorToMessage(res.error));
       return;
     }
-    const nextPath = sanitizeNextPath(sp.get("next"));
+    const requestedNext = sanitizeNextPath(sp.get("next"));
+    const freshSession = await getSession();
+    const currentUser = freshSession?.user;
+    const nextPath =
+      currentUser?.id && currentUser?.workspaceId && currentUser?.role
+        ? await resolvePostLoginDestinationForSession({
+            requestedNext,
+            userId: currentUser.id,
+            role: currentUser.role,
+            workspaceId: currentUser.workspaceId,
+          })
+        : requestedNext;
 
     // Ensure protected-route middleware sees identity confirmation immediately.
     document.cookie = "ds_identity_ok=1; Path=/; Max-Age=43200; SameSite=Lax";
