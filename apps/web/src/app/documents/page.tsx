@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { DocumentsPanelClient } from "./DocumentsPanelClient";
+import { createDocumentDownloadUrl, uploadDocumentBinary } from "@/lib/services/document-binary.service";
 
 type MovementAction = "VIEW" | "EDIT" | "EMAIL" | "PRINT" | "DOWNLOAD";
 
@@ -80,6 +81,53 @@ export default async function DocumentsPage() {
     return updated;
   };
 
+  const uploadDocumentContent = async (documentId: string, formData: FormData) => {
+    "use server";
+    const fresh = await auth();
+    if (!fresh?.user) throw new Error("Authentication required.");
+    const row = await prisma.document.findFirst({
+      where: { id: documentId, workspaceId: fresh.user.workspaceId },
+      select: { id: true, title: true },
+    });
+    if (!row) throw new Error("Document not found for your workspace.");
+    const maybeFile = formData.get("file");
+    if (!(maybeFile instanceof File)) {
+      throw new Error("No file provided.");
+    }
+    const out = await uploadDocumentBinary({
+      workspaceId: fresh.user.workspaceId,
+      documentId,
+      file: maybeFile,
+      actorUserId: fresh.user.id,
+    });
+    await writeMovementAudit("EDIT", row.id, {
+      title: row.title,
+      note: `Binary upload v${out.version} (${out.fileName}, ${out.mimeType}, ${out.byteSize} bytes)`,
+    });
+    return out;
+  };
+
+  const getDocumentDownloadUrl = async (documentId: string) => {
+    "use server";
+    const fresh = await auth();
+    if (!fresh?.user) throw new Error("Authentication required.");
+    const row = await prisma.document.findFirst({
+      where: { id: documentId, workspaceId: fresh.user.workspaceId },
+      select: { id: true, title: true },
+    });
+    if (!row) throw new Error("Document not found for your workspace.");
+    const out = await createDocumentDownloadUrl({
+      workspaceId: fresh.user.workspaceId,
+      documentId,
+      expiresSeconds: 300,
+    });
+    await writeMovementAudit("DOWNLOAD", row.id, {
+      title: row.title,
+      note: `Binary download v${out.version} (${out.fileName})`,
+    });
+    return out;
+  };
+
   return (
     <div>
       <h1>Document panel</h1>
@@ -93,6 +141,8 @@ export default async function DocumentsPage() {
         initialDocuments={docs}
         onAuditMovement={writeMovementAudit}
         onUpdateDocument={updateDocument}
+        onUploadDocumentContent={uploadDocumentContent}
+        onGetDocumentDownloadUrl={getDocumentDownloadUrl}
       />
     </div>
   );

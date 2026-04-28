@@ -15,6 +15,8 @@ export function DocumentsPanelClient({
   initialDocuments,
   onAuditMovement,
   onUpdateDocument,
+  onUploadDocumentContent,
+  onGetDocumentDownloadUrl,
 }: {
   initialDocuments: DocRow[];
   onAuditMovement: (
@@ -28,11 +30,15 @@ export function DocumentsPanelClient({
     type: string,
     status: "PENDING" | "CERTIFIED" | "REJECTED",
   ) => Promise<DocRow>;
+  onUploadDocumentContent: (documentId: string, formData: FormData) => Promise<{ version: number; byteSize: number; mimeType: string; fileName: string }>;
+  onGetDocumentDownloadUrl: (documentId: string) => Promise<{ url: string; fileName: string; version: number }>;
 }) {
   const [docs, setDocs] = useState(initialDocuments);
   const [selectedId, setSelectedId] = useState(initialDocuments[0]?.id ?? "");
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
 
   const selected = useMemo(() => docs.find((d) => d.id === selectedId) ?? null, [docs, selectedId]);
   const [titleInput, setTitleInput] = useState(selected?.title ?? "");
@@ -53,9 +59,11 @@ export function DocumentsPanelClient({
     if (!selected) return;
     setSaving(true);
     setError(null);
+    setInfo(null);
     try {
       const updated = await onUpdateDocument(selected.id, titleInput, typeInput, statusInput);
       setDocs((prev) => prev.map((d) => (d.id === updated.id ? updated : d)));
+      setInfo("Document metadata saved.");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unable to save document.");
     } finally {
@@ -79,21 +87,31 @@ export function DocumentsPanelClient({
 
   async function logAndDownload() {
     if (!selected) return;
-    await onAuditMovement("DOWNLOAD", selected.id, { title: selected.title, note: "Download action from document panel" });
-    const text = [
-      `Document ID: ${selected.id}`,
-      `Title: ${selected.title}`,
-      `Type: ${selected.type}`,
-      `Status: ${selected.status}`,
-      `Updated At: ${new Date(selected.updatedAt).toISOString()}`,
-    ].join("\n");
-    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
+    const out = await onGetDocumentDownloadUrl(selected.id);
+    await onAuditMovement("DOWNLOAD", selected.id, {
+      title: selected.title,
+      note: `Direct binary download initiated (${out.fileName}, v${out.version})`,
+    });
+    const url = out.url;
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${selected.title.replace(/[^a-zA-Z0-9-_]/g, "_") || "document"}.txt`;
+    a.download = out.fileName;
     a.click();
-    URL.revokeObjectURL(url);
+  }
+
+  async function uploadBinaryContent(formData: FormData) {
+    if (!selected) return;
+    setUploading(true);
+    setError(null);
+    setInfo(null);
+    try {
+      const out = await onUploadDocumentContent(selected.id, formData);
+      setInfo(`Uploaded ${out.fileName} as binary v${out.version} (${out.mimeType}, ${out.byteSize} bytes).`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Binary upload failed.");
+    } finally {
+      setUploading(false);
+    }
   }
 
   return (
@@ -155,7 +173,22 @@ export function DocumentsPanelClient({
                 Download
               </button>
             </div>
+            <form
+              action={async (fd) => {
+                await uploadBinaryContent(fd);
+              }}
+              style={{ display: "grid", gap: "0.45rem", marginTop: "0.25rem" }}
+            >
+              <label style={{ display: "grid", gap: 6 }}>
+                Upload or replace file content
+                <input name="file" type="file" required />
+              </label>
+              <button type="submit" disabled={uploading}>
+                {uploading ? "Uploading..." : "Upload binary content"}
+              </button>
+            </form>
             {error ? <p style={{ margin: 0, color: "#fecaca" }}>{error}</p> : null}
+            {info ? <p style={{ margin: 0, color: "var(--verified)" }}>{info}</p> : null}
           </div>
         )}
       </div>
