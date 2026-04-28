@@ -9,4 +9,5 @@ coverage
 .turbo
 .prisma
 apps/api/generated
+apps/web/apps/
 .vercel
