@@ -37,11 +37,16 @@ async function WorkflowsTable() {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
   const workspaceId = session.user.workspaceId;
-  const deals = await prisma.deal.findMany({
-    where: { OR: [{ dealerId: workspaceId }, { lenderId: workspaceId }] },
-    orderBy: { updatedAt: "desc" },
-    take: 8,
-  });
+  let deals: Awaited<ReturnType<typeof prisma.deal.findMany>> = [];
+  try {
+    deals = await prisma.deal.findMany({
+      where: { OR: [{ dealerId: workspaceId }, { lenderId: workspaceId }] },
+      orderBy: { updatedAt: "desc" },
+      take: 8,
+    });
+  } catch (error) {
+    console.error("[DealSeal] Workflows table fallback", error);
+  }
   const rows = deals.map((d) => ({
     name: d.id,
     status: d.status,
@@ -88,21 +93,30 @@ async function RecentActivityFeed() {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
   const workspaceId = session.user.workspaceId;
-  const items = await prisma.notification.findMany({
-    where: { workspaceId },
-    orderBy: { createdAt: "desc" },
-    take: 8,
-  });
+  let items: Awaited<ReturnType<typeof prisma.notification.findMany>> = [];
+  try {
+    items = await prisma.notification.findMany({
+      where: { workspaceId },
+      orderBy: { createdAt: "desc" },
+      take: 8,
+    });
+  } catch (error) {
+    console.error("[DealSeal] Activity feed fallback", error);
+  }
   return (
     <Card>
       <h2 style={{ marginTop: 0 }}>Recent Activity</h2>
-      <ul style={{ margin: 0, paddingLeft: "1.2rem", color: "var(--text-secondary)" }}>
-        {items.map((item) => (
-          <li key={item.id} style={{ marginBottom: "0.45rem" }}>
-            {item.title}: {item.message} - {item.createdAt.toLocaleString()}
-          </li>
-        ))}
-      </ul>
+      {items.length === 0 ? (
+        <p style={{ margin: 0, color: "var(--muted)" }}>Recent activity is temporarily unavailable.</p>
+      ) : (
+        <ul style={{ margin: 0, paddingLeft: "1.2rem", color: "var(--text-secondary)" }}>
+          {items.map((item) => (
+            <li key={item.id} style={{ marginBottom: "0.45rem" }}>
+              {item.title}: {item.message} - {item.createdAt.toLocaleString()}
+            </li>
+          ))}
+        </ul>
+      )}
     </Card>
   );
 }

@@ -17,28 +17,39 @@ export default async function AdminAuditLogsPage({
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page || 1));
   const data = await getAuditLogs({ page, limit: 15 });
-  const [custodyEvents, recentDocuments] = await Promise.all([
-    prisma.documentCustodyEvent.findMany({
-      orderBy: { timestamp: "desc" },
-      take: 20,
-      include: {
-        deal: { select: { id: true, dealerId: true, lenderId: true } },
-        document: { select: { id: true, documentType: true, version: true } },
-      },
-    }),
-    prisma.generatedDocument.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 20,
-      include: { deal: { select: { id: true } } },
-    }),
-  ]);
+  let custodyEvents: Awaited<ReturnType<typeof prisma.documentCustodyEvent.findMany>> = [];
+  let recentDocuments: Awaited<ReturnType<typeof prisma.generatedDocument.findMany>> = [];
+  try {
+    [custodyEvents, recentDocuments] = await Promise.all([
+      prisma.documentCustodyEvent.findMany({
+        orderBy: { timestamp: "desc" },
+        take: 20,
+        include: {
+          deal: { select: { id: true, dealerId: true, lenderId: true } },
+          document: { select: { id: true, documentType: true, version: true } },
+        },
+      }),
+      prisma.generatedDocument.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 20,
+        include: { deal: { select: { id: true } } },
+      }),
+    ]);
+  } catch (error) {
+    console.error("[DealSeal] Admin audit monitor fallback", error);
+  }
   const actorIds = Array.from(new Set(custodyEvents.map((e) => e.actorUserId).filter(Boolean)));
   const actorUsers =
     actorIds.length > 0
-      ? await prisma.user.findMany({
-          where: { id: { in: actorIds } },
-          select: { id: true, name: true, email: true },
-        })
+      ? await prisma.user
+          .findMany({
+            where: { id: { in: actorIds } },
+            select: { id: true, name: true, email: true },
+          })
+          .catch((error) => {
+            console.error("[DealSeal] Admin audit actor lookup fallback", error);
+            return [];
+          })
       : [];
   const actorById = new Map(actorUsers.map((u) => [u.id, u]));
   return (
@@ -89,7 +100,7 @@ export default async function AdminAuditLogsPage({
                   <td>{e.actorRole}</td>
                   <td>{e.eventType}</td>
                   <td>{e.dealId}</td>
-                  <td>{e.document?.documentType ?? "N/A"}{e.document?.version ? ` v${e.document.version}` : ""}</td>
+                  <td>{e.documentId ?? "N/A"}</td>
                 </tr>
               );
             })}
@@ -114,7 +125,7 @@ export default async function AdminAuditLogsPage({
             {recentDocuments.map((doc) => (
               <tr key={doc.id}>
                 <td>{doc.createdAt.toLocaleString([], { hour12: false })}</td>
-                <td>{doc.deal.id}</td>
+                <td>{doc.dealId}</td>
                 <td>{doc.documentType ?? doc.type}</td>
                 <td>v{doc.version}</td>
                 <td>{doc.isAuthoritative ? "Yes" : "No"}</td>

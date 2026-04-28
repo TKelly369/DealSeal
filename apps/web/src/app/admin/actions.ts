@@ -211,35 +211,42 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
   await requireAdminSession();
   const governingCutoff = yearsAgo(GOVERNING_CONTRACT_RETENTION_YEARS);
   const jacketCutoff = yearsAgo(DEAL_JACKET_RETENTION_YEARS);
-
-  const [signedLockedGoverningContracts, completedDealJackets, eligibleGoverningContracts, eligibleDealJackets] =
-    await Promise.all([
-      prisma.authoritativeContract.count({
-        where: {
-          deal: { status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] } },
-          signatureStatus: { in: ["SIGNED", "LOCKED"] },
-        },
-      }),
-      prisma.generatedDocument.count({
-        where: {
-          deal: { status: "CONSUMMATED" },
-        },
-      }),
-      prisma.authoritativeContract.count({
-        where: {
-          deal: {
-            status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] },
-            updatedAt: { lt: governingCutoff },
+  let signedLockedGoverningContracts = 0;
+  let completedDealJackets = 0;
+  let eligibleGoverningContracts = 0;
+  let eligibleDealJackets = 0;
+  try {
+    [signedLockedGoverningContracts, completedDealJackets, eligibleGoverningContracts, eligibleDealJackets] =
+      await Promise.all([
+        prisma.authoritativeContract.count({
+          where: {
+            deal: { status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] } },
+            signatureStatus: { in: ["SIGNED", "LOCKED"] },
           },
-          signatureStatus: { in: ["SIGNED", "LOCKED"] },
-        },
-      }),
-      prisma.generatedDocument.count({
-        where: {
-          deal: { status: "CONSUMMATED", updatedAt: { lt: jacketCutoff } },
-        },
-      }),
-    ]);
+        }),
+        prisma.generatedDocument.count({
+          where: {
+            deal: { status: "CONSUMMATED" },
+          },
+        }),
+        prisma.authoritativeContract.count({
+          where: {
+            deal: {
+              status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] },
+              updatedAt: { lt: governingCutoff },
+            },
+            signatureStatus: { in: ["SIGNED", "LOCKED"] },
+          },
+        }),
+        prisma.generatedDocument.count({
+          where: {
+            deal: { status: "CONSUMMATED", updatedAt: { lt: jacketCutoff } },
+          },
+        }),
+      ]);
+  } catch (error) {
+    console.error("[DealSeal] Custodial report fallback", error);
+  }
 
   return {
     policy: {
@@ -263,46 +270,54 @@ export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { 
   const jacketCutoff = yearsAgo(DEAL_JACKET_RETENTION_YEARS);
 
   // Contract retention: after legal window, mark status as purged while preserving hash chain.
-  const governing = await prisma.authoritativeContract.updateMany({
-    where: {
-      deal: {
-        status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] },
-        updatedAt: { lt: governingCutoff },
-      },
-      signatureStatus: { in: ["SIGNED", "LOCKED"] },
-    },
-    data: {
-      signatureStatus: "PURGED_AFTER_RETENTION",
-    },
-  });
-
-  // Deal jacket retention: strip direct file URL pointers after legal retention window.
-  const jacketRows = await prisma.generatedDocument.findMany({
-    where: {
-      deal: {
-        status: "CONSUMMATED",
-        updatedAt: { lt: jacketCutoff },
-      },
-    },
-    select: { id: true, valuesSnapshot: true },
-  });
-
-  for (const row of jacketRows) {
-    const snapshot =
-      row.valuesSnapshot && typeof row.valuesSnapshot === "object" && !Array.isArray(row.valuesSnapshot)
-        ? (row.valuesSnapshot as Record<string, unknown>)
-        : {};
-    await prisma.generatedDocument.update({
-      where: { id: row.id },
-      data: {
-        fileUrl: null,
-        valuesSnapshot: {
-          ...snapshot,
-          custodyPurgedAt: new Date().toISOString(),
-          custodyPurgeReason: `Retention met (${DEAL_JACKET_RETENTION_YEARS}y)`,
+  let governingPurged = 0;
+  let jacketPurged = 0;
+  try {
+    const governing = await prisma.authoritativeContract.updateMany({
+      where: {
+        deal: {
+          status: { in: ["AUTHORITATIVE_LOCK", "CONSUMMATED"] },
+          updatedAt: { lt: governingCutoff },
         },
+        signatureStatus: { in: ["SIGNED", "LOCKED"] },
+      },
+      data: {
+        signatureStatus: "PURGED_AFTER_RETENTION",
       },
     });
+    governingPurged = governing.count;
+
+    // Deal jacket retention: strip direct file URL pointers after legal retention window.
+    const jacketRows = await prisma.generatedDocument.findMany({
+      where: {
+        deal: {
+          status: "CONSUMMATED",
+          updatedAt: { lt: jacketCutoff },
+        },
+      },
+      select: { id: true, valuesSnapshot: true },
+    });
+
+    for (const row of jacketRows) {
+      const snapshot =
+        row.valuesSnapshot && typeof row.valuesSnapshot === "object" && !Array.isArray(row.valuesSnapshot)
+          ? (row.valuesSnapshot as Record<string, unknown>)
+          : {};
+      await prisma.generatedDocument.update({
+        where: { id: row.id },
+        data: {
+          fileUrl: null,
+          valuesSnapshot: {
+            ...snapshot,
+            custodyPurgedAt: new Date().toISOString(),
+            custodyPurgeReason: `Retention met (${DEAL_JACKET_RETENTION_YEARS}y)`,
+          },
+        },
+      });
+    }
+    jacketPurged = jacketRows.length;
+  } catch (error) {
+    console.error("[DealSeal] Custodial purge fallback", error);
   }
 
   try {
@@ -314,8 +329,8 @@ export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { 
         title: "SYSTEM_ADMIN",
         metadata: {
           eventType: "CUSTODIAL_PURGE_RUN",
-          governingContractsPurged: governing.count,
-          dealJacketsPurged: jacketRows.length,
+          governingContractsPurged: governingPurged,
+          dealJacketsPurged: jacketPurged,
           governingRetentionYears: GOVERNING_CONTRACT_RETENTION_YEARS,
           dealJacketRetentionYears: DEAL_JACKET_RETENTION_YEARS,
           source: "/admin/system-config",
@@ -329,8 +344,8 @@ export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { 
   return {
     ok: true,
     purged: {
-      governingContracts: governing.count,
-      dealJackets: jacketRows.length,
+      governingContracts: governingPurged,
+      dealJackets: jacketPurged,
     },
   };
 }
