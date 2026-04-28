@@ -25,7 +25,7 @@ const footerColumns: { title: string; links: { label: string; href: string }[] }
   {
     title: "Product",
     links: [
-      { label: "Deal Builder", href: "/dealer/deals/new" },
+      { label: "Deal Builder", href: "/#deal-builder" },
       { label: "Compliance Engine", href: "/ai-checkpoints" },
       { label: "Document Generator", href: "/documents" },
     ],
@@ -33,8 +33,8 @@ const footerColumns: { title: string; links: { label: string; href: string }[] }
   {
     title: "Roles",
     links: [
-      { label: "Dealer Platform", href: "/dealer/dashboard" },
-      { label: "Lender Platform", href: "/lender/dashboard" },
+      { label: "Dealer Platform", href: "/login?next=/dealer/dashboard" },
+      { label: "Lender Platform", href: "/login?next=/lender/dashboard" },
       { label: "Admin Oversight", href: "/login?next=/admin" },
     ],
   },
@@ -179,6 +179,46 @@ export default function HomePage() {
             <Link href="/ai-checkpoints">AI compliance checkpoints</Link>
             <Link href="/records/demo-record-001">Certified rendering demo</Link>
             <Link href="/verify">Verify a record</Link>
+          </div>
+        </section>
+
+        <section
+          id="deal-builder"
+          style={{
+            border: "1px solid #232323",
+            borderRadius: 14,
+            background: "linear-gradient(145deg, #0c0c0c 0%, #050505 100%)",
+            padding: "1.25rem",
+            marginBottom: "2rem",
+          }}
+        >
+          <p style={{ margin: 0, fontSize: "0.75rem", letterSpacing: "0.12em", color: "#dc2626", fontWeight: 700 }}>
+            PRODUCT SPOTLIGHT
+          </p>
+          <h2 style={{ margin: "0.45rem 0 0", fontSize: "1.35rem", color: "#ffffff" }}>
+            Deal Builder: easy to structure, compliant to close, clean to fund
+          </h2>
+          <p style={{ margin: "0.8rem 0 0", color: "#b7b7b7", lineHeight: 1.7 }}>
+            Deal Builder gives dealer teams a single controlled workflow from intake to lender package delivery. It
+            reduces rework, enforces legal and lender requirements before submission, and generates cleaner funding files
+            with audit-backed traceability.
+          </p>
+          <div style={{ marginTop: "1rem", border: "1px solid #232323", borderRadius: 12, background: "#090909", padding: "0.75rem" }}>
+            <Image
+              src="/brand/deal-builder-process.svg"
+              alt="Deal Builder process: intake, compliance checks, document generation, funding-ready package"
+              width={1200}
+              height={520}
+              style={{ width: "100%", height: "auto", borderRadius: 8 }}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "0.65rem", flexWrap: "wrap", marginTop: "0.95rem" }}>
+            <Button href="/login?next=/dealer/deals/new" className="btn">
+              Open Deal Builder
+            </Button>
+            <Button href="/ai-checkpoints" className="btn btn-secondary">
+              View Compliance Engine
+            </Button>
           </div>
         </section>
       </main>

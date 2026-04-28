@@ -5,7 +5,7 @@ import { use } from "react";
 import { usePathname } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 
-const NO_SHELL = new Set(["/", "/login", "/register", "/onboarding", "/about", "/contact", "/status"]);
+const NO_SHELL = new Set(["/", "/login", "/register", "/onboarding", "/about", "/contact", "/status", "/deal-builder"]);
 
 function isLegalPath(p: string): boolean {
   return p.startsWith("/legal/");

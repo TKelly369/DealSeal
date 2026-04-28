@@ -1,0 +1,51 @@
+<svg width="1200" height="520" viewBox="0 0 1200 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="520" rx="20" fill="#070707"/>
+  <rect x="24" y="24" width="1152" height="472" rx="16" fill="#0B0B0B" stroke="#232323"/>
+  <text x="600" y="74" text-anchor="middle" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700">
+    Deal Builder Process
+  </text>
+  <text x="600" y="104" text-anchor="middle" fill="#B7B7B7" font-family="Arial, Helvetica, sans-serif" font-size="16">
+    Easy intake, enforced compliance, clean docs, funding-ready package
+  </text>
+
+  <rect x="72" y="156" width="240" height="250" rx="14" fill="#111111" stroke="#2E2E2E"/>
+  <rect x="122" y="198" width="140" height="88" rx="10" fill="#161616" stroke="#DC2626" stroke-width="2"/>
+  <line x1="142" y1="223" x2="242" y2="223" stroke="#AAAAAA" stroke-width="2"/>
+  <line x1="142" y1="244" x2="242" y2="244" stroke="#AAAAAA" stroke-width="2"/>
+  <line x1="142" y1="265" x2="212" y2="265" stroke="#AAAAAA" stroke-width="2"/>
+  <text x="192" y="330" text-anchor="middle" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">1. Intake</text>
+  <text x="192" y="356" text-anchor="middle" fill="#B8B8B8" font-family="Arial, Helvetica, sans-serif" font-size="14">Buyer, vehicle, lender,</text>
+  <text x="192" y="376" text-anchor="middle" fill="#B8B8B8" font-family="Arial, Helvetica, sans-serif" font-size="14">term structure captured</text>
+
+  <rect x="348" y="156" width="240" height="250" rx="14" fill="#111111" stroke="#2E2E2E"/>
+  <path d="M468 196L514 214V252C514 280 491 304 468 312C445 304 422 280 422 252V214L468 196Z" fill="#161616" stroke="#DC2626" stroke-width="2"/>
+  <path d="M448 246L463 260L489 232" stroke="#A7F3D0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="468" y="330" text-anchor="middle" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">2. Compliance</text>
+  <text x="468" y="356" text-anchor="middle" fill="#B8B8B8" font-family="Arial, Helvetica, sans-serif" font-size="14">State and lender rules</text>
+  <text x="468" y="376" text-anchor="middle" fill="#B8B8B8" font-family="Arial, Helvetica, sans-serif" font-size="14">validated before submit</text>
+
+  <rect x="624" y="156" width="240" height="250" rx="14" fill="#111111" stroke="#2E2E2E"/>
+  <rect x="688" y="194" width="92" height="112" rx="8" fill="#161616" stroke="#DC2626" stroke-width="2"/>
+  <line x1="706" y1="226" x2="762" y2="226" stroke="#AFAFAF" stroke-width="2"/>
+  <line x1="706" y1="246" x2="762" y2="246" stroke="#AFAFAF" stroke-width="2"/>
+  <line x1="706" y1="266" x2="748" y2="266" stroke="#AFAFAF" stroke-width="2"/>
+  <rect x="704" y="280" width="50" height="8" rx="4" fill="#DC2626"/>
+  <text x="744" y="330" text-anchor="middle" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">3. Documents</text>
+  <text x="744" y="356" text-anchor="middle" fill="#B8B8B8" font-family="Arial, Helvetica, sans-serif" font-size="14">Controlled templates</text>
+  <text x="744" y="376" text-anchor="middle" fill="#B8B8B8" font-family="Arial, Helvetica, sans-serif" font-size="14">generate clean records</text>
+
+  <rect x="900" y="156" width="240" height="250" rx="14" fill="#111111" stroke="#2E2E2E"/>
+  <rect x="958" y="208" width="124" height="80" rx="12" fill="#161616" stroke="#DC2626" stroke-width="2"/>
+  <path d="M982 208V194C982 181 993 170 1006 170H1034C1047 170 1058 181 1058 194V208" stroke="#CFCFCF" stroke-width="3"/>
+  <path d="M994 247L1012 264L1046 232" stroke="#A7F3D0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1020" y="330" text-anchor="middle" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">4. Funding Ready</text>
+  <text x="1020" y="356" text-anchor="middle" fill="#B8B8B8" font-family="Arial, Helvetica, sans-serif" font-size="14">Audit-backed package</text>
+  <text x="1020" y="376" text-anchor="middle" fill="#B8B8B8" font-family="Arial, Helvetica, sans-serif" font-size="14">prepared for lender review</text>
+
+  <path d="M316 280H340" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+  <path d="M592 280H616" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+  <path d="M868 280H892" stroke="#DC2626" stroke-width="4" stroke-linecap="round"/>
+  <path d="M334 270L348 280L334 290" stroke="#DC2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M610 270L624 280L610 290" stroke="#DC2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M886 270L900 280L886 290" stroke="#DC2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
