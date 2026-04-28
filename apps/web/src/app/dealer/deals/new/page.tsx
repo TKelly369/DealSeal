@@ -11,7 +11,13 @@ export default async function DealerDealBuilderPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/dealer/deals/new");
   const dealerId = session.user.workspaceId;
-  const links = await DealerLenderLinkService.getActiveLinksForDealer(dealerId);
+  let links: Awaited<ReturnType<typeof DealerLenderLinkService.getActiveLinksForDealer>> = [];
+  try {
+    links = await DealerLenderLinkService.getActiveLinksForDealer(dealerId);
+  } catch (e) {
+    // Keep page render resilient when Prisma/database is temporarily unavailable.
+    console.error("[DealSeal] DealerDealBuilderPage: failed to load lender links", e);
+  }
 
   return (
     <DealBuilderClient
