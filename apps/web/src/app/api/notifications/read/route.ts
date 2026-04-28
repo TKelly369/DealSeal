@@ -7,13 +7,18 @@ export async function POST(req: Request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await req.json().catch(() => ({}))) as { ids?: string[]; all?: boolean };
-  const scoped = await NotificationService.getNotificationsForWorkspace(
-    session.user.workspaceId,
-    session.user.id,
-  );
-  const ids = body.all ? scoped.records.map((n) => n.id) : body.ids ?? [];
-  const result = await NotificationService.markAsRead(ids, session.user.workspaceId, session.user.id);
-  return Response.json({ updated: result.count });
+  try {
+    const body = (await req.json().catch(() => ({}))) as { ids?: string[]; all?: boolean };
+    const scoped = await NotificationService.getNotificationsForWorkspace(
+      session.user.workspaceId,
+      session.user.id,
+    );
+    const ids = body.all ? scoped.records.map((n) => n.id) : body.ids ?? [];
+    const result = await NotificationService.markAsRead(ids, session.user.workspaceId, session.user.id);
+    return Response.json({ updated: result.count });
+  } catch (e) {
+    console.error("[DealSeal] notifications read fallback: database unavailable", e);
+    return Response.json({ updated: 0 });
+  }
 }
 

@@ -53,6 +53,13 @@ function nextWithPathname(req: NextRequest, pathname: string) {
   return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
+function roleHomePath(role: string | undefined): string {
+  if (role === "DEALER_ADMIN" || role === "USER") return "/dealer/dashboard";
+  if (role === "LENDER_ADMIN") return "/lender/dashboard";
+  if (role === "ADMIN" || role === "PLATFORM_ADMIN") return "/admin";
+  return "/dashboard";
+}
+
 export default auth(async (req) => {
   const { nextUrl } = req;
   const pathname = nextUrl.pathname;
@@ -82,7 +89,9 @@ export default auth(async (req) => {
   if (pathname === "/login" && req.auth?.user) {
     const hasIdentity = req.cookies.get("ds_identity_ok")?.value === "1";
     if (hasIdentity) {
-      return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
+      const requestedNext = nextUrl.searchParams.get("next");
+      const safeNext = requestedNext && requestedNext.startsWith("/") ? requestedNext : roleHomePath(req.auth.user.role);
+      return NextResponse.redirect(new URL(safeNext, nextUrl.origin));
     }
     return NextResponse.next();
   }

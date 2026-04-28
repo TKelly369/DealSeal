@@ -7,10 +7,15 @@ export async function GET() {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const result = await NotificationService.getNotificationsForWorkspace(
-    session.user.workspaceId,
-    session.user.id,
-  );
-  return Response.json(result);
+  try {
+    const result = await NotificationService.getNotificationsForWorkspace(
+      session.user.workspaceId,
+      session.user.id,
+    );
+    return Response.json(result);
+  } catch (e) {
+    console.error("[DealSeal] notifications GET fallback: database unavailable", e);
+    return Response.json({ unreadCount: 0, records: [] });
+  }
 }
 
