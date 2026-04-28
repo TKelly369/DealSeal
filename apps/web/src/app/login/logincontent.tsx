@@ -6,11 +6,14 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { resolvePostLoginDestination } from "./actions";
+import { beginLoginAuditTrail, resolvePostLoginDestination } from "./actions";
 
 const LoginSchema = z.object({
   email: z.string().email("Enter a valid email"),
   password: z.string().min(1, "Password is required"),
+  fullName: z.string().min(1, "Full name is required"),
+  title: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 type LoginInput = z.infer<typeof LoginSchema>;
@@ -34,7 +37,13 @@ export default function LoginContent() {
   const router = useRouter();
   const sp = useSearchParams();
   const { register, handleSubmit, setValue } = useForm<LoginInput>({
-    defaultValues: { email: "user@dealseal1.com", password: "dealseal123" },
+    defaultValues: {
+      email: "user@dealseal1.com",
+      password: "dealseal123",
+      fullName: "",
+      title: "",
+      phone: "",
+    },
   });
 
   const onSubmit = handleSubmit(async (values) => {
@@ -70,13 +79,25 @@ export default function LoginContent() {
     }
     const requestedNext = sp.get("next");
     const nextPath = await resolvePostLoginDestination(requestedNext);
-    router.replace(`/session-identity?next=${encodeURIComponent(nextPath)}`);
+    const auditResult = await beginLoginAuditTrail({
+      fullName: parsed.data.fullName,
+      title: parsed.data.title,
+      phone: parsed.data.phone,
+      loginPath: nextPath,
+    });
+    if (!auditResult.ok) {
+      setError(auditResult.error);
+      return;
+    }
+    router.replace(nextPath);
   });
 
   return (
     <div className="card" style={{ width: "100%", maxWidth: 420, margin: "3rem auto" }}>
       <h1 style={{ marginTop: 0 }}>Sign in</h1>
-      <p style={{ color: "var(--muted)", marginTop: 0 }}>Use scaffold credentials to enter your workspace.</p>
+      <p style={{ color: "var(--muted)", marginTop: 0 }}>
+        Confirm identity and sign in on one screen to begin the audit trail.
+      </p>
       <div className="row" style={{ marginBottom: "0.75rem", gap: "0.35rem" }}>
         <button type="button" className="btn btn-secondary" onClick={() => {
           setValue("email", "dealer.admin@dealseal1.com");
@@ -111,6 +132,18 @@ export default function LoginContent() {
         <label style={{ display: "grid", gap: 6, color: "var(--text-secondary)", fontSize: 14 }}>
           Password
           <input type="password" {...register("password")} />
+        </label>
+        <label style={{ display: "grid", gap: 6, color: "var(--text-secondary)", fontSize: 14 }}>
+          Full name
+          <input type="text" {...register("fullName")} />
+        </label>
+        <label style={{ display: "grid", gap: 6, color: "var(--text-secondary)", fontSize: 14 }}>
+          Title / role
+          <input type="text" {...register("title")} placeholder="Finance Manager, F&I, Compliance Officer..." />
+        </label>
+        <label style={{ display: "grid", gap: 6, color: "var(--text-secondary)", fontSize: 14 }}>
+          Direct phone
+          <input type="text" {...register("phone")} placeholder="+1 (555) 555-5555" />
         </label>
         {error ? (
           <p style={{ margin: 0, color: "#fecaca", border: "1px solid var(--danger)", padding: "0.5rem", borderRadius: 8 }}>

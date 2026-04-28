@@ -78,9 +78,13 @@ export default auth(async (req) => {
     return NextResponse.next();
   }
 
-  // 2) Logged-in users hitting the main sign-in page are sent to the app (exact /login only).
+  // 2) Logged-in users hitting /login are sent to app only after identity is confirmed.
   if (pathname === "/login" && req.auth?.user) {
-    return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
+    const hasIdentity = req.cookies.get("ds_identity_ok")?.value === "1";
+    if (hasIdentity) {
+      return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
+    }
+    return NextResponse.next();
   }
 
   // 3) App shell routes: role checks, session-identity, admin splits.
@@ -99,12 +103,12 @@ export default auth(async (req) => {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isProtected && pathname !== "/session-identity") {
+  if (isProtected) {
     const hasIdentity = req.cookies.get("ds_identity_ok")?.value === "1";
     if (!hasIdentity) {
-      const identityUrl = new URL("/session-identity", nextUrl.origin);
-      identityUrl.searchParams.set("next", pathname);
-      return NextResponse.redirect(identityUrl);
+      const loginUrl = new URL("/login", nextUrl.origin);
+      loginUrl.searchParams.set("next", pathname);
+      return NextResponse.redirect(loginUrl);
     }
   }
 

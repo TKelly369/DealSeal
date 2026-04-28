@@ -35,7 +35,7 @@ const footerColumns: { title: string; links: { label: string; href: string }[] }
     links: [
       { label: "Dealer Platform", href: "/dealer/dashboard" },
       { label: "Lender Platform", href: "/lender/dashboard" },
-      { label: "Admin Oversight", href: "/admin" },
+      { label: "Admin Oversight", href: "/login?next=/admin" },
     ],
   },
   {
@@ -133,10 +133,10 @@ export default function HomePage() {
               gap: "0.85rem",
             }}
           >
-            <Button href="/onboarding?role=dealer" className="btn">
+            <Button href="/login?next=/dealer/dashboard" className="btn">
               For Dealers
             </Button>
-            <Button href="/onboarding?role=lender" className="btn btn-secondary">
+            <Button href="/login?next=/lender/dashboard" className="btn btn-secondary">
               For Lenders
             </Button>
           </div>
