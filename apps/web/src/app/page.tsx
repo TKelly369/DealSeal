@@ -3,16 +3,24 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import LiveDateTime24h from "./LiveDateTime24h";
 
-const valueCards = [
+const valueCards: {
+  title: string;
+  headline: string;
+  body: string;
+  /** Combined login then route to the correct platform */
+  href?: string;
+}[] = [
   {
     title: "Dealers",
     headline: "Close Cleaner Deals.",
     body: "AI-guided workflows ensure every contract is state-specific, lender-compliant, and fundable before you submit.",
+    href: "/login?next=/dealer/dashboard",
   },
   {
     title: "Lenders",
     headline: "Fund with Surety.",
     body: "Verified authoritative contracts, clean assignment trails, and integrated funding validation certificates reduce post-funding legal risk.",
+    href: "/login?next=/lender/dashboard",
   },
   {
     title: "Consumers",
@@ -150,23 +158,51 @@ export default function HomePage() {
             marginBottom: "2.5rem",
           }}
         >
-          {valueCards.map((card) => (
-            <div
-              key={card.title}
-              style={{
-                border: "1px solid #2a2a2a",
-                borderRadius: "12px",
-                padding: "1.35rem 1.2rem",
-                background: "linear-gradient(145deg, #0c0c0c 0%, #050505 100%)",
-              }}
-            >
-              <p style={{ margin: 0, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.14em", color: "#dc2626" }}>
-                {card.title.toUpperCase()}
-              </p>
-              <h2 style={{ margin: "0.5rem 0 0", fontSize: "1.15rem", color: "#ffffff" }}>{card.headline}</h2>
-              <p style={{ margin: "0.65rem 0 0", color: "#b0b0b0", fontSize: "0.92rem", lineHeight: 1.65 }}>{card.body}</p>
-            </div>
-          ))}
+          {valueCards.map((card) => {
+            const inner = (
+              <>
+                <p style={{ margin: 0, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.14em", color: "#dc2626" }}>
+                  {card.title.toUpperCase()}
+                </p>
+                <h2 style={{ margin: "0.5rem 0 0", fontSize: "1.15rem", color: "#ffffff" }}>{card.headline}</h2>
+                <p style={{ margin: "0.65rem 0 0", color: "#b0b0b0", fontSize: "0.92rem", lineHeight: 1.65 }}>{card.body}</p>
+                {card.href ? (
+                  <p style={{ margin: "0.75rem 0 0", fontSize: "0.82rem", color: "#dc2626", fontWeight: 600 }}>
+                    Sign in to {card.title.toLowerCase()} platform →
+                  </p>
+                ) : null}
+              </>
+            );
+            const shellStyle = {
+              border: "1px solid #2a2a2a",
+              borderRadius: "12px",
+              padding: "1.35rem 1.2rem",
+              background: "linear-gradient(145deg, #0c0c0c 0%, #050505 100%)",
+            } as const;
+            if (card.href) {
+              return (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  aria-label={`Sign in, then go to ${card.title.toLowerCase()} platform`}
+                  style={{
+                    ...shellStyle,
+                    display: "block",
+                    textDecoration: "none",
+                    color: "inherit",
+                    outlineOffset: 4,
+                  }}
+                >
+                  {inner}
+                </Link>
+              );
+            }
+            return (
+              <div key={card.title} style={shellStyle}>
+                {inner}
+              </div>
+            );
+          })}
         </section>
 
         <section className="card" style={{ marginBottom: "2rem" }}>

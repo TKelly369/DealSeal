@@ -117,23 +117,31 @@ type ResolvePostLoginInput = {
  */
 export async function resolvePostLoginDestinationForSession(input: ResolvePostLoginInput): Promise<string> {
   const raw = input.requestedNext?.trim() || "";
-  const next = raw.startsWith("/") ? raw : "";
-
-  const isGenericDealerEntry =
-    !next ||
-    next === "/dashboard" ||
-    next === "/dealer/dashboard" ||
-    next === "/dealer/onboarding";
-
-  const isGenericLenderEntry =
-    !next ||
-    next === "/dashboard" ||
-    next === "/lender/dashboard" ||
-    next === "/lender/onboarding";
+  let next = raw.startsWith("/") ? raw : "";
 
   try {
     const wsType = await getWorkspaceType(input.workspaceId);
     const owner = await isWorkspaceOwner(input.userId, input.workspaceId);
+
+    // Landing "Dealers" vs "Lenders" tabs: if the signed-in workspace is the other platform, snap to the correct home
+    // so users are not left on the wrong shell after login.
+    if (wsType === "DEALERSHIP" && next.startsWith("/lender")) {
+      next = "/dealer/dashboard";
+    } else if (wsType === "LENDER" && next.startsWith("/dealer")) {
+      next = "/lender/dashboard";
+    }
+
+    const isGenericDealerEntry =
+      !next ||
+      next === "/dashboard" ||
+      next === "/dealer/dashboard" ||
+      next === "/dealer/onboarding";
+
+    const isGenericLenderEntry =
+      !next ||
+      next === "/dashboard" ||
+      next === "/lender/dashboard" ||
+      next === "/lender/onboarding";
 
     if (
       wsType === "DEALERSHIP" &&
