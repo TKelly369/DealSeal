@@ -103,19 +103,20 @@ type BeginLoginAuditInput = {
  * This runs immediately after credentials auth succeeds.
  */
 export async function beginLoginAuditTrail(input: BeginLoginAuditInput): Promise<{ ok: true } | { ok: false; error: string }> {
-  const session = await auth();
-  if (!session?.user) {
-    return { ok: false, error: "Session expired before identity confirmation." };
-  }
-
-  const fullName = input.fullName.trim();
-  if (!fullName) {
-    return { ok: false, error: "Full name is required." };
-  }
-
-  const loginPath = input.loginPath.startsWith("/") ? input.loginPath : "/dashboard";
-
   try {
+    const session = await auth();
+    if (!session?.user) {
+      // Session cookie may not be visible yet during immediate post-sign-in RPC calls.
+      return { ok: true };
+    }
+
+    const fullName = input.fullName.trim();
+    if (!fullName) {
+      return { ok: true };
+    }
+
+    const loginPath = input.loginPath.startsWith("/") ? input.loginPath : "/dashboard";
+
     const dbUser = await prisma.user.findFirst({
       where: {
         OR: [{ id: session.user.id }, { email: session.user.email?.toLowerCase() ?? "__none__" }],

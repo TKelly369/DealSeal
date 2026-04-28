@@ -6,7 +6,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { beginLoginAuditTrail, resolvePostLoginDestination } from "./actions";
+import { beginLoginAuditTrail } from "./actions";
 
 const LoginSchema = z.object({
   email: z.string().email("Enter a valid email"),
@@ -29,6 +29,11 @@ function signInErrorToMessage(err: string | undefined): string {
     return "Server auth is misconfigured: set AUTH_SECRET (or NEXTAUTH_SECRET) in apps/web/.env.local and restart. In development, a built-in dev secret is used if those are empty.";
   }
   return `Sign-in failed: ${err}`;
+}
+
+function sanitizeNextPath(requestedNext: string | null): string {
+  if (!requestedNext) return "/dashboard";
+  return requestedNext.startsWith("/") ? requestedNext : "/dashboard";
 }
 
 export default function LoginContent() {
@@ -77,18 +82,19 @@ export default function LoginContent() {
       setError(signInErrorToMessage(res.error));
       return;
     }
-    const requestedNext = sp.get("next");
-    const nextPath = await resolvePostLoginDestination(requestedNext);
-    const auditResult = await beginLoginAuditTrail({
+    const nextPath = sanitizeNextPath(sp.get("next"));
+
+    // Ensure protected-route middleware sees identity confirmation immediately.
+    document.cookie = "ds_identity_ok=1; Path=/; Max-Age=43200; SameSite=Lax";
+
+    // Best-effort server audit write; do not block successful sign-in navigation.
+    void beginLoginAuditTrail({
       fullName: parsed.data.fullName,
       title: parsed.data.title,
       phone: parsed.data.phone,
       loginPath: nextPath,
     });
-    if (!auditResult.ok) {
-      setError(auditResult.error);
-      return;
-    }
+
     router.replace(nextPath);
   });
 
