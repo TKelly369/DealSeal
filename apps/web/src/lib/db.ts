@@ -1,9 +1,64 @@
-import { PrismaClient } from "@/generated/prisma";
+import { Prisma, PrismaClient } from "@/generated/prisma";
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+const globalForPrisma = globalThis as unknown as {
+  prismaBase?: PrismaClient;
+  prismaWithRetry?: PrismaClient;
+};
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isTransientPrismaError(error: unknown): boolean {
+  if (error instanceof Prisma.PrismaClientInitializationError) {
+    return true;
+  }
+
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    return ["P1001", "P1002", "P1017"].includes(error.code);
+  }
+
+  const message = error instanceof Error ? error.message : "";
+  return /prisma|database|connection|timed out|can't reach database server/i.test(message);
+}
+
+const prismaBase =
+  globalForPrisma.prismaBase ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
+  });
+
+const prismaWithRetry =
+  globalForPrisma.prismaWithRetry ??
+  (prismaBase.$extends({
+      query: {
+        $allModels: {
+          async $allOperations({ model, operation, args, query }) {
+            const maxAttempts = 3;
+            for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+              try {
+                return await query(args);
+              } catch (error) {
+                const canRetry = attempt < maxAttempts && isTransientPrismaError(error);
+                if (!canRetry) {
+                  throw error;
+                }
+                const waitMs = 125 * attempt;
+                console.warn(
+                  `[DealSeal] Prisma retry ${attempt}/${maxAttempts - 1} for ${model ?? "raw"}.${operation} after transient error`,
+                );
+                await sleep(waitMs);
+              }
+            }
+            return query(args);
+          }
+        },
+      },
+  }) as unknown as PrismaClient);
+
+export const prisma = prismaWithRetry;
 
 if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+  globalForPrisma.prismaBase = prismaBase;
+  globalForPrisma.prismaWithRetry = prismaWithRetry;
 }
