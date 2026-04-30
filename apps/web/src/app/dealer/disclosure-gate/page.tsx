@@ -11,15 +11,27 @@ export default async function DealerDisclosureGatePage() {
   if (!session?.user) redirect("/dealer/login?next=/dealer/disclosure-gate");
 
   const unlocked = await hasUploadedDealerOpeningDisclosure(session.user.workspaceId);
-  const profile = await prisma.dealerProfile.findUnique({
-    where: { workspaceId: session.user.workspaceId },
-    select: {
-      openingDisclosureUploadedAt: true,
-      openingDisclosureOriginalName: true,
-      openingDisclosureSha256: true,
-      openingDisclosureStorageKey: true,
-    },
-  });
+  let profile:
+    | {
+        openingDisclosureUploadedAt: Date | null;
+        openingDisclosureOriginalName: string | null;
+        openingDisclosureSha256: string | null;
+        openingDisclosureStorageKey: string | null;
+      }
+    | null = null;
+  try {
+    profile = await prisma.dealerProfile.findUnique({
+      where: { workspaceId: session.user.workspaceId },
+      select: {
+        openingDisclosureUploadedAt: true,
+        openingDisclosureOriginalName: true,
+        openingDisclosureSha256: true,
+        openingDisclosureStorageKey: true,
+      },
+    });
+  } catch (error) {
+    console.error("[DealSeal] disclosure-gate profile read failed (degraded mode)", error);
+  }
 
   return (
     <div className="ds-section-shell">
