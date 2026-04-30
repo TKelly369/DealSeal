@@ -69,6 +69,7 @@ export const AiDealOrchestratorService = {
             valuesSnapshot: {
               aiGenerated: true,
               generationStage: "PRE_LENDER_APPROVAL_ESTIMATE",
+              folderBucket: "UNSIGNED_DEMO",
               stateProfile: deal.governingStateProfile ?? {},
               uccAware: true,
               sourceInputs: {

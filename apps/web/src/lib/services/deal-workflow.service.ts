@@ -20,6 +20,33 @@ type DisclosureMetadataInput = {
   fileName: string;
 };
 
+type DealerFolderBucket = "UNSIGNED_DEMO" | "OFFICIAL_SIGNED" | "PROBLEM_REVIEW";
+
+function folderBucketForDocType(documentType: DocumentType): DealerFolderBucket {
+  if (
+    documentType === "RISC_SIGNED" ||
+    documentType === "RISC_LENDER_FINAL" ||
+    documentType === "UCSP_CLOSING_MANIFEST" ||
+    documentType === "BMV_LIEN_CERT"
+  ) {
+    return "OFFICIAL_SIGNED";
+  }
+  if (
+    documentType === "INITIAL_DISCLOSURE_SIGNED" ||
+    documentType === "RISC_UNSIGNED" ||
+    documentType === "DEALER_UPLOAD" ||
+    documentType === "INSURANCE" ||
+    documentType === "CREDIT_REPORT_UPLOAD" ||
+    documentType === "UCSP_BUYERS_ORDER" ||
+    documentType === "UCSP_STATE_DISCLOSURE" ||
+    documentType === "UCSP_ASSIGNMENT" ||
+    documentType === "UCSP_TITLE_APPLICATION"
+  ) {
+    return "UNSIGNED_DEMO";
+  }
+  return "PROBLEM_REVIEW";
+}
+
 function legacyTypeFor(dt: DocumentType): GeneratedDocumentType {
   switch (dt) {
     case "INITIAL_DISCLOSURE_SIGNED":
@@ -223,6 +250,7 @@ export const DealWorkflowService = {
           valuesSnapshot: {
             title: "DealSeal Initial Disclosure",
             immutable: true,
+            folderBucket: folderBucketForDocType("INITIAL_DISCLOSURE_SIGNED"),
             signerName,
             dateSigned: signedAt.toISOString(),
             uploadUserId: userId,
@@ -308,6 +336,7 @@ export const DealWorkflowService = {
             originalFileName: input.fileName,
             signatureState: "UNSIGNED",
             pricingState: "ESTIMATED_PRE_SIGNATURE",
+            folderBucket: folderBucketForDocType(docType),
             ...(docType === "CREDIT_REPORT_UPLOAD"
               ? { dealerUploadCategory: "CREDIT_REPORT", note: "Dealer-uploaded; DealSeal does not pull credit." }
               : {}),
@@ -325,6 +354,54 @@ export const DealWorkflowService = {
           documentType: docType,
           fileUrl,
           ...(docType === "CREDIT_REPORT_UPLOAD" ? { creditReportUpload: true } : {}),
+        },
+      });
+
+      return doc;
+    });
+  },
+
+  async uploadAdditionalDisclosureCopy(
+    dealId: string,
+    input: { fileName: string },
+    userId: string,
+    actorRole: string,
+  ) {
+    return prisma.$transaction(async (tx) => {
+      const deal = await tx.deal.findUnique({ where: { id: dealId } });
+      if (!deal) throw new Error("Deal not found.");
+
+      const version = await nextDocVersion(dealId, "INITIAL_DISCLOSURE_SIGNED");
+      const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]/g, "_") || "initial-disclosure-signed.pdf";
+      const fileUrl = `/mock-uploads/${dealId}/initial-disclosure-copy-v${version}-${safeName}`;
+      const doc = await tx.generatedDocument.create({
+        data: {
+          dealId,
+          authoritativeContractId: null,
+          type: "INITIAL_DISCLOSURE",
+          documentType: "INITIAL_DISCLOSURE_SIGNED",
+          fileUrl,
+          version,
+          valuesSnapshot: {
+            title: "DealSeal Initial Disclosure (additional copy)",
+            folderBucket: folderBucketForDocType("INITIAL_DISCLOSURE_SIGNED"),
+            supplementalUpload: true,
+            uploadUserId: userId,
+            uploadedAt: new Date().toISOString(),
+          },
+        },
+      });
+
+      await logCustody(tx, {
+        dealId,
+        documentId: doc.id,
+        eventType: "UPLOADED",
+        actorUserId: userId,
+        actorRole,
+        metadata: {
+          event: "DISCLOSURE_COPY_UPLOADED",
+          documentType: "INITIAL_DISCLOSURE_SIGNED",
+          fileUrl,
         },
       });
 
@@ -362,6 +439,7 @@ export const DealWorkflowService = {
             originalFileName: input.fileName,
             signatureState: "UNSIGNED",
             pricingState: "ESTIMATED_PRE_SIGNATURE",
+            folderBucket: folderBucketForDocType("RISC_UNSIGNED"),
           },
         },
       });
@@ -408,6 +486,7 @@ export const DealWorkflowService = {
           valuesSnapshot: {
             label: "MOCK-UP - FOR REVIEW ONLY - NOT FOR SIGNATURE",
             generatedAt: new Date().toISOString(),
+            folderBucket: "UNSIGNED_DEMO",
           },
         },
       });
@@ -445,6 +524,7 @@ export const DealWorkflowService = {
             securityAgreementSummary: "Retail installment security interest in the described vehicle collateral.",
             signatureState: "UNSIGNED_AWAITING_EXECUTION",
             aiPackageReconciliation: "PENDING",
+            folderBucket: folderBucketForDocType("RISC_LENDER_FINAL"),
           },
         },
       });
@@ -614,6 +694,7 @@ export const DealWorkflowService = {
           valuesSnapshot: {
             originalFileName: input.fileName,
             authoritativeHash: authoritativeContractHash,
+            folderBucket: folderBucketForDocType("RISC_SIGNED"),
           },
         },
       });
@@ -660,6 +741,7 @@ export const DealWorkflowService = {
               acknowledgmentRequired: true,
               generatedAt: new Date().toISOString(),
               changeSummaryHash,
+              folderBucket: "PROBLEM_REVIEW",
             } as Prisma.InputJsonValue,
           },
         });
@@ -880,6 +962,7 @@ export const DealWorkflowService = {
           version: (finalRiscVersion._max.version ?? 0) + 1,
           isAuthoritative: true,
           authoritativeContractHash: hash,
+          valuesSnapshot: { folderBucket: "OFFICIAL_SIGNED", generatedFrom: "lender_final_approval" },
         },
       });
 
@@ -897,6 +980,7 @@ export const DealWorkflowService = {
           version: (finalPkgVersion._max.version ?? 0) + 1,
           isAuthoritative: true,
           authoritativeContractHash: hash,
+          valuesSnapshot: { folderBucket: "OFFICIAL_SIGNED", generatedFrom: "coordinated_final_package" },
         },
       });
 
@@ -939,7 +1023,7 @@ export const DealWorkflowService = {
           documentType: "DEALER_UPLOAD",
           fileUrl,
           version,
-          valuesSnapshot: { executedPackage: true, fileName: input.fileName },
+          valuesSnapshot: { executedPackage: true, fileName: input.fileName, folderBucket: "OFFICIAL_SIGNED" },
         },
       });
       await logCustody(tx, {

@@ -14,6 +14,7 @@ import {
   generateFinalOfficialPackageFormAction,
   resubmitAfterCounterFormAction,
   signDisclosureOnlineFormAction,
+  uploadAdditionalDisclosureCopyFormAction,
   uploadGreenStageDocAction,
   uploadExecutedFinalPackageFormAction,
   uploadSignedRISCAction,
@@ -139,6 +140,10 @@ export function DealFlowClient({
   onRequestCommentOnEntity?: (entityType: string, entityId: string) => void;
 }) {
   const [printedExplained, setPrintedExplained] = useState(false);
+  const disclosureDocs = deal.documents
+    .filter((d) => d.documentType === "INITIAL_DISCLOSURE_SIGNED")
+    .sort((a, b) => b.version - a.version);
+  const latestDisclosure = disclosureDocs[0];
   const finalRisc = deal.documents
     .filter((d) => d.documentType === "RISC_LENDER_FINAL")
     .sort((a, b) => b.version - a.version)[0];
@@ -371,6 +376,21 @@ export function DealFlowClient({
           <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
             Deal cannot proceed to lender review until this initial disclosure is signed.
           </p>
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.75rem" }}>
+            <a
+              href={`/api/deals/${deal.dealId}/disclosure-printable`}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-secondary"
+            >
+              View / print disclosure
+            </a>
+            {latestDisclosure?.fileUrl ? (
+              <a href={latestDisclosure.fileUrl} target="_blank" rel="noreferrer" className="btn btn-secondary">
+                Open last uploaded disclosure
+              </a>
+            ) : null}
+          </div>
           <form action={signDisclosureOnlineFormAction} style={{ marginBottom: "0.75rem" }}>
             <input type="hidden" name="dealId" value={deal.dealId} />
             <button type="submit" className="btn">
@@ -427,6 +447,31 @@ export function DealFlowClient({
           <Link href={`/dealer/deals/${deal.dealId}/review`} style={{ fontSize: "0.82rem", marginTop: "0.5rem", display: "inline-block" }}>
             Open detailed review
           </Link>
+          <div style={{ marginTop: "0.75rem", display: "grid", gap: "0.45rem" }}>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              <a
+                href={`/api/deals/${deal.dealId}/disclosure-printable`}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-secondary"
+                style={{ fontSize: "0.82rem" }}
+              >
+                View / print disclosure
+              </a>
+              {latestDisclosure?.fileUrl ? (
+                <a href={latestDisclosure.fileUrl} target="_blank" rel="noreferrer" className="btn btn-secondary" style={{ fontSize: "0.82rem" }}>
+                  Open signed disclosure copy
+                </a>
+              ) : null}
+            </div>
+            <form action={uploadAdditionalDisclosureCopyFormAction} style={{ display: "flex", gap: "0.45rem", alignItems: "center", flexWrap: "wrap" }}>
+              <input type="hidden" name="dealId" value={deal.dealId} />
+              <input type="file" name="file" required />
+              <button type="submit" className="btn btn-secondary" style={{ fontSize: "0.82rem" }}>
+                <SubmitLabel idle="Upload signed disclosure copy" />
+              </button>
+            </form>
+          </div>
         </section>
       )}
 

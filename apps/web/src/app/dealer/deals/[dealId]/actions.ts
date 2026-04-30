@@ -43,6 +43,17 @@ export async function signDisclosureOnlineFormAction(formData: FormData) {
   revalidatePath(`/dealer/deals/${dealId}`);
 }
 
+export async function uploadAdditionalDisclosureCopyFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const file = formData.get("file");
+  const fileName = file instanceof File && file.name ? file.name : "initial-disclosure-signed-copy.pdf";
+  await requireDealerDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await DealWorkflowService.uploadAdditionalDisclosureCopy(dealId, { fileName }, session.user.id, session.user.role);
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
 export async function uploadGreenStageDocAction(formData: FormData) {
   const dealId = String(formData.get("dealId") || "");
   const docType = String(formData.get("docType") || "");
