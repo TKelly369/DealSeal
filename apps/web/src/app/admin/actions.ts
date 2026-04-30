@@ -50,6 +50,25 @@ async function requireAdminSession() {
   return session;
 }
 
+async function notifyManagementForPurgeApproval(args: {
+  workspaceId: string;
+  purgeJobId: string;
+  scheduledAt: Date;
+  legalHoldUntil: Date | null;
+  regulatoryDeadlineAt: Date | null;
+  requestedBy?: string;
+}) {
+  await prisma.notification.create({
+    data: {
+      workspaceId: args.workspaceId,
+      type: "PURGE_APPROVAL_REQUIRED",
+      title: "Management approval required for purge",
+      message: `Purge job ${args.purgeJobId} is pending management authority. Scheduled ${args.scheduledAt.toISOString()}, legal hold until ${args.legalHoldUntil?.toISOString() ?? "n/a"}, regulatory deadline ${args.regulatoryDeadlineAt?.toISOString() ?? "n/a"}, requested by ${args.requestedBy ?? "unknown"}.`,
+      isRead: false,
+    },
+  });
+}
+
 const MOCK_USERS: AdminUserRow[] = Array.from({ length: 50 }).map((_, i) => ({
   id: `usr-${i + 1}`,
   name: `Operator ${i + 1}`,
@@ -207,6 +226,9 @@ export type CustodialPerformanceReport = {
   };
   purgeJobs: {
     scheduled: number;
+    pendingApproval: number;
+    approved: number;
+    rejected: number;
     running: number;
     failed: number;
     completed: number;
@@ -225,6 +247,9 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
   let eligibleGoverningContracts = 0;
   let eligibleDealJackets = 0;
   let scheduled = 0;
+  let pendingApproval = 0;
+  let approved = 0;
+  let rejected = 0;
   let running = 0;
   let failed = 0;
   let completed = 0;
@@ -235,6 +260,9 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
       eligibleGoverningContracts,
       eligibleDealJackets,
       scheduled,
+      pendingApproval,
+      approved,
+      rejected,
       running,
       failed,
       completed,
@@ -266,6 +294,9 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
           },
         }),
         prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, status: "SCHEDULED" } }),
+        prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, approvalStatus: "PENDING" } }),
+        prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, approvalStatus: "APPROVED" } }),
+        prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, approvalStatus: "REJECTED" } }),
         prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, status: "RUNNING" } }),
         prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, status: "FAILED" } }),
         prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, status: "COMPLETED" } }),
@@ -289,6 +320,9 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
     },
     purgeJobs: {
       scheduled,
+      pendingApproval,
+      approved,
+      rejected,
       running,
       failed,
       completed,
@@ -298,6 +332,20 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
 
 export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { governingContracts: number; dealJackets: number } }> {
   const session = await requireAdminSession();
+  const now = new Date();
+  const jobToRun = await prisma.purgeJob.findFirst({
+    where: {
+      workspaceId: session.user.workspaceId,
+      status: "SCHEDULED",
+      approvalStatus: "APPROVED",
+      scheduledAt: { lte: now },
+      OR: [{ legalHoldUntil: null }, { legalHoldUntil: { lte: now } }],
+    },
+    orderBy: { scheduledAt: "asc" },
+  });
+  if (!jobToRun) {
+    throw new Error("No management-approved purge job is eligible to run yet.");
+  }
   const policies = await EVaultRetentionService.listPolicies(session.user.workspaceId);
   const governingYears = policies.find((p) => p.recordClass === "GOVERNING_CONTRACT")?.retentionYears ?? 10;
   const jacketYears = policies.find((p) => p.recordClass === "DEAL_JACKET")?.retentionYears ?? 7;
@@ -309,13 +357,15 @@ export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { 
   let jacketPurged = 0;
   let failed = false;
   let errorMessage: string | null = null;
-  const purgeJob = await prisma.purgeJob.create({
+  const purgeJob = await prisma.purgeJob.update({
+    where: { id: jobToRun.id },
     data: {
-      workspaceId: session.user.workspaceId,
-      scheduledAt: new Date(),
       startedAt: new Date(),
       status: "RUNNING",
-      initiatedByUserId: session.user.id,
+      summary: {
+        ...(typeof jobToRun.summary === "object" && jobToRun.summary ? jobToRun.summary : {}),
+        executionStartedBy: session.user.id,
+      },
     },
   });
   try {
@@ -434,11 +484,63 @@ export async function scheduleCustodialPurgeRun(input: { scheduledAt: string; dr
   const session = await requireAdminSession();
   const when = new Date(input.scheduledAt);
   if (Number.isNaN(when.getTime())) throw new Error("Invalid schedule date.");
-  await EVaultRetentionService.queuePurgeJob({
+  const policy = await prisma.retentionPolicy.findFirst({
+    where: { workspaceId: session.user.workspaceId, recordClass: "DEAL_JACKET", enabled: true },
+    select: { id: true, recordClass: true },
+  });
+  const job = await EVaultRetentionService.queuePurgeJob({
     workspaceId: session.user.workspaceId,
     scheduledAt: when,
+    policyId: policy?.id,
+    recordClass: policy?.recordClass ?? "DEAL_JACKET",
     dryRun: input.dryRun ?? false,
     initiatedByUserId: session.user.id,
+  });
+  await notifyManagementForPurgeApproval({
+    workspaceId: session.user.workspaceId,
+    purgeJobId: job.id,
+    scheduledAt: job.scheduledAt,
+    legalHoldUntil: job.legalHoldUntil,
+    regulatoryDeadlineAt: job.regulatoryDeadlineAt,
+    requestedBy: session.user.email ?? session.user.id,
+  });
+  return { ok: true };
+}
+
+export async function approveCustodialPurgeRun(input: { purgeJobId: string; approvalNote?: string }) {
+  const session = await requireAdminSession();
+  const job = await prisma.purgeJob.findFirst({
+    where: { id: input.purgeJobId, workspaceId: session.user.workspaceId },
+  });
+  if (!job) throw new Error("Purge job not found.");
+  await prisma.purgeJob.update({
+    where: { id: job.id },
+    data: {
+      approvalStatus: "APPROVED",
+      approvedAt: new Date(),
+      approvedByUserId: session.user.id,
+      approvalNote: input.approvalNote?.trim() || "Approved by management authority.",
+    },
+  });
+  return { ok: true };
+}
+
+export async function rejectCustodialPurgeRun(input: { purgeJobId: string; approvalNote?: string }) {
+  const session = await requireAdminSession();
+  const job = await prisma.purgeJob.findFirst({
+    where: { id: input.purgeJobId, workspaceId: session.user.workspaceId },
+  });
+  if (!job) throw new Error("Purge job not found.");
+  await prisma.purgeJob.update({
+    where: { id: job.id },
+    data: {
+      approvalStatus: "REJECTED",
+      status: "CANCELLED",
+      approvedAt: new Date(),
+      approvedByUserId: session.user.id,
+      approvalNote: input.approvalNote?.trim() || "Rejected by management authority.",
+      finishedAt: new Date(),
+    },
   });
   return { ok: true };
 }

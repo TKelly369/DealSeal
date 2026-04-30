@@ -346,6 +346,12 @@ enum PurgeJobStatus {
   CANCELLED
 }
 
+enum PurgeApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum DealAlertAuditAction {
   ALERT_ISSUED
   ALERT_SENT
@@ -688,21 +694,29 @@ model RetentionPolicy {
 }
 
 model PurgeJob {
-  id                String           @id @default(cuid())
-  workspaceId       String
-  policyId          String?
-  status            PurgeJobStatus   @default(SCHEDULED)
-  dryRun            Boolean          @default(false)
-  scheduledAt       DateTime
-  startedAt         DateTime?
-  finishedAt        DateTime?
-  initiatedByUserId String?
-  summary           Json             @default("{}")
-  errorMessage      String?
-  workspace         Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  policy            RetentionPolicy? @relation(fields: [policyId], references: [id], onDelete: SetNull)
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  id                   String              @id @default(cuid())
+  workspaceId          String
+  policyId             String?
+  status               PurgeJobStatus      @default(SCHEDULED)
+  approvalStatus       PurgeApprovalStatus @default(PENDING)
+  dryRun               Boolean             @default(false)
+  legalBasis           String              @default("Consumer-finance record retention controls")
+  consumerNoticeDays   Int                 @default(30)
+  legalHoldUntil       DateTime?
+  regulatoryDeadlineAt DateTime?
+  scheduledAt          DateTime
+  startedAt            DateTime?
+  finishedAt           DateTime?
+  initiatedByUserId    String?
+  approvedByUserId     String?
+  approvedAt           DateTime?
+  approvalNote         String?
+  summary              Json                @default("{}")
+  errorMessage         String?
+  workspace            Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  policy               RetentionPolicy?    @relation(fields: [policyId], references: [id], onDelete: SetNull)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
 
   @@index([workspaceId, status, scheduledAt])
 }

@@ -339,11 +339,19 @@ exports.Prisma.PurgeJobScalarFieldEnum = {
   workspaceId: 'workspaceId',
   policyId: 'policyId',
   status: 'status',
+  approvalStatus: 'approvalStatus',
   dryRun: 'dryRun',
+  legalBasis: 'legalBasis',
+  consumerNoticeDays: 'consumerNoticeDays',
+  legalHoldUntil: 'legalHoldUntil',
+  regulatoryDeadlineAt: 'regulatoryDeadlineAt',
   scheduledAt: 'scheduledAt',
   startedAt: 'startedAt',
   finishedAt: 'finishedAt',
   initiatedByUserId: 'initiatedByUserId',
+  approvedByUserId: 'approvedByUserId',
+  approvedAt: 'approvedAt',
+  approvalNote: 'approvalNote',
   summary: 'summary',
   errorMessage: 'errorMessage',
   createdAt: 'createdAt',
@@ -912,6 +920,12 @@ exports.PurgeJobStatus = exports.$Enums.PurgeJobStatus = {
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
   CANCELLED: 'CANCELLED'
+};
+
+exports.PurgeApprovalStatus = exports.$Enums.PurgeApprovalStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
 };
 
 exports.DealPartyRole = exports.$Enums.DealPartyRole = {

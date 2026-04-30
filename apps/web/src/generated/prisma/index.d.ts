@@ -692,6 +692,15 @@ export const PurgeJobStatus: {
 export type PurgeJobStatus = (typeof PurgeJobStatus)[keyof typeof PurgeJobStatus]
 
 
+export const PurgeApprovalStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type PurgeApprovalStatus = (typeof PurgeApprovalStatus)[keyof typeof PurgeApprovalStatus]
+
+
 export const DealAlertAuditAction: {
   ALERT_ISSUED: 'ALERT_ISSUED',
   ALERT_SENT: 'ALERT_SENT',
@@ -885,6 +894,10 @@ export const VaultRecordClass: typeof $Enums.VaultRecordClass
 export type PurgeJobStatus = $Enums.PurgeJobStatus
 
 export const PurgeJobStatus: typeof $Enums.PurgeJobStatus
+
+export type PurgeApprovalStatus = $Enums.PurgeApprovalStatus
+
+export const PurgeApprovalStatus: typeof $Enums.PurgeApprovalStatus
 
 export type DealAlertAuditAction = $Enums.DealAlertAuditAction
 
@@ -25006,8 +25019,18 @@ export namespace Prisma {
 
   export type AggregatePurgeJob = {
     _count: PurgeJobCountAggregateOutputType | null
+    _avg: PurgeJobAvgAggregateOutputType | null
+    _sum: PurgeJobSumAggregateOutputType | null
     _min: PurgeJobMinAggregateOutputType | null
     _max: PurgeJobMaxAggregateOutputType | null
+  }
+
+  export type PurgeJobAvgAggregateOutputType = {
+    consumerNoticeDays: number | null
+  }
+
+  export type PurgeJobSumAggregateOutputType = {
+    consumerNoticeDays: number | null
   }
 
   export type PurgeJobMinAggregateOutputType = {
@@ -25015,11 +25038,19 @@ export namespace Prisma {
     workspaceId: string | null
     policyId: string | null
     status: $Enums.PurgeJobStatus | null
+    approvalStatus: $Enums.PurgeApprovalStatus | null
     dryRun: boolean | null
+    legalBasis: string | null
+    consumerNoticeDays: number | null
+    legalHoldUntil: Date | null
+    regulatoryDeadlineAt: Date | null
     scheduledAt: Date | null
     startedAt: Date | null
     finishedAt: Date | null
     initiatedByUserId: string | null
+    approvedByUserId: string | null
+    approvedAt: Date | null
+    approvalNote: string | null
     errorMessage: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -25030,11 +25061,19 @@ export namespace Prisma {
     workspaceId: string | null
     policyId: string | null
     status: $Enums.PurgeJobStatus | null
+    approvalStatus: $Enums.PurgeApprovalStatus | null
     dryRun: boolean | null
+    legalBasis: string | null
+    consumerNoticeDays: number | null
+    legalHoldUntil: Date | null
+    regulatoryDeadlineAt: Date | null
     scheduledAt: Date | null
     startedAt: Date | null
     finishedAt: Date | null
     initiatedByUserId: string | null
+    approvedByUserId: string | null
+    approvedAt: Date | null
+    approvalNote: string | null
     errorMessage: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -25045,11 +25084,19 @@ export namespace Prisma {
     workspaceId: number
     policyId: number
     status: number
+    approvalStatus: number
     dryRun: number
+    legalBasis: number
+    consumerNoticeDays: number
+    legalHoldUntil: number
+    regulatoryDeadlineAt: number
     scheduledAt: number
     startedAt: number
     finishedAt: number
     initiatedByUserId: number
+    approvedByUserId: number
+    approvedAt: number
+    approvalNote: number
     summary: number
     errorMessage: number
     createdAt: number
@@ -25058,16 +25105,32 @@ export namespace Prisma {
   }
 
 
+  export type PurgeJobAvgAggregateInputType = {
+    consumerNoticeDays?: true
+  }
+
+  export type PurgeJobSumAggregateInputType = {
+    consumerNoticeDays?: true
+  }
+
   export type PurgeJobMinAggregateInputType = {
     id?: true
     workspaceId?: true
     policyId?: true
     status?: true
+    approvalStatus?: true
     dryRun?: true
+    legalBasis?: true
+    consumerNoticeDays?: true
+    legalHoldUntil?: true
+    regulatoryDeadlineAt?: true
     scheduledAt?: true
     startedAt?: true
     finishedAt?: true
     initiatedByUserId?: true
+    approvedByUserId?: true
+    approvedAt?: true
+    approvalNote?: true
     errorMessage?: true
     createdAt?: true
     updatedAt?: true
@@ -25078,11 +25141,19 @@ export namespace Prisma {
     workspaceId?: true
     policyId?: true
     status?: true
+    approvalStatus?: true
     dryRun?: true
+    legalBasis?: true
+    consumerNoticeDays?: true
+    legalHoldUntil?: true
+    regulatoryDeadlineAt?: true
     scheduledAt?: true
     startedAt?: true
     finishedAt?: true
     initiatedByUserId?: true
+    approvedByUserId?: true
+    approvedAt?: true
+    approvalNote?: true
     errorMessage?: true
     createdAt?: true
     updatedAt?: true
@@ -25093,11 +25164,19 @@ export namespace Prisma {
     workspaceId?: true
     policyId?: true
     status?: true
+    approvalStatus?: true
     dryRun?: true
+    legalBasis?: true
+    consumerNoticeDays?: true
+    legalHoldUntil?: true
+    regulatoryDeadlineAt?: true
     scheduledAt?: true
     startedAt?: true
     finishedAt?: true
     initiatedByUserId?: true
+    approvedByUserId?: true
+    approvedAt?: true
+    approvalNote?: true
     summary?: true
     errorMessage?: true
     createdAt?: true
@@ -25143,6 +25222,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: PurgeJobAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PurgeJobSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PurgeJobMinAggregateInputType
@@ -25173,6 +25264,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: PurgeJobCountAggregateInputType | true
+    _avg?: PurgeJobAvgAggregateInputType
+    _sum?: PurgeJobSumAggregateInputType
     _min?: PurgeJobMinAggregateInputType
     _max?: PurgeJobMaxAggregateInputType
   }
@@ -25182,16 +25275,26 @@ export namespace Prisma {
     workspaceId: string
     policyId: string | null
     status: $Enums.PurgeJobStatus
+    approvalStatus: $Enums.PurgeApprovalStatus
     dryRun: boolean
+    legalBasis: string
+    consumerNoticeDays: number
+    legalHoldUntil: Date | null
+    regulatoryDeadlineAt: Date | null
     scheduledAt: Date
     startedAt: Date | null
     finishedAt: Date | null
     initiatedByUserId: string | null
+    approvedByUserId: string | null
+    approvedAt: Date | null
+    approvalNote: string | null
     summary: JsonValue
     errorMessage: string | null
     createdAt: Date
     updatedAt: Date
     _count: PurgeJobCountAggregateOutputType | null
+    _avg: PurgeJobAvgAggregateOutputType | null
+    _sum: PurgeJobSumAggregateOutputType | null
     _min: PurgeJobMinAggregateOutputType | null
     _max: PurgeJobMaxAggregateOutputType | null
   }
@@ -25215,11 +25318,19 @@ export namespace Prisma {
     workspaceId?: boolean
     policyId?: boolean
     status?: boolean
+    approvalStatus?: boolean
     dryRun?: boolean
+    legalBasis?: boolean
+    consumerNoticeDays?: boolean
+    legalHoldUntil?: boolean
+    regulatoryDeadlineAt?: boolean
     scheduledAt?: boolean
     startedAt?: boolean
     finishedAt?: boolean
     initiatedByUserId?: boolean
+    approvedByUserId?: boolean
+    approvedAt?: boolean
+    approvalNote?: boolean
     summary?: boolean
     errorMessage?: boolean
     createdAt?: boolean
@@ -25233,11 +25344,19 @@ export namespace Prisma {
     workspaceId?: boolean
     policyId?: boolean
     status?: boolean
+    approvalStatus?: boolean
     dryRun?: boolean
+    legalBasis?: boolean
+    consumerNoticeDays?: boolean
+    legalHoldUntil?: boolean
+    regulatoryDeadlineAt?: boolean
     scheduledAt?: boolean
     startedAt?: boolean
     finishedAt?: boolean
     initiatedByUserId?: boolean
+    approvedByUserId?: boolean
+    approvedAt?: boolean
+    approvalNote?: boolean
     summary?: boolean
     errorMessage?: boolean
     createdAt?: boolean
@@ -25251,11 +25370,19 @@ export namespace Prisma {
     workspaceId?: boolean
     policyId?: boolean
     status?: boolean
+    approvalStatus?: boolean
     dryRun?: boolean
+    legalBasis?: boolean
+    consumerNoticeDays?: boolean
+    legalHoldUntil?: boolean
+    regulatoryDeadlineAt?: boolean
     scheduledAt?: boolean
     startedAt?: boolean
     finishedAt?: boolean
     initiatedByUserId?: boolean
+    approvedByUserId?: boolean
+    approvedAt?: boolean
+    approvalNote?: boolean
     summary?: boolean
     errorMessage?: boolean
     createdAt?: boolean
@@ -25269,18 +25396,26 @@ export namespace Prisma {
     workspaceId?: boolean
     policyId?: boolean
     status?: boolean
+    approvalStatus?: boolean
     dryRun?: boolean
+    legalBasis?: boolean
+    consumerNoticeDays?: boolean
+    legalHoldUntil?: boolean
+    regulatoryDeadlineAt?: boolean
     scheduledAt?: boolean
     startedAt?: boolean
     finishedAt?: boolean
     initiatedByUserId?: boolean
+    approvedByUserId?: boolean
+    approvedAt?: boolean
+    approvalNote?: boolean
     summary?: boolean
     errorMessage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PurgeJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "policyId" | "status" | "dryRun" | "scheduledAt" | "startedAt" | "finishedAt" | "initiatedByUserId" | "summary" | "errorMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["purgeJob"]>
+  export type PurgeJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "policyId" | "status" | "approvalStatus" | "dryRun" | "legalBasis" | "consumerNoticeDays" | "legalHoldUntil" | "regulatoryDeadlineAt" | "scheduledAt" | "startedAt" | "finishedAt" | "initiatedByUserId" | "approvedByUserId" | "approvedAt" | "approvalNote" | "summary" | "errorMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["purgeJob"]>
   export type PurgeJobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     policy?: boolean | PurgeJob$policyArgs<ExtArgs>
@@ -25305,11 +25440,19 @@ export namespace Prisma {
       workspaceId: string
       policyId: string | null
       status: $Enums.PurgeJobStatus
+      approvalStatus: $Enums.PurgeApprovalStatus
       dryRun: boolean
+      legalBasis: string
+      consumerNoticeDays: number
+      legalHoldUntil: Date | null
+      regulatoryDeadlineAt: Date | null
       scheduledAt: Date
       startedAt: Date | null
       finishedAt: Date | null
       initiatedByUserId: string | null
+      approvedByUserId: string | null
+      approvedAt: Date | null
+      approvalNote: string | null
       summary: Prisma.JsonValue
       errorMessage: string | null
       createdAt: Date
@@ -25743,11 +25886,19 @@ export namespace Prisma {
     readonly workspaceId: FieldRef<"PurgeJob", 'String'>
     readonly policyId: FieldRef<"PurgeJob", 'String'>
     readonly status: FieldRef<"PurgeJob", 'PurgeJobStatus'>
+    readonly approvalStatus: FieldRef<"PurgeJob", 'PurgeApprovalStatus'>
     readonly dryRun: FieldRef<"PurgeJob", 'Boolean'>
+    readonly legalBasis: FieldRef<"PurgeJob", 'String'>
+    readonly consumerNoticeDays: FieldRef<"PurgeJob", 'Int'>
+    readonly legalHoldUntil: FieldRef<"PurgeJob", 'DateTime'>
+    readonly regulatoryDeadlineAt: FieldRef<"PurgeJob", 'DateTime'>
     readonly scheduledAt: FieldRef<"PurgeJob", 'DateTime'>
     readonly startedAt: FieldRef<"PurgeJob", 'DateTime'>
     readonly finishedAt: FieldRef<"PurgeJob", 'DateTime'>
     readonly initiatedByUserId: FieldRef<"PurgeJob", 'String'>
+    readonly approvedByUserId: FieldRef<"PurgeJob", 'String'>
+    readonly approvedAt: FieldRef<"PurgeJob", 'DateTime'>
+    readonly approvalNote: FieldRef<"PurgeJob", 'String'>
     readonly summary: FieldRef<"PurgeJob", 'Json'>
     readonly errorMessage: FieldRef<"PurgeJob", 'String'>
     readonly createdAt: FieldRef<"PurgeJob", 'DateTime'>
@@ -57677,11 +57828,19 @@ export namespace Prisma {
     workspaceId: 'workspaceId',
     policyId: 'policyId',
     status: 'status',
+    approvalStatus: 'approvalStatus',
     dryRun: 'dryRun',
+    legalBasis: 'legalBasis',
+    consumerNoticeDays: 'consumerNoticeDays',
+    legalHoldUntil: 'legalHoldUntil',
+    regulatoryDeadlineAt: 'regulatoryDeadlineAt',
     scheduledAt: 'scheduledAt',
     startedAt: 'startedAt',
     finishedAt: 'finishedAt',
     initiatedByUserId: 'initiatedByUserId',
+    approvedByUserId: 'approvedByUserId',
+    approvedAt: 'approvedAt',
+    approvalNote: 'approvalNote',
     summary: 'summary',
     errorMessage: 'errorMessage',
     createdAt: 'createdAt',
@@ -58549,6 +58708,20 @@ export namespace Prisma {
    * Reference to a field of type 'PurgeJobStatus[]'
    */
   export type ListEnumPurgeJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurgeJobStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PurgeApprovalStatus'
+   */
+  export type EnumPurgeApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurgeApprovalStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PurgeApprovalStatus[]'
+   */
+  export type ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurgeApprovalStatus[]'>
     
 
 
@@ -60394,11 +60567,19 @@ export namespace Prisma {
     workspaceId?: StringFilter<"PurgeJob"> | string
     policyId?: StringNullableFilter<"PurgeJob"> | string | null
     status?: EnumPurgeJobStatusFilter<"PurgeJob"> | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFilter<"PurgeJob"> | $Enums.PurgeApprovalStatus
     dryRun?: BoolFilter<"PurgeJob"> | boolean
+    legalBasis?: StringFilter<"PurgeJob"> | string
+    consumerNoticeDays?: IntFilter<"PurgeJob"> | number
+    legalHoldUntil?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    regulatoryDeadlineAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     scheduledAt?: DateTimeFilter<"PurgeJob"> | Date | string
     startedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     finishedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     initiatedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    approvedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    approvedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    approvalNote?: StringNullableFilter<"PurgeJob"> | string | null
     summary?: JsonFilter<"PurgeJob">
     errorMessage?: StringNullableFilter<"PurgeJob"> | string | null
     createdAt?: DateTimeFilter<"PurgeJob"> | Date | string
@@ -60412,11 +60593,19 @@ export namespace Prisma {
     workspaceId?: SortOrder
     policyId?: SortOrderInput | SortOrder
     status?: SortOrder
+    approvalStatus?: SortOrder
     dryRun?: SortOrder
+    legalBasis?: SortOrder
+    consumerNoticeDays?: SortOrder
+    legalHoldUntil?: SortOrderInput | SortOrder
+    regulatoryDeadlineAt?: SortOrderInput | SortOrder
     scheduledAt?: SortOrder
     startedAt?: SortOrderInput | SortOrder
     finishedAt?: SortOrderInput | SortOrder
     initiatedByUserId?: SortOrderInput | SortOrder
+    approvedByUserId?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    approvalNote?: SortOrderInput | SortOrder
     summary?: SortOrder
     errorMessage?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -60433,11 +60622,19 @@ export namespace Prisma {
     workspaceId?: StringFilter<"PurgeJob"> | string
     policyId?: StringNullableFilter<"PurgeJob"> | string | null
     status?: EnumPurgeJobStatusFilter<"PurgeJob"> | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFilter<"PurgeJob"> | $Enums.PurgeApprovalStatus
     dryRun?: BoolFilter<"PurgeJob"> | boolean
+    legalBasis?: StringFilter<"PurgeJob"> | string
+    consumerNoticeDays?: IntFilter<"PurgeJob"> | number
+    legalHoldUntil?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    regulatoryDeadlineAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     scheduledAt?: DateTimeFilter<"PurgeJob"> | Date | string
     startedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     finishedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     initiatedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    approvedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    approvedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    approvalNote?: StringNullableFilter<"PurgeJob"> | string | null
     summary?: JsonFilter<"PurgeJob">
     errorMessage?: StringNullableFilter<"PurgeJob"> | string | null
     createdAt?: DateTimeFilter<"PurgeJob"> | Date | string
@@ -60451,18 +60648,28 @@ export namespace Prisma {
     workspaceId?: SortOrder
     policyId?: SortOrderInput | SortOrder
     status?: SortOrder
+    approvalStatus?: SortOrder
     dryRun?: SortOrder
+    legalBasis?: SortOrder
+    consumerNoticeDays?: SortOrder
+    legalHoldUntil?: SortOrderInput | SortOrder
+    regulatoryDeadlineAt?: SortOrderInput | SortOrder
     scheduledAt?: SortOrder
     startedAt?: SortOrderInput | SortOrder
     finishedAt?: SortOrderInput | SortOrder
     initiatedByUserId?: SortOrderInput | SortOrder
+    approvedByUserId?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    approvalNote?: SortOrderInput | SortOrder
     summary?: SortOrder
     errorMessage?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PurgeJobCountOrderByAggregateInput
+    _avg?: PurgeJobAvgOrderByAggregateInput
     _max?: PurgeJobMaxOrderByAggregateInput
     _min?: PurgeJobMinOrderByAggregateInput
+    _sum?: PurgeJobSumOrderByAggregateInput
   }
 
   export type PurgeJobScalarWhereWithAggregatesInput = {
@@ -60473,11 +60680,19 @@ export namespace Prisma {
     workspaceId?: StringWithAggregatesFilter<"PurgeJob"> | string
     policyId?: StringNullableWithAggregatesFilter<"PurgeJob"> | string | null
     status?: EnumPurgeJobStatusWithAggregatesFilter<"PurgeJob"> | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusWithAggregatesFilter<"PurgeJob"> | $Enums.PurgeApprovalStatus
     dryRun?: BoolWithAggregatesFilter<"PurgeJob"> | boolean
+    legalBasis?: StringWithAggregatesFilter<"PurgeJob"> | string
+    consumerNoticeDays?: IntWithAggregatesFilter<"PurgeJob"> | number
+    legalHoldUntil?: DateTimeNullableWithAggregatesFilter<"PurgeJob"> | Date | string | null
+    regulatoryDeadlineAt?: DateTimeNullableWithAggregatesFilter<"PurgeJob"> | Date | string | null
     scheduledAt?: DateTimeWithAggregatesFilter<"PurgeJob"> | Date | string
     startedAt?: DateTimeNullableWithAggregatesFilter<"PurgeJob"> | Date | string | null
     finishedAt?: DateTimeNullableWithAggregatesFilter<"PurgeJob"> | Date | string | null
     initiatedByUserId?: StringNullableWithAggregatesFilter<"PurgeJob"> | string | null
+    approvedByUserId?: StringNullableWithAggregatesFilter<"PurgeJob"> | string | null
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"PurgeJob"> | Date | string | null
+    approvalNote?: StringNullableWithAggregatesFilter<"PurgeJob"> | string | null
     summary?: JsonWithAggregatesFilter<"PurgeJob">
     errorMessage?: StringNullableWithAggregatesFilter<"PurgeJob"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PurgeJob"> | Date | string
@@ -64457,11 +64672,19 @@ export namespace Prisma {
   export type PurgeJobCreateInput = {
     id?: string
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -64475,11 +64698,19 @@ export namespace Prisma {
     workspaceId: string
     policyId?: string | null
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -64489,11 +64720,19 @@ export namespace Prisma {
   export type PurgeJobUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64507,11 +64746,19 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     policyId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64523,11 +64770,19 @@ export namespace Prisma {
     workspaceId: string
     policyId?: string | null
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -64537,11 +64792,19 @@ export namespace Prisma {
   export type PurgeJobUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64553,11 +64816,19 @@ export namespace Prisma {
     workspaceId?: StringFieldUpdateOperationsInput | string
     policyId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -68701,6 +68972,13 @@ export namespace Prisma {
     not?: NestedEnumPurgeJobStatusFilter<$PrismaModel> | $Enums.PurgeJobStatus
   }
 
+  export type EnumPurgeApprovalStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PurgeApprovalStatus | EnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PurgeApprovalStatus[] | ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PurgeApprovalStatus[] | ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPurgeApprovalStatusFilter<$PrismaModel> | $Enums.PurgeApprovalStatus
+  }
+
   export type RetentionPolicyNullableScalarRelationFilter = {
     is?: RetentionPolicyWhereInput | null
     isNot?: RetentionPolicyWhereInput | null
@@ -68711,15 +68989,27 @@ export namespace Prisma {
     workspaceId?: SortOrder
     policyId?: SortOrder
     status?: SortOrder
+    approvalStatus?: SortOrder
     dryRun?: SortOrder
+    legalBasis?: SortOrder
+    consumerNoticeDays?: SortOrder
+    legalHoldUntil?: SortOrder
+    regulatoryDeadlineAt?: SortOrder
     scheduledAt?: SortOrder
     startedAt?: SortOrder
     finishedAt?: SortOrder
     initiatedByUserId?: SortOrder
+    approvedByUserId?: SortOrder
+    approvedAt?: SortOrder
+    approvalNote?: SortOrder
     summary?: SortOrder
     errorMessage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PurgeJobAvgOrderByAggregateInput = {
+    consumerNoticeDays?: SortOrder
   }
 
   export type PurgeJobMaxOrderByAggregateInput = {
@@ -68727,11 +69017,19 @@ export namespace Prisma {
     workspaceId?: SortOrder
     policyId?: SortOrder
     status?: SortOrder
+    approvalStatus?: SortOrder
     dryRun?: SortOrder
+    legalBasis?: SortOrder
+    consumerNoticeDays?: SortOrder
+    legalHoldUntil?: SortOrder
+    regulatoryDeadlineAt?: SortOrder
     scheduledAt?: SortOrder
     startedAt?: SortOrder
     finishedAt?: SortOrder
     initiatedByUserId?: SortOrder
+    approvedByUserId?: SortOrder
+    approvedAt?: SortOrder
+    approvalNote?: SortOrder
     errorMessage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -68742,14 +69040,26 @@ export namespace Prisma {
     workspaceId?: SortOrder
     policyId?: SortOrder
     status?: SortOrder
+    approvalStatus?: SortOrder
     dryRun?: SortOrder
+    legalBasis?: SortOrder
+    consumerNoticeDays?: SortOrder
+    legalHoldUntil?: SortOrder
+    regulatoryDeadlineAt?: SortOrder
     scheduledAt?: SortOrder
     startedAt?: SortOrder
     finishedAt?: SortOrder
     initiatedByUserId?: SortOrder
+    approvedByUserId?: SortOrder
+    approvedAt?: SortOrder
+    approvalNote?: SortOrder
     errorMessage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type PurgeJobSumOrderByAggregateInput = {
+    consumerNoticeDays?: SortOrder
   }
 
   export type EnumPurgeJobStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -68760,6 +69070,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPurgeJobStatusFilter<$PrismaModel>
     _max?: NestedEnumPurgeJobStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPurgeApprovalStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PurgeApprovalStatus | EnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PurgeApprovalStatus[] | ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PurgeApprovalStatus[] | ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPurgeApprovalStatusWithAggregatesFilter<$PrismaModel> | $Enums.PurgeApprovalStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPurgeApprovalStatusFilter<$PrismaModel>
+    _max?: NestedEnumPurgeApprovalStatusFilter<$PrismaModel>
   }
 
   export type EnumDealPartyRoleFilter<$PrismaModel = never> = {
@@ -73296,6 +73616,10 @@ export namespace Prisma {
     set?: $Enums.PurgeJobStatus
   }
 
+  export type EnumPurgeApprovalStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PurgeApprovalStatus
+  }
+
   export type WorkspaceUpdateOneRequiredWithoutPurgeJobsNestedInput = {
     create?: XOR<WorkspaceCreateWithoutPurgeJobsInput, WorkspaceUncheckedCreateWithoutPurgeJobsInput>
     connectOrCreate?: WorkspaceCreateOrConnectWithoutPurgeJobsInput
@@ -75144,6 +75468,13 @@ export namespace Prisma {
     not?: NestedEnumPurgeJobStatusFilter<$PrismaModel> | $Enums.PurgeJobStatus
   }
 
+  export type NestedEnumPurgeApprovalStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PurgeApprovalStatus | EnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PurgeApprovalStatus[] | ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PurgeApprovalStatus[] | ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPurgeApprovalStatusFilter<$PrismaModel> | $Enums.PurgeApprovalStatus
+  }
+
   export type NestedEnumPurgeJobStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.PurgeJobStatus | EnumPurgeJobStatusFieldRefInput<$PrismaModel>
     in?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
@@ -75152,6 +75483,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPurgeJobStatusFilter<$PrismaModel>
     _max?: NestedEnumPurgeJobStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPurgeApprovalStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PurgeApprovalStatus | EnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PurgeApprovalStatus[] | ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PurgeApprovalStatus[] | ListEnumPurgeApprovalStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPurgeApprovalStatusWithAggregatesFilter<$PrismaModel> | $Enums.PurgeApprovalStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPurgeApprovalStatusFilter<$PrismaModel>
+    _max?: NestedEnumPurgeApprovalStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumDealPartyRoleFilter<$PrismaModel = never> = {
@@ -77524,11 +77865,19 @@ export namespace Prisma {
   export type PurgeJobCreateWithoutWorkspaceInput = {
     id?: string
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -77540,11 +77889,19 @@ export namespace Prisma {
     id?: string
     policyId?: string | null
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -78262,11 +78619,19 @@ export namespace Prisma {
     workspaceId?: StringFilter<"PurgeJob"> | string
     policyId?: StringNullableFilter<"PurgeJob"> | string | null
     status?: EnumPurgeJobStatusFilter<"PurgeJob"> | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFilter<"PurgeJob"> | $Enums.PurgeApprovalStatus
     dryRun?: BoolFilter<"PurgeJob"> | boolean
+    legalBasis?: StringFilter<"PurgeJob"> | string
+    consumerNoticeDays?: IntFilter<"PurgeJob"> | number
+    legalHoldUntil?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    regulatoryDeadlineAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     scheduledAt?: DateTimeFilter<"PurgeJob"> | Date | string
     startedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     finishedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
     initiatedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    approvedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    approvedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    approvalNote?: StringNullableFilter<"PurgeJob"> | string | null
     summary?: JsonFilter<"PurgeJob">
     errorMessage?: StringNullableFilter<"PurgeJob"> | string | null
     createdAt?: DateTimeFilter<"PurgeJob"> | Date | string
@@ -83149,11 +83514,19 @@ export namespace Prisma {
   export type PurgeJobCreateWithoutPolicyInput = {
     id?: string
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -83165,11 +83538,19 @@ export namespace Prisma {
     id?: string
     workspaceId: string
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -90793,11 +91174,19 @@ export namespace Prisma {
     id?: string
     policyId?: string | null
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -91892,11 +92281,19 @@ export namespace Prisma {
   export type PurgeJobUpdateWithoutWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -91908,11 +92305,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     policyId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -91923,11 +92328,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     policyId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -92864,11 +93277,19 @@ export namespace Prisma {
     id?: string
     workspaceId: string
     status?: $Enums.PurgeJobStatus
+    approvalStatus?: $Enums.PurgeApprovalStatus
     dryRun?: boolean
+    legalBasis?: string
+    consumerNoticeDays?: number
+    legalHoldUntil?: Date | string | null
+    regulatoryDeadlineAt?: Date | string | null
     scheduledAt: Date | string
     startedAt?: Date | string | null
     finishedAt?: Date | string | null
     initiatedByUserId?: string | null
+    approvedByUserId?: string | null
+    approvedAt?: Date | string | null
+    approvalNote?: string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: string | null
     createdAt?: Date | string
@@ -92878,11 +93299,19 @@ export namespace Prisma {
   export type PurgeJobUpdateWithoutPolicyInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -92894,11 +93323,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     workspaceId?: StringFieldUpdateOperationsInput | string
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -92909,11 +93346,19 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     workspaceId?: StringFieldUpdateOperationsInput | string
     status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    approvalStatus?: EnumPurgeApprovalStatusFieldUpdateOperationsInput | $Enums.PurgeApprovalStatus
     dryRun?: BoolFieldUpdateOperationsInput | boolean
+    legalBasis?: StringFieldUpdateOperationsInput | string
+    consumerNoticeDays?: IntFieldUpdateOperationsInput | number
+    legalHoldUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    regulatoryDeadlineAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvalNote?: NullableStringFieldUpdateOperationsInput | string | null
     summary?: JsonNullValueInput | InputJsonValue
     errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

@@ -2,8 +2,10 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { isAdminManagementRole } from "@/lib/role-policy";
 import {
+  approveCustodialPurgeRun,
   executeCustodialPurgeRun,
   getCustodialPerformanceReport,
+  rejectCustodialPurgeRun,
   scheduleCustodialPurgeRun,
   updateRetentionPolicy,
   updateSystemConfig,
@@ -62,6 +64,9 @@ export default async function AdminSystemConfigPage() {
         <p style={{ color: "var(--muted)" }}>
           Dealseal-admin custodial controls for legal retention and purge lifecycle management.
         </p>
+        <p style={{ color: "var(--muted)", marginTop: "-0.25rem" }}>
+          Purge requests require management authority approval and enforce legal hold + regulatory deadline windows aligned to consumer/fintech retention controls.
+        </p>
         <div className="ds-form-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", marginBottom: "0.8rem" }}>
           <div>
             <strong>Retention policy</strong>
@@ -92,7 +97,9 @@ export default async function AdminSystemConfigPage() {
             <p style={{ margin: "0.3rem 0 0", color: "var(--muted)" }}>
               Scheduled: {custody.purgeJobs.scheduled}
               <br />
-              Running: {custody.purgeJobs.running} · Failed: {custody.purgeJobs.failed}
+              Pending approval: {custody.purgeJobs.pendingApproval} · Approved: {custody.purgeJobs.approved}
+              <br />
+              Rejected: {custody.purgeJobs.rejected} · Running: {custody.purgeJobs.running} · Failed: {custody.purgeJobs.failed}
             </p>
           </div>
         </div>
@@ -166,7 +173,7 @@ export default async function AdminSystemConfigPage() {
             Dry run
             <input name="dryRun" type="checkbox" />
           </label>
-          <button type="submit">Queue purge job</button>
+          <button type="submit">Queue purge request (management approval required)</button>
         </form>
         <form
           action={async () => {
@@ -178,7 +185,7 @@ export default async function AdminSystemConfigPage() {
             redirect("/admin/system-config");
           }}
         >
-          <button type="submit">Execute Custodial Purge Run</button>
+          <button type="submit">Execute next approved purge</button>
         </form>
         {purgeJobs.length > 0 ? (
           <div style={{ marginTop: "0.9rem" }}>
@@ -188,8 +195,12 @@ export default async function AdminSystemConfigPage() {
                 <tr>
                   <th>Scheduled</th>
                   <th>Status</th>
+                  <th>Approval</th>
                   <th>Dry run</th>
+                  <th>Legal hold until</th>
+                  <th>Regulatory deadline</th>
                   <th>Finished</th>
+                  <th>Authority</th>
                 </tr>
               </thead>
               <tbody>
@@ -197,8 +208,43 @@ export default async function AdminSystemConfigPage() {
                   <tr key={job.id}>
                     <td>{job.scheduledAt.toLocaleString()}</td>
                     <td>{job.status}</td>
+                    <td>{job.approvalStatus}</td>
                     <td>{job.dryRun ? "Yes" : "No"}</td>
+                    <td>{job.legalHoldUntil ? job.legalHoldUntil.toLocaleString() : "—"}</td>
+                    <td>{job.regulatoryDeadlineAt ? job.regulatoryDeadlineAt.toLocaleString() : "—"}</td>
                     <td>{job.finishedAt ? job.finishedAt.toLocaleString() : "—"}</td>
+                    <td>
+                      {job.approvalStatus === "PENDING" ? (
+                        <div style={{ display: "flex", gap: "0.35rem", alignItems: "center", flexWrap: "wrap" }}>
+                          <form
+                            action={async () => {
+                              "use server";
+                              const session = await auth();
+                              if (!session?.user) redirect("/login?next=/admin/system-config");
+                              if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
+                              await approveCustodialPurgeRun({ purgeJobId: job.id });
+                              redirect("/admin/system-config");
+                            }}
+                          >
+                            <button type="submit">Approve</button>
+                          </form>
+                          <form
+                            action={async () => {
+                              "use server";
+                              const session = await auth();
+                              if (!session?.user) redirect("/login?next=/admin/system-config");
+                              if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
+                              await rejectCustodialPurgeRun({ purgeJobId: job.id });
+                              redirect("/admin/system-config");
+                            }}
+                          >
+                            <button type="submit">Reject</button>
+                          </form>
+                        </div>
+                      ) : (
+                        <span>{job.approvedByUserId ? `by ${job.approvedByUserId.slice(0, 8)}…` : "—"}</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

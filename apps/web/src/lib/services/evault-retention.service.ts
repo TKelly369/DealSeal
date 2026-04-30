@@ -10,6 +10,20 @@ const DEFAULT_RETENTION_YEARS: Record<VaultRecordClass, number> = {
 };
 
 export const EVaultRetentionService = {
+  legalWindowFor(recordClass: VaultRecordClass, scheduledAt: Date) {
+    const holdDays = recordClass === "GOVERNING_CONTRACT" ? 45 : 30;
+    const deadlineDays = recordClass === "GOVERNING_CONTRACT" ? 60 : 45;
+    return {
+      legalBasis:
+        recordClass === "GOVERNING_CONTRACT"
+          ? "Consumer-finance contract retention, adverse-action, and dispute-preservation controls"
+          : "Fintech document retention and consumer-record preservation controls",
+      consumerNoticeDays: holdDays,
+      legalHoldUntil: new Date(scheduledAt.getTime() + holdDays * 86_400_000),
+      regulatoryDeadlineAt: new Date(scheduledAt.getTime() + deadlineDays * 86_400_000),
+    };
+  },
+
   async listPolicies(workspaceId: string) {
     const dbPolicies = await prisma.retentionPolicy.findMany({
       where: { workspaceId },
@@ -74,13 +88,20 @@ export const EVaultRetentionService = {
     scheduledAt: Date;
     initiatedByUserId?: string;
     policyId?: string;
+    recordClass?: VaultRecordClass;
     dryRun?: boolean;
   }) {
+    const legal = this.legalWindowFor(input.recordClass ?? "DEAL_JACKET", input.scheduledAt);
     return prisma.purgeJob.create({
       data: {
         workspaceId: input.workspaceId,
         policyId: input.policyId,
         dryRun: input.dryRun ?? false,
+        approvalStatus: "PENDING",
+        legalBasis: legal.legalBasis,
+        consumerNoticeDays: legal.consumerNoticeDays,
+        legalHoldUntil: legal.legalHoldUntil,
+        regulatoryDeadlineAt: legal.regulatoryDeadlineAt,
         scheduledAt: input.scheduledAt,
         initiatedByUserId: input.initiatedByUserId,
       },
