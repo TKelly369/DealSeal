@@ -189,6 +189,109 @@ export async function listGradedDealersForLender(
   }
 }
 
+export type LenderTopStateVolume = { code: string; dealCount: number };
+
+function sortPreferredDealers(a: GradedDealerForLender, b: GradedDealerForLender): number {
+  return b.overallScore - a.overallScore || b.dealCount - a.dealCount;
+}
+
+/**
+ * Lender dashboard: states where this book does the most volume (90d), plus “preferred” dealers
+ * whose footprint overlaps those states. Falls back to book-wide preferred partners if none match.
+ */
+export async function getLenderPreferredDealersInTopStates(
+  lenderWorkspaceId: string,
+  options?: { maxStates?: number; maxDealers?: number; windowDays?: number },
+): Promise<{
+  topStates: LenderTopStateVolume[];
+  preferredDealers: GradedDealerForLender[];
+  scopeNote: "in_top_states" | "bookwide_fallback" | "licensed_states_only" | "empty";
+  warning: string | null;
+}> {
+  const maxStates = options?.maxStates ?? 5;
+  const maxDealers = options?.maxDealers ?? 6;
+  const windowDays = options?.windowDays ?? DEFAULT_WINDOW_DAYS;
+  const since = windowStart(windowDays);
+
+  try {
+    const { rows: graded, warning: gradeWarning } = await listGradedDealersForLender(
+      lenderWorkspaceId,
+      windowDays,
+    );
+    if (gradeWarning) {
+      return { topStates: [], preferredDealers: [], scopeNote: "empty", warning: gradeWarning };
+    }
+
+    const groups = await prisma.deal.groupBy({
+      by: ["state"],
+      where: { lenderId: lenderWorkspaceId, createdAt: { gte: since } },
+      _count: { _all: true },
+    });
+
+    let topStates: LenderTopStateVolume[] = groups
+      .filter((g) => g.state && String(g.state).trim().length > 0)
+      .map((g) => ({ code: String(g.state).trim().toUpperCase(), dealCount: g._count._all }))
+      .sort((a, b) => b.dealCount - a.dealCount)
+      .slice(0, maxStates);
+
+    let scopeNote: "in_top_states" | "bookwide_fallback" | "licensed_states_only" | "empty" = "empty";
+
+    if (topStates.length === 0) {
+      const profile = await prisma.lenderProfile.findUnique({
+        where: { workspaceId: lenderWorkspaceId },
+        select: { licensedStates: true },
+      });
+      topStates = (profile?.licensedStates ?? [])
+        .slice(0, maxStates)
+        .map((code) => ({ code: String(code).trim().toUpperCase(), dealCount: 0 }));
+      scopeNote = topStates.length ? "licensed_states_only" : "empty";
+    }
+
+    const stateSet = new Set(topStates.map((t) => t.code));
+    const dealerTouchesTopState = (g: GradedDealerForLender) => {
+      const footprint = new Set(
+        [g.primaryState, ...g.operatingStates]
+          .filter(Boolean)
+          .map((s) => String(s).trim().toUpperCase()),
+      );
+      for (const c of footprint) {
+        if (stateSet.has(c)) return true;
+      }
+      return false;
+    };
+
+    const preferred = graded.filter((d) => d.preferredTier === "preferred").sort(sortPreferredDealers);
+    let preferredDealers: GradedDealerForLender[] = [];
+
+    if (stateSet.size === 0) {
+      preferredDealers = preferred.slice(0, maxDealers);
+      scopeNote = preferredDealers.length ? "bookwide_fallback" : "empty";
+    } else {
+      const inStates = preferred.filter(dealerTouchesTopState);
+      if (inStates.length > 0) {
+        preferredDealers = inStates.slice(0, maxDealers);
+        scopeNote = topStates.some((t) => t.dealCount > 0) ? "in_top_states" : "licensed_states_only";
+      } else if (preferred.length > 0) {
+        preferredDealers = preferred.slice(0, maxDealers);
+        scopeNote = "bookwide_fallback";
+      } else {
+        preferredDealers = [];
+        scopeNote = topStates.length ? "in_top_states" : "empty";
+      }
+    }
+
+    return { topStates, preferredDealers, scopeNote, warning: null };
+  } catch (e) {
+    console.error("[DealSeal] getLenderPreferredDealersInTopStates", e);
+    return {
+      topStates: [],
+      preferredDealers: [],
+      scopeNote: "empty",
+      warning: "Preferred partner highlights are temporarily unavailable.",
+    };
+  }
+}
+
 function emptyLenderSegment(
   lenderId: string,
   lenderName: string,

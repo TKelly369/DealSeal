@@ -2,6 +2,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { DealService } from "@/lib/services/deal.service";
+import { getLenderPreferredDealersInTopStates } from "@/lib/services/counterparty-performance.service";
 import { prisma } from "@/lib/db";
 import {
   complianceRygForPipeline,
@@ -75,6 +76,7 @@ export default async function LenderDashboardPage() {
     dealId: string;
     deal: { dealer: { name: string } };
   }[] = [];
+  let partnerHighlights: Awaited<ReturnType<typeof getLenderPreferredDealersInTopStates>> | null = null;
 
   try {
     const now = new Date();
@@ -82,7 +84,7 @@ export default async function LenderDashboardPage() {
     const horizon = new Date(now.getTime() + 30 * 86_400_000);
     const { start: priorStart, end: priorEnd } = previousUtcDayRange(now);
 
-    const [dealsResult, linksResult, calResult, fundingResult, alertsResult] = await Promise.all([
+    const [dealsResult, linksResult, calResult, fundingResult, alertsResult, highlightsResult] = await Promise.all([
       DealService.listDealsForLenderDashboard(lenderId),
       prisma.dealerLenderLink.findMany({
         where: { lenderId, status: "PENDING" },
@@ -123,6 +125,7 @@ export default async function LenderDashboardPage() {
         orderBy: { createdAt: "desc" },
         take: 25,
       }),
+      getLenderPreferredDealersInTopStates(lenderId),
     ]);
 
     deals = dealsResult;
@@ -130,6 +133,7 @@ export default async function LenderDashboardPage() {
     upcomingEvents = calResult;
     fundingConditions = fundingResult;
     priorDayAlerts = alertsResult;
+    partnerHighlights = highlightsResult;
   } catch (error) {
     console.error("[DealSeal] Lender dashboard data fallback", error);
     dataWarning = "Some dashboard data is temporarily unavailable. You can still open deal intake and calendars.";
@@ -244,6 +248,115 @@ export default async function LenderDashboardPage() {
           </div>
         </div>
       </section>
+
+      {partnerHighlights && !partnerHighlights.warning ? (
+        <section style={{ marginTop: "1.5rem" }} aria-label="Preferred dealers by top states">
+          <h2 className="ds-card-title" style={{ margin: "0 0 0.75rem" }}>
+            Top volume states &amp; preferred dealers
+          </h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginTop: 0, maxWidth: 820 }}>
+            States are ranked by your deal flow in the last 90 days. Preferred dealers meet DealSeal clean-deal scoring
+            in those markets—strong jackets, fewer open problems, and healthy cycle times.
+          </p>
+          <div
+            style={{
+              display: "grid",
+              gap: "1rem",
+              marginTop: "0.85rem",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
+            }}
+          >
+            <div className="card" style={{ margin: 0 }}>
+              <p className="ds-card-title" style={{ marginTop: 0 }}>
+                Your top states
+              </p>
+              {partnerHighlights.topStates.length === 0 ? (
+                <p style={{ margin: 0, color: "var(--muted)", fontSize: "0.9rem" }}>
+                  No state footprint yet—complete onboarding or book deals to populate this map.
+                </p>
+              ) : (
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                  {partnerHighlights.topStates.map((s) => (
+                    <li key={s.code}>
+                      <Link
+                        href={`/lender/dealers/performance?state=${encodeURIComponent(s.code)}`}
+                        className="btn btn-secondary"
+                        style={{
+                          fontSize: "0.85rem",
+                          padding: "0.4rem 0.65rem",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.35rem",
+                        }}
+                      >
+                        <strong>{s.code}</strong>
+                        <span style={{ color: "var(--muted)", fontWeight: 500 }}>{s.dealCount} deals</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div className="card" style={{ margin: 0 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: "0.5rem", alignItems: "baseline" }}>
+                <p className="ds-card-title" style={{ marginTop: 0 }}>
+                  Preferred partners
+                </p>
+                <Link href="/lender/dealers/performance" style={{ fontSize: "0.82rem" }}>
+                  Full scorecard →
+                </Link>
+              </div>
+              {partnerHighlights.scopeNote === "bookwide_fallback" ? (
+                <p style={{ margin: "0 0 0.65rem", fontSize: "0.8rem", color: "#fbbf24" }}>
+                  None of your preferred dealers overlap the highlighted states yet—showing book-wide preferred partners.
+                </p>
+              ) : null}
+              {partnerHighlights.scopeNote === "licensed_states_only" ? (
+                <p style={{ margin: "0 0 0.65rem", fontSize: "0.8rem", color: "var(--muted)" }}>
+                  Using your licensed states until deal volume builds in the last 90 days.
+                </p>
+              ) : null}
+              {partnerHighlights.preferredDealers.length === 0 ? (
+                <p style={{ margin: 0, color: "var(--muted)", fontSize: "0.9rem" }}>
+                  No dealers in the preferred tier yet. As clean deals accumulate, top performers surface here.
+                </p>
+              ) : (
+                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                  {partnerHighlights.preferredDealers.map((d) => (
+                    <li
+                      key={d.dealerId}
+                      style={{
+                        padding: "0.5rem 0",
+                        borderBottom: "1px solid rgba(255,255,255,0.06)",
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "space-between",
+                        gap: "0.35rem",
+                        alignItems: "baseline",
+                      }}
+                    >
+                      <div>
+                        <strong>{d.dealerName}</strong>
+                        <span style={{ color: "var(--muted)", fontSize: "0.82rem", marginLeft: "0.35rem" }}>
+                          {d.primaryState}
+                          {d.operatingStates.length > 1 ? ` +${d.operatingStates.length - 1}` : ""}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: "0.85rem" }}>
+                        <span style={{ fontWeight: 800 }}>{d.grade}</span>{" "}
+                        <span style={{ color: "var(--muted)" }}>({d.overallScore})</span>
+                        <span style={{ color: "var(--muted)", marginLeft: "0.35rem" }}>· {d.dealCount} deals</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </section>
+      ) : partnerHighlights?.warning ? (
+        <p style={{ marginTop: "1rem", color: "var(--muted)", fontSize: "0.88rem" }}>{partnerHighlights.warning}</p>
+      ) : null}
 
       <div
         style={{
