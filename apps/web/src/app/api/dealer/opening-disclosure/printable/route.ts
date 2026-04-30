@@ -9,15 +9,27 @@ export async function GET() {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const profile = await prisma.dealerProfile.findUnique({
-    where: { workspaceId: session.user.workspaceId },
-    select: {
-      legalName: true,
-      dba: true,
-      stateOfFormation: true,
-      licenseNumber: true,
-    },
-  });
+  let profile:
+    | {
+        legalName: string;
+        dba: string | null;
+        stateOfFormation: string;
+        licenseNumber: string | null;
+      }
+    | null = null;
+  try {
+    profile = await prisma.dealerProfile.findUnique({
+      where: { workspaceId: session.user.workspaceId },
+      select: {
+        legalName: true,
+        dba: true,
+        stateOfFormation: true,
+        licenseNumber: true,
+      },
+    });
+  } catch (error) {
+    console.error("[DealSeal] opening-disclosure printable profile read failed (degraded mode)", error);
+  }
 
   const now = new Date().toLocaleString();
   const dealerName = profile?.legalName || profile?.dba || "Dealer workspace";
