@@ -13,15 +13,14 @@ export async function GET() {
     where: { workspaceId: session.user.workspaceId },
     select: {
       legalName: true,
-      dbaName: true,
-      businessPhone: true,
-      titleClerkName: true,
-      titleClerkEmail: true,
+      dba: true,
+      stateOfFormation: true,
+      licenseNumber: true,
     },
   });
 
   const now = new Date().toLocaleString();
-  const dealerName = profile?.legalName || profile?.dbaName || "Dealer workspace";
+  const dealerName = profile?.legalName || profile?.dba || "Dealer workspace";
   const html = `<!doctype html>
 <html>
   <head>
@@ -51,8 +50,8 @@ export async function GET() {
     <div class="box">
       <p><strong>Dealer workspace:</strong> ${session.user.workspaceId}</p>
       <p><strong>Dealer legal name:</strong> ${dealerName}</p>
-      <p><strong>Business phone:</strong> ${profile?.businessPhone ?? "Pending"}</p>
-      <p><strong>Title clerk:</strong> ${profile?.titleClerkName ?? "Pending"}${profile?.titleClerkEmail ? ` (${profile.titleClerkEmail})` : ""}</p>
+      <p><strong>State of formation:</strong> ${profile?.stateOfFormation ?? "Pending"}</p>
+      <p><strong>Dealer license number:</strong> ${profile?.licenseNumber ?? "Pending"}</p>
     </div>
     <h2>Document Purpose</h2>
     <p>This packet is designed to be the first customer-signed disclosure uploaded by the dealer before the DealSeal system allows substantive deal work. The customer acknowledges that all pre-approval terms are estimates, that lender approval controls the final contract, and that final signed documents consummate the deal.</p>
