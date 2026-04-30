@@ -208,6 +208,7 @@ exports.Prisma.DealerLenderLinkScalarFieldEnum = {
   approvedStates: 'approvedStates',
   allowedDealTypes: 'allowedDealTypes',
   lenderOverrides: 'lenderOverrides',
+  lenderRuleProfile: 'lenderRuleProfile',
   effectiveDate: 'effectiveDate',
   expirationDate: 'expirationDate',
   requestedBy: 'requestedBy',
@@ -266,7 +267,9 @@ exports.Prisma.DealPartyScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   address: 'address',
-  creditTier: 'creditTier'
+  creditTier: 'creditTier',
+  encryptedPii: 'encryptedPii',
+  defaultKmsKeyId: 'defaultKmsKeyId'
 };
 
 exports.Prisma.VehicleScalarFieldEnum = {
@@ -297,7 +300,7 @@ exports.Prisma.AuthoritativeContractScalarFieldEnum = {
   id: 'id',
   dealId: 'dealId',
   version: 'version',
-  contentHash: 'contentHash',
+  authoritativeContractHash: 'authoritativeContractHash',
   governingLaw: 'governingLaw',
   signatureStatus: 'signatureStatus',
   isTransferableRecord: 'isTransferableRecord',
@@ -322,9 +325,25 @@ exports.Prisma.LoanPoolScalarFieldEnum = {
   lenderId: 'lenderId',
   poolName: 'poolName',
   poolType: 'poolType',
+  description: 'description',
   recourseStatus: 'recourseStatus',
   targetSize: 'targetSize',
   status: 'status',
+  totalLoanCount: 'totalLoanCount',
+  totalPrincipalBalance: 'totalPrincipalBalance',
+  weightedAverageApr: 'weightedAverageApr',
+  weightedAverageTermMonths: 'weightedAverageTermMonths',
+  riskClassification: 'riskClassification',
+  poolIntegrityStatus: 'poolIntegrityStatus',
+  auditStatus: 'auditStatus',
+  saleStage: 'saleStage',
+  transferDate: 'transferDate',
+  transferEntityName: 'transferEntityName',
+  custodyTransitionJson: 'custodyTransitionJson',
+  filterCriteriaJson: 'filterCriteriaJson',
+  lastPackageStorageKey: 'lastPackageStorageKey',
+  lastPackageGeneratedAt: 'lastPackageGeneratedAt',
+  createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -366,6 +385,11 @@ exports.Prisma.GeneratedDocumentScalarFieldEnum = {
   isAuthoritative: 'isAuthoritative',
   authoritativeContractHash: 'authoritativeContractHash',
   valuesSnapshot: 'valuesSnapshot',
+  storageKey: 'storageKey',
+  storageProvider: 'storageProvider',
+  integritySha256: 'integritySha256',
+  lifecycleStage: 'lifecycleStage',
+  provenance: 'provenance',
   createdAt: 'createdAt'
 };
 
@@ -547,6 +571,26 @@ exports.Prisma.PreFundingValidationCertificateScalarFieldEnum = {
   documentList: 'documentList',
   contractHash: 'contractHash',
   auditRef: 'auditRef',
+  immutable: 'immutable',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.DealAuditEventScalarFieldEnum = {
+  id: 'id',
+  dealId: 'dealId',
+  workspaceId: 'workspaceId',
+  actorUserId: 'actorUserId',
+  actorRole: 'actorRole',
+  authMethod: 'authMethod',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  deltaBefore: 'deltaBefore',
+  deltaAfter: 'deltaAfter',
+  payloadJson: 'payloadJson',
+  ipAddress: 'ipAddress',
+  previousChainHash: 'previousChainHash',
+  chainHash: 'chainHash',
   createdAt: 'createdAt'
 };
 
@@ -708,7 +752,11 @@ exports.ContractTransactionEventType = exports.$Enums.ContractTransactionEventTy
 
 exports.LoanPoolType = exports.$Enums.LoanPoolType = {
   WHOLE_LOAN: 'WHOLE_LOAN',
-  SECURITIZATION: 'SECURITIZATION'
+  SECURITIZATION: 'SECURITIZATION',
+  PRIME: 'PRIME',
+  SUBPRIME: 'SUBPRIME',
+  MIXED: 'MIXED',
+  CUSTOM: 'CUSTOM'
 };
 
 exports.RecourseStatus = exports.$Enums.RecourseStatus = {
@@ -717,9 +765,24 @@ exports.RecourseStatus = exports.$Enums.RecourseStatus = {
 };
 
 exports.LoanPoolStatus = exports.$Enums.LoanPoolStatus = {
+  DRAFT: 'DRAFT',
   FORMING: 'FORMING',
+  ACTIVE: 'ACTIVE',
+  LOCKED: 'LOCKED',
   CLOSED: 'CLOSED',
-  SOLD: 'SOLD'
+  SOLD: 'SOLD',
+  ARCHIVED: 'ARCHIVED',
+  IN_REVIEW: 'IN_REVIEW',
+  READY_FOR_SALE: 'READY_FOR_SALE',
+  TRANSFERRED: 'TRANSFERRED'
+};
+
+exports.LoanPoolSaleStage = exports.$Enums.LoanPoolSaleStage = {
+  NONE: 'NONE',
+  IN_REVIEW: 'IN_REVIEW',
+  READY_FOR_SALE: 'READY_FOR_SALE',
+  SOLD: 'SOLD',
+  TRANSFERRED: 'TRANSFERRED'
 };
 
 exports.NegotiableInstrumentType = exports.$Enums.NegotiableInstrumentType = {
@@ -763,6 +826,21 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   UCSP_ASSIGNMENT: 'UCSP_ASSIGNMENT',
   UCSP_TITLE_APPLICATION: 'UCSP_TITLE_APPLICATION',
   UCSP_CLOSING_MANIFEST: 'UCSP_CLOSING_MANIFEST'
+};
+
+exports.DocumentLifecycleStage = exports.$Enums.DocumentLifecycleStage = {
+  UPLOADED_OR_GENERATED: 'UPLOADED_OR_GENERATED',
+  VALIDATED: 'VALIDATED',
+  LINKED_AUTHORITATIVE: 'LINKED_AUTHORITATIVE',
+  IN_SUBMISSION: 'IN_SUBMISSION',
+  LOCKED: 'LOCKED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.DocumentProvenance = exports.$Enums.DocumentProvenance = {
+  DEALER: 'DEALER',
+  LENDER: 'LENDER',
+  SYSTEM: 'SYSTEM'
 };
 
 exports.WebhookDeliveryStatus = exports.$Enums.WebhookDeliveryStatus = {
@@ -811,7 +889,9 @@ exports.CustodyEventType = exports.$Enums.CustodyEventType = {
   LOCKED: 'LOCKED',
   CERTIFIED: 'CERTIFIED',
   INITIAL_DISCLOSURE_ACCEPTED: 'INITIAL_DISCLOSURE_ACCEPTED',
-  CHANGE_SUMMARY_GENERATED: 'CHANGE_SUMMARY_GENERATED'
+  CHANGE_SUMMARY_GENERATED: 'CHANGE_SUMMARY_GENERATED',
+  DOWNLOADED: 'DOWNLOADED',
+  PACKAGE_EXPORTED: 'PACKAGE_EXPORTED'
 };
 
 exports.ComplianceRuleSet = exports.$Enums.ComplianceRuleSet = {
@@ -855,6 +935,7 @@ exports.Prisma.ModelName = {
   DocumentVersion: 'DocumentVersion',
   ComplianceCheck: 'ComplianceCheck',
   PreFundingValidationCertificate: 'PreFundingValidationCertificate',
+  DealAuditEvent: 'DealAuditEvent',
   Account: 'Account',
   Session: 'Session'
 };

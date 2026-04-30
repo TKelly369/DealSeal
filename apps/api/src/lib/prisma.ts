@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
-export const prisma =
+const prismaBase =
   globalForPrisma.prisma ??
   new PrismaClient({
     log:
@@ -11,4 +11,33 @@ export const prisma =
         : ["error"],
   });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+function wormAuditError(): never {
+  throw new Error(
+    "AuditEvent is append-only (WORM): updates and deletes are not permitted.",
+  );
+}
+
+/** Prisma client with strict WORM enforcement on `AuditEvent`. */
+export const prisma = prismaBase.$extends({
+  query: {
+    auditEvent: {
+      update() {
+        wormAuditError();
+      },
+      updateMany() {
+        wormAuditError();
+      },
+      delete() {
+        wormAuditError();
+      },
+      deleteMany() {
+        wormAuditError();
+      },
+      upsert() {
+        wormAuditError();
+      },
+    },
+  },
+}) as unknown as PrismaClient;
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prismaBase;

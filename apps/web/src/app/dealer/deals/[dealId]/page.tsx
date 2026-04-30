@@ -49,7 +49,7 @@ export default async function DealerDealLifecyclePage({ params }: { params: Prom
     dealId: deal.id,
     status: deal.status,
     state: deal.state,
-    authoritativeHash: deal.authoritativeContract?.contentHash ?? null,
+    authoritativeHash: deal.authoritativeContract?.authoritativeContractHash ?? null,
     consummatedSummary: buildConsummatedSummary(deal.consummatedData),
     buyerDisplay,
     vehicleDisplay,

@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import {
   ContractTransactionEventType,
+  LoanPoolStatus,
   LoanPoolType,
   SecondaryMarketStatus,
 } from "@/generated/prisma";
@@ -88,7 +89,14 @@ export const SecondaryMarketService = {
     const deal = await prisma.deal.findUnique({ where: { id: dealId } });
     if (!pool || !deal) throw new Error("Pool or deal not found.");
     if (deal.lenderId !== pool.lenderId) throw new Error("Deal does not belong to this lender.");
-    if (pool.status === "SOLD") throw new Error("Pool is closed for new assets.");
+    if (
+      pool.status === LoanPoolStatus.SOLD ||
+      pool.status === LoanPoolStatus.ARCHIVED ||
+      pool.status === LoanPoolStatus.TRANSFERRED ||
+      pool.status === LoanPoolStatus.LOCKED
+    ) {
+      throw new Error("Pool is closed for new assets.");
+    }
     if (deal.poolId) throw new Error("Deal is already assigned to a pool.");
 
     const eventType =

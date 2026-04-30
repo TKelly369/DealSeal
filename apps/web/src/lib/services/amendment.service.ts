@@ -105,7 +105,7 @@ export const AmendmentService = {
     if (amendment.status !== AmendmentStatus.PENDING_LENDER_APPROVAL) throw new Error("Amendment is not pending.");
 
     const amendedFields = (amendment.amendedFields ?? {}) as Record<string, unknown>;
-    const parentHash = amendment.deal.authoritativeContract.contentHash;
+    const parentHash = amendment.deal.authoritativeContract.authoritativeContractHash;
     const newHash = crypto
       .createHash("sha256")
       .update(
@@ -171,7 +171,7 @@ export const AmendmentService = {
         where: { id: amendment.parentAuthoritativeContractId },
         data: {
           version: { increment: 1 },
-          contentHash: newHash,
+          authoritativeContractHash: newHash,
           signatureStatus: "EXECUTED_RISC_AMENDED",
         },
       });

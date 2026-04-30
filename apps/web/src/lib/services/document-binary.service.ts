@@ -1,3 +1,8 @@
+/**
+ * Binary document vault backed by S3-compatible APIs today.
+ * Prefer composing keys via `@/lib/storage/deal-seal-storage` (`buildStructuredObjectKey`) for new flows
+ * so uploads stay aligned with the custodial abstraction (`STORAGE_DRIVER=local|s3`).
+ */
 import { randomUUID } from "crypto";
 import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";

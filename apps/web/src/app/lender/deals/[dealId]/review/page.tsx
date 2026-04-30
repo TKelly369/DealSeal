@@ -29,7 +29,7 @@ export default async function LenderDealReviewPage({ params }: { params: Promise
         <p className="ds-card-title">Dealer</p>
         <p>{deal.dealer.name}</p>
         <p className="ds-card-title">Contract Hash</p>
-        <p style={{ wordBreak: "break-all" }}>{deal.authoritativeContract?.contentHash ?? "N/A"}</p>
+        <p style={{ wordBreak: "break-all" }}>{deal.authoritativeContract?.authoritativeContractHash ?? "N/A"}</p>
       </div>
       <div className="card">
         <h3 style={{ marginTop: 0 }}>Contract Integrity Validator</h3>

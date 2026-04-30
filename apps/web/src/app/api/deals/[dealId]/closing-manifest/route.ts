@@ -18,14 +18,17 @@ export async function GET(_req: Request, { params }: { params: Promise<{ dealId:
       authoritativeContract: true,
     },
   });
-  if (!deal || deal.dealerId !== session.user.workspaceId) {
+  if (
+    !deal ||
+    (deal.dealerId !== session.user.workspaceId && session.user.role !== "PLATFORM_ADMIN")
+  ) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
   if (deal.status !== "CLOSING_PACKAGE_READY" && deal.status !== "CONSUMMATED") {
     return NextResponse.json({ error: "Closing package not ready" }, { status: 409 });
   }
 
-  const hash = deal.authoritativeContract?.contentHash ?? "";
+  const hash = deal.authoritativeContract?.authoritativeContractHash ?? "";
   const manifest = deal.generatedDocuments.filter((d) => d.documentType === "UCSP_CLOSING_MANIFEST").pop();
 
   return NextResponse.json({

@@ -144,7 +144,7 @@ export const AutopublishService = {
       throw new Error("Authoritative contract missing.");
     }
 
-    const contentHash = dealCheck.authoritativeContract.contentHash;
+    const authoritativeContractHash = dealCheck.authoritativeContract.authoritativeContractHash;
     const authId = dealCheck.authoritativeContract.id;
 
     await prisma.deal.update({
@@ -212,7 +212,7 @@ export const AutopublishService = {
 
           if (docType === "BMV_LIEN_CERT") {
             (valuesSnapshot as Record<string, unknown>).lienholderJustification =
-              `Certified for BMV per locked RISC. Authoritative SHA-256: ${contentHash}.`;
+              `Certified for BMV per locked RISC. Authoritative SHA-256: ${authoritativeContractHash}.`;
           }
 
           const row = await tx.generatedDocument.create({
@@ -224,7 +224,7 @@ export const AutopublishService = {
               fileUrl,
               version,
               isAuthoritative: true,
-              authoritativeContractHash: contentHash,
+              authoritativeContractHash,
               valuesSnapshot,
             },
           });
@@ -240,7 +240,7 @@ export const AutopublishService = {
               metadata: {
                 autopublish: true,
                 documentType: docType,
-                authoritativeContractHash: contentHash,
+                authoritativeContractHash,
               },
             },
           });
@@ -255,10 +255,10 @@ export const AutopublishService = {
             fileUrl: `/mock-uploads/${dealId}/ucsp-closing-manifest-v${manifestVersion}.json`,
             version: manifestVersion,
             isAuthoritative: true,
-            authoritativeContractHash: contentHash,
+            authoritativeContractHash,
             valuesSnapshot: {
               documentIds: createdIds,
-              authoritativeContractHash: contentHash,
+              authoritativeContractHash,
               sealedAt: new Date().toISOString(),
             },
           },
@@ -267,7 +267,7 @@ export const AutopublishService = {
 
         await logAutopublishCustody(tx, dealId, userId, actorRole, {
           autopublishComplete: true,
-          authoritativeContractHash: contentHash,
+          authoritativeContractHash,
           manifestId: manifest.id,
           packageDocumentIds: createdIds,
         });

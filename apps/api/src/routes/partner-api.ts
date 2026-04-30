@@ -26,6 +26,8 @@ function withPartnerUsage() {
       void recordAudit({
         orgId: p.orgId,
         actorUserId: null,
+        actorRole: "PARTNER_API",
+        authMethod: "API_KEY",
         eventType: "API_PARTNER_CALL",
         action: "API_PARTNER_CALL",
         resource: "ApiUsage",

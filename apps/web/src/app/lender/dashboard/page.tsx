@@ -51,7 +51,10 @@ export default async function LenderDashboardPage() {
           Intake Queue
         </Link>
         <Link href="/lender/assets" className="btn">
-          Receivables &amp; pools
+          Receivables
+        </Link>
+        <Link href="/lender/pools" className="btn">
+          Loan pools
         </Link>
         <Link href="/lender/rules" className="btn btn-secondary">
           Lender Rules

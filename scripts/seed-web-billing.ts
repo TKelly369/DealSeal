@@ -436,7 +436,7 @@ async function main() {
     create: {
       dealId: lockDealId,
       version: 1,
-      contentHash: lockAuthHash,
+      authoritativeContractHash: lockAuthHash,
       governingLaw: "TX",
       signatureStatus: "EXECUTED_RISC",
       isTransferableRecord: true,
@@ -654,7 +654,7 @@ async function main() {
     create: {
       dealId: closingDealId,
       version: 1,
-      contentHash: closingHash,
+      authoritativeContractHash: closingHash,
       governingLaw: "TX",
       signatureStatus: "EXECUTED_RISC",
       isTransferableRecord: true,
@@ -779,7 +779,7 @@ async function main() {
     create: {
       dealId: pooledDealId,
       version: 1,
-      contentHash: poolAuthHash,
+      authoritativeContractHash: poolAuthHash,
       governingLaw: "TX",
       signatureStatus: "EXECUTED_RISC",
       isTransferableRecord: true,
@@ -918,7 +918,7 @@ async function main() {
     create: {
       dealId: defectiveDealId,
       version: 1,
-      contentHash: defectiveHash,
+      authoritativeContractHash: defectiveHash,
       governingLaw: "TX",
       signatureStatus: "EXECUTED_RISC",
       isTransferableRecord: true,

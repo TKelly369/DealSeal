@@ -534,14 +534,14 @@ export const DealWorkflowService = {
         lockedAt: new Date().toISOString(),
         riscFile: input.fileName,
       });
-      const contentHash = crypto.createHash("sha256").update(hashInput).digest("hex");
+      const authoritativeContractHash = crypto.createHash("sha256").update(hashInput).digest("hex");
 
       const authoritative = await tx.authoritativeContract.upsert({
         where: { dealId },
         create: {
           dealId,
           version: 1,
-          contentHash,
+          authoritativeContractHash,
           governingLaw: deal.state,
           signatureStatus: "EXECUTED_RISC",
           isTransferableRecord: true,
@@ -550,7 +550,7 @@ export const DealWorkflowService = {
         },
         update: {
           version: { increment: 1 },
-          contentHash,
+          authoritativeContractHash,
           signatureStatus: "EXECUTED_RISC",
           isTransferableRecord: true,
           uccCollateralDescription,
@@ -567,10 +567,10 @@ export const DealWorkflowService = {
           fileUrl,
           version,
           isAuthoritative: true,
-          authoritativeContractHash: contentHash,
+          authoritativeContractHash,
           valuesSnapshot: {
             originalFileName: input.fileName,
-            authoritativeHash: contentHash,
+            authoritativeHash: authoritativeContractHash,
           },
         },
       });
@@ -581,7 +581,7 @@ export const DealWorkflowService = {
         eventType: "LOCKED",
         actorUserId: userId,
         actorRole,
-        metadata: { documentType: "RISC_SIGNED", contentHash, fileUrl },
+        metadata: { documentType: "RISC_SIGNED", authoritativeContractHash, fileUrl },
       });
 
       const prelim = (deal.preliminarySubmittedTerms as Record<string, unknown> | null) ?? {};
@@ -609,7 +609,7 @@ export const DealWorkflowService = {
             fileUrl: `/mock-uploads/${dealId}/change-summary-disclosure-v${changeVersion}.json`,
             version: changeVersion,
             isAuthoritative: true,
-            authoritativeContractHash: contentHash,
+            authoritativeContractHash,
             valuesSnapshot: {
               preliminary: prelim,
               finalTerms,
@@ -639,7 +639,7 @@ export const DealWorkflowService = {
         data: { status: "FIRST_GREEN_PASSED" },
       });
 
-      return { doc, contentHash };
+      return { doc, authoritativeContractHash };
     });
 
     await SecondaryMarketService.assignContractToLender(dealId);

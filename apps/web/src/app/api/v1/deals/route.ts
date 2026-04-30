@@ -69,24 +69,31 @@ export async function POST(req: Request) {
     return Response.json({ error: "No approved lender link found for this workspace and lender." }, { status: 400 });
   }
 
-  const deal = await AuthoritativeContractService.generateCanonicalDeal({
-    dealerId: apiContext.workspaceId,
-    lenderId: parsed.data.lenderId,
-    dealerLenderLinkId: link.id,
-    state: parsed.data.state,
-    party: {
-      firstName: parsed.data.buyer.firstName,
-      lastName: parsed.data.buyer.lastName,
-      address: parsed.data.buyer.address,
-      coBuyerName: parsed.data.buyer.coBuyerName ?? "",
-      contactInfo: parsed.data.buyer.contactInfo ?? "",
-      creditTier: parsed.data.buyer.creditTier ?? "",
+  const deal = await AuthoritativeContractService.generateCanonicalDeal(
+    {
+      dealerId: apiContext.workspaceId,
+      lenderId: parsed.data.lenderId,
+      dealerLenderLinkId: link.id,
+      state: parsed.data.state,
+      party: {
+        firstName: parsed.data.buyer.firstName,
+        lastName: parsed.data.buyer.lastName,
+        address: parsed.data.buyer.address,
+        coBuyerName: parsed.data.buyer.coBuyerName ?? "",
+        contactInfo: parsed.data.buyer.contactInfo ?? "",
+        creditTier: parsed.data.buyer.creditTier ?? "",
+      },
+      vehicle: parsed.data.vehicle,
+      assignedDealerUserId: parsed.data.assignedDealerUserId,
+      dealerRepresentative: parsed.data.dealerRepresentative,
+      dealershipLocation: parsed.data.dealershipLocation,
     },
-    vehicle: parsed.data.vehicle,
-    assignedDealerUserId: parsed.data.assignedDealerUserId,
-    dealerRepresentative: parsed.data.dealerRepresentative,
-    dealershipLocation: parsed.data.dealershipLocation,
-  });
+    {
+      authMethod: "API_KEY",
+      actorRole: "DEALER_ADMIN",
+      ip: req.headers.get("x-forwarded-for") ?? undefined,
+    },
+  );
 
   await prisma.workspace.update({
     where: { id: apiContext.workspaceId },

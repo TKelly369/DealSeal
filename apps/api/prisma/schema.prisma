@@ -771,11 +771,17 @@ model StateTransitionLog {
   @@index([transactionId, createdAt])
 }
 
+/// Append-only security audit log (WORM). Updates/deletes are blocked in the Prisma client extension.
+/// `chainHash` is derived as SHA-256(previousChainHash + canonicalEventJson + ISO timestamp).
 model AuditEvent {
   id             String   @id @default(uuid())
   organizationId String?
   transactionId  String?
   actorUserId    String?
+  /// Highest-privilege role claim at time of event (comma-separated if multiple).
+  actorRole      String?
+  /// e.g. PASSWORD, JWT, API_KEY, SSO — how the actor authenticated for this action.
+  authMethod     String?
   eventType      String?
   action         String?
   entityType     String?
@@ -783,8 +789,15 @@ model AuditEvent {
   resource       String?
   resourceId     String?
   payloadJson    Json     @default("{}")
+  /// Structured before/after for mutations (SOC 2 evidence).
+  deltaBefore    Json?
+  deltaAfter     Json?
   ip             String?
   userAgent      String?
+  /// Prior row's `chainHash`, or null for the genesis event in a deployment.
+  previousChainHash String?
+  /// Tamper-evident hash chaining over (previousChainHash + event payload + timestamp).
+  chainHash      String?
   createdAt      DateTime @default(now())
 
   actorUser    User?         @relation("ActorAudit", fields: [actorUserId], references: [id], onDelete: SetNull)
@@ -795,6 +808,7 @@ model AuditEvent {
   @@index([transactionId, createdAt])
   @@index([actorUserId, createdAt])
   @@index([eventType, createdAt])
+  @@index([chainHash])
 }
 
 model Discrepancy {

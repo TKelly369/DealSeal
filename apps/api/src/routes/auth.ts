@@ -76,6 +76,8 @@ export function createAuthRouter(env: Env): Router {
       await recordAudit({
         orgId: org.id,
         actorUserId: user.id,
+        actorRole: "ADMIN",
+        authMethod: "PASSWORD",
         action: "REGISTER",
         resource: "Organization",
         resourceId: org.id,
@@ -123,6 +125,8 @@ export function createAuthRouter(env: Env): Router {
       await recordAudit({
         orgId: membership.orgId,
         actorUserId: user.id,
+        actorRole: membership.roles.join(","),
+        authMethod: "PASSWORD",
         action: "LOGIN",
         resource: "Session",
         ip: req.ip,

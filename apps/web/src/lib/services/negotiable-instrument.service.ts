@@ -127,7 +127,7 @@ export const NegotiableInstrumentService = {
         fileUrl: `/mock-uploads/${dealId}/transfer-warranty-certificate-v${version}.pdf`,
         version,
         isAuthoritative: true,
-        authoritativeContractHash: deal.authoritativeContract.contentHash,
+        authoritativeContractHash: deal.authoritativeContract.authoritativeContractHash,
         valuesSnapshot: toJsonValue({
           certificateType: "UCC_3_416_TRANSFER_WARRANTY",
           poolId,

@@ -109,20 +109,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             // Prisma/DB override unavailable — continue with scaffold credentials.
           }
 
-          const found = MOCK_USERS.find(
-            (u) => u.email.toLowerCase() === normalizedEmail && u.password === password,
-          );
-          if (!found) return null;
-          return {
-            id: found.id,
-            email: found.email,
-            name: found.name,
-            role: found.role,
-            workspaceId: found.workspaceId,
-          };
+          if (process.env.NODE_ENV !== "production") {
+            const found = MOCK_USERS.find(
+              (u) => u.email.toLowerCase() === normalizedEmail && u.password === password,
+            );
+            if (found) {
+              return {
+                id: found.id,
+                email: found.email,
+                name: found.name,
+                role: found.role,
+                workspaceId: found.workspaceId,
+              };
+            }
+          }
         } catch {
           return null;
         }
+        return null;
       },
     }),
   ],

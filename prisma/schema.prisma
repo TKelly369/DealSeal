@@ -96,6 +96,23 @@ enum CustodyEventType {
   CERTIFIED
   INITIAL_DISCLOSURE_ACCEPTED
   CHANGE_SUMMARY_GENERATED
+  DOWNLOADED
+  PACKAGE_EXPORTED
+}
+
+enum DocumentLifecycleStage {
+  UPLOADED_OR_GENERATED
+  VALIDATED
+  LINKED_AUTHORITATIVE
+  IN_SUBMISSION
+  LOCKED
+  ARCHIVED
+}
+
+enum DocumentProvenance {
+  DEALER
+  LENDER
+  SYSTEM
 }
 
 enum DocumentType {
@@ -132,12 +149,32 @@ enum ContractTransactionEventType {
 enum LoanPoolType {
   WHOLE_LOAN
   SECURITIZATION
+  PRIME
+  SUBPRIME
+  MIXED
+  CUSTOM
 }
 
 enum LoanPoolStatus {
+  DRAFT
   FORMING
+  ACTIVE
+  LOCKED
   CLOSED
   SOLD
+  ARCHIVED
+  IN_REVIEW
+  READY_FOR_SALE
+  TRANSFERRED
+}
+
+/// High-level sale / transfer workflow for secondary readiness (lender-defined stages).
+enum LoanPoolSaleStage {
+  NONE
+  IN_REVIEW
+  READY_FOR_SALE
+  SOLD
+  TRANSFERRED
 }
 
 enum RecourseStatus {
@@ -243,6 +280,7 @@ model User {
   accessAudits  UserAccessAudit[]
   dealCommentsAuthored DealComment[] @relation("DealCommentAuthor")
   dealCommentsResolved DealComment[] @relation("DealCommentResolver")
+  loanPoolsCreated LoanPool[] @relation("LoanPoolCreatedBy")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -353,6 +391,8 @@ model DealerLenderLink {
   approvedStates   String[]
   allowedDealTypes String[]
   lenderOverrides  Json   @default("{}")
+  /// JSON profile for lender-facing disclosure (e.g. `{ "showDealerFeeBreakdown": false }`).
+  lenderRuleProfile Json  @default("{}")
   effectiveDate    DateTime?
   expirationDate   DateTime?
   requestedBy      String?
@@ -426,6 +466,7 @@ model Deal {
   alerts             DealAlert[]
   apiIngressKeyId    String?
   comments            DealComment[]
+  auditEvents        DealAuditEvent[]
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
@@ -441,6 +482,10 @@ model DealParty {
   lastName   String
   address    String
   creditTier String?
+  /// AES-256-GCM encrypted PII payload + IV references (see `field-encryption.ts`).
+  encryptedPii Json?
+  /// Logical KMS / vault key identifier stored alongside ciphertext (e.g. ARN or `env:FIELD_ENCRYPTION_KEY:v1`).
+  defaultKmsKeyId String?
   deal       Deal @relation(fields: [dealId], references: [id], onDelete: Cascade)
 }
 
@@ -474,7 +519,8 @@ model AuthoritativeContract {
   id                      String @id @default(cuid())
   dealId                  String @unique
   version                 Int @default(1)
-  contentHash             String
+  /// SHA-256 over the canonical contract payload at seal time (tamper detection).
+  authoritativeContractHash String
   governingLaw            String
   signatureStatus         String
   isTransferableRecord    Boolean @default(true)
@@ -507,10 +553,28 @@ model LoanPool {
   lenderId   String
   poolName   String
   poolType   LoanPoolType
+  description String?       @db.Text
   recourseStatus RecourseStatus @default(WITHOUT_RECOURSE)
   targetSize Float
-  status     LoanPoolStatus @default(FORMING)
+  status     LoanPoolStatus @default(DRAFT)
+  totalLoanCount Int @default(0)
+  totalPrincipalBalance Decimal @default(0) @db.Decimal(18, 2)
+  weightedAverageApr Decimal? @db.Decimal(8, 6)
+  weightedAverageTermMonths Int?
+  /// Lender-defined risk bucket label (DealSeal does not score credit).
+  riskClassification String?
+  poolIntegrityStatus DealComplianceStatus @default(COMPLIANT)
+  auditStatus String @default("PENDING")
+  saleStage  LoanPoolSaleStage @default(NONE)
+  transferDate DateTime?
+  transferEntityName String?
+  custodyTransitionJson Json?
+  filterCriteriaJson Json?
+  lastPackageStorageKey String?
+  lastPackageGeneratedAt DateTime?
+  createdByUserId String?
   lender     Workspace      @relation(fields: [lenderId], references: [id], onDelete: Cascade)
+  createdBy  User?          @relation("LoanPoolCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
   deals      Deal[]
   createdAt  DateTime       @default(now())
   updatedAt  DateTime       @updatedAt
@@ -563,6 +627,13 @@ model GeneratedDocument {
   isAuthoritative         Boolean @default(false)
   authoritativeContractHash String?
   valuesSnapshot          Json @default("{}")
+  /// Object key in abstract storage (S3 key or local path fragment); no PII in path segments.
+  storageKey              String?
+  /// STORAGE_DRIVER label: LOCAL | S3 | etc.
+  storageProvider         String @default("LOCAL")
+  integritySha256         String?
+  lifecycleStage          DocumentLifecycleStage @default(UPLOADED_OR_GENERATED)
+  provenance              DocumentProvenance @default(SYSTEM)
   deal                    Deal @relation(fields: [dealId], references: [id], onDelete: Cascade)
   authoritativeContract   AuthoritativeContract? @relation(fields: [authoritativeContractId], references: [id], onDelete: SetNull)
   amendment               Amendment? @relation(fields: [amendmentId], references: [id], onDelete: SetNull)
@@ -799,14 +870,42 @@ model PreFundingValidationCertificate {
   lenderId      String
   dealerId      String
   status        DealComplianceStatus
+  /// Full structured outcomes for every compliance rule evaluation at issuance (SOC 2 CC8.1 evidence).
   ruleChecks    Json @default("[]")
   warnings      Json @default("[]")
   blockers      Json @default("[]")
   documentList  Json @default("[]")
   contractHash  String
   auditRef      String
+  /// Once true, row is immutable (WORM) — enforced in Prisma extension + services.
+  immutable     Boolean @default(true)
   deal          Deal @relation(fields: [dealId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
+}
+
+/// Append-only deal lifecycle audit (hash-chained). Writes only via `recordDealAuditEvent`.
+model DealAuditEvent {
+  id                  String   @id @default(cuid())
+  dealId              String?
+  workspaceId         String?
+  actorUserId         String?
+  actorRole           String?
+  authMethod          String?
+  action              String
+  entityType          String?
+  entityId            String?
+  deltaBefore         Json?
+  deltaAfter          Json?
+  payloadJson         Json     @default("{}")
+  ipAddress           String?
+  previousChainHash   String?
+  chainHash           String?
+  createdAt           DateTime @default(now())
+  deal                Deal?    @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@index([dealId, createdAt])
+  @@index([workspaceId, createdAt])
+  @@index([chainHash])
 }
 
 model Account {

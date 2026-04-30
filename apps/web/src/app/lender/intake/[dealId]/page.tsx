@@ -112,7 +112,7 @@ export default async function LenderDealIntakeDetailPage({ params }: { params: P
           <h2 style={{ marginTop: 0 }}>Authoritative record (read-only)</h2>
           <p style={{ color: "var(--muted)" }}>Status: {deal.status}</p>
           <p className="ds-card-title">Authoritative hash</p>
-          <p style={{ wordBreak: "break-all" }}>{deal.authoritativeContract?.contentHash ?? "—"}</p>
+          <p style={{ wordBreak: "break-all" }}>{deal.authoritativeContract?.authoritativeContractHash ?? "—"}</p>
           <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>Custody is sealed; no lender edits.</p>
           {deal.status === "CLOSING_PACKAGE_READY" || deal.status === "CONSUMMATED" ? (
             <p style={{ color: "#86efac", marginTop: "0.5rem", fontSize: "0.9rem" }}>

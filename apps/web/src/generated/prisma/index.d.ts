@@ -189,6 +189,11 @@ export type ComplianceCheck = $Result.DefaultSelection<Prisma.$ComplianceCheckPa
  */
 export type PreFundingValidationCertificate = $Result.DefaultSelection<Prisma.$PreFundingValidationCertificatePayload>
 /**
+ * Model DealAuditEvent
+ * Append-only deal lifecycle audit (hash-chained). Writes only via `recordDealAuditEvent`.
+ */
+export type DealAuditEvent = $Result.DefaultSelection<Prisma.$DealAuditEventPayload>
+/**
  * Model Account
  * 
  */
@@ -321,10 +326,33 @@ export const CustodyEventType: {
   LOCKED: 'LOCKED',
   CERTIFIED: 'CERTIFIED',
   INITIAL_DISCLOSURE_ACCEPTED: 'INITIAL_DISCLOSURE_ACCEPTED',
-  CHANGE_SUMMARY_GENERATED: 'CHANGE_SUMMARY_GENERATED'
+  CHANGE_SUMMARY_GENERATED: 'CHANGE_SUMMARY_GENERATED',
+  DOWNLOADED: 'DOWNLOADED',
+  PACKAGE_EXPORTED: 'PACKAGE_EXPORTED'
 };
 
 export type CustodyEventType = (typeof CustodyEventType)[keyof typeof CustodyEventType]
+
+
+export const DocumentLifecycleStage: {
+  UPLOADED_OR_GENERATED: 'UPLOADED_OR_GENERATED',
+  VALIDATED: 'VALIDATED',
+  LINKED_AUTHORITATIVE: 'LINKED_AUTHORITATIVE',
+  IN_SUBMISSION: 'IN_SUBMISSION',
+  LOCKED: 'LOCKED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+export type DocumentLifecycleStage = (typeof DocumentLifecycleStage)[keyof typeof DocumentLifecycleStage]
+
+
+export const DocumentProvenance: {
+  DEALER: 'DEALER',
+  LENDER: 'LENDER',
+  SYSTEM: 'SYSTEM'
+};
+
+export type DocumentProvenance = (typeof DocumentProvenance)[keyof typeof DocumentProvenance]
 
 
 export const DocumentType: {
@@ -369,19 +397,41 @@ export type ContractTransactionEventType = (typeof ContractTransactionEventType)
 
 export const LoanPoolType: {
   WHOLE_LOAN: 'WHOLE_LOAN',
-  SECURITIZATION: 'SECURITIZATION'
+  SECURITIZATION: 'SECURITIZATION',
+  PRIME: 'PRIME',
+  SUBPRIME: 'SUBPRIME',
+  MIXED: 'MIXED',
+  CUSTOM: 'CUSTOM'
 };
 
 export type LoanPoolType = (typeof LoanPoolType)[keyof typeof LoanPoolType]
 
 
 export const LoanPoolStatus: {
+  DRAFT: 'DRAFT',
   FORMING: 'FORMING',
+  ACTIVE: 'ACTIVE',
+  LOCKED: 'LOCKED',
   CLOSED: 'CLOSED',
-  SOLD: 'SOLD'
+  SOLD: 'SOLD',
+  ARCHIVED: 'ARCHIVED',
+  IN_REVIEW: 'IN_REVIEW',
+  READY_FOR_SALE: 'READY_FOR_SALE',
+  TRANSFERRED: 'TRANSFERRED'
 };
 
 export type LoanPoolStatus = (typeof LoanPoolStatus)[keyof typeof LoanPoolStatus]
+
+
+export const LoanPoolSaleStage: {
+  NONE: 'NONE',
+  IN_REVIEW: 'IN_REVIEW',
+  READY_FOR_SALE: 'READY_FOR_SALE',
+  SOLD: 'SOLD',
+  TRANSFERRED: 'TRANSFERRED'
+};
+
+export type LoanPoolSaleStage = (typeof LoanPoolSaleStage)[keyof typeof LoanPoolSaleStage]
 
 
 export const RecourseStatus: {
@@ -566,6 +616,14 @@ export type CustodyEventType = $Enums.CustodyEventType
 
 export const CustodyEventType: typeof $Enums.CustodyEventType
 
+export type DocumentLifecycleStage = $Enums.DocumentLifecycleStage
+
+export const DocumentLifecycleStage: typeof $Enums.DocumentLifecycleStage
+
+export type DocumentProvenance = $Enums.DocumentProvenance
+
+export const DocumentProvenance: typeof $Enums.DocumentProvenance
+
 export type DocumentType = $Enums.DocumentType
 
 export const DocumentType: typeof $Enums.DocumentType
@@ -585,6 +643,10 @@ export const LoanPoolType: typeof $Enums.LoanPoolType
 export type LoanPoolStatus = $Enums.LoanPoolStatus
 
 export const LoanPoolStatus: typeof $Enums.LoanPoolStatus
+
+export type LoanPoolSaleStage = $Enums.LoanPoolSaleStage
+
+export const LoanPoolSaleStage: typeof $Enums.LoanPoolSaleStage
 
 export type RecourseStatus = $Enums.RecourseStatus
 
@@ -1115,6 +1177,16 @@ export class PrismaClient<
   get preFundingValidationCertificate(): Prisma.PreFundingValidationCertificateDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.dealAuditEvent`: Exposes CRUD operations for the **DealAuditEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DealAuditEvents
+    * const dealAuditEvents = await prisma.dealAuditEvent.findMany()
+    * ```
+    */
+  get dealAuditEvent(): Prisma.DealAuditEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.account`: Exposes CRUD operations for the **Account** model.
     * Example usage:
     * ```ts
@@ -1609,6 +1681,7 @@ export namespace Prisma {
     DocumentVersion: 'DocumentVersion',
     ComplianceCheck: 'ComplianceCheck',
     PreFundingValidationCertificate: 'PreFundingValidationCertificate',
+    DealAuditEvent: 'DealAuditEvent',
     Account: 'Account',
     Session: 'Session'
   };
@@ -1629,7 +1702,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "account" | "session"
+      modelProps: "user" | "workspace" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "dealAuditEvent" | "account" | "session"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4223,6 +4296,80 @@ export namespace Prisma {
           }
         }
       }
+      DealAuditEvent: {
+        payload: Prisma.$DealAuditEventPayload<ExtArgs>
+        fields: Prisma.DealAuditEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DealAuditEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DealAuditEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>
+          }
+          findFirst: {
+            args: Prisma.DealAuditEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DealAuditEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>
+          }
+          findMany: {
+            args: Prisma.DealAuditEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>[]
+          }
+          create: {
+            args: Prisma.DealAuditEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>
+          }
+          createMany: {
+            args: Prisma.DealAuditEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DealAuditEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>[]
+          }
+          delete: {
+            args: Prisma.DealAuditEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>
+          }
+          update: {
+            args: Prisma.DealAuditEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.DealAuditEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DealAuditEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DealAuditEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.DealAuditEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DealAuditEventPayload>
+          }
+          aggregate: {
+            args: Prisma.DealAuditEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDealAuditEvent>
+          }
+          groupBy: {
+            args: Prisma.DealAuditEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DealAuditEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DealAuditEventCountArgs<ExtArgs>
+            result: $Utils.Optional<DealAuditEventCountAggregateOutputType> | number
+          }
+        }
+      }
       Account: {
         payload: Prisma.$AccountPayload<ExtArgs>
         fields: Prisma.AccountFieldRefs
@@ -4502,6 +4649,7 @@ export namespace Prisma {
     documentVersion?: DocumentVersionOmit
     complianceCheck?: ComplianceCheckOmit
     preFundingValidationCertificate?: PreFundingValidationCertificateOmit
+    dealAuditEvent?: DealAuditEventOmit
     account?: AccountOmit
     session?: SessionOmit
   }
@@ -4593,6 +4741,7 @@ export namespace Prisma {
     accessAudits: number
     dealCommentsAuthored: number
     dealCommentsResolved: number
+    loanPoolsCreated: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4605,6 +4754,7 @@ export namespace Prisma {
     accessAudits?: boolean | UserCountOutputTypeCountAccessAuditsArgs
     dealCommentsAuthored?: boolean | UserCountOutputTypeCountDealCommentsAuthoredArgs
     dealCommentsResolved?: boolean | UserCountOutputTypeCountDealCommentsResolvedArgs
+    loanPoolsCreated?: boolean | UserCountOutputTypeCountLoanPoolsCreatedArgs
   }
 
   // Custom InputTypes
@@ -4679,6 +4829,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountDealCommentsResolvedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DealCommentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLoanPoolsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LoanPoolWhereInput
   }
 
 
@@ -4885,6 +5042,7 @@ export namespace Prisma {
     notifications: number
     alerts: number
     comments: number
+    auditEvents: number
   }
 
   export type DealCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4898,6 +5056,7 @@ export namespace Prisma {
     notifications?: boolean | DealCountOutputTypeCountNotificationsArgs
     alerts?: boolean | DealCountOutputTypeCountAlertsArgs
     comments?: boolean | DealCountOutputTypeCountCommentsArgs
+    auditEvents?: boolean | DealCountOutputTypeCountAuditEventsArgs
   }
 
   // Custom InputTypes
@@ -4979,6 +5138,13 @@ export namespace Prisma {
    */
   export type DealCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DealCommentWhereInput
+  }
+
+  /**
+   * DealCountOutputType without action
+   */
+  export type DealCountOutputTypeCountAuditEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealAuditEventWhereInput
   }
 
 
@@ -5472,6 +5638,7 @@ export namespace Prisma {
     accessAudits?: boolean | User$accessAuditsArgs<ExtArgs>
     dealCommentsAuthored?: boolean | User$dealCommentsAuthoredArgs<ExtArgs>
     dealCommentsResolved?: boolean | User$dealCommentsResolvedArgs<ExtArgs>
+    loanPoolsCreated?: boolean | User$loanPoolsCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5516,6 +5683,7 @@ export namespace Prisma {
     accessAudits?: boolean | User$accessAuditsArgs<ExtArgs>
     dealCommentsAuthored?: boolean | User$dealCommentsAuthoredArgs<ExtArgs>
     dealCommentsResolved?: boolean | User$dealCommentsResolvedArgs<ExtArgs>
+    loanPoolsCreated?: boolean | User$loanPoolsCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5533,6 +5701,7 @@ export namespace Prisma {
       accessAudits: Prisma.$UserAccessAuditPayload<ExtArgs>[]
       dealCommentsAuthored: Prisma.$DealCommentPayload<ExtArgs>[]
       dealCommentsResolved: Prisma.$DealCommentPayload<ExtArgs>[]
+      loanPoolsCreated: Prisma.$LoanPoolPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5945,6 +6114,7 @@ export namespace Prisma {
     accessAudits<T extends User$accessAuditsArgs<ExtArgs> = {}>(args?: Subset<T, User$accessAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserAccessAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dealCommentsAuthored<T extends User$dealCommentsAuthoredArgs<ExtArgs> = {}>(args?: Subset<T, User$dealCommentsAuthoredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dealCommentsResolved<T extends User$dealCommentsResolvedArgs<ExtArgs> = {}>(args?: Subset<T, User$dealCommentsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    loanPoolsCreated<T extends User$loanPoolsCreatedArgs<ExtArgs> = {}>(args?: Subset<T, User$loanPoolsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoanPoolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6582,6 +6752,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DealCommentScalarFieldEnum | DealCommentScalarFieldEnum[]
+  }
+
+  /**
+   * User.loanPoolsCreated
+   */
+  export type User$loanPoolsCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoanPool
+     */
+    select?: LoanPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoanPool
+     */
+    omit?: LoanPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LoanPoolInclude<ExtArgs> | null
+    where?: LoanPoolWhereInput
+    orderBy?: LoanPoolOrderByWithRelationInput | LoanPoolOrderByWithRelationInput[]
+    cursor?: LoanPoolWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LoanPoolScalarFieldEnum | LoanPoolScalarFieldEnum[]
   }
 
   /**
@@ -13744,6 +13938,7 @@ export namespace Prisma {
     approvedStates: number
     allowedDealTypes: number
     lenderOverrides: number
+    lenderRuleProfile: number
     effectiveDate: number
     expirationDate: number
     requestedBy: number
@@ -13789,6 +13984,7 @@ export namespace Prisma {
     approvedStates?: true
     allowedDealTypes?: true
     lenderOverrides?: true
+    lenderRuleProfile?: true
     effectiveDate?: true
     expirationDate?: true
     requestedBy?: true
@@ -13879,6 +14075,7 @@ export namespace Prisma {
     approvedStates: string[]
     allowedDealTypes: string[]
     lenderOverrides: JsonValue
+    lenderRuleProfile: JsonValue
     effectiveDate: Date | null
     expirationDate: Date | null
     requestedBy: string | null
@@ -13913,6 +14110,7 @@ export namespace Prisma {
     approvedStates?: boolean
     allowedDealTypes?: boolean
     lenderOverrides?: boolean
+    lenderRuleProfile?: boolean
     effectiveDate?: boolean
     expirationDate?: boolean
     requestedBy?: boolean
@@ -13934,6 +14132,7 @@ export namespace Prisma {
     approvedStates?: boolean
     allowedDealTypes?: boolean
     lenderOverrides?: boolean
+    lenderRuleProfile?: boolean
     effectiveDate?: boolean
     expirationDate?: boolean
     requestedBy?: boolean
@@ -13953,6 +14152,7 @@ export namespace Prisma {
     approvedStates?: boolean
     allowedDealTypes?: boolean
     lenderOverrides?: boolean
+    lenderRuleProfile?: boolean
     effectiveDate?: boolean
     expirationDate?: boolean
     requestedBy?: boolean
@@ -13972,6 +14172,7 @@ export namespace Prisma {
     approvedStates?: boolean
     allowedDealTypes?: boolean
     lenderOverrides?: boolean
+    lenderRuleProfile?: boolean
     effectiveDate?: boolean
     expirationDate?: boolean
     requestedBy?: boolean
@@ -13981,7 +14182,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DealerLenderLinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealerId" | "lenderId" | "status" | "approvedStates" | "allowedDealTypes" | "lenderOverrides" | "effectiveDate" | "expirationDate" | "requestedBy" | "approvedBy" | "auditTrail" | "createdAt" | "updatedAt", ExtArgs["result"]["dealerLenderLink"]>
+  export type DealerLenderLinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealerId" | "lenderId" | "status" | "approvedStates" | "allowedDealTypes" | "lenderOverrides" | "lenderRuleProfile" | "effectiveDate" | "expirationDate" | "requestedBy" | "approvedBy" | "auditTrail" | "createdAt" | "updatedAt", ExtArgs["result"]["dealerLenderLink"]>
   export type DealerLenderLinkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -14012,6 +14213,10 @@ export namespace Prisma {
       approvedStates: string[]
       allowedDealTypes: string[]
       lenderOverrides: Prisma.JsonValue
+      /**
+       * JSON profile for lender-facing disclosure (e.g. `{ "showDealerFeeBreakdown": false }`).
+       */
+      lenderRuleProfile: Prisma.JsonValue
       effectiveDate: Date | null
       expirationDate: Date | null
       requestedBy: string | null
@@ -14452,6 +14657,7 @@ export namespace Prisma {
     readonly approvedStates: FieldRef<"DealerLenderLink", 'String[]'>
     readonly allowedDealTypes: FieldRef<"DealerLenderLink", 'String[]'>
     readonly lenderOverrides: FieldRef<"DealerLenderLink", 'Json'>
+    readonly lenderRuleProfile: FieldRef<"DealerLenderLink", 'Json'>
     readonly effectiveDate: FieldRef<"DealerLenderLink", 'DateTime'>
     readonly expirationDate: FieldRef<"DealerLenderLink", 'DateTime'>
     readonly requestedBy: FieldRef<"DealerLenderLink", 'String'>
@@ -17318,6 +17524,7 @@ export namespace Prisma {
     notifications?: boolean | Deal$notificationsArgs<ExtArgs>
     alerts?: boolean | Deal$alertsArgs<ExtArgs>
     comments?: boolean | Deal$commentsArgs<ExtArgs>
+    auditEvents?: boolean | Deal$auditEventsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deal"]>
 
@@ -17422,6 +17629,7 @@ export namespace Prisma {
     notifications?: boolean | Deal$notificationsArgs<ExtArgs>
     alerts?: boolean | Deal$alertsArgs<ExtArgs>
     comments?: boolean | Deal$commentsArgs<ExtArgs>
+    auditEvents?: boolean | Deal$auditEventsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DealIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17459,6 +17667,7 @@ export namespace Prisma {
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       alerts: Prisma.$DealAlertPayload<ExtArgs>[]
       comments: Prisma.$DealCommentPayload<ExtArgs>[]
+      auditEvents: Prisma.$DealAuditEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17895,6 +18104,7 @@ export namespace Prisma {
     notifications<T extends Deal$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     alerts<T extends Deal$alertsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$alertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Deal$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditEvents<T extends Deal$auditEventsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$auditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18695,6 +18905,30 @@ export namespace Prisma {
   }
 
   /**
+   * Deal.auditEvents
+   */
+  export type Deal$auditEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    where?: DealAuditEventWhereInput
+    orderBy?: DealAuditEventOrderByWithRelationInput | DealAuditEventOrderByWithRelationInput[]
+    cursor?: DealAuditEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DealAuditEventScalarFieldEnum | DealAuditEventScalarFieldEnum[]
+  }
+
+  /**
    * Deal without action
    */
   export type DealDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18731,6 +18965,7 @@ export namespace Prisma {
     lastName: string | null
     address: string | null
     creditTier: string | null
+    defaultKmsKeyId: string | null
   }
 
   export type DealPartyMaxAggregateOutputType = {
@@ -18741,6 +18976,7 @@ export namespace Prisma {
     lastName: string | null
     address: string | null
     creditTier: string | null
+    defaultKmsKeyId: string | null
   }
 
   export type DealPartyCountAggregateOutputType = {
@@ -18751,6 +18987,8 @@ export namespace Prisma {
     lastName: number
     address: number
     creditTier: number
+    encryptedPii: number
+    defaultKmsKeyId: number
     _all: number
   }
 
@@ -18763,6 +19001,7 @@ export namespace Prisma {
     lastName?: true
     address?: true
     creditTier?: true
+    defaultKmsKeyId?: true
   }
 
   export type DealPartyMaxAggregateInputType = {
@@ -18773,6 +19012,7 @@ export namespace Prisma {
     lastName?: true
     address?: true
     creditTier?: true
+    defaultKmsKeyId?: true
   }
 
   export type DealPartyCountAggregateInputType = {
@@ -18783,6 +19023,8 @@ export namespace Prisma {
     lastName?: true
     address?: true
     creditTier?: true
+    encryptedPii?: true
+    defaultKmsKeyId?: true
     _all?: true
   }
 
@@ -18866,6 +19108,8 @@ export namespace Prisma {
     lastName: string
     address: string
     creditTier: string | null
+    encryptedPii: JsonValue | null
+    defaultKmsKeyId: string | null
     _count: DealPartyCountAggregateOutputType | null
     _min: DealPartyMinAggregateOutputType | null
     _max: DealPartyMaxAggregateOutputType | null
@@ -18893,6 +19137,8 @@ export namespace Prisma {
     lastName?: boolean
     address?: boolean
     creditTier?: boolean
+    encryptedPii?: boolean
+    defaultKmsKeyId?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dealParty"]>
 
@@ -18904,6 +19150,8 @@ export namespace Prisma {
     lastName?: boolean
     address?: boolean
     creditTier?: boolean
+    encryptedPii?: boolean
+    defaultKmsKeyId?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dealParty"]>
 
@@ -18915,6 +19163,8 @@ export namespace Prisma {
     lastName?: boolean
     address?: boolean
     creditTier?: boolean
+    encryptedPii?: boolean
+    defaultKmsKeyId?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["dealParty"]>
 
@@ -18926,9 +19176,11 @@ export namespace Prisma {
     lastName?: boolean
     address?: boolean
     creditTier?: boolean
+    encryptedPii?: boolean
+    defaultKmsKeyId?: boolean
   }
 
-  export type DealPartyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "role" | "firstName" | "lastName" | "address" | "creditTier", ExtArgs["result"]["dealParty"]>
+  export type DealPartyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "role" | "firstName" | "lastName" | "address" | "creditTier" | "encryptedPii" | "defaultKmsKeyId", ExtArgs["result"]["dealParty"]>
   export type DealPartyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deal?: boolean | DealDefaultArgs<ExtArgs>
   }
@@ -18952,6 +19204,14 @@ export namespace Prisma {
       lastName: string
       address: string
       creditTier: string | null
+      /**
+       * AES-256-GCM encrypted PII payload + IV references (see `field-encryption.ts`).
+       */
+      encryptedPii: Prisma.JsonValue | null
+      /**
+       * Logical KMS / vault key identifier stored alongside ciphertext (e.g. ARN or `env:FIELD_ENCRYPTION_KEY:v1`).
+       */
+      defaultKmsKeyId: string | null
     }, ExtArgs["result"]["dealParty"]>
     composites: {}
   }
@@ -19383,6 +19643,8 @@ export namespace Prisma {
     readonly lastName: FieldRef<"DealParty", 'String'>
     readonly address: FieldRef<"DealParty", 'String'>
     readonly creditTier: FieldRef<"DealParty", 'String'>
+    readonly encryptedPii: FieldRef<"DealParty", 'Json'>
+    readonly defaultKmsKeyId: FieldRef<"DealParty", 'String'>
   }
     
 
@@ -22141,7 +22403,7 @@ export namespace Prisma {
     id: string | null
     dealId: string | null
     version: number | null
-    contentHash: string | null
+    authoritativeContractHash: string | null
     governingLaw: string | null
     signatureStatus: string | null
     isTransferableRecord: boolean | null
@@ -22152,7 +22414,7 @@ export namespace Prisma {
     id: string | null
     dealId: string | null
     version: number | null
-    contentHash: string | null
+    authoritativeContractHash: string | null
     governingLaw: string | null
     signatureStatus: string | null
     isTransferableRecord: boolean | null
@@ -22163,7 +22425,7 @@ export namespace Prisma {
     id: number
     dealId: number
     version: number
-    contentHash: number
+    authoritativeContractHash: number
     governingLaw: number
     signatureStatus: number
     isTransferableRecord: number
@@ -22185,7 +22447,7 @@ export namespace Prisma {
     id?: true
     dealId?: true
     version?: true
-    contentHash?: true
+    authoritativeContractHash?: true
     governingLaw?: true
     signatureStatus?: true
     isTransferableRecord?: true
@@ -22196,7 +22458,7 @@ export namespace Prisma {
     id?: true
     dealId?: true
     version?: true
-    contentHash?: true
+    authoritativeContractHash?: true
     governingLaw?: true
     signatureStatus?: true
     isTransferableRecord?: true
@@ -22207,7 +22469,7 @@ export namespace Prisma {
     id?: true
     dealId?: true
     version?: true
-    contentHash?: true
+    authoritativeContractHash?: true
     governingLaw?: true
     signatureStatus?: true
     isTransferableRecord?: true
@@ -22306,7 +22568,7 @@ export namespace Prisma {
     id: string
     dealId: string
     version: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord: boolean
@@ -22337,7 +22599,7 @@ export namespace Prisma {
     id?: boolean
     dealId?: boolean
     version?: boolean
-    contentHash?: boolean
+    authoritativeContractHash?: boolean
     governingLaw?: boolean
     signatureStatus?: boolean
     isTransferableRecord?: boolean
@@ -22353,7 +22615,7 @@ export namespace Prisma {
     id?: boolean
     dealId?: boolean
     version?: boolean
-    contentHash?: boolean
+    authoritativeContractHash?: boolean
     governingLaw?: boolean
     signatureStatus?: boolean
     isTransferableRecord?: boolean
@@ -22366,7 +22628,7 @@ export namespace Prisma {
     id?: boolean
     dealId?: boolean
     version?: boolean
-    contentHash?: boolean
+    authoritativeContractHash?: boolean
     governingLaw?: boolean
     signatureStatus?: boolean
     isTransferableRecord?: boolean
@@ -22379,7 +22641,7 @@ export namespace Prisma {
     id?: boolean
     dealId?: boolean
     version?: boolean
-    contentHash?: boolean
+    authoritativeContractHash?: boolean
     governingLaw?: boolean
     signatureStatus?: boolean
     isTransferableRecord?: boolean
@@ -22387,7 +22649,7 @@ export namespace Prisma {
     uccDebtorName?: boolean
   }
 
-  export type AuthoritativeContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "version" | "contentHash" | "governingLaw" | "signatureStatus" | "isTransferableRecord" | "uccCollateralDescription" | "uccDebtorName", ExtArgs["result"]["authoritativeContract"]>
+  export type AuthoritativeContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "version" | "authoritativeContractHash" | "governingLaw" | "signatureStatus" | "isTransferableRecord" | "uccCollateralDescription" | "uccDebtorName", ExtArgs["result"]["authoritativeContract"]>
   export type AuthoritativeContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deal?: boolean | DealDefaultArgs<ExtArgs>
     generatedDocuments?: boolean | AuthoritativeContract$generatedDocumentsArgs<ExtArgs>
@@ -22412,7 +22674,10 @@ export namespace Prisma {
       id: string
       dealId: string
       version: number
-      contentHash: string
+      /**
+       * SHA-256 over the canonical contract payload at seal time (tamper detection).
+       */
+      authoritativeContractHash: string
       governingLaw: string
       signatureStatus: string
       isTransferableRecord: boolean
@@ -22847,7 +23112,7 @@ export namespace Prisma {
     readonly id: FieldRef<"AuthoritativeContract", 'String'>
     readonly dealId: FieldRef<"AuthoritativeContract", 'String'>
     readonly version: FieldRef<"AuthoritativeContract", 'Int'>
-    readonly contentHash: FieldRef<"AuthoritativeContract", 'String'>
+    readonly authoritativeContractHash: FieldRef<"AuthoritativeContract", 'String'>
     readonly governingLaw: FieldRef<"AuthoritativeContract", 'String'>
     readonly signatureStatus: FieldRef<"AuthoritativeContract", 'String'>
     readonly isTransferableRecord: FieldRef<"AuthoritativeContract", 'Boolean'>
@@ -24500,10 +24765,18 @@ export namespace Prisma {
 
   export type LoanPoolAvgAggregateOutputType = {
     targetSize: number | null
+    totalLoanCount: number | null
+    totalPrincipalBalance: Decimal | null
+    weightedAverageApr: Decimal | null
+    weightedAverageTermMonths: number | null
   }
 
   export type LoanPoolSumAggregateOutputType = {
     targetSize: number | null
+    totalLoanCount: number | null
+    totalPrincipalBalance: Decimal | null
+    weightedAverageApr: Decimal | null
+    weightedAverageTermMonths: number | null
   }
 
   export type LoanPoolMinAggregateOutputType = {
@@ -24511,9 +24784,23 @@ export namespace Prisma {
     lenderId: string | null
     poolName: string | null
     poolType: $Enums.LoanPoolType | null
+    description: string | null
     recourseStatus: $Enums.RecourseStatus | null
     targetSize: number | null
     status: $Enums.LoanPoolStatus | null
+    totalLoanCount: number | null
+    totalPrincipalBalance: Decimal | null
+    weightedAverageApr: Decimal | null
+    weightedAverageTermMonths: number | null
+    riskClassification: string | null
+    poolIntegrityStatus: $Enums.DealComplianceStatus | null
+    auditStatus: string | null
+    saleStage: $Enums.LoanPoolSaleStage | null
+    transferDate: Date | null
+    transferEntityName: string | null
+    lastPackageStorageKey: string | null
+    lastPackageGeneratedAt: Date | null
+    createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -24523,9 +24810,23 @@ export namespace Prisma {
     lenderId: string | null
     poolName: string | null
     poolType: $Enums.LoanPoolType | null
+    description: string | null
     recourseStatus: $Enums.RecourseStatus | null
     targetSize: number | null
     status: $Enums.LoanPoolStatus | null
+    totalLoanCount: number | null
+    totalPrincipalBalance: Decimal | null
+    weightedAverageApr: Decimal | null
+    weightedAverageTermMonths: number | null
+    riskClassification: string | null
+    poolIntegrityStatus: $Enums.DealComplianceStatus | null
+    auditStatus: string | null
+    saleStage: $Enums.LoanPoolSaleStage | null
+    transferDate: Date | null
+    transferEntityName: string | null
+    lastPackageStorageKey: string | null
+    lastPackageGeneratedAt: Date | null
+    createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -24535,9 +24836,25 @@ export namespace Prisma {
     lenderId: number
     poolName: number
     poolType: number
+    description: number
     recourseStatus: number
     targetSize: number
     status: number
+    totalLoanCount: number
+    totalPrincipalBalance: number
+    weightedAverageApr: number
+    weightedAverageTermMonths: number
+    riskClassification: number
+    poolIntegrityStatus: number
+    auditStatus: number
+    saleStage: number
+    transferDate: number
+    transferEntityName: number
+    custodyTransitionJson: number
+    filterCriteriaJson: number
+    lastPackageStorageKey: number
+    lastPackageGeneratedAt: number
+    createdByUserId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -24546,10 +24863,18 @@ export namespace Prisma {
 
   export type LoanPoolAvgAggregateInputType = {
     targetSize?: true
+    totalLoanCount?: true
+    totalPrincipalBalance?: true
+    weightedAverageApr?: true
+    weightedAverageTermMonths?: true
   }
 
   export type LoanPoolSumAggregateInputType = {
     targetSize?: true
+    totalLoanCount?: true
+    totalPrincipalBalance?: true
+    weightedAverageApr?: true
+    weightedAverageTermMonths?: true
   }
 
   export type LoanPoolMinAggregateInputType = {
@@ -24557,9 +24882,23 @@ export namespace Prisma {
     lenderId?: true
     poolName?: true
     poolType?: true
+    description?: true
     recourseStatus?: true
     targetSize?: true
     status?: true
+    totalLoanCount?: true
+    totalPrincipalBalance?: true
+    weightedAverageApr?: true
+    weightedAverageTermMonths?: true
+    riskClassification?: true
+    poolIntegrityStatus?: true
+    auditStatus?: true
+    saleStage?: true
+    transferDate?: true
+    transferEntityName?: true
+    lastPackageStorageKey?: true
+    lastPackageGeneratedAt?: true
+    createdByUserId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -24569,9 +24908,23 @@ export namespace Prisma {
     lenderId?: true
     poolName?: true
     poolType?: true
+    description?: true
     recourseStatus?: true
     targetSize?: true
     status?: true
+    totalLoanCount?: true
+    totalPrincipalBalance?: true
+    weightedAverageApr?: true
+    weightedAverageTermMonths?: true
+    riskClassification?: true
+    poolIntegrityStatus?: true
+    auditStatus?: true
+    saleStage?: true
+    transferDate?: true
+    transferEntityName?: true
+    lastPackageStorageKey?: true
+    lastPackageGeneratedAt?: true
+    createdByUserId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -24581,9 +24934,25 @@ export namespace Prisma {
     lenderId?: true
     poolName?: true
     poolType?: true
+    description?: true
     recourseStatus?: true
     targetSize?: true
     status?: true
+    totalLoanCount?: true
+    totalPrincipalBalance?: true
+    weightedAverageApr?: true
+    weightedAverageTermMonths?: true
+    riskClassification?: true
+    poolIntegrityStatus?: true
+    auditStatus?: true
+    saleStage?: true
+    transferDate?: true
+    transferEntityName?: true
+    custodyTransitionJson?: true
+    filterCriteriaJson?: true
+    lastPackageStorageKey?: true
+    lastPackageGeneratedAt?: true
+    createdByUserId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -24680,9 +25049,25 @@ export namespace Prisma {
     lenderId: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description: string | null
     recourseStatus: $Enums.RecourseStatus
     targetSize: number
     status: $Enums.LoanPoolStatus
+    totalLoanCount: number
+    totalPrincipalBalance: Decimal
+    weightedAverageApr: Decimal | null
+    weightedAverageTermMonths: number | null
+    riskClassification: string | null
+    poolIntegrityStatus: $Enums.DealComplianceStatus
+    auditStatus: string
+    saleStage: $Enums.LoanPoolSaleStage
+    transferDate: Date | null
+    transferEntityName: string | null
+    custodyTransitionJson: JsonValue | null
+    filterCriteriaJson: JsonValue | null
+    lastPackageStorageKey: string | null
+    lastPackageGeneratedAt: Date | null
+    createdByUserId: string | null
     createdAt: Date
     updatedAt: Date
     _count: LoanPoolCountAggregateOutputType | null
@@ -24711,12 +25096,29 @@ export namespace Prisma {
     lenderId?: boolean
     poolName?: boolean
     poolType?: boolean
+    description?: boolean
     recourseStatus?: boolean
     targetSize?: boolean
     status?: boolean
+    totalLoanCount?: boolean
+    totalPrincipalBalance?: boolean
+    weightedAverageApr?: boolean
+    weightedAverageTermMonths?: boolean
+    riskClassification?: boolean
+    poolIntegrityStatus?: boolean
+    auditStatus?: boolean
+    saleStage?: boolean
+    transferDate?: boolean
+    transferEntityName?: boolean
+    custodyTransitionJson?: boolean
+    filterCriteriaJson?: boolean
+    lastPackageStorageKey?: boolean
+    lastPackageGeneratedAt?: boolean
+    createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | LoanPool$createdByArgs<ExtArgs>
     deals?: boolean | LoanPool$dealsArgs<ExtArgs>
     _count?: boolean | LoanPoolCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["loanPool"]>
@@ -24726,12 +25128,29 @@ export namespace Prisma {
     lenderId?: boolean
     poolName?: boolean
     poolType?: boolean
+    description?: boolean
     recourseStatus?: boolean
     targetSize?: boolean
     status?: boolean
+    totalLoanCount?: boolean
+    totalPrincipalBalance?: boolean
+    weightedAverageApr?: boolean
+    weightedAverageTermMonths?: boolean
+    riskClassification?: boolean
+    poolIntegrityStatus?: boolean
+    auditStatus?: boolean
+    saleStage?: boolean
+    transferDate?: boolean
+    transferEntityName?: boolean
+    custodyTransitionJson?: boolean
+    filterCriteriaJson?: boolean
+    lastPackageStorageKey?: boolean
+    lastPackageGeneratedAt?: boolean
+    createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | LoanPool$createdByArgs<ExtArgs>
   }, ExtArgs["result"]["loanPool"]>
 
   export type LoanPoolSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -24739,12 +25158,29 @@ export namespace Prisma {
     lenderId?: boolean
     poolName?: boolean
     poolType?: boolean
+    description?: boolean
     recourseStatus?: boolean
     targetSize?: boolean
     status?: boolean
+    totalLoanCount?: boolean
+    totalPrincipalBalance?: boolean
+    weightedAverageApr?: boolean
+    weightedAverageTermMonths?: boolean
+    riskClassification?: boolean
+    poolIntegrityStatus?: boolean
+    auditStatus?: boolean
+    saleStage?: boolean
+    transferDate?: boolean
+    transferEntityName?: boolean
+    custodyTransitionJson?: boolean
+    filterCriteriaJson?: boolean
+    lastPackageStorageKey?: boolean
+    lastPackageGeneratedAt?: boolean
+    createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | LoanPool$createdByArgs<ExtArgs>
   }, ExtArgs["result"]["loanPool"]>
 
   export type LoanPoolSelectScalar = {
@@ -24752,30 +25188,50 @@ export namespace Prisma {
     lenderId?: boolean
     poolName?: boolean
     poolType?: boolean
+    description?: boolean
     recourseStatus?: boolean
     targetSize?: boolean
     status?: boolean
+    totalLoanCount?: boolean
+    totalPrincipalBalance?: boolean
+    weightedAverageApr?: boolean
+    weightedAverageTermMonths?: boolean
+    riskClassification?: boolean
+    poolIntegrityStatus?: boolean
+    auditStatus?: boolean
+    saleStage?: boolean
+    transferDate?: boolean
+    transferEntityName?: boolean
+    custodyTransitionJson?: boolean
+    filterCriteriaJson?: boolean
+    lastPackageStorageKey?: boolean
+    lastPackageGeneratedAt?: boolean
+    createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LoanPoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "lenderId" | "poolName" | "poolType" | "recourseStatus" | "targetSize" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["loanPool"]>
+  export type LoanPoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "lenderId" | "poolName" | "poolType" | "description" | "recourseStatus" | "targetSize" | "status" | "totalLoanCount" | "totalPrincipalBalance" | "weightedAverageApr" | "weightedAverageTermMonths" | "riskClassification" | "poolIntegrityStatus" | "auditStatus" | "saleStage" | "transferDate" | "transferEntityName" | "custodyTransitionJson" | "filterCriteriaJson" | "lastPackageStorageKey" | "lastPackageGeneratedAt" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["loanPool"]>
   export type LoanPoolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | LoanPool$createdByArgs<ExtArgs>
     deals?: boolean | LoanPool$dealsArgs<ExtArgs>
     _count?: boolean | LoanPoolCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LoanPoolIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | LoanPool$createdByArgs<ExtArgs>
   }
   export type LoanPoolIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | LoanPool$createdByArgs<ExtArgs>
   }
 
   export type $LoanPoolPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "LoanPool"
     objects: {
       lender: Prisma.$WorkspacePayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
       deals: Prisma.$DealPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -24783,9 +25239,28 @@ export namespace Prisma {
       lenderId: string
       poolName: string
       poolType: $Enums.LoanPoolType
+      description: string | null
       recourseStatus: $Enums.RecourseStatus
       targetSize: number
       status: $Enums.LoanPoolStatus
+      totalLoanCount: number
+      totalPrincipalBalance: Prisma.Decimal
+      weightedAverageApr: Prisma.Decimal | null
+      weightedAverageTermMonths: number | null
+      /**
+       * Lender-defined risk bucket label (DealSeal does not score credit).
+       */
+      riskClassification: string | null
+      poolIntegrityStatus: $Enums.DealComplianceStatus
+      auditStatus: string
+      saleStage: $Enums.LoanPoolSaleStage
+      transferDate: Date | null
+      transferEntityName: string | null
+      custodyTransitionJson: Prisma.JsonValue | null
+      filterCriteriaJson: Prisma.JsonValue | null
+      lastPackageStorageKey: string | null
+      lastPackageGeneratedAt: Date | null
+      createdByUserId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["loanPool"]>
@@ -25183,6 +25658,7 @@ export namespace Prisma {
   export interface Prisma__LoanPoolClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     lender<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends LoanPool$createdByArgs<ExtArgs> = {}>(args?: Subset<T, LoanPool$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     deals<T extends LoanPool$dealsArgs<ExtArgs> = {}>(args?: Subset<T, LoanPool$dealsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -25217,9 +25693,25 @@ export namespace Prisma {
     readonly lenderId: FieldRef<"LoanPool", 'String'>
     readonly poolName: FieldRef<"LoanPool", 'String'>
     readonly poolType: FieldRef<"LoanPool", 'LoanPoolType'>
+    readonly description: FieldRef<"LoanPool", 'String'>
     readonly recourseStatus: FieldRef<"LoanPool", 'RecourseStatus'>
     readonly targetSize: FieldRef<"LoanPool", 'Float'>
     readonly status: FieldRef<"LoanPool", 'LoanPoolStatus'>
+    readonly totalLoanCount: FieldRef<"LoanPool", 'Int'>
+    readonly totalPrincipalBalance: FieldRef<"LoanPool", 'Decimal'>
+    readonly weightedAverageApr: FieldRef<"LoanPool", 'Decimal'>
+    readonly weightedAverageTermMonths: FieldRef<"LoanPool", 'Int'>
+    readonly riskClassification: FieldRef<"LoanPool", 'String'>
+    readonly poolIntegrityStatus: FieldRef<"LoanPool", 'DealComplianceStatus'>
+    readonly auditStatus: FieldRef<"LoanPool", 'String'>
+    readonly saleStage: FieldRef<"LoanPool", 'LoanPoolSaleStage'>
+    readonly transferDate: FieldRef<"LoanPool", 'DateTime'>
+    readonly transferEntityName: FieldRef<"LoanPool", 'String'>
+    readonly custodyTransitionJson: FieldRef<"LoanPool", 'Json'>
+    readonly filterCriteriaJson: FieldRef<"LoanPool", 'Json'>
+    readonly lastPackageStorageKey: FieldRef<"LoanPool", 'String'>
+    readonly lastPackageGeneratedAt: FieldRef<"LoanPool", 'DateTime'>
+    readonly createdByUserId: FieldRef<"LoanPool", 'String'>
     readonly createdAt: FieldRef<"LoanPool", 'DateTime'>
     readonly updatedAt: FieldRef<"LoanPool", 'DateTime'>
   }
@@ -25615,6 +26107,25 @@ export namespace Prisma {
      * Limit how many LoanPools to delete.
      */
     limit?: number
+  }
+
+  /**
+   * LoanPool.createdBy
+   */
+  export type LoanPool$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -27988,6 +28499,11 @@ export namespace Prisma {
     version: number | null
     isAuthoritative: boolean | null
     authoritativeContractHash: string | null
+    storageKey: string | null
+    storageProvider: string | null
+    integritySha256: string | null
+    lifecycleStage: $Enums.DocumentLifecycleStage | null
+    provenance: $Enums.DocumentProvenance | null
     createdAt: Date | null
   }
 
@@ -28002,6 +28518,11 @@ export namespace Prisma {
     version: number | null
     isAuthoritative: boolean | null
     authoritativeContractHash: string | null
+    storageKey: string | null
+    storageProvider: string | null
+    integritySha256: string | null
+    lifecycleStage: $Enums.DocumentLifecycleStage | null
+    provenance: $Enums.DocumentProvenance | null
     createdAt: Date | null
   }
 
@@ -28017,6 +28538,11 @@ export namespace Prisma {
     isAuthoritative: number
     authoritativeContractHash: number
     valuesSnapshot: number
+    storageKey: number
+    storageProvider: number
+    integritySha256: number
+    lifecycleStage: number
+    provenance: number
     createdAt: number
     _all: number
   }
@@ -28041,6 +28567,11 @@ export namespace Prisma {
     version?: true
     isAuthoritative?: true
     authoritativeContractHash?: true
+    storageKey?: true
+    storageProvider?: true
+    integritySha256?: true
+    lifecycleStage?: true
+    provenance?: true
     createdAt?: true
   }
 
@@ -28055,6 +28586,11 @@ export namespace Prisma {
     version?: true
     isAuthoritative?: true
     authoritativeContractHash?: true
+    storageKey?: true
+    storageProvider?: true
+    integritySha256?: true
+    lifecycleStage?: true
+    provenance?: true
     createdAt?: true
   }
 
@@ -28070,6 +28606,11 @@ export namespace Prisma {
     isAuthoritative?: true
     authoritativeContractHash?: true
     valuesSnapshot?: true
+    storageKey?: true
+    storageProvider?: true
+    integritySha256?: true
+    lifecycleStage?: true
+    provenance?: true
     createdAt?: true
     _all?: true
   }
@@ -28172,6 +28713,11 @@ export namespace Prisma {
     isAuthoritative: boolean
     authoritativeContractHash: string | null
     valuesSnapshot: JsonValue
+    storageKey: string | null
+    storageProvider: string
+    integritySha256: string | null
+    lifecycleStage: $Enums.DocumentLifecycleStage
+    provenance: $Enums.DocumentProvenance
     createdAt: Date
     _count: GeneratedDocumentCountAggregateOutputType | null
     _avg: GeneratedDocumentAvgAggregateOutputType | null
@@ -28206,6 +28752,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: boolean
     valuesSnapshot?: boolean
+    storageKey?: boolean
+    storageProvider?: boolean
+    integritySha256?: boolean
+    lifecycleStage?: boolean
+    provenance?: boolean
     createdAt?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
     authoritativeContract?: boolean | GeneratedDocument$authoritativeContractArgs<ExtArgs>
@@ -28227,6 +28778,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: boolean
     valuesSnapshot?: boolean
+    storageKey?: boolean
+    storageProvider?: boolean
+    integritySha256?: boolean
+    lifecycleStage?: boolean
+    provenance?: boolean
     createdAt?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
     authoritativeContract?: boolean | GeneratedDocument$authoritativeContractArgs<ExtArgs>
@@ -28245,6 +28801,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: boolean
     valuesSnapshot?: boolean
+    storageKey?: boolean
+    storageProvider?: boolean
+    integritySha256?: boolean
+    lifecycleStage?: boolean
+    provenance?: boolean
     createdAt?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
     authoritativeContract?: boolean | GeneratedDocument$authoritativeContractArgs<ExtArgs>
@@ -28263,10 +28824,15 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: boolean
     valuesSnapshot?: boolean
+    storageKey?: boolean
+    storageProvider?: boolean
+    integritySha256?: boolean
+    lifecycleStage?: boolean
+    provenance?: boolean
     createdAt?: boolean
   }
 
-  export type GeneratedDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "authoritativeContractId" | "amendmentId" | "type" | "documentType" | "fileUrl" | "version" | "isAuthoritative" | "authoritativeContractHash" | "valuesSnapshot" | "createdAt", ExtArgs["result"]["generatedDocument"]>
+  export type GeneratedDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "authoritativeContractId" | "amendmentId" | "type" | "documentType" | "fileUrl" | "version" | "isAuthoritative" | "authoritativeContractHash" | "valuesSnapshot" | "storageKey" | "storageProvider" | "integritySha256" | "lifecycleStage" | "provenance" | "createdAt", ExtArgs["result"]["generatedDocument"]>
   export type GeneratedDocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deal?: boolean | DealDefaultArgs<ExtArgs>
     authoritativeContract?: boolean | GeneratedDocument$authoritativeContractArgs<ExtArgs>
@@ -28307,6 +28873,17 @@ export namespace Prisma {
       isAuthoritative: boolean
       authoritativeContractHash: string | null
       valuesSnapshot: Prisma.JsonValue
+      /**
+       * Object key in abstract storage (S3 key or local path fragment); no PII in path segments.
+       */
+      storageKey: string | null
+      /**
+       * STORAGE_DRIVER label: LOCAL | S3 | etc.
+       */
+      storageProvider: string
+      integritySha256: string | null
+      lifecycleStage: $Enums.DocumentLifecycleStage
+      provenance: $Enums.DocumentProvenance
       createdAt: Date
     }, ExtArgs["result"]["generatedDocument"]>
     composites: {}
@@ -28747,6 +29324,11 @@ export namespace Prisma {
     readonly isAuthoritative: FieldRef<"GeneratedDocument", 'Boolean'>
     readonly authoritativeContractHash: FieldRef<"GeneratedDocument", 'String'>
     readonly valuesSnapshot: FieldRef<"GeneratedDocument", 'Json'>
+    readonly storageKey: FieldRef<"GeneratedDocument", 'String'>
+    readonly storageProvider: FieldRef<"GeneratedDocument", 'String'>
+    readonly integritySha256: FieldRef<"GeneratedDocument", 'String'>
+    readonly lifecycleStage: FieldRef<"GeneratedDocument", 'DocumentLifecycleStage'>
+    readonly provenance: FieldRef<"GeneratedDocument", 'DocumentProvenance'>
     readonly createdAt: FieldRef<"GeneratedDocument", 'DateTime'>
   }
     
@@ -44982,6 +45564,7 @@ export namespace Prisma {
     status: $Enums.DealComplianceStatus | null
     contractHash: string | null
     auditRef: string | null
+    immutable: boolean | null
     createdAt: Date | null
   }
 
@@ -44993,6 +45576,7 @@ export namespace Prisma {
     status: $Enums.DealComplianceStatus | null
     contractHash: string | null
     auditRef: string | null
+    immutable: boolean | null
     createdAt: Date | null
   }
 
@@ -45008,6 +45592,7 @@ export namespace Prisma {
     documentList: number
     contractHash: number
     auditRef: number
+    immutable: number
     createdAt: number
     _all: number
   }
@@ -45021,6 +45606,7 @@ export namespace Prisma {
     status?: true
     contractHash?: true
     auditRef?: true
+    immutable?: true
     createdAt?: true
   }
 
@@ -45032,6 +45618,7 @@ export namespace Prisma {
     status?: true
     contractHash?: true
     auditRef?: true
+    immutable?: true
     createdAt?: true
   }
 
@@ -45047,6 +45634,7 @@ export namespace Prisma {
     documentList?: true
     contractHash?: true
     auditRef?: true
+    immutable?: true
     createdAt?: true
     _all?: true
   }
@@ -45135,6 +45723,7 @@ export namespace Prisma {
     documentList: JsonValue
     contractHash: string
     auditRef: string
+    immutable: boolean
     createdAt: Date
     _count: PreFundingValidationCertificateCountAggregateOutputType | null
     _min: PreFundingValidationCertificateMinAggregateOutputType | null
@@ -45167,6 +45756,7 @@ export namespace Prisma {
     documentList?: boolean
     contractHash?: boolean
     auditRef?: boolean
+    immutable?: boolean
     createdAt?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["preFundingValidationCertificate"]>
@@ -45183,6 +45773,7 @@ export namespace Prisma {
     documentList?: boolean
     contractHash?: boolean
     auditRef?: boolean
+    immutable?: boolean
     createdAt?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["preFundingValidationCertificate"]>
@@ -45199,6 +45790,7 @@ export namespace Prisma {
     documentList?: boolean
     contractHash?: boolean
     auditRef?: boolean
+    immutable?: boolean
     createdAt?: boolean
     deal?: boolean | DealDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["preFundingValidationCertificate"]>
@@ -45215,10 +45807,11 @@ export namespace Prisma {
     documentList?: boolean
     contractHash?: boolean
     auditRef?: boolean
+    immutable?: boolean
     createdAt?: boolean
   }
 
-  export type PreFundingValidationCertificateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "lenderId" | "dealerId" | "status" | "ruleChecks" | "warnings" | "blockers" | "documentList" | "contractHash" | "auditRef" | "createdAt", ExtArgs["result"]["preFundingValidationCertificate"]>
+  export type PreFundingValidationCertificateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "lenderId" | "dealerId" | "status" | "ruleChecks" | "warnings" | "blockers" | "documentList" | "contractHash" | "auditRef" | "immutable" | "createdAt", ExtArgs["result"]["preFundingValidationCertificate"]>
   export type PreFundingValidationCertificateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deal?: boolean | DealDefaultArgs<ExtArgs>
   }
@@ -45240,12 +45833,19 @@ export namespace Prisma {
       lenderId: string
       dealerId: string
       status: $Enums.DealComplianceStatus
+      /**
+       * Full structured outcomes for every compliance rule evaluation at issuance (SOC 2 CC8.1 evidence).
+       */
       ruleChecks: Prisma.JsonValue
       warnings: Prisma.JsonValue
       blockers: Prisma.JsonValue
       documentList: Prisma.JsonValue
       contractHash: string
       auditRef: string
+      /**
+       * Once true, row is immutable (WORM) — enforced in Prisma extension + services.
+       */
+      immutable: boolean
       createdAt: Date
     }, ExtArgs["result"]["preFundingValidationCertificate"]>
     composites: {}
@@ -45682,6 +46282,7 @@ export namespace Prisma {
     readonly documentList: FieldRef<"PreFundingValidationCertificate", 'Json'>
     readonly contractHash: FieldRef<"PreFundingValidationCertificate", 'String'>
     readonly auditRef: FieldRef<"PreFundingValidationCertificate", 'String'>
+    readonly immutable: FieldRef<"PreFundingValidationCertificate", 'Boolean'>
     readonly createdAt: FieldRef<"PreFundingValidationCertificate", 'DateTime'>
   }
     
@@ -46094,6 +46695,1214 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PreFundingValidationCertificateInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DealAuditEvent
+   */
+
+  export type AggregateDealAuditEvent = {
+    _count: DealAuditEventCountAggregateOutputType | null
+    _min: DealAuditEventMinAggregateOutputType | null
+    _max: DealAuditEventMaxAggregateOutputType | null
+  }
+
+  export type DealAuditEventMinAggregateOutputType = {
+    id: string | null
+    dealId: string | null
+    workspaceId: string | null
+    actorUserId: string | null
+    actorRole: string | null
+    authMethod: string | null
+    action: string | null
+    entityType: string | null
+    entityId: string | null
+    ipAddress: string | null
+    previousChainHash: string | null
+    chainHash: string | null
+    createdAt: Date | null
+  }
+
+  export type DealAuditEventMaxAggregateOutputType = {
+    id: string | null
+    dealId: string | null
+    workspaceId: string | null
+    actorUserId: string | null
+    actorRole: string | null
+    authMethod: string | null
+    action: string | null
+    entityType: string | null
+    entityId: string | null
+    ipAddress: string | null
+    previousChainHash: string | null
+    chainHash: string | null
+    createdAt: Date | null
+  }
+
+  export type DealAuditEventCountAggregateOutputType = {
+    id: number
+    dealId: number
+    workspaceId: number
+    actorUserId: number
+    actorRole: number
+    authMethod: number
+    action: number
+    entityType: number
+    entityId: number
+    deltaBefore: number
+    deltaAfter: number
+    payloadJson: number
+    ipAddress: number
+    previousChainHash: number
+    chainHash: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DealAuditEventMinAggregateInputType = {
+    id?: true
+    dealId?: true
+    workspaceId?: true
+    actorUserId?: true
+    actorRole?: true
+    authMethod?: true
+    action?: true
+    entityType?: true
+    entityId?: true
+    ipAddress?: true
+    previousChainHash?: true
+    chainHash?: true
+    createdAt?: true
+  }
+
+  export type DealAuditEventMaxAggregateInputType = {
+    id?: true
+    dealId?: true
+    workspaceId?: true
+    actorUserId?: true
+    actorRole?: true
+    authMethod?: true
+    action?: true
+    entityType?: true
+    entityId?: true
+    ipAddress?: true
+    previousChainHash?: true
+    chainHash?: true
+    createdAt?: true
+  }
+
+  export type DealAuditEventCountAggregateInputType = {
+    id?: true
+    dealId?: true
+    workspaceId?: true
+    actorUserId?: true
+    actorRole?: true
+    authMethod?: true
+    action?: true
+    entityType?: true
+    entityId?: true
+    deltaBefore?: true
+    deltaAfter?: true
+    payloadJson?: true
+    ipAddress?: true
+    previousChainHash?: true
+    chainHash?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DealAuditEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealAuditEvent to aggregate.
+     */
+    where?: DealAuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAuditEvents to fetch.
+     */
+    orderBy?: DealAuditEventOrderByWithRelationInput | DealAuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DealAuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DealAuditEvents
+    **/
+    _count?: true | DealAuditEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DealAuditEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DealAuditEventMaxAggregateInputType
+  }
+
+  export type GetDealAuditEventAggregateType<T extends DealAuditEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateDealAuditEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDealAuditEvent[P]>
+      : GetScalarType<T[P], AggregateDealAuditEvent[P]>
+  }
+
+
+
+
+  export type DealAuditEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DealAuditEventWhereInput
+    orderBy?: DealAuditEventOrderByWithAggregationInput | DealAuditEventOrderByWithAggregationInput[]
+    by: DealAuditEventScalarFieldEnum[] | DealAuditEventScalarFieldEnum
+    having?: DealAuditEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DealAuditEventCountAggregateInputType | true
+    _min?: DealAuditEventMinAggregateInputType
+    _max?: DealAuditEventMaxAggregateInputType
+  }
+
+  export type DealAuditEventGroupByOutputType = {
+    id: string
+    dealId: string | null
+    workspaceId: string | null
+    actorUserId: string | null
+    actorRole: string | null
+    authMethod: string | null
+    action: string
+    entityType: string | null
+    entityId: string | null
+    deltaBefore: JsonValue | null
+    deltaAfter: JsonValue | null
+    payloadJson: JsonValue
+    ipAddress: string | null
+    previousChainHash: string | null
+    chainHash: string | null
+    createdAt: Date
+    _count: DealAuditEventCountAggregateOutputType | null
+    _min: DealAuditEventMinAggregateOutputType | null
+    _max: DealAuditEventMaxAggregateOutputType | null
+  }
+
+  type GetDealAuditEventGroupByPayload<T extends DealAuditEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DealAuditEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DealAuditEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DealAuditEventGroupByOutputType[P]>
+            : GetScalarType<T[P], DealAuditEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DealAuditEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    workspaceId?: boolean
+    actorUserId?: boolean
+    actorRole?: boolean
+    authMethod?: boolean
+    action?: boolean
+    entityType?: boolean
+    entityId?: boolean
+    deltaBefore?: boolean
+    deltaAfter?: boolean
+    payloadJson?: boolean
+    ipAddress?: boolean
+    previousChainHash?: boolean
+    chainHash?: boolean
+    createdAt?: boolean
+    deal?: boolean | DealAuditEvent$dealArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAuditEvent"]>
+
+  export type DealAuditEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    workspaceId?: boolean
+    actorUserId?: boolean
+    actorRole?: boolean
+    authMethod?: boolean
+    action?: boolean
+    entityType?: boolean
+    entityId?: boolean
+    deltaBefore?: boolean
+    deltaAfter?: boolean
+    payloadJson?: boolean
+    ipAddress?: boolean
+    previousChainHash?: boolean
+    chainHash?: boolean
+    createdAt?: boolean
+    deal?: boolean | DealAuditEvent$dealArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAuditEvent"]>
+
+  export type DealAuditEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    dealId?: boolean
+    workspaceId?: boolean
+    actorUserId?: boolean
+    actorRole?: boolean
+    authMethod?: boolean
+    action?: boolean
+    entityType?: boolean
+    entityId?: boolean
+    deltaBefore?: boolean
+    deltaAfter?: boolean
+    payloadJson?: boolean
+    ipAddress?: boolean
+    previousChainHash?: boolean
+    chainHash?: boolean
+    createdAt?: boolean
+    deal?: boolean | DealAuditEvent$dealArgs<ExtArgs>
+  }, ExtArgs["result"]["dealAuditEvent"]>
+
+  export type DealAuditEventSelectScalar = {
+    id?: boolean
+    dealId?: boolean
+    workspaceId?: boolean
+    actorUserId?: boolean
+    actorRole?: boolean
+    authMethod?: boolean
+    action?: boolean
+    entityType?: boolean
+    entityId?: boolean
+    deltaBefore?: boolean
+    deltaAfter?: boolean
+    payloadJson?: boolean
+    ipAddress?: boolean
+    previousChainHash?: boolean
+    chainHash?: boolean
+    createdAt?: boolean
+  }
+
+  export type DealAuditEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealId" | "workspaceId" | "actorUserId" | "actorRole" | "authMethod" | "action" | "entityType" | "entityId" | "deltaBefore" | "deltaAfter" | "payloadJson" | "ipAddress" | "previousChainHash" | "chainHash" | "createdAt", ExtArgs["result"]["dealAuditEvent"]>
+  export type DealAuditEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealAuditEvent$dealArgs<ExtArgs>
+  }
+  export type DealAuditEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealAuditEvent$dealArgs<ExtArgs>
+  }
+  export type DealAuditEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deal?: boolean | DealAuditEvent$dealArgs<ExtArgs>
+  }
+
+  export type $DealAuditEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DealAuditEvent"
+    objects: {
+      deal: Prisma.$DealPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      dealId: string | null
+      workspaceId: string | null
+      actorUserId: string | null
+      actorRole: string | null
+      authMethod: string | null
+      action: string
+      entityType: string | null
+      entityId: string | null
+      deltaBefore: Prisma.JsonValue | null
+      deltaAfter: Prisma.JsonValue | null
+      payloadJson: Prisma.JsonValue
+      ipAddress: string | null
+      previousChainHash: string | null
+      chainHash: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["dealAuditEvent"]>
+    composites: {}
+  }
+
+  type DealAuditEventGetPayload<S extends boolean | null | undefined | DealAuditEventDefaultArgs> = $Result.GetResult<Prisma.$DealAuditEventPayload, S>
+
+  type DealAuditEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DealAuditEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DealAuditEventCountAggregateInputType | true
+    }
+
+  export interface DealAuditEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DealAuditEvent'], meta: { name: 'DealAuditEvent' } }
+    /**
+     * Find zero or one DealAuditEvent that matches the filter.
+     * @param {DealAuditEventFindUniqueArgs} args - Arguments to find a DealAuditEvent
+     * @example
+     * // Get one DealAuditEvent
+     * const dealAuditEvent = await prisma.dealAuditEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DealAuditEventFindUniqueArgs>(args: SelectSubset<T, DealAuditEventFindUniqueArgs<ExtArgs>>): Prisma__DealAuditEventClient<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DealAuditEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DealAuditEventFindUniqueOrThrowArgs} args - Arguments to find a DealAuditEvent
+     * @example
+     * // Get one DealAuditEvent
+     * const dealAuditEvent = await prisma.dealAuditEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DealAuditEventFindUniqueOrThrowArgs>(args: SelectSubset<T, DealAuditEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DealAuditEventClient<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DealAuditEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAuditEventFindFirstArgs} args - Arguments to find a DealAuditEvent
+     * @example
+     * // Get one DealAuditEvent
+     * const dealAuditEvent = await prisma.dealAuditEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DealAuditEventFindFirstArgs>(args?: SelectSubset<T, DealAuditEventFindFirstArgs<ExtArgs>>): Prisma__DealAuditEventClient<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DealAuditEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAuditEventFindFirstOrThrowArgs} args - Arguments to find a DealAuditEvent
+     * @example
+     * // Get one DealAuditEvent
+     * const dealAuditEvent = await prisma.dealAuditEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DealAuditEventFindFirstOrThrowArgs>(args?: SelectSubset<T, DealAuditEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__DealAuditEventClient<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DealAuditEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAuditEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DealAuditEvents
+     * const dealAuditEvents = await prisma.dealAuditEvent.findMany()
+     * 
+     * // Get first 10 DealAuditEvents
+     * const dealAuditEvents = await prisma.dealAuditEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const dealAuditEventWithIdOnly = await prisma.dealAuditEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DealAuditEventFindManyArgs>(args?: SelectSubset<T, DealAuditEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DealAuditEvent.
+     * @param {DealAuditEventCreateArgs} args - Arguments to create a DealAuditEvent.
+     * @example
+     * // Create one DealAuditEvent
+     * const DealAuditEvent = await prisma.dealAuditEvent.create({
+     *   data: {
+     *     // ... data to create a DealAuditEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends DealAuditEventCreateArgs>(args: SelectSubset<T, DealAuditEventCreateArgs<ExtArgs>>): Prisma__DealAuditEventClient<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DealAuditEvents.
+     * @param {DealAuditEventCreateManyArgs} args - Arguments to create many DealAuditEvents.
+     * @example
+     * // Create many DealAuditEvents
+     * const dealAuditEvent = await prisma.dealAuditEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DealAuditEventCreateManyArgs>(args?: SelectSubset<T, DealAuditEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DealAuditEvents and returns the data saved in the database.
+     * @param {DealAuditEventCreateManyAndReturnArgs} args - Arguments to create many DealAuditEvents.
+     * @example
+     * // Create many DealAuditEvents
+     * const dealAuditEvent = await prisma.dealAuditEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DealAuditEvents and only return the `id`
+     * const dealAuditEventWithIdOnly = await prisma.dealAuditEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DealAuditEventCreateManyAndReturnArgs>(args?: SelectSubset<T, DealAuditEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DealAuditEvent.
+     * @param {DealAuditEventDeleteArgs} args - Arguments to delete one DealAuditEvent.
+     * @example
+     * // Delete one DealAuditEvent
+     * const DealAuditEvent = await prisma.dealAuditEvent.delete({
+     *   where: {
+     *     // ... filter to delete one DealAuditEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DealAuditEventDeleteArgs>(args: SelectSubset<T, DealAuditEventDeleteArgs<ExtArgs>>): Prisma__DealAuditEventClient<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DealAuditEvent.
+     * @param {DealAuditEventUpdateArgs} args - Arguments to update one DealAuditEvent.
+     * @example
+     * // Update one DealAuditEvent
+     * const dealAuditEvent = await prisma.dealAuditEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DealAuditEventUpdateArgs>(args: SelectSubset<T, DealAuditEventUpdateArgs<ExtArgs>>): Prisma__DealAuditEventClient<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DealAuditEvents.
+     * @param {DealAuditEventDeleteManyArgs} args - Arguments to filter DealAuditEvents to delete.
+     * @example
+     * // Delete a few DealAuditEvents
+     * const { count } = await prisma.dealAuditEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DealAuditEventDeleteManyArgs>(args?: SelectSubset<T, DealAuditEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DealAuditEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAuditEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DealAuditEvents
+     * const dealAuditEvent = await prisma.dealAuditEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DealAuditEventUpdateManyArgs>(args: SelectSubset<T, DealAuditEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DealAuditEvents and returns the data updated in the database.
+     * @param {DealAuditEventUpdateManyAndReturnArgs} args - Arguments to update many DealAuditEvents.
+     * @example
+     * // Update many DealAuditEvents
+     * const dealAuditEvent = await prisma.dealAuditEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DealAuditEvents and only return the `id`
+     * const dealAuditEventWithIdOnly = await prisma.dealAuditEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DealAuditEventUpdateManyAndReturnArgs>(args: SelectSubset<T, DealAuditEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DealAuditEvent.
+     * @param {DealAuditEventUpsertArgs} args - Arguments to update or create a DealAuditEvent.
+     * @example
+     * // Update or create a DealAuditEvent
+     * const dealAuditEvent = await prisma.dealAuditEvent.upsert({
+     *   create: {
+     *     // ... data to create a DealAuditEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DealAuditEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DealAuditEventUpsertArgs>(args: SelectSubset<T, DealAuditEventUpsertArgs<ExtArgs>>): Prisma__DealAuditEventClient<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DealAuditEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAuditEventCountArgs} args - Arguments to filter DealAuditEvents to count.
+     * @example
+     * // Count the number of DealAuditEvents
+     * const count = await prisma.dealAuditEvent.count({
+     *   where: {
+     *     // ... the filter for the DealAuditEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends DealAuditEventCountArgs>(
+      args?: Subset<T, DealAuditEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DealAuditEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DealAuditEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAuditEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DealAuditEventAggregateArgs>(args: Subset<T, DealAuditEventAggregateArgs>): Prisma.PrismaPromise<GetDealAuditEventAggregateType<T>>
+
+    /**
+     * Group by DealAuditEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DealAuditEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DealAuditEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DealAuditEventGroupByArgs['orderBy'] }
+        : { orderBy?: DealAuditEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DealAuditEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDealAuditEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DealAuditEvent model
+   */
+  readonly fields: DealAuditEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DealAuditEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DealAuditEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    deal<T extends DealAuditEvent$dealArgs<ExtArgs> = {}>(args?: Subset<T, DealAuditEvent$dealArgs<ExtArgs>>): Prisma__DealClient<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DealAuditEvent model
+   */
+  interface DealAuditEventFieldRefs {
+    readonly id: FieldRef<"DealAuditEvent", 'String'>
+    readonly dealId: FieldRef<"DealAuditEvent", 'String'>
+    readonly workspaceId: FieldRef<"DealAuditEvent", 'String'>
+    readonly actorUserId: FieldRef<"DealAuditEvent", 'String'>
+    readonly actorRole: FieldRef<"DealAuditEvent", 'String'>
+    readonly authMethod: FieldRef<"DealAuditEvent", 'String'>
+    readonly action: FieldRef<"DealAuditEvent", 'String'>
+    readonly entityType: FieldRef<"DealAuditEvent", 'String'>
+    readonly entityId: FieldRef<"DealAuditEvent", 'String'>
+    readonly deltaBefore: FieldRef<"DealAuditEvent", 'Json'>
+    readonly deltaAfter: FieldRef<"DealAuditEvent", 'Json'>
+    readonly payloadJson: FieldRef<"DealAuditEvent", 'Json'>
+    readonly ipAddress: FieldRef<"DealAuditEvent", 'String'>
+    readonly previousChainHash: FieldRef<"DealAuditEvent", 'String'>
+    readonly chainHash: FieldRef<"DealAuditEvent", 'String'>
+    readonly createdAt: FieldRef<"DealAuditEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DealAuditEvent findUnique
+   */
+  export type DealAuditEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAuditEvent to fetch.
+     */
+    where: DealAuditEventWhereUniqueInput
+  }
+
+  /**
+   * DealAuditEvent findUniqueOrThrow
+   */
+  export type DealAuditEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAuditEvent to fetch.
+     */
+    where: DealAuditEventWhereUniqueInput
+  }
+
+  /**
+   * DealAuditEvent findFirst
+   */
+  export type DealAuditEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAuditEvent to fetch.
+     */
+    where?: DealAuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAuditEvents to fetch.
+     */
+    orderBy?: DealAuditEventOrderByWithRelationInput | DealAuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DealAuditEvents.
+     */
+    cursor?: DealAuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DealAuditEvents.
+     */
+    distinct?: DealAuditEventScalarFieldEnum | DealAuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * DealAuditEvent findFirstOrThrow
+   */
+  export type DealAuditEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAuditEvent to fetch.
+     */
+    where?: DealAuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAuditEvents to fetch.
+     */
+    orderBy?: DealAuditEventOrderByWithRelationInput | DealAuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DealAuditEvents.
+     */
+    cursor?: DealAuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DealAuditEvents.
+     */
+    distinct?: DealAuditEventScalarFieldEnum | DealAuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * DealAuditEvent findMany
+   */
+  export type DealAuditEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * Filter, which DealAuditEvents to fetch.
+     */
+    where?: DealAuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DealAuditEvents to fetch.
+     */
+    orderBy?: DealAuditEventOrderByWithRelationInput | DealAuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DealAuditEvents.
+     */
+    cursor?: DealAuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DealAuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DealAuditEvents.
+     */
+    skip?: number
+    distinct?: DealAuditEventScalarFieldEnum | DealAuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * DealAuditEvent create
+   */
+  export type DealAuditEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DealAuditEvent.
+     */
+    data: XOR<DealAuditEventCreateInput, DealAuditEventUncheckedCreateInput>
+  }
+
+  /**
+   * DealAuditEvent createMany
+   */
+  export type DealAuditEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DealAuditEvents.
+     */
+    data: DealAuditEventCreateManyInput | DealAuditEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DealAuditEvent createManyAndReturn
+   */
+  export type DealAuditEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many DealAuditEvents.
+     */
+    data: DealAuditEventCreateManyInput | DealAuditEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DealAuditEvent update
+   */
+  export type DealAuditEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DealAuditEvent.
+     */
+    data: XOR<DealAuditEventUpdateInput, DealAuditEventUncheckedUpdateInput>
+    /**
+     * Choose, which DealAuditEvent to update.
+     */
+    where: DealAuditEventWhereUniqueInput
+  }
+
+  /**
+   * DealAuditEvent updateMany
+   */
+  export type DealAuditEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DealAuditEvents.
+     */
+    data: XOR<DealAuditEventUpdateManyMutationInput, DealAuditEventUncheckedUpdateManyInput>
+    /**
+     * Filter which DealAuditEvents to update
+     */
+    where?: DealAuditEventWhereInput
+    /**
+     * Limit how many DealAuditEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DealAuditEvent updateManyAndReturn
+   */
+  export type DealAuditEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * The data used to update DealAuditEvents.
+     */
+    data: XOR<DealAuditEventUpdateManyMutationInput, DealAuditEventUncheckedUpdateManyInput>
+    /**
+     * Filter which DealAuditEvents to update
+     */
+    where?: DealAuditEventWhereInput
+    /**
+     * Limit how many DealAuditEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DealAuditEvent upsert
+   */
+  export type DealAuditEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DealAuditEvent to update in case it exists.
+     */
+    where: DealAuditEventWhereUniqueInput
+    /**
+     * In case the DealAuditEvent found by the `where` argument doesn't exist, create a new DealAuditEvent with this data.
+     */
+    create: XOR<DealAuditEventCreateInput, DealAuditEventUncheckedCreateInput>
+    /**
+     * In case the DealAuditEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DealAuditEventUpdateInput, DealAuditEventUncheckedUpdateInput>
+  }
+
+  /**
+   * DealAuditEvent delete
+   */
+  export type DealAuditEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
+    /**
+     * Filter which DealAuditEvent to delete.
+     */
+    where: DealAuditEventWhereUniqueInput
+  }
+
+  /**
+   * DealAuditEvent deleteMany
+   */
+  export type DealAuditEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DealAuditEvents to delete
+     */
+    where?: DealAuditEventWhereInput
+    /**
+     * Limit how many DealAuditEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DealAuditEvent.deal
+   */
+  export type DealAuditEvent$dealArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deal
+     */
+    select?: DealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deal
+     */
+    omit?: DealOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealInclude<ExtArgs> | null
+    where?: DealWhereInput
+  }
+
+  /**
+   * DealAuditEvent without action
+   */
+  export type DealAuditEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DealAuditEvent
+     */
+    select?: DealAuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DealAuditEvent
+     */
+    omit?: DealAuditEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealAuditEventInclude<ExtArgs> | null
   }
 
 
@@ -48447,6 +50256,7 @@ export namespace Prisma {
     approvedStates: 'approvedStates',
     allowedDealTypes: 'allowedDealTypes',
     lenderOverrides: 'lenderOverrides',
+    lenderRuleProfile: 'lenderRuleProfile',
     effectiveDate: 'effectiveDate',
     expirationDate: 'expirationDate',
     requestedBy: 'requestedBy',
@@ -48517,7 +50327,9 @@ export namespace Prisma {
     firstName: 'firstName',
     lastName: 'lastName',
     address: 'address',
-    creditTier: 'creditTier'
+    creditTier: 'creditTier',
+    encryptedPii: 'encryptedPii',
+    defaultKmsKeyId: 'defaultKmsKeyId'
   };
 
   export type DealPartyScalarFieldEnum = (typeof DealPartyScalarFieldEnum)[keyof typeof DealPartyScalarFieldEnum]
@@ -48557,7 +50369,7 @@ export namespace Prisma {
     id: 'id',
     dealId: 'dealId',
     version: 'version',
-    contentHash: 'contentHash',
+    authoritativeContractHash: 'authoritativeContractHash',
     governingLaw: 'governingLaw',
     signatureStatus: 'signatureStatus',
     isTransferableRecord: 'isTransferableRecord',
@@ -48588,9 +50400,25 @@ export namespace Prisma {
     lenderId: 'lenderId',
     poolName: 'poolName',
     poolType: 'poolType',
+    description: 'description',
     recourseStatus: 'recourseStatus',
     targetSize: 'targetSize',
     status: 'status',
+    totalLoanCount: 'totalLoanCount',
+    totalPrincipalBalance: 'totalPrincipalBalance',
+    weightedAverageApr: 'weightedAverageApr',
+    weightedAverageTermMonths: 'weightedAverageTermMonths',
+    riskClassification: 'riskClassification',
+    poolIntegrityStatus: 'poolIntegrityStatus',
+    auditStatus: 'auditStatus',
+    saleStage: 'saleStage',
+    transferDate: 'transferDate',
+    transferEntityName: 'transferEntityName',
+    custodyTransitionJson: 'custodyTransitionJson',
+    filterCriteriaJson: 'filterCriteriaJson',
+    lastPackageStorageKey: 'lastPackageStorageKey',
+    lastPackageGeneratedAt: 'lastPackageGeneratedAt',
+    createdByUserId: 'createdByUserId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -48641,6 +50469,11 @@ export namespace Prisma {
     isAuthoritative: 'isAuthoritative',
     authoritativeContractHash: 'authoritativeContractHash',
     valuesSnapshot: 'valuesSnapshot',
+    storageKey: 'storageKey',
+    storageProvider: 'storageProvider',
+    integritySha256: 'integritySha256',
+    lifecycleStage: 'lifecycleStage',
+    provenance: 'provenance',
     createdAt: 'createdAt'
   };
 
@@ -48867,10 +50700,33 @@ export namespace Prisma {
     documentList: 'documentList',
     contractHash: 'contractHash',
     auditRef: 'auditRef',
+    immutable: 'immutable',
     createdAt: 'createdAt'
   };
 
   export type PreFundingValidationCertificateScalarFieldEnum = (typeof PreFundingValidationCertificateScalarFieldEnum)[keyof typeof PreFundingValidationCertificateScalarFieldEnum]
+
+
+  export const DealAuditEventScalarFieldEnum: {
+    id: 'id',
+    dealId: 'dealId',
+    workspaceId: 'workspaceId',
+    actorUserId: 'actorUserId',
+    actorRole: 'actorRole',
+    authMethod: 'authMethod',
+    action: 'action',
+    entityType: 'entityType',
+    entityId: 'entityId',
+    deltaBefore: 'deltaBefore',
+    deltaAfter: 'deltaAfter',
+    payloadJson: 'payloadJson',
+    ipAddress: 'ipAddress',
+    previousChainHash: 'previousChainHash',
+    chainHash: 'chainHash',
+    createdAt: 'createdAt'
+  };
+
+  export type DealAuditEventScalarFieldEnum = (typeof DealAuditEventScalarFieldEnum)[keyof typeof DealAuditEventScalarFieldEnum]
 
 
   export const AccountScalarFieldEnum: {
@@ -49312,6 +51168,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'LoanPoolSaleStage'
+   */
+  export type EnumLoanPoolSaleStageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoanPoolSaleStage'>
+    
+
+
+  /**
+   * Reference to a field of type 'LoanPoolSaleStage[]'
+   */
+  export type ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LoanPoolSaleStage[]'>
+    
+
+
+  /**
    * Reference to a field of type 'NegotiableInstrumentType'
    */
   export type EnumNegotiableInstrumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NegotiableInstrumentType'>
@@ -49378,6 +51248,34 @@ export namespace Prisma {
    * Reference to a field of type 'DocumentType[]'
    */
   export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocumentLifecycleStage'
+   */
+  export type EnumDocumentLifecycleStageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentLifecycleStage'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocumentLifecycleStage[]'
+   */
+  export type ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentLifecycleStage[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocumentProvenance'
+   */
+  export type EnumDocumentProvenanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentProvenance'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocumentProvenance[]'
+   */
+  export type ListEnumDocumentProvenanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentProvenance[]'>
     
 
 
@@ -49516,6 +51414,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditListRelationFilter
     dealCommentsAuthored?: DealCommentListRelationFilter
     dealCommentsResolved?: DealCommentListRelationFilter
+    loanPoolsCreated?: LoanPoolListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -49535,6 +51434,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditOrderByRelationAggregateInput
     dealCommentsAuthored?: DealCommentOrderByRelationAggregateInput
     dealCommentsResolved?: DealCommentOrderByRelationAggregateInput
+    loanPoolsCreated?: LoanPoolOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -49557,6 +51457,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditListRelationFilter
     dealCommentsAuthored?: DealCommentListRelationFilter
     dealCommentsResolved?: DealCommentListRelationFilter
+    loanPoolsCreated?: LoanPoolListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -50085,6 +51986,7 @@ export namespace Prisma {
     approvedStates?: StringNullableListFilter<"DealerLenderLink">
     allowedDealTypes?: StringNullableListFilter<"DealerLenderLink">
     lenderOverrides?: JsonFilter<"DealerLenderLink">
+    lenderRuleProfile?: JsonFilter<"DealerLenderLink">
     effectiveDate?: DateTimeNullableFilter<"DealerLenderLink"> | Date | string | null
     expirationDate?: DateTimeNullableFilter<"DealerLenderLink"> | Date | string | null
     requestedBy?: StringNullableFilter<"DealerLenderLink"> | string | null
@@ -50105,6 +52007,7 @@ export namespace Prisma {
     approvedStates?: SortOrder
     allowedDealTypes?: SortOrder
     lenderOverrides?: SortOrder
+    lenderRuleProfile?: SortOrder
     effectiveDate?: SortOrderInput | SortOrder
     expirationDate?: SortOrderInput | SortOrder
     requestedBy?: SortOrderInput | SortOrder
@@ -50129,6 +52032,7 @@ export namespace Prisma {
     approvedStates?: StringNullableListFilter<"DealerLenderLink">
     allowedDealTypes?: StringNullableListFilter<"DealerLenderLink">
     lenderOverrides?: JsonFilter<"DealerLenderLink">
+    lenderRuleProfile?: JsonFilter<"DealerLenderLink">
     effectiveDate?: DateTimeNullableFilter<"DealerLenderLink"> | Date | string | null
     expirationDate?: DateTimeNullableFilter<"DealerLenderLink"> | Date | string | null
     requestedBy?: StringNullableFilter<"DealerLenderLink"> | string | null
@@ -50149,6 +52053,7 @@ export namespace Prisma {
     approvedStates?: SortOrder
     allowedDealTypes?: SortOrder
     lenderOverrides?: SortOrder
+    lenderRuleProfile?: SortOrder
     effectiveDate?: SortOrderInput | SortOrder
     expirationDate?: SortOrderInput | SortOrder
     requestedBy?: SortOrderInput | SortOrder
@@ -50172,6 +52077,7 @@ export namespace Prisma {
     approvedStates?: StringNullableListFilter<"DealerLenderLink">
     allowedDealTypes?: StringNullableListFilter<"DealerLenderLink">
     lenderOverrides?: JsonWithAggregatesFilter<"DealerLenderLink">
+    lenderRuleProfile?: JsonWithAggregatesFilter<"DealerLenderLink">
     effectiveDate?: DateTimeNullableWithAggregatesFilter<"DealerLenderLink"> | Date | string | null
     expirationDate?: DateTimeNullableWithAggregatesFilter<"DealerLenderLink"> | Date | string | null
     requestedBy?: StringNullableWithAggregatesFilter<"DealerLenderLink"> | string | null
@@ -50345,6 +52251,7 @@ export namespace Prisma {
     notifications?: NotificationListRelationFilter
     alerts?: DealAlertListRelationFilter
     comments?: DealCommentListRelationFilter
+    auditEvents?: DealAuditEventListRelationFilter
   }
 
   export type DealOrderByWithRelationInput = {
@@ -50388,6 +52295,7 @@ export namespace Prisma {
     notifications?: NotificationOrderByRelationAggregateInput
     alerts?: DealAlertOrderByRelationAggregateInput
     comments?: DealCommentOrderByRelationAggregateInput
+    auditEvents?: DealAuditEventOrderByRelationAggregateInput
   }
 
   export type DealWhereUniqueInput = Prisma.AtLeast<{
@@ -50434,6 +52342,7 @@ export namespace Prisma {
     notifications?: NotificationListRelationFilter
     alerts?: DealAlertListRelationFilter
     comments?: DealCommentListRelationFilter
+    auditEvents?: DealAuditEventListRelationFilter
   }, "id">
 
   export type DealOrderByWithAggregationInput = {
@@ -50501,6 +52410,8 @@ export namespace Prisma {
     lastName?: StringFilter<"DealParty"> | string
     address?: StringFilter<"DealParty"> | string
     creditTier?: StringNullableFilter<"DealParty"> | string | null
+    encryptedPii?: JsonNullableFilter<"DealParty">
+    defaultKmsKeyId?: StringNullableFilter<"DealParty"> | string | null
     deal?: XOR<DealScalarRelationFilter, DealWhereInput>
   }
 
@@ -50512,6 +52423,8 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     creditTier?: SortOrderInput | SortOrder
+    encryptedPii?: SortOrderInput | SortOrder
+    defaultKmsKeyId?: SortOrderInput | SortOrder
     deal?: DealOrderByWithRelationInput
   }
 
@@ -50526,6 +52439,8 @@ export namespace Prisma {
     lastName?: StringFilter<"DealParty"> | string
     address?: StringFilter<"DealParty"> | string
     creditTier?: StringNullableFilter<"DealParty"> | string | null
+    encryptedPii?: JsonNullableFilter<"DealParty">
+    defaultKmsKeyId?: StringNullableFilter<"DealParty"> | string | null
     deal?: XOR<DealScalarRelationFilter, DealWhereInput>
   }, "id">
 
@@ -50537,6 +52452,8 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     creditTier?: SortOrderInput | SortOrder
+    encryptedPii?: SortOrderInput | SortOrder
+    defaultKmsKeyId?: SortOrderInput | SortOrder
     _count?: DealPartyCountOrderByAggregateInput
     _max?: DealPartyMaxOrderByAggregateInput
     _min?: DealPartyMinOrderByAggregateInput
@@ -50553,6 +52470,8 @@ export namespace Prisma {
     lastName?: StringWithAggregatesFilter<"DealParty"> | string
     address?: StringWithAggregatesFilter<"DealParty"> | string
     creditTier?: StringNullableWithAggregatesFilter<"DealParty"> | string | null
+    encryptedPii?: JsonNullableWithAggregatesFilter<"DealParty">
+    defaultKmsKeyId?: StringNullableWithAggregatesFilter<"DealParty"> | string | null
   }
 
   export type VehicleWhereInput = {
@@ -50716,7 +52635,7 @@ export namespace Prisma {
     id?: StringFilter<"AuthoritativeContract"> | string
     dealId?: StringFilter<"AuthoritativeContract"> | string
     version?: IntFilter<"AuthoritativeContract"> | number
-    contentHash?: StringFilter<"AuthoritativeContract"> | string
+    authoritativeContractHash?: StringFilter<"AuthoritativeContract"> | string
     governingLaw?: StringFilter<"AuthoritativeContract"> | string
     signatureStatus?: StringFilter<"AuthoritativeContract"> | string
     isTransferableRecord?: BoolFilter<"AuthoritativeContract"> | boolean
@@ -50731,7 +52650,7 @@ export namespace Prisma {
     id?: SortOrder
     dealId?: SortOrder
     version?: SortOrder
-    contentHash?: SortOrder
+    authoritativeContractHash?: SortOrder
     governingLaw?: SortOrder
     signatureStatus?: SortOrder
     isTransferableRecord?: SortOrder
@@ -50749,7 +52668,7 @@ export namespace Prisma {
     OR?: AuthoritativeContractWhereInput[]
     NOT?: AuthoritativeContractWhereInput | AuthoritativeContractWhereInput[]
     version?: IntFilter<"AuthoritativeContract"> | number
-    contentHash?: StringFilter<"AuthoritativeContract"> | string
+    authoritativeContractHash?: StringFilter<"AuthoritativeContract"> | string
     governingLaw?: StringFilter<"AuthoritativeContract"> | string
     signatureStatus?: StringFilter<"AuthoritativeContract"> | string
     isTransferableRecord?: BoolFilter<"AuthoritativeContract"> | boolean
@@ -50764,7 +52683,7 @@ export namespace Prisma {
     id?: SortOrder
     dealId?: SortOrder
     version?: SortOrder
-    contentHash?: SortOrder
+    authoritativeContractHash?: SortOrder
     governingLaw?: SortOrder
     signatureStatus?: SortOrder
     isTransferableRecord?: SortOrder
@@ -50784,7 +52703,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"AuthoritativeContract"> | string
     dealId?: StringWithAggregatesFilter<"AuthoritativeContract"> | string
     version?: IntWithAggregatesFilter<"AuthoritativeContract"> | number
-    contentHash?: StringWithAggregatesFilter<"AuthoritativeContract"> | string
+    authoritativeContractHash?: StringWithAggregatesFilter<"AuthoritativeContract"> | string
     governingLaw?: StringWithAggregatesFilter<"AuthoritativeContract"> | string
     signatureStatus?: StringWithAggregatesFilter<"AuthoritativeContract"> | string
     isTransferableRecord?: BoolWithAggregatesFilter<"AuthoritativeContract"> | boolean
@@ -50880,12 +52799,29 @@ export namespace Prisma {
     lenderId?: StringFilter<"LoanPool"> | string
     poolName?: StringFilter<"LoanPool"> | string
     poolType?: EnumLoanPoolTypeFilter<"LoanPool"> | $Enums.LoanPoolType
+    description?: StringNullableFilter<"LoanPool"> | string | null
     recourseStatus?: EnumRecourseStatusFilter<"LoanPool"> | $Enums.RecourseStatus
     targetSize?: FloatFilter<"LoanPool"> | number
     status?: EnumLoanPoolStatusFilter<"LoanPool"> | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFilter<"LoanPool"> | number
+    totalPrincipalBalance?: DecimalFilter<"LoanPool"> | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: DecimalNullableFilter<"LoanPool"> | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: IntNullableFilter<"LoanPool"> | number | null
+    riskClassification?: StringNullableFilter<"LoanPool"> | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFilter<"LoanPool"> | $Enums.DealComplianceStatus
+    auditStatus?: StringFilter<"LoanPool"> | string
+    saleStage?: EnumLoanPoolSaleStageFilter<"LoanPool"> | $Enums.LoanPoolSaleStage
+    transferDate?: DateTimeNullableFilter<"LoanPool"> | Date | string | null
+    transferEntityName?: StringNullableFilter<"LoanPool"> | string | null
+    custodyTransitionJson?: JsonNullableFilter<"LoanPool">
+    filterCriteriaJson?: JsonNullableFilter<"LoanPool">
+    lastPackageStorageKey?: StringNullableFilter<"LoanPool"> | string | null
+    lastPackageGeneratedAt?: DateTimeNullableFilter<"LoanPool"> | Date | string | null
+    createdByUserId?: StringNullableFilter<"LoanPool"> | string | null
     createdAt?: DateTimeFilter<"LoanPool"> | Date | string
     updatedAt?: DateTimeFilter<"LoanPool"> | Date | string
     lender?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     deals?: DealListRelationFilter
   }
 
@@ -50894,12 +52830,29 @@ export namespace Prisma {
     lenderId?: SortOrder
     poolName?: SortOrder
     poolType?: SortOrder
+    description?: SortOrderInput | SortOrder
     recourseStatus?: SortOrder
     targetSize?: SortOrder
     status?: SortOrder
+    totalLoanCount?: SortOrder
+    totalPrincipalBalance?: SortOrder
+    weightedAverageApr?: SortOrderInput | SortOrder
+    weightedAverageTermMonths?: SortOrderInput | SortOrder
+    riskClassification?: SortOrderInput | SortOrder
+    poolIntegrityStatus?: SortOrder
+    auditStatus?: SortOrder
+    saleStage?: SortOrder
+    transferDate?: SortOrderInput | SortOrder
+    transferEntityName?: SortOrderInput | SortOrder
+    custodyTransitionJson?: SortOrderInput | SortOrder
+    filterCriteriaJson?: SortOrderInput | SortOrder
+    lastPackageStorageKey?: SortOrderInput | SortOrder
+    lastPackageGeneratedAt?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lender?: WorkspaceOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
     deals?: DealOrderByRelationAggregateInput
   }
 
@@ -50911,12 +52864,29 @@ export namespace Prisma {
     lenderId?: StringFilter<"LoanPool"> | string
     poolName?: StringFilter<"LoanPool"> | string
     poolType?: EnumLoanPoolTypeFilter<"LoanPool"> | $Enums.LoanPoolType
+    description?: StringNullableFilter<"LoanPool"> | string | null
     recourseStatus?: EnumRecourseStatusFilter<"LoanPool"> | $Enums.RecourseStatus
     targetSize?: FloatFilter<"LoanPool"> | number
     status?: EnumLoanPoolStatusFilter<"LoanPool"> | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFilter<"LoanPool"> | number
+    totalPrincipalBalance?: DecimalFilter<"LoanPool"> | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: DecimalNullableFilter<"LoanPool"> | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: IntNullableFilter<"LoanPool"> | number | null
+    riskClassification?: StringNullableFilter<"LoanPool"> | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFilter<"LoanPool"> | $Enums.DealComplianceStatus
+    auditStatus?: StringFilter<"LoanPool"> | string
+    saleStage?: EnumLoanPoolSaleStageFilter<"LoanPool"> | $Enums.LoanPoolSaleStage
+    transferDate?: DateTimeNullableFilter<"LoanPool"> | Date | string | null
+    transferEntityName?: StringNullableFilter<"LoanPool"> | string | null
+    custodyTransitionJson?: JsonNullableFilter<"LoanPool">
+    filterCriteriaJson?: JsonNullableFilter<"LoanPool">
+    lastPackageStorageKey?: StringNullableFilter<"LoanPool"> | string | null
+    lastPackageGeneratedAt?: DateTimeNullableFilter<"LoanPool"> | Date | string | null
+    createdByUserId?: StringNullableFilter<"LoanPool"> | string | null
     createdAt?: DateTimeFilter<"LoanPool"> | Date | string
     updatedAt?: DateTimeFilter<"LoanPool"> | Date | string
     lender?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     deals?: DealListRelationFilter
   }, "id">
 
@@ -50925,9 +52895,25 @@ export namespace Prisma {
     lenderId?: SortOrder
     poolName?: SortOrder
     poolType?: SortOrder
+    description?: SortOrderInput | SortOrder
     recourseStatus?: SortOrder
     targetSize?: SortOrder
     status?: SortOrder
+    totalLoanCount?: SortOrder
+    totalPrincipalBalance?: SortOrder
+    weightedAverageApr?: SortOrderInput | SortOrder
+    weightedAverageTermMonths?: SortOrderInput | SortOrder
+    riskClassification?: SortOrderInput | SortOrder
+    poolIntegrityStatus?: SortOrder
+    auditStatus?: SortOrder
+    saleStage?: SortOrder
+    transferDate?: SortOrderInput | SortOrder
+    transferEntityName?: SortOrderInput | SortOrder
+    custodyTransitionJson?: SortOrderInput | SortOrder
+    filterCriteriaJson?: SortOrderInput | SortOrder
+    lastPackageStorageKey?: SortOrderInput | SortOrder
+    lastPackageGeneratedAt?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LoanPoolCountOrderByAggregateInput
@@ -50945,9 +52931,25 @@ export namespace Prisma {
     lenderId?: StringWithAggregatesFilter<"LoanPool"> | string
     poolName?: StringWithAggregatesFilter<"LoanPool"> | string
     poolType?: EnumLoanPoolTypeWithAggregatesFilter<"LoanPool"> | $Enums.LoanPoolType
+    description?: StringNullableWithAggregatesFilter<"LoanPool"> | string | null
     recourseStatus?: EnumRecourseStatusWithAggregatesFilter<"LoanPool"> | $Enums.RecourseStatus
     targetSize?: FloatWithAggregatesFilter<"LoanPool"> | number
     status?: EnumLoanPoolStatusWithAggregatesFilter<"LoanPool"> | $Enums.LoanPoolStatus
+    totalLoanCount?: IntWithAggregatesFilter<"LoanPool"> | number
+    totalPrincipalBalance?: DecimalWithAggregatesFilter<"LoanPool"> | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: DecimalNullableWithAggregatesFilter<"LoanPool"> | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: IntNullableWithAggregatesFilter<"LoanPool"> | number | null
+    riskClassification?: StringNullableWithAggregatesFilter<"LoanPool"> | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusWithAggregatesFilter<"LoanPool"> | $Enums.DealComplianceStatus
+    auditStatus?: StringWithAggregatesFilter<"LoanPool"> | string
+    saleStage?: EnumLoanPoolSaleStageWithAggregatesFilter<"LoanPool"> | $Enums.LoanPoolSaleStage
+    transferDate?: DateTimeNullableWithAggregatesFilter<"LoanPool"> | Date | string | null
+    transferEntityName?: StringNullableWithAggregatesFilter<"LoanPool"> | string | null
+    custodyTransitionJson?: JsonNullableWithAggregatesFilter<"LoanPool">
+    filterCriteriaJson?: JsonNullableWithAggregatesFilter<"LoanPool">
+    lastPackageStorageKey?: StringNullableWithAggregatesFilter<"LoanPool"> | string | null
+    lastPackageGeneratedAt?: DateTimeNullableWithAggregatesFilter<"LoanPool"> | Date | string | null
+    createdByUserId?: StringNullableWithAggregatesFilter<"LoanPool"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"LoanPool"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"LoanPool"> | Date | string
   }
@@ -51131,6 +53133,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFilter<"GeneratedDocument"> | boolean
     authoritativeContractHash?: StringNullableFilter<"GeneratedDocument"> | string | null
     valuesSnapshot?: JsonFilter<"GeneratedDocument">
+    storageKey?: StringNullableFilter<"GeneratedDocument"> | string | null
+    storageProvider?: StringFilter<"GeneratedDocument"> | string
+    integritySha256?: StringNullableFilter<"GeneratedDocument"> | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFilter<"GeneratedDocument"> | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFilter<"GeneratedDocument"> | $Enums.DocumentProvenance
     createdAt?: DateTimeFilter<"GeneratedDocument"> | Date | string
     deal?: XOR<DealScalarRelationFilter, DealWhereInput>
     authoritativeContract?: XOR<AuthoritativeContractNullableScalarRelationFilter, AuthoritativeContractWhereInput> | null
@@ -51151,6 +53158,11 @@ export namespace Prisma {
     isAuthoritative?: SortOrder
     authoritativeContractHash?: SortOrderInput | SortOrder
     valuesSnapshot?: SortOrder
+    storageKey?: SortOrderInput | SortOrder
+    storageProvider?: SortOrder
+    integritySha256?: SortOrderInput | SortOrder
+    lifecycleStage?: SortOrder
+    provenance?: SortOrder
     createdAt?: SortOrder
     deal?: DealOrderByWithRelationInput
     authoritativeContract?: AuthoritativeContractOrderByWithRelationInput
@@ -51174,6 +53186,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFilter<"GeneratedDocument"> | boolean
     authoritativeContractHash?: StringNullableFilter<"GeneratedDocument"> | string | null
     valuesSnapshot?: JsonFilter<"GeneratedDocument">
+    storageKey?: StringNullableFilter<"GeneratedDocument"> | string | null
+    storageProvider?: StringFilter<"GeneratedDocument"> | string
+    integritySha256?: StringNullableFilter<"GeneratedDocument"> | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFilter<"GeneratedDocument"> | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFilter<"GeneratedDocument"> | $Enums.DocumentProvenance
     createdAt?: DateTimeFilter<"GeneratedDocument"> | Date | string
     deal?: XOR<DealScalarRelationFilter, DealWhereInput>
     authoritativeContract?: XOR<AuthoritativeContractNullableScalarRelationFilter, AuthoritativeContractWhereInput> | null
@@ -51194,6 +53211,11 @@ export namespace Prisma {
     isAuthoritative?: SortOrder
     authoritativeContractHash?: SortOrderInput | SortOrder
     valuesSnapshot?: SortOrder
+    storageKey?: SortOrderInput | SortOrder
+    storageProvider?: SortOrder
+    integritySha256?: SortOrderInput | SortOrder
+    lifecycleStage?: SortOrder
+    provenance?: SortOrder
     createdAt?: SortOrder
     _count?: GeneratedDocumentCountOrderByAggregateInput
     _avg?: GeneratedDocumentAvgOrderByAggregateInput
@@ -51217,6 +53239,11 @@ export namespace Prisma {
     isAuthoritative?: BoolWithAggregatesFilter<"GeneratedDocument"> | boolean
     authoritativeContractHash?: StringNullableWithAggregatesFilter<"GeneratedDocument"> | string | null
     valuesSnapshot?: JsonWithAggregatesFilter<"GeneratedDocument">
+    storageKey?: StringNullableWithAggregatesFilter<"GeneratedDocument"> | string | null
+    storageProvider?: StringWithAggregatesFilter<"GeneratedDocument"> | string
+    integritySha256?: StringNullableWithAggregatesFilter<"GeneratedDocument"> | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageWithAggregatesFilter<"GeneratedDocument"> | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceWithAggregatesFilter<"GeneratedDocument"> | $Enums.DocumentProvenance
     createdAt?: DateTimeWithAggregatesFilter<"GeneratedDocument"> | Date | string
   }
 
@@ -52316,6 +54343,7 @@ export namespace Prisma {
     documentList?: JsonFilter<"PreFundingValidationCertificate">
     contractHash?: StringFilter<"PreFundingValidationCertificate"> | string
     auditRef?: StringFilter<"PreFundingValidationCertificate"> | string
+    immutable?: BoolFilter<"PreFundingValidationCertificate"> | boolean
     createdAt?: DateTimeFilter<"PreFundingValidationCertificate"> | Date | string
     deal?: XOR<DealScalarRelationFilter, DealWhereInput>
   }
@@ -52332,6 +54360,7 @@ export namespace Prisma {
     documentList?: SortOrder
     contractHash?: SortOrder
     auditRef?: SortOrder
+    immutable?: SortOrder
     createdAt?: SortOrder
     deal?: DealOrderByWithRelationInput
   }
@@ -52351,6 +54380,7 @@ export namespace Prisma {
     documentList?: JsonFilter<"PreFundingValidationCertificate">
     contractHash?: StringFilter<"PreFundingValidationCertificate"> | string
     auditRef?: StringFilter<"PreFundingValidationCertificate"> | string
+    immutable?: BoolFilter<"PreFundingValidationCertificate"> | boolean
     createdAt?: DateTimeFilter<"PreFundingValidationCertificate"> | Date | string
     deal?: XOR<DealScalarRelationFilter, DealWhereInput>
   }, "id" | "dealId">
@@ -52367,6 +54397,7 @@ export namespace Prisma {
     documentList?: SortOrder
     contractHash?: SortOrder
     auditRef?: SortOrder
+    immutable?: SortOrder
     createdAt?: SortOrder
     _count?: PreFundingValidationCertificateCountOrderByAggregateInput
     _max?: PreFundingValidationCertificateMaxOrderByAggregateInput
@@ -52388,7 +54419,118 @@ export namespace Prisma {
     documentList?: JsonWithAggregatesFilter<"PreFundingValidationCertificate">
     contractHash?: StringWithAggregatesFilter<"PreFundingValidationCertificate"> | string
     auditRef?: StringWithAggregatesFilter<"PreFundingValidationCertificate"> | string
+    immutable?: BoolWithAggregatesFilter<"PreFundingValidationCertificate"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"PreFundingValidationCertificate"> | Date | string
+  }
+
+  export type DealAuditEventWhereInput = {
+    AND?: DealAuditEventWhereInput | DealAuditEventWhereInput[]
+    OR?: DealAuditEventWhereInput[]
+    NOT?: DealAuditEventWhereInput | DealAuditEventWhereInput[]
+    id?: StringFilter<"DealAuditEvent"> | string
+    dealId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    workspaceId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    actorUserId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    actorRole?: StringNullableFilter<"DealAuditEvent"> | string | null
+    authMethod?: StringNullableFilter<"DealAuditEvent"> | string | null
+    action?: StringFilter<"DealAuditEvent"> | string
+    entityType?: StringNullableFilter<"DealAuditEvent"> | string | null
+    entityId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    deltaBefore?: JsonNullableFilter<"DealAuditEvent">
+    deltaAfter?: JsonNullableFilter<"DealAuditEvent">
+    payloadJson?: JsonFilter<"DealAuditEvent">
+    ipAddress?: StringNullableFilter<"DealAuditEvent"> | string | null
+    previousChainHash?: StringNullableFilter<"DealAuditEvent"> | string | null
+    chainHash?: StringNullableFilter<"DealAuditEvent"> | string | null
+    createdAt?: DateTimeFilter<"DealAuditEvent"> | Date | string
+    deal?: XOR<DealNullableScalarRelationFilter, DealWhereInput> | null
+  }
+
+  export type DealAuditEventOrderByWithRelationInput = {
+    id?: SortOrder
+    dealId?: SortOrderInput | SortOrder
+    workspaceId?: SortOrderInput | SortOrder
+    actorUserId?: SortOrderInput | SortOrder
+    actorRole?: SortOrderInput | SortOrder
+    authMethod?: SortOrderInput | SortOrder
+    action?: SortOrder
+    entityType?: SortOrderInput | SortOrder
+    entityId?: SortOrderInput | SortOrder
+    deltaBefore?: SortOrderInput | SortOrder
+    deltaAfter?: SortOrderInput | SortOrder
+    payloadJson?: SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    previousChainHash?: SortOrderInput | SortOrder
+    chainHash?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    deal?: DealOrderByWithRelationInput
+  }
+
+  export type DealAuditEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DealAuditEventWhereInput | DealAuditEventWhereInput[]
+    OR?: DealAuditEventWhereInput[]
+    NOT?: DealAuditEventWhereInput | DealAuditEventWhereInput[]
+    dealId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    workspaceId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    actorUserId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    actorRole?: StringNullableFilter<"DealAuditEvent"> | string | null
+    authMethod?: StringNullableFilter<"DealAuditEvent"> | string | null
+    action?: StringFilter<"DealAuditEvent"> | string
+    entityType?: StringNullableFilter<"DealAuditEvent"> | string | null
+    entityId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    deltaBefore?: JsonNullableFilter<"DealAuditEvent">
+    deltaAfter?: JsonNullableFilter<"DealAuditEvent">
+    payloadJson?: JsonFilter<"DealAuditEvent">
+    ipAddress?: StringNullableFilter<"DealAuditEvent"> | string | null
+    previousChainHash?: StringNullableFilter<"DealAuditEvent"> | string | null
+    chainHash?: StringNullableFilter<"DealAuditEvent"> | string | null
+    createdAt?: DateTimeFilter<"DealAuditEvent"> | Date | string
+    deal?: XOR<DealNullableScalarRelationFilter, DealWhereInput> | null
+  }, "id">
+
+  export type DealAuditEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    dealId?: SortOrderInput | SortOrder
+    workspaceId?: SortOrderInput | SortOrder
+    actorUserId?: SortOrderInput | SortOrder
+    actorRole?: SortOrderInput | SortOrder
+    authMethod?: SortOrderInput | SortOrder
+    action?: SortOrder
+    entityType?: SortOrderInput | SortOrder
+    entityId?: SortOrderInput | SortOrder
+    deltaBefore?: SortOrderInput | SortOrder
+    deltaAfter?: SortOrderInput | SortOrder
+    payloadJson?: SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    previousChainHash?: SortOrderInput | SortOrder
+    chainHash?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: DealAuditEventCountOrderByAggregateInput
+    _max?: DealAuditEventMaxOrderByAggregateInput
+    _min?: DealAuditEventMinOrderByAggregateInput
+  }
+
+  export type DealAuditEventScalarWhereWithAggregatesInput = {
+    AND?: DealAuditEventScalarWhereWithAggregatesInput | DealAuditEventScalarWhereWithAggregatesInput[]
+    OR?: DealAuditEventScalarWhereWithAggregatesInput[]
+    NOT?: DealAuditEventScalarWhereWithAggregatesInput | DealAuditEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DealAuditEvent"> | string
+    dealId?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    workspaceId?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    actorUserId?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    actorRole?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    authMethod?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    action?: StringWithAggregatesFilter<"DealAuditEvent"> | string
+    entityType?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    entityId?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    deltaBefore?: JsonNullableWithAggregatesFilter<"DealAuditEvent">
+    deltaAfter?: JsonNullableWithAggregatesFilter<"DealAuditEvent">
+    payloadJson?: JsonWithAggregatesFilter<"DealAuditEvent">
+    ipAddress?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    previousChainHash?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    chainHash?: StringNullableWithAggregatesFilter<"DealAuditEvent"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DealAuditEvent"> | Date | string
   }
 
   export type AccountWhereInput = {
@@ -52551,6 +54693,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -52570,6 +54713,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -52589,6 +54733,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -52608,6 +54753,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -53191,6 +55337,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -53211,6 +55358,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -53227,6 +55375,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53247,6 +55396,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53265,6 +55415,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -53280,6 +55431,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53297,6 +55449,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53467,6 +55620,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateInput = {
@@ -53506,6 +55660,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealUpdateInput = {
@@ -53545,6 +55700,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateInput = {
@@ -53584,6 +55740,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateManyInput = {
@@ -53661,6 +55818,8 @@ export namespace Prisma {
     lastName: string
     address: string
     creditTier?: string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: string | null
     deal: DealCreateNestedOneWithoutPartiesInput
   }
 
@@ -53672,6 +55831,8 @@ export namespace Prisma {
     lastName: string
     address: string
     creditTier?: string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: string | null
   }
 
   export type DealPartyUpdateInput = {
@@ -53681,6 +55842,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     creditTier?: NullableStringFieldUpdateOperationsInput | string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: NullableStringFieldUpdateOperationsInput | string | null
     deal?: DealUpdateOneRequiredWithoutPartiesNestedInput
   }
 
@@ -53692,6 +55855,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     creditTier?: NullableStringFieldUpdateOperationsInput | string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DealPartyCreateManyInput = {
@@ -53702,6 +55867,8 @@ export namespace Prisma {
     lastName: string
     address: string
     creditTier?: string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: string | null
   }
 
   export type DealPartyUpdateManyMutationInput = {
@@ -53711,6 +55878,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     creditTier?: NullableStringFieldUpdateOperationsInput | string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DealPartyUncheckedUpdateManyInput = {
@@ -53721,6 +55890,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     creditTier?: NullableStringFieldUpdateOperationsInput | string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VehicleCreateInput = {
@@ -53892,7 +56063,7 @@ export namespace Prisma {
   export type AuthoritativeContractCreateInput = {
     id?: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -53907,7 +56078,7 @@ export namespace Prisma {
     id?: string
     dealId: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -53920,7 +56091,7 @@ export namespace Prisma {
   export type AuthoritativeContractUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -53935,7 +56106,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dealId?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -53949,7 +56120,7 @@ export namespace Prisma {
     id?: string
     dealId: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -53960,7 +56131,7 @@ export namespace Prisma {
   export type AuthoritativeContractUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -53972,7 +56143,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dealId?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -54066,12 +56237,28 @@ export namespace Prisma {
     id?: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description?: string | null
     recourseStatus?: $Enums.RecourseStatus
     targetSize: number
     status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lender: WorkspaceCreateNestedOneWithoutLoanPoolsInput
+    createdBy?: UserCreateNestedOneWithoutLoanPoolsCreatedInput
     deals?: DealCreateNestedManyWithoutLoanPoolInput
   }
 
@@ -54080,9 +56267,25 @@ export namespace Prisma {
     lenderId: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description?: string | null
     recourseStatus?: $Enums.RecourseStatus
     targetSize: number
     status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deals?: DealUncheckedCreateNestedManyWithoutLoanPoolInput
@@ -54092,12 +56295,28 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lender?: WorkspaceUpdateOneRequiredWithoutLoanPoolsNestedInput
+    createdBy?: UserUpdateOneWithoutLoanPoolsCreatedNestedInput
     deals?: DealUpdateManyWithoutLoanPoolNestedInput
   }
 
@@ -54106,9 +56325,25 @@ export namespace Prisma {
     lenderId?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deals?: DealUncheckedUpdateManyWithoutLoanPoolNestedInput
@@ -54119,9 +56354,25 @@ export namespace Prisma {
     lenderId: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description?: string | null
     recourseStatus?: $Enums.RecourseStatus
     targetSize: number
     status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -54130,9 +56381,24 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54142,9 +56408,25 @@ export namespace Prisma {
     lenderId?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54338,6 +56620,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     deal: DealCreateNestedOneWithoutGeneratedDocumentsInput
     authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutGeneratedDocumentsInput
@@ -54358,6 +56645,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     versions?: DocumentVersionUncheckedCreateNestedManyWithoutGeneratedDocumentInput
     custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDocumentInput
@@ -54372,6 +56664,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deal?: DealUpdateOneRequiredWithoutGeneratedDocumentsNestedInput
     authoritativeContract?: AuthoritativeContractUpdateOneWithoutGeneratedDocumentsNestedInput
@@ -54392,6 +56689,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: DocumentVersionUncheckedUpdateManyWithoutGeneratedDocumentNestedInput
     custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDocumentNestedInput
@@ -54409,6 +56711,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
   }
 
@@ -54421,6 +56728,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -54436,6 +56748,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -55605,6 +57922,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash: string
     auditRef: string
+    immutable?: boolean
     createdAt?: Date | string
     deal: DealCreateNestedOneWithoutPrefundingValidationCertificateInput
   }
@@ -55621,6 +57939,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash: string
     auditRef: string
+    immutable?: boolean
     createdAt?: Date | string
   }
 
@@ -55635,6 +57954,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash?: StringFieldUpdateOperationsInput | string
     auditRef?: StringFieldUpdateOperationsInput | string
+    immutable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deal?: DealUpdateOneRequiredWithoutPrefundingValidationCertificateNestedInput
   }
@@ -55651,6 +57971,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash?: StringFieldUpdateOperationsInput | string
     auditRef?: StringFieldUpdateOperationsInput | string
+    immutable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -55666,6 +57987,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash: string
     auditRef: string
+    immutable?: boolean
     createdAt?: Date | string
   }
 
@@ -55680,6 +58002,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash?: StringFieldUpdateOperationsInput | string
     auditRef?: StringFieldUpdateOperationsInput | string
+    immutable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -55695,6 +58018,139 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash?: StringFieldUpdateOperationsInput | string
     auditRef?: StringFieldUpdateOperationsInput | string
+    immutable?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAuditEventCreateInput = {
+    id?: string
+    workspaceId?: string | null
+    actorUserId?: string | null
+    actorRole?: string | null
+    authMethod?: string | null
+    action: string
+    entityType?: string | null
+    entityId?: string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    previousChainHash?: string | null
+    chainHash?: string | null
+    createdAt?: Date | string
+    deal?: DealCreateNestedOneWithoutAuditEventsInput
+  }
+
+  export type DealAuditEventUncheckedCreateInput = {
+    id?: string
+    dealId?: string | null
+    workspaceId?: string | null
+    actorUserId?: string | null
+    actorRole?: string | null
+    authMethod?: string | null
+    action: string
+    entityType?: string | null
+    entityId?: string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    previousChainHash?: string | null
+    chainHash?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAuditEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    entityType?: NullableStringFieldUpdateOperationsInput | string | null
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    previousChainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    chainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deal?: DealUpdateOneWithoutAuditEventsNestedInput
+  }
+
+  export type DealAuditEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    entityType?: NullableStringFieldUpdateOperationsInput | string | null
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    previousChainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    chainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAuditEventCreateManyInput = {
+    id?: string
+    dealId?: string | null
+    workspaceId?: string | null
+    actorUserId?: string | null
+    actorRole?: string | null
+    authMethod?: string | null
+    action: string
+    entityType?: string | null
+    entityId?: string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    previousChainHash?: string | null
+    chainHash?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAuditEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    entityType?: NullableStringFieldUpdateOperationsInput | string | null
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    previousChainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    chainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAuditEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    entityType?: NullableStringFieldUpdateOperationsInput | string | null
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    previousChainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    chainHash?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -55940,6 +58396,12 @@ export namespace Prisma {
     none?: DealCommentWhereInput
   }
 
+  export type LoanPoolListRelationFilter = {
+    every?: LoanPoolWhereInput
+    some?: LoanPoolWhereInput
+    none?: LoanPoolWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -55970,6 +58432,10 @@ export namespace Prisma {
   }
 
   export type DealCommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LoanPoolOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -56133,12 +58599,6 @@ export namespace Prisma {
     none?: DealAlertWhereInput
   }
 
-  export type LoanPoolListRelationFilter = {
-    every?: LoanPoolWhereInput
-    some?: LoanPoolWhereInput
-    none?: LoanPoolWhereInput
-  }
-
   export type ApiKeyListRelationFilter = {
     every?: ApiKeyWhereInput
     some?: ApiKeyWhereInput
@@ -56176,10 +58636,6 @@ export namespace Prisma {
   }
 
   export type DealAlertOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type LoanPoolOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -56634,6 +59090,7 @@ export namespace Prisma {
     approvedStates?: SortOrder
     allowedDealTypes?: SortOrder
     lenderOverrides?: SortOrder
+    lenderRuleProfile?: SortOrder
     effectiveDate?: SortOrder
     expirationDate?: SortOrder
     requestedBy?: SortOrder
@@ -56866,6 +59323,12 @@ export namespace Prisma {
     none?: InstrumentTransferEventWhereInput
   }
 
+  export type DealAuditEventListRelationFilter = {
+    every?: DealAuditEventWhereInput
+    some?: DealAuditEventWhereInput
+    none?: DealAuditEventWhereInput
+  }
+
   export type DealPartyOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -56887,6 +59350,10 @@ export namespace Prisma {
   }
 
   export type InstrumentTransferEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DealAuditEventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -57030,6 +59497,8 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     creditTier?: SortOrder
+    encryptedPii?: SortOrder
+    defaultKmsKeyId?: SortOrder
   }
 
   export type DealPartyMaxOrderByAggregateInput = {
@@ -57040,6 +59509,7 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     creditTier?: SortOrder
+    defaultKmsKeyId?: SortOrder
   }
 
   export type DealPartyMinOrderByAggregateInput = {
@@ -57050,6 +59520,7 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     creditTier?: SortOrder
+    defaultKmsKeyId?: SortOrder
   }
 
   export type EnumDealPartyRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -57219,7 +59690,7 @@ export namespace Prisma {
     id?: SortOrder
     dealId?: SortOrder
     version?: SortOrder
-    contentHash?: SortOrder
+    authoritativeContractHash?: SortOrder
     governingLaw?: SortOrder
     signatureStatus?: SortOrder
     isTransferableRecord?: SortOrder
@@ -57235,7 +59706,7 @@ export namespace Prisma {
     id?: SortOrder
     dealId?: SortOrder
     version?: SortOrder
-    contentHash?: SortOrder
+    authoritativeContractHash?: SortOrder
     governingLaw?: SortOrder
     signatureStatus?: SortOrder
     isTransferableRecord?: SortOrder
@@ -57246,7 +59717,7 @@ export namespace Prisma {
     id?: SortOrder
     dealId?: SortOrder
     version?: SortOrder
-    contentHash?: SortOrder
+    authoritativeContractHash?: SortOrder
     governingLaw?: SortOrder
     signatureStatus?: SortOrder
     isTransferableRecord?: SortOrder
@@ -57390,20 +59861,74 @@ export namespace Prisma {
     not?: NestedEnumLoanPoolStatusFilter<$PrismaModel> | $Enums.LoanPoolStatus
   }
 
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type EnumLoanPoolSaleStageFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoanPoolSaleStage | EnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    in?: $Enums.LoanPoolSaleStage[] | ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoanPoolSaleStage[] | ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoanPoolSaleStageFilter<$PrismaModel> | $Enums.LoanPoolSaleStage
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type LoanPoolCountOrderByAggregateInput = {
     id?: SortOrder
     lenderId?: SortOrder
     poolName?: SortOrder
     poolType?: SortOrder
+    description?: SortOrder
     recourseStatus?: SortOrder
     targetSize?: SortOrder
     status?: SortOrder
+    totalLoanCount?: SortOrder
+    totalPrincipalBalance?: SortOrder
+    weightedAverageApr?: SortOrder
+    weightedAverageTermMonths?: SortOrder
+    riskClassification?: SortOrder
+    poolIntegrityStatus?: SortOrder
+    auditStatus?: SortOrder
+    saleStage?: SortOrder
+    transferDate?: SortOrder
+    transferEntityName?: SortOrder
+    custodyTransitionJson?: SortOrder
+    filterCriteriaJson?: SortOrder
+    lastPackageStorageKey?: SortOrder
+    lastPackageGeneratedAt?: SortOrder
+    createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type LoanPoolAvgOrderByAggregateInput = {
     targetSize?: SortOrder
+    totalLoanCount?: SortOrder
+    totalPrincipalBalance?: SortOrder
+    weightedAverageApr?: SortOrder
+    weightedAverageTermMonths?: SortOrder
   }
 
   export type LoanPoolMaxOrderByAggregateInput = {
@@ -57411,9 +59936,23 @@ export namespace Prisma {
     lenderId?: SortOrder
     poolName?: SortOrder
     poolType?: SortOrder
+    description?: SortOrder
     recourseStatus?: SortOrder
     targetSize?: SortOrder
     status?: SortOrder
+    totalLoanCount?: SortOrder
+    totalPrincipalBalance?: SortOrder
+    weightedAverageApr?: SortOrder
+    weightedAverageTermMonths?: SortOrder
+    riskClassification?: SortOrder
+    poolIntegrityStatus?: SortOrder
+    auditStatus?: SortOrder
+    saleStage?: SortOrder
+    transferDate?: SortOrder
+    transferEntityName?: SortOrder
+    lastPackageStorageKey?: SortOrder
+    lastPackageGeneratedAt?: SortOrder
+    createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -57423,15 +59962,33 @@ export namespace Prisma {
     lenderId?: SortOrder
     poolName?: SortOrder
     poolType?: SortOrder
+    description?: SortOrder
     recourseStatus?: SortOrder
     targetSize?: SortOrder
     status?: SortOrder
+    totalLoanCount?: SortOrder
+    totalPrincipalBalance?: SortOrder
+    weightedAverageApr?: SortOrder
+    weightedAverageTermMonths?: SortOrder
+    riskClassification?: SortOrder
+    poolIntegrityStatus?: SortOrder
+    auditStatus?: SortOrder
+    saleStage?: SortOrder
+    transferDate?: SortOrder
+    transferEntityName?: SortOrder
+    lastPackageStorageKey?: SortOrder
+    lastPackageGeneratedAt?: SortOrder
+    createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type LoanPoolSumOrderByAggregateInput = {
     targetSize?: SortOrder
+    totalLoanCount?: SortOrder
+    totalPrincipalBalance?: SortOrder
+    weightedAverageApr?: SortOrder
+    weightedAverageTermMonths?: SortOrder
   }
 
   export type EnumLoanPoolTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -57478,6 +60035,48 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLoanPoolStatusFilter<$PrismaModel>
     _max?: NestedEnumLoanPoolStatusFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type EnumLoanPoolSaleStageWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoanPoolSaleStage | EnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    in?: $Enums.LoanPoolSaleStage[] | ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoanPoolSaleStage[] | ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoanPoolSaleStageWithAggregatesFilter<$PrismaModel> | $Enums.LoanPoolSaleStage
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLoanPoolSaleStageFilter<$PrismaModel>
+    _max?: NestedEnumLoanPoolSaleStageFilter<$PrismaModel>
   }
 
   export type EnumNegotiableInstrumentTypeFilter<$PrismaModel = never> = {
@@ -57623,6 +60222,20 @@ export namespace Prisma {
     not?: NestedEnumDocumentTypeNullableFilter<$PrismaModel> | $Enums.DocumentType | null
   }
 
+  export type EnumDocumentLifecycleStageFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentLifecycleStage | EnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentLifecycleStage[] | ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentLifecycleStage[] | ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentLifecycleStageFilter<$PrismaModel> | $Enums.DocumentLifecycleStage
+  }
+
+  export type EnumDocumentProvenanceFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentProvenance | EnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentProvenance[] | ListEnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentProvenance[] | ListEnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentProvenanceFilter<$PrismaModel> | $Enums.DocumentProvenance
+  }
+
   export type AmendmentNullableScalarRelationFilter = {
     is?: AmendmentWhereInput | null
     isNot?: AmendmentWhereInput | null
@@ -57650,6 +60263,11 @@ export namespace Prisma {
     isAuthoritative?: SortOrder
     authoritativeContractHash?: SortOrder
     valuesSnapshot?: SortOrder
+    storageKey?: SortOrder
+    storageProvider?: SortOrder
+    integritySha256?: SortOrder
+    lifecycleStage?: SortOrder
+    provenance?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -57668,6 +60286,11 @@ export namespace Prisma {
     version?: SortOrder
     isAuthoritative?: SortOrder
     authoritativeContractHash?: SortOrder
+    storageKey?: SortOrder
+    storageProvider?: SortOrder
+    integritySha256?: SortOrder
+    lifecycleStage?: SortOrder
+    provenance?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -57682,6 +60305,11 @@ export namespace Prisma {
     version?: SortOrder
     isAuthoritative?: SortOrder
     authoritativeContractHash?: SortOrder
+    storageKey?: SortOrder
+    storageProvider?: SortOrder
+    integritySha256?: SortOrder
+    lifecycleStage?: SortOrder
+    provenance?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -57709,9 +60337,24 @@ export namespace Prisma {
     _max?: NestedEnumDocumentTypeNullableFilter<$PrismaModel>
   }
 
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
+  export type EnumDocumentLifecycleStageWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentLifecycleStage | EnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentLifecycleStage[] | ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentLifecycleStage[] | ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentLifecycleStageWithAggregatesFilter<$PrismaModel> | $Enums.DocumentLifecycleStage
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocumentLifecycleStageFilter<$PrismaModel>
+    _max?: NestedEnumDocumentLifecycleStageFilter<$PrismaModel>
+  }
+
+  export type EnumDocumentProvenanceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentProvenance | EnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentProvenance[] | ListEnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentProvenance[] | ListEnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentProvenanceWithAggregatesFilter<$PrismaModel> | $Enums.DocumentProvenance
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocumentProvenanceFilter<$PrismaModel>
+    _max?: NestedEnumDocumentProvenanceFilter<$PrismaModel>
   }
 
   export type DealNullableScalarRelationFilter = {
@@ -57833,17 +60476,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type EnumWebhookDeliveryStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.WebhookDeliveryStatus | EnumWebhookDeliveryStatusFieldRefInput<$PrismaModel>
     in?: $Enums.WebhookDeliveryStatus[] | ListEnumWebhookDeliveryStatusFieldRefInput<$PrismaModel>
@@ -57901,22 +60533,6 @@ export namespace Prisma {
   export type WebhookDeliverySumOrderByAggregateInput = {
     responseStatusCode?: SortOrder
     retryCount?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type EnumWebhookDeliveryStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -58436,6 +61052,7 @@ export namespace Prisma {
     documentList?: SortOrder
     contractHash?: SortOrder
     auditRef?: SortOrder
+    immutable?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -58447,6 +61064,7 @@ export namespace Prisma {
     status?: SortOrder
     contractHash?: SortOrder
     auditRef?: SortOrder
+    immutable?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -58458,6 +61076,58 @@ export namespace Prisma {
     status?: SortOrder
     contractHash?: SortOrder
     auditRef?: SortOrder
+    immutable?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DealAuditEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    workspaceId?: SortOrder
+    actorUserId?: SortOrder
+    actorRole?: SortOrder
+    authMethod?: SortOrder
+    action?: SortOrder
+    entityType?: SortOrder
+    entityId?: SortOrder
+    deltaBefore?: SortOrder
+    deltaAfter?: SortOrder
+    payloadJson?: SortOrder
+    ipAddress?: SortOrder
+    previousChainHash?: SortOrder
+    chainHash?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DealAuditEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    workspaceId?: SortOrder
+    actorUserId?: SortOrder
+    actorRole?: SortOrder
+    authMethod?: SortOrder
+    action?: SortOrder
+    entityType?: SortOrder
+    entityId?: SortOrder
+    ipAddress?: SortOrder
+    previousChainHash?: SortOrder
+    chainHash?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DealAuditEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    dealId?: SortOrder
+    workspaceId?: SortOrder
+    actorUserId?: SortOrder
+    actorRole?: SortOrder
+    authMethod?: SortOrder
+    action?: SortOrder
+    entityType?: SortOrder
+    entityId?: SortOrder
+    ipAddress?: SortOrder
+    previousChainHash?: SortOrder
+    chainHash?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -58603,6 +61273,13 @@ export namespace Prisma {
     connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
   }
 
+  export type LoanPoolCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LoanPoolCreateWithoutCreatedByInput, LoanPoolUncheckedCreateWithoutCreatedByInput> | LoanPoolCreateWithoutCreatedByInput[] | LoanPoolUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LoanPoolCreateOrConnectWithoutCreatedByInput | LoanPoolCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LoanPoolCreateManyCreatedByInputEnvelope
+    connect?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -58664,6 +61341,13 @@ export namespace Prisma {
     connectOrCreate?: DealCommentCreateOrConnectWithoutResolvedByInput | DealCommentCreateOrConnectWithoutResolvedByInput[]
     createMany?: DealCommentCreateManyResolvedByInputEnvelope
     connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+  }
+
+  export type LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<LoanPoolCreateWithoutCreatedByInput, LoanPoolUncheckedCreateWithoutCreatedByInput> | LoanPoolCreateWithoutCreatedByInput[] | LoanPoolUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LoanPoolCreateOrConnectWithoutCreatedByInput | LoanPoolCreateOrConnectWithoutCreatedByInput[]
+    createMany?: LoanPoolCreateManyCreatedByInputEnvelope
+    connect?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -58808,6 +61492,20 @@ export namespace Prisma {
     deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
   }
 
+  export type LoanPoolUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LoanPoolCreateWithoutCreatedByInput, LoanPoolUncheckedCreateWithoutCreatedByInput> | LoanPoolCreateWithoutCreatedByInput[] | LoanPoolUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LoanPoolCreateOrConnectWithoutCreatedByInput | LoanPoolCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LoanPoolUpsertWithWhereUniqueWithoutCreatedByInput | LoanPoolUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LoanPoolCreateManyCreatedByInputEnvelope
+    set?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+    disconnect?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+    delete?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+    connect?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+    update?: LoanPoolUpdateWithWhereUniqueWithoutCreatedByInput | LoanPoolUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LoanPoolUpdateManyWithWhereWithoutCreatedByInput | LoanPoolUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LoanPoolScalarWhereInput | LoanPoolScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -58932,6 +61630,20 @@ export namespace Prisma {
     update?: DealCommentUpdateWithWhereUniqueWithoutResolvedByInput | DealCommentUpdateWithWhereUniqueWithoutResolvedByInput[]
     updateMany?: DealCommentUpdateManyWithWhereWithoutResolvedByInput | DealCommentUpdateManyWithWhereWithoutResolvedByInput[]
     deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+  }
+
+  export type LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<LoanPoolCreateWithoutCreatedByInput, LoanPoolUncheckedCreateWithoutCreatedByInput> | LoanPoolCreateWithoutCreatedByInput[] | LoanPoolUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: LoanPoolCreateOrConnectWithoutCreatedByInput | LoanPoolCreateOrConnectWithoutCreatedByInput[]
+    upsert?: LoanPoolUpsertWithWhereUniqueWithoutCreatedByInput | LoanPoolUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: LoanPoolCreateManyCreatedByInputEnvelope
+    set?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+    disconnect?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+    delete?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+    connect?: LoanPoolWhereUniqueInput | LoanPoolWhereUniqueInput[]
+    update?: LoanPoolUpdateWithWhereUniqueWithoutCreatedByInput | LoanPoolUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: LoanPoolUpdateManyWithWhereWithoutCreatedByInput | LoanPoolUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: LoanPoolScalarWhereInput | LoanPoolScalarWhereInput[]
   }
 
   export type MembershipCreateNestedManyWithoutWorkspaceInput = {
@@ -60036,6 +62748,13 @@ export namespace Prisma {
     connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
   }
 
+  export type DealAuditEventCreateNestedManyWithoutDealInput = {
+    create?: XOR<DealAuditEventCreateWithoutDealInput, DealAuditEventUncheckedCreateWithoutDealInput> | DealAuditEventCreateWithoutDealInput[] | DealAuditEventUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealAuditEventCreateOrConnectWithoutDealInput | DealAuditEventCreateOrConnectWithoutDealInput[]
+    createMany?: DealAuditEventCreateManyDealInputEnvelope
+    connect?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+  }
+
   export type DealPartyUncheckedCreateNestedManyWithoutDealInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -60134,6 +62853,13 @@ export namespace Prisma {
     connectOrCreate?: DealCommentCreateOrConnectWithoutDealInput | DealCommentCreateOrConnectWithoutDealInput[]
     createMany?: DealCommentCreateManyDealInputEnvelope
     connect?: DealCommentWhereUniqueInput | DealCommentWhereUniqueInput[]
+  }
+
+  export type DealAuditEventUncheckedCreateNestedManyWithoutDealInput = {
+    create?: XOR<DealAuditEventCreateWithoutDealInput, DealAuditEventUncheckedCreateWithoutDealInput> | DealAuditEventCreateWithoutDealInput[] | DealAuditEventUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealAuditEventCreateOrConnectWithoutDealInput | DealAuditEventCreateOrConnectWithoutDealInput[]
+    createMany?: DealAuditEventCreateManyDealInputEnvelope
+    connect?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
   }
 
   export type EnumDealStatusFieldUpdateOperationsInput = {
@@ -60372,6 +63098,20 @@ export namespace Prisma {
     deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
   }
 
+  export type DealAuditEventUpdateManyWithoutDealNestedInput = {
+    create?: XOR<DealAuditEventCreateWithoutDealInput, DealAuditEventUncheckedCreateWithoutDealInput> | DealAuditEventCreateWithoutDealInput[] | DealAuditEventUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealAuditEventCreateOrConnectWithoutDealInput | DealAuditEventCreateOrConnectWithoutDealInput[]
+    upsert?: DealAuditEventUpsertWithWhereUniqueWithoutDealInput | DealAuditEventUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: DealAuditEventCreateManyDealInputEnvelope
+    set?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+    disconnect?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+    delete?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+    connect?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+    update?: DealAuditEventUpdateWithWhereUniqueWithoutDealInput | DealAuditEventUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: DealAuditEventUpdateManyWithWhereWithoutDealInput | DealAuditEventUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: DealAuditEventScalarWhereInput | DealAuditEventScalarWhereInput[]
+  }
+
   export type DealPartyUncheckedUpdateManyWithoutDealNestedInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -60560,6 +63300,20 @@ export namespace Prisma {
     update?: DealCommentUpdateWithWhereUniqueWithoutDealInput | DealCommentUpdateWithWhereUniqueWithoutDealInput[]
     updateMany?: DealCommentUpdateManyWithWhereWithoutDealInput | DealCommentUpdateManyWithWhereWithoutDealInput[]
     deleteMany?: DealCommentScalarWhereInput | DealCommentScalarWhereInput[]
+  }
+
+  export type DealAuditEventUncheckedUpdateManyWithoutDealNestedInput = {
+    create?: XOR<DealAuditEventCreateWithoutDealInput, DealAuditEventUncheckedCreateWithoutDealInput> | DealAuditEventCreateWithoutDealInput[] | DealAuditEventUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: DealAuditEventCreateOrConnectWithoutDealInput | DealAuditEventCreateOrConnectWithoutDealInput[]
+    upsert?: DealAuditEventUpsertWithWhereUniqueWithoutDealInput | DealAuditEventUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: DealAuditEventCreateManyDealInputEnvelope
+    set?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+    disconnect?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+    delete?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+    connect?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+    update?: DealAuditEventUpdateWithWhereUniqueWithoutDealInput | DealAuditEventUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: DealAuditEventUpdateManyWithWhereWithoutDealInput | DealAuditEventUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: DealAuditEventScalarWhereInput | DealAuditEventScalarWhereInput[]
   }
 
   export type DealCreateNestedOneWithoutPartiesInput = {
@@ -60770,6 +63524,12 @@ export namespace Prisma {
     connect?: WorkspaceWhereUniqueInput
   }
 
+  export type UserCreateNestedOneWithoutLoanPoolsCreatedInput = {
+    create?: XOR<UserCreateWithoutLoanPoolsCreatedInput, UserUncheckedCreateWithoutLoanPoolsCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLoanPoolsCreatedInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type DealCreateNestedManyWithoutLoanPoolInput = {
     create?: XOR<DealCreateWithoutLoanPoolInput, DealUncheckedCreateWithoutLoanPoolInput> | DealCreateWithoutLoanPoolInput[] | DealUncheckedCreateWithoutLoanPoolInput[]
     connectOrCreate?: DealCreateOrConnectWithoutLoanPoolInput | DealCreateOrConnectWithoutLoanPoolInput[]
@@ -60804,12 +63564,42 @@ export namespace Prisma {
     set?: $Enums.LoanPoolStatus
   }
 
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type EnumLoanPoolSaleStageFieldUpdateOperationsInput = {
+    set?: $Enums.LoanPoolSaleStage
+  }
+
   export type WorkspaceUpdateOneRequiredWithoutLoanPoolsNestedInput = {
     create?: XOR<WorkspaceCreateWithoutLoanPoolsInput, WorkspaceUncheckedCreateWithoutLoanPoolsInput>
     connectOrCreate?: WorkspaceCreateOrConnectWithoutLoanPoolsInput
     upsert?: WorkspaceUpsertWithoutLoanPoolsInput
     connect?: WorkspaceWhereUniqueInput
     update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutLoanPoolsInput, WorkspaceUpdateWithoutLoanPoolsInput>, WorkspaceUncheckedUpdateWithoutLoanPoolsInput>
+  }
+
+  export type UserUpdateOneWithoutLoanPoolsCreatedNestedInput = {
+    create?: XOR<UserCreateWithoutLoanPoolsCreatedInput, UserUncheckedCreateWithoutLoanPoolsCreatedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLoanPoolsCreatedInput
+    upsert?: UserUpsertWithoutLoanPoolsCreatedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLoanPoolsCreatedInput, UserUpdateWithoutLoanPoolsCreatedInput>, UserUncheckedUpdateWithoutLoanPoolsCreatedInput>
   }
 
   export type DealUpdateManyWithoutLoanPoolNestedInput = {
@@ -61030,6 +63820,14 @@ export namespace Prisma {
 
   export type NullableEnumDocumentTypeFieldUpdateOperationsInput = {
     set?: $Enums.DocumentType | null
+  }
+
+  export type EnumDocumentLifecycleStageFieldUpdateOperationsInput = {
+    set?: $Enums.DocumentLifecycleStage
+  }
+
+  export type EnumDocumentProvenanceFieldUpdateOperationsInput = {
+    set?: $Enums.DocumentProvenance
   }
 
   export type DealUpdateOneRequiredWithoutGeneratedDocumentsNestedInput = {
@@ -61254,14 +64052,6 @@ export namespace Prisma {
     create?: XOR<WebhookEndpointCreateWithoutDeliveriesInput, WebhookEndpointUncheckedCreateWithoutDeliveriesInput>
     connectOrCreate?: WebhookEndpointCreateOrConnectWithoutDeliveriesInput
     connect?: WebhookEndpointWhereUniqueInput
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type EnumWebhookDeliveryStatusFieldUpdateOperationsInput = {
@@ -61688,6 +64478,22 @@ export namespace Prisma {
     upsert?: DealUpsertWithoutPrefundingValidationCertificateInput
     connect?: DealWhereUniqueInput
     update?: XOR<XOR<DealUpdateToOneWithWhereWithoutPrefundingValidationCertificateInput, DealUpdateWithoutPrefundingValidationCertificateInput>, DealUncheckedUpdateWithoutPrefundingValidationCertificateInput>
+  }
+
+  export type DealCreateNestedOneWithoutAuditEventsInput = {
+    create?: XOR<DealCreateWithoutAuditEventsInput, DealUncheckedCreateWithoutAuditEventsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutAuditEventsInput
+    connect?: DealWhereUniqueInput
+  }
+
+  export type DealUpdateOneWithoutAuditEventsNestedInput = {
+    create?: XOR<DealCreateWithoutAuditEventsInput, DealUncheckedCreateWithoutAuditEventsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutAuditEventsInput
+    upsert?: DealUpsertWithoutAuditEventsInput
+    disconnect?: DealWhereInput | boolean
+    delete?: DealWhereInput | boolean
+    connect?: DealWhereUniqueInput
+    update?: XOR<XOR<DealUpdateToOneWithWhereWithoutAuditEventsInput, DealUpdateWithoutAuditEventsInput>, DealUncheckedUpdateWithoutAuditEventsInput>
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -62285,6 +65091,24 @@ export namespace Prisma {
     not?: NestedEnumLoanPoolStatusFilter<$PrismaModel> | $Enums.LoanPoolStatus
   }
 
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedEnumLoanPoolSaleStageFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoanPoolSaleStage | EnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    in?: $Enums.LoanPoolSaleStage[] | ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoanPoolSaleStage[] | ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoanPoolSaleStageFilter<$PrismaModel> | $Enums.LoanPoolSaleStage
+  }
+
   export type NestedEnumLoanPoolTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.LoanPoolType | EnumLoanPoolTypeFieldRefInput<$PrismaModel>
     in?: $Enums.LoanPoolType[] | ListEnumLoanPoolTypeFieldRefInput<$PrismaModel>
@@ -62329,6 +65153,48 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLoanPoolStatusFilter<$PrismaModel>
     _max?: NestedEnumLoanPoolStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLoanPoolSaleStageWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LoanPoolSaleStage | EnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    in?: $Enums.LoanPoolSaleStage[] | ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LoanPoolSaleStage[] | ListEnumLoanPoolSaleStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumLoanPoolSaleStageWithAggregatesFilter<$PrismaModel> | $Enums.LoanPoolSaleStage
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLoanPoolSaleStageFilter<$PrismaModel>
+    _max?: NestedEnumLoanPoolSaleStageFilter<$PrismaModel>
   }
 
   export type NestedEnumNegotiableInstrumentTypeFilter<$PrismaModel = never> = {
@@ -62396,6 +65262,20 @@ export namespace Prisma {
     not?: NestedEnumDocumentTypeNullableFilter<$PrismaModel> | $Enums.DocumentType | null
   }
 
+  export type NestedEnumDocumentLifecycleStageFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentLifecycleStage | EnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentLifecycleStage[] | ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentLifecycleStage[] | ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentLifecycleStageFilter<$PrismaModel> | $Enums.DocumentLifecycleStage
+  }
+
+  export type NestedEnumDocumentProvenanceFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentProvenance | EnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentProvenance[] | ListEnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentProvenance[] | ListEnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentProvenanceFilter<$PrismaModel> | $Enums.DocumentProvenance
+  }
+
   export type NestedEnumGeneratedDocumentTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.GeneratedDocumentType | EnumGeneratedDocumentTypeFieldRefInput<$PrismaModel>
     in?: $Enums.GeneratedDocumentType[] | ListEnumGeneratedDocumentTypeFieldRefInput<$PrismaModel>
@@ -62416,27 +65296,31 @@ export namespace Prisma {
     _max?: NestedEnumDocumentTypeNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumDocumentLifecycleStageWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentLifecycleStage | EnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentLifecycleStage[] | ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentLifecycleStage[] | ListEnumDocumentLifecycleStageFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentLifecycleStageWithAggregatesFilter<$PrismaModel> | $Enums.DocumentLifecycleStage
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocumentLifecycleStageFilter<$PrismaModel>
+    _max?: NestedEnumDocumentLifecycleStageFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDocumentProvenanceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentProvenance | EnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentProvenance[] | ListEnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentProvenance[] | ListEnumDocumentProvenanceFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentProvenanceWithAggregatesFilter<$PrismaModel> | $Enums.DocumentProvenance
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocumentProvenanceFilter<$PrismaModel>
+    _max?: NestedEnumDocumentProvenanceFilter<$PrismaModel>
+  }
+
   export type NestedEnumWebhookDeliveryStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.WebhookDeliveryStatus | EnumWebhookDeliveryStatusFieldRefInput<$PrismaModel>
     in?: $Enums.WebhookDeliveryStatus[] | ListEnumWebhookDeliveryStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.WebhookDeliveryStatus[] | ListEnumWebhookDeliveryStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumWebhookDeliveryStatusFilter<$PrismaModel> | $Enums.WebhookDeliveryStatus
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumWebhookDeliveryStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -62880,6 +65764,72 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LoanPoolCreateWithoutCreatedByInput = {
+    id?: string
+    poolName: string
+    poolType: $Enums.LoanPoolType
+    description?: string | null
+    recourseStatus?: $Enums.RecourseStatus
+    targetSize: number
+    status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLoanPoolsInput
+    deals?: DealCreateNestedManyWithoutLoanPoolInput
+  }
+
+  export type LoanPoolUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    lenderId: string
+    poolName: string
+    poolType: $Enums.LoanPoolType
+    description?: string | null
+    recourseStatus?: $Enums.RecourseStatus
+    targetSize: number
+    status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deals?: DealUncheckedCreateNestedManyWithoutLoanPoolInput
+  }
+
+  export type LoanPoolCreateOrConnectWithoutCreatedByInput = {
+    where: LoanPoolWhereUniqueInput
+    create: XOR<LoanPoolCreateWithoutCreatedByInput, LoanPoolUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LoanPoolCreateManyCreatedByInputEnvelope = {
+    data: LoanPoolCreateManyCreatedByInput | LoanPoolCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -63131,6 +66081,53 @@ export namespace Prisma {
     data: XOR<DealCommentUpdateManyMutationInput, DealCommentUncheckedUpdateManyWithoutResolvedByInput>
   }
 
+  export type LoanPoolUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: LoanPoolWhereUniqueInput
+    update: XOR<LoanPoolUpdateWithoutCreatedByInput, LoanPoolUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<LoanPoolCreateWithoutCreatedByInput, LoanPoolUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type LoanPoolUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: LoanPoolWhereUniqueInput
+    data: XOR<LoanPoolUpdateWithoutCreatedByInput, LoanPoolUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type LoanPoolUpdateManyWithWhereWithoutCreatedByInput = {
+    where: LoanPoolScalarWhereInput
+    data: XOR<LoanPoolUpdateManyMutationInput, LoanPoolUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type LoanPoolScalarWhereInput = {
+    AND?: LoanPoolScalarWhereInput | LoanPoolScalarWhereInput[]
+    OR?: LoanPoolScalarWhereInput[]
+    NOT?: LoanPoolScalarWhereInput | LoanPoolScalarWhereInput[]
+    id?: StringFilter<"LoanPool"> | string
+    lenderId?: StringFilter<"LoanPool"> | string
+    poolName?: StringFilter<"LoanPool"> | string
+    poolType?: EnumLoanPoolTypeFilter<"LoanPool"> | $Enums.LoanPoolType
+    description?: StringNullableFilter<"LoanPool"> | string | null
+    recourseStatus?: EnumRecourseStatusFilter<"LoanPool"> | $Enums.RecourseStatus
+    targetSize?: FloatFilter<"LoanPool"> | number
+    status?: EnumLoanPoolStatusFilter<"LoanPool"> | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFilter<"LoanPool"> | number
+    totalPrincipalBalance?: DecimalFilter<"LoanPool"> | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: DecimalNullableFilter<"LoanPool"> | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: IntNullableFilter<"LoanPool"> | number | null
+    riskClassification?: StringNullableFilter<"LoanPool"> | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFilter<"LoanPool"> | $Enums.DealComplianceStatus
+    auditStatus?: StringFilter<"LoanPool"> | string
+    saleStage?: EnumLoanPoolSaleStageFilter<"LoanPool"> | $Enums.LoanPoolSaleStage
+    transferDate?: DateTimeNullableFilter<"LoanPool"> | Date | string | null
+    transferEntityName?: StringNullableFilter<"LoanPool"> | string | null
+    custodyTransitionJson?: JsonNullableFilter<"LoanPool">
+    filterCriteriaJson?: JsonNullableFilter<"LoanPool">
+    lastPackageStorageKey?: StringNullableFilter<"LoanPool"> | string | null
+    lastPackageGeneratedAt?: DateTimeNullableFilter<"LoanPool"> | Date | string | null
+    createdByUserId?: StringNullableFilter<"LoanPool"> | string | null
+    createdAt?: DateTimeFilter<"LoanPool"> | Date | string
+    updatedAt?: DateTimeFilter<"LoanPool"> | Date | string
+  }
+
   export type MembershipCreateWithoutWorkspaceInput = {
     id?: string
     role?: $Enums.MembershipRole
@@ -63285,6 +66282,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -63303,6 +66301,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -63329,6 +66328,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -63347,6 +66347,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -63455,6 +66456,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerInput = {
@@ -63493,6 +66495,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerInput = {
@@ -63541,6 +66544,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLenderInput = {
@@ -63579,6 +66583,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLenderInput = {
@@ -63667,11 +66672,27 @@ export namespace Prisma {
     id?: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description?: string | null
     recourseStatus?: $Enums.RecourseStatus
     targetSize: number
     status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutLoanPoolsCreatedInput
     deals?: DealCreateNestedManyWithoutLoanPoolInput
   }
 
@@ -63679,9 +66700,25 @@ export namespace Prisma {
     id?: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description?: string | null
     recourseStatus?: $Enums.RecourseStatus
     targetSize: number
     status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deals?: DealUncheckedCreateNestedManyWithoutLoanPoolInput
@@ -63974,6 +67011,7 @@ export namespace Prisma {
     approvedStates?: StringNullableListFilter<"DealerLenderLink">
     allowedDealTypes?: StringNullableListFilter<"DealerLenderLink">
     lenderOverrides?: JsonFilter<"DealerLenderLink">
+    lenderRuleProfile?: JsonFilter<"DealerLenderLink">
     effectiveDate?: DateTimeNullableFilter<"DealerLenderLink"> | Date | string | null
     expirationDate?: DateTimeNullableFilter<"DealerLenderLink"> | Date | string | null
     requestedBy?: StringNullableFilter<"DealerLenderLink"> | string | null
@@ -64180,21 +67218,6 @@ export namespace Prisma {
     data: XOR<LoanPoolUpdateManyMutationInput, LoanPoolUncheckedUpdateManyWithoutLenderInput>
   }
 
-  export type LoanPoolScalarWhereInput = {
-    AND?: LoanPoolScalarWhereInput | LoanPoolScalarWhereInput[]
-    OR?: LoanPoolScalarWhereInput[]
-    NOT?: LoanPoolScalarWhereInput | LoanPoolScalarWhereInput[]
-    id?: StringFilter<"LoanPool"> | string
-    lenderId?: StringFilter<"LoanPool"> | string
-    poolName?: StringFilter<"LoanPool"> | string
-    poolType?: EnumLoanPoolTypeFilter<"LoanPool"> | $Enums.LoanPoolType
-    recourseStatus?: EnumRecourseStatusFilter<"LoanPool"> | $Enums.RecourseStatus
-    targetSize?: FloatFilter<"LoanPool"> | number
-    status?: EnumLoanPoolStatusFilter<"LoanPool"> | $Enums.LoanPoolStatus
-    createdAt?: DateTimeFilter<"LoanPool"> | Date | string
-    updatedAt?: DateTimeFilter<"LoanPool"> | Date | string
-  }
-
   export type ApiKeyUpsertWithWhereUniqueWithoutWorkspaceInput = {
     where: ApiKeyWhereUniqueInput
     update: XOR<ApiKeyUpdateWithoutWorkspaceInput, ApiKeyUncheckedUpdateWithoutWorkspaceInput>
@@ -64289,6 +67312,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -64307,6 +67331,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -64398,6 +67423,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -64416,6 +67442,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type WorkspaceUpsertWithoutMembershipsInput = {
@@ -65111,6 +68138,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerLenderLinkInput = {
@@ -65149,6 +68177,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerLenderLinkInput = {
@@ -65663,6 +68692,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -65682,6 +68712,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -65700,12 +68731,28 @@ export namespace Prisma {
     id?: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description?: string | null
     recourseStatus?: $Enums.RecourseStatus
     targetSize: number
     status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lender: WorkspaceCreateNestedOneWithoutLoanPoolsInput
+    createdBy?: UserCreateNestedOneWithoutLoanPoolsCreatedInput
   }
 
   export type LoanPoolUncheckedCreateWithoutDealsInput = {
@@ -65713,9 +68760,25 @@ export namespace Prisma {
     lenderId: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description?: string | null
     recourseStatus?: $Enums.RecourseStatus
     targetSize: number
     status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -65732,6 +68795,8 @@ export namespace Prisma {
     lastName: string
     address: string
     creditTier?: string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: string | null
   }
 
   export type DealPartyUncheckedCreateWithoutDealInput = {
@@ -65741,6 +68806,8 @@ export namespace Prisma {
     lastName: string
     address: string
     creditTier?: string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: string | null
   }
 
   export type DealPartyCreateOrConnectWithoutDealInput = {
@@ -65810,7 +68877,7 @@ export namespace Prisma {
   export type AuthoritativeContractCreateWithoutDealInput = {
     id?: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -65823,7 +68890,7 @@ export namespace Prisma {
   export type AuthoritativeContractUncheckedCreateWithoutDealInput = {
     id?: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -65847,6 +68914,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutGeneratedDocumentsInput
     amendment?: AmendmentCreateNestedOneWithoutGeneratedDocumentsInput
@@ -65865,6 +68937,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     versions?: DocumentVersionUncheckedCreateNestedManyWithoutGeneratedDocumentInput
     custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDocumentInput
@@ -65953,6 +69030,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash: string
     auditRef: string
+    immutable?: boolean
     createdAt?: Date | string
   }
 
@@ -65967,6 +69045,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash: string
     auditRef: string
+    immutable?: boolean
     createdAt?: Date | string
   }
 
@@ -66224,6 +69303,52 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DealAuditEventCreateWithoutDealInput = {
+    id?: string
+    workspaceId?: string | null
+    actorUserId?: string | null
+    actorRole?: string | null
+    authMethod?: string | null
+    action: string
+    entityType?: string | null
+    entityId?: string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    previousChainHash?: string | null
+    chainHash?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAuditEventUncheckedCreateWithoutDealInput = {
+    id?: string
+    workspaceId?: string | null
+    actorUserId?: string | null
+    actorRole?: string | null
+    authMethod?: string | null
+    action: string
+    entityType?: string | null
+    entityId?: string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    previousChainHash?: string | null
+    chainHash?: string | null
+    createdAt?: Date | string
+  }
+
+  export type DealAuditEventCreateOrConnectWithoutDealInput = {
+    where: DealAuditEventWhereUniqueInput
+    create: XOR<DealAuditEventCreateWithoutDealInput, DealAuditEventUncheckedCreateWithoutDealInput>
+  }
+
+  export type DealAuditEventCreateManyDealInputEnvelope = {
+    data: DealAuditEventCreateManyDealInput | DealAuditEventCreateManyDealInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutDealerDealsInput = {
     update: XOR<WorkspaceUpdateWithoutDealerDealsInput, WorkspaceUncheckedUpdateWithoutDealerDealsInput>
     create: XOR<WorkspaceCreateWithoutDealerDealsInput, WorkspaceUncheckedCreateWithoutDealerDealsInput>
@@ -66367,6 +69492,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66386,6 +69512,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66410,12 +69537,28 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lender?: WorkspaceUpdateOneRequiredWithoutLoanPoolsNestedInput
+    createdBy?: UserUpdateOneWithoutLoanPoolsCreatedNestedInput
   }
 
   export type LoanPoolUncheckedUpdateWithoutDealsInput = {
@@ -66423,9 +69566,25 @@ export namespace Prisma {
     lenderId?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -66457,6 +69616,8 @@ export namespace Prisma {
     lastName?: StringFilter<"DealParty"> | string
     address?: StringFilter<"DealParty"> | string
     creditTier?: StringNullableFilter<"DealParty"> | string | null
+    encryptedPii?: JsonNullableFilter<"DealParty">
+    defaultKmsKeyId?: StringNullableFilter<"DealParty"> | string | null
   }
 
   export type VehicleUpsertWithoutDealInput = {
@@ -66539,7 +69700,7 @@ export namespace Prisma {
   export type AuthoritativeContractUpdateWithoutDealInput = {
     id?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -66552,7 +69713,7 @@ export namespace Prisma {
   export type AuthoritativeContractUncheckedUpdateWithoutDealInput = {
     id?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -66593,6 +69754,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFilter<"GeneratedDocument"> | boolean
     authoritativeContractHash?: StringNullableFilter<"GeneratedDocument"> | string | null
     valuesSnapshot?: JsonFilter<"GeneratedDocument">
+    storageKey?: StringNullableFilter<"GeneratedDocument"> | string | null
+    storageProvider?: StringFilter<"GeneratedDocument"> | string
+    integritySha256?: StringNullableFilter<"GeneratedDocument"> | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFilter<"GeneratedDocument"> | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFilter<"GeneratedDocument"> | $Enums.DocumentProvenance
     createdAt?: DateTimeFilter<"GeneratedDocument"> | Date | string
   }
 
@@ -66679,6 +69845,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash?: StringFieldUpdateOperationsInput | string
     auditRef?: StringFieldUpdateOperationsInput | string
+    immutable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -66693,6 +69860,7 @@ export namespace Prisma {
     documentList?: JsonNullValueInput | InputJsonValue
     contractHash?: StringFieldUpdateOperationsInput | string
     auditRef?: StringFieldUpdateOperationsInput | string
+    immutable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -66860,6 +70028,44 @@ export namespace Prisma {
     data: XOR<DealCommentUpdateManyMutationInput, DealCommentUncheckedUpdateManyWithoutDealInput>
   }
 
+  export type DealAuditEventUpsertWithWhereUniqueWithoutDealInput = {
+    where: DealAuditEventWhereUniqueInput
+    update: XOR<DealAuditEventUpdateWithoutDealInput, DealAuditEventUncheckedUpdateWithoutDealInput>
+    create: XOR<DealAuditEventCreateWithoutDealInput, DealAuditEventUncheckedCreateWithoutDealInput>
+  }
+
+  export type DealAuditEventUpdateWithWhereUniqueWithoutDealInput = {
+    where: DealAuditEventWhereUniqueInput
+    data: XOR<DealAuditEventUpdateWithoutDealInput, DealAuditEventUncheckedUpdateWithoutDealInput>
+  }
+
+  export type DealAuditEventUpdateManyWithWhereWithoutDealInput = {
+    where: DealAuditEventScalarWhereInput
+    data: XOR<DealAuditEventUpdateManyMutationInput, DealAuditEventUncheckedUpdateManyWithoutDealInput>
+  }
+
+  export type DealAuditEventScalarWhereInput = {
+    AND?: DealAuditEventScalarWhereInput | DealAuditEventScalarWhereInput[]
+    OR?: DealAuditEventScalarWhereInput[]
+    NOT?: DealAuditEventScalarWhereInput | DealAuditEventScalarWhereInput[]
+    id?: StringFilter<"DealAuditEvent"> | string
+    dealId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    workspaceId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    actorUserId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    actorRole?: StringNullableFilter<"DealAuditEvent"> | string | null
+    authMethod?: StringNullableFilter<"DealAuditEvent"> | string | null
+    action?: StringFilter<"DealAuditEvent"> | string
+    entityType?: StringNullableFilter<"DealAuditEvent"> | string | null
+    entityId?: StringNullableFilter<"DealAuditEvent"> | string | null
+    deltaBefore?: JsonNullableFilter<"DealAuditEvent">
+    deltaAfter?: JsonNullableFilter<"DealAuditEvent">
+    payloadJson?: JsonFilter<"DealAuditEvent">
+    ipAddress?: StringNullableFilter<"DealAuditEvent"> | string | null
+    previousChainHash?: StringNullableFilter<"DealAuditEvent"> | string | null
+    chainHash?: StringNullableFilter<"DealAuditEvent"> | string | null
+    createdAt?: DateTimeFilter<"DealAuditEvent"> | Date | string
+  }
+
   export type DealCreateWithoutPartiesInput = {
     id?: string
     status?: $Enums.DealStatus
@@ -66896,6 +70102,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPartiesInput = {
@@ -66934,6 +70141,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPartiesInput = {
@@ -66988,6 +70196,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPartiesInput = {
@@ -67026,6 +70235,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutVehicleInput = {
@@ -67064,6 +70274,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutVehicleInput = {
@@ -67102,6 +70313,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutVehicleInput = {
@@ -67156,6 +70368,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutVehicleInput = {
@@ -67194,6 +70407,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutFinancialsInput = {
@@ -67232,6 +70446,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutFinancialsInput = {
@@ -67270,6 +70485,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutFinancialsInput = {
@@ -67324,6 +70540,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutFinancialsInput = {
@@ -67362,6 +70579,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutAuthoritativeContractInput = {
@@ -67400,6 +70618,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAuthoritativeContractInput = {
@@ -67438,6 +70657,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAuthoritativeContractInput = {
@@ -67454,6 +70674,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     deal: DealCreateNestedOneWithoutGeneratedDocumentsInput
     amendment?: AmendmentCreateNestedOneWithoutGeneratedDocumentsInput
@@ -67472,6 +70697,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     versions?: DocumentVersionUncheckedCreateNestedManyWithoutGeneratedDocumentInput
     custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDocumentInput
@@ -67572,6 +70802,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAuthoritativeContractInput = {
@@ -67610,6 +70841,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithWhereUniqueWithoutAuthoritativeContractInput = {
@@ -67680,6 +70912,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutContractTransactionEventsInput = {
@@ -67718,6 +70951,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutContractTransactionEventsInput = {
@@ -67799,6 +71033,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutContractTransactionEventsInput = {
@@ -67837,6 +71072,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithoutLinkedContractEventsInput = {
@@ -67929,6 +71165,49 @@ export namespace Prisma {
     create: XOR<WorkspaceCreateWithoutLoanPoolsInput, WorkspaceUncheckedCreateWithoutLoanPoolsInput>
   }
 
+  export type UserCreateWithoutLoanPoolsCreatedInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    memberships?: MembershipCreateNestedManyWithoutUserInput
+    requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
+    approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+  }
+
+  export type UserUncheckedCreateWithoutLoanPoolsCreatedInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    requestedAmendments?: AmendmentUncheckedCreateNestedManyWithoutRequestingUserInput
+    approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+  }
+
+  export type UserCreateOrConnectWithoutLoanPoolsCreatedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLoanPoolsCreatedInput, UserUncheckedCreateWithoutLoanPoolsCreatedInput>
+  }
+
   export type DealCreateWithoutLoanPoolInput = {
     id?: string
     status?: $Enums.DealStatus
@@ -67965,6 +71244,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLoanPoolInput = {
@@ -68003,6 +71283,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLoanPoolInput = {
@@ -68078,6 +71359,55 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
+  export type UserUpsertWithoutLoanPoolsCreatedInput = {
+    update: XOR<UserUpdateWithoutLoanPoolsCreatedInput, UserUncheckedUpdateWithoutLoanPoolsCreatedInput>
+    create: XOR<UserCreateWithoutLoanPoolsCreatedInput, UserUncheckedCreateWithoutLoanPoolsCreatedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLoanPoolsCreatedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLoanPoolsCreatedInput, UserUncheckedUpdateWithoutLoanPoolsCreatedInput>
+  }
+
+  export type UserUpdateWithoutLoanPoolsCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
+    approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLoanPoolsCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    requestedAmendments?: AmendmentUncheckedUpdateManyWithoutRequestingUserNestedInput
+    approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+  }
+
   export type DealUpsertWithWhereUniqueWithoutLoanPoolInput = {
     where: DealWhereUniqueInput
     update: XOR<DealUpdateWithoutLoanPoolInput, DealUncheckedUpdateWithoutLoanPoolInput>
@@ -68130,6 +71460,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNegotiableInstrumentInput = {
@@ -68168,6 +71499,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNegotiableInstrumentInput = {
@@ -68254,6 +71586,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNegotiableInstrumentInput = {
@@ -68292,6 +71625,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithWhereUniqueWithoutInstrumentInput = {
@@ -68346,6 +71680,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutInstrumentTransferEventsInput = {
@@ -68384,6 +71719,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutInstrumentTransferEventsInput = {
@@ -68503,6 +71839,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutInstrumentTransferEventsInput = {
@@ -68541,6 +71878,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type NegotiableInstrumentUpsertWithoutTransferEventsInput = {
@@ -68634,6 +71972,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutGeneratedDocumentsInput = {
@@ -68672,6 +72011,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutGeneratedDocumentsInput = {
@@ -68682,7 +72022,7 @@ export namespace Prisma {
   export type AuthoritativeContractCreateWithoutGeneratedDocumentsInput = {
     id?: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -68696,7 +72036,7 @@ export namespace Prisma {
     id?: string
     dealId: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -68844,6 +72184,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutGeneratedDocumentsInput = {
@@ -68882,6 +72223,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutGeneratedDocumentsInput = {
@@ -68898,7 +72240,7 @@ export namespace Prisma {
   export type AuthoritativeContractUpdateWithoutGeneratedDocumentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -68912,7 +72254,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dealId?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -69076,6 +72418,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -69094,6 +72437,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -69137,6 +72481,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNotificationsInput = {
@@ -69175,6 +72520,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNotificationsInput = {
@@ -69272,6 +72618,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -69290,6 +72637,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type DealUpsertWithoutNotificationsInput = {
@@ -69339,6 +72687,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNotificationsInput = {
@@ -69377,6 +72726,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceCreateWithoutApiKeysInput = {
@@ -69761,6 +73111,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutAccessAuditsInput = {
@@ -69779,6 +73130,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutAccessAuditsInput = {
@@ -69870,6 +73222,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccessAuditsInput = {
@@ -69888,6 +73241,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type WorkspaceUpsertWithoutAccessAuditsInput = {
@@ -69989,6 +73343,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCommentsInput = {
@@ -70027,6 +73382,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCommentsInput = {
@@ -70050,6 +73406,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutDealCommentsAuthoredInput = {
@@ -70068,6 +73425,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutDealCommentsAuthoredInput = {
@@ -70170,6 +73528,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutDealCommentsResolvedInput = {
@@ -70188,6 +73547,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutDealCommentsResolvedInput = {
@@ -70242,6 +73602,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCommentsInput = {
@@ -70280,6 +73641,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserUpsertWithoutDealCommentsAuthoredInput = {
@@ -70309,6 +73671,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDealCommentsAuthoredInput = {
@@ -70327,6 +73690,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type DealCommentUpsertWithoutRepliesInput = {
@@ -70415,6 +73779,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDealCommentsResolvedInput = {
@@ -70433,6 +73798,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type DealCreateWithoutAlertsInput = {
@@ -70471,6 +73837,7 @@ export namespace Prisma {
     amendments?: AmendmentCreateNestedManyWithoutDealInput
     notifications?: NotificationCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAlertsInput = {
@@ -70509,6 +73876,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAlertsInput = {
@@ -70650,6 +74018,7 @@ export namespace Prisma {
     amendments?: AmendmentUpdateManyWithoutDealNestedInput
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAlertsInput = {
@@ -70688,6 +74057,7 @@ export namespace Prisma {
     amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceUpsertWithoutDealAlertsInput = {
@@ -70895,6 +74265,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAmendmentsInput = {
@@ -70933,6 +74304,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAmendmentsInput = {
@@ -70943,7 +74315,7 @@ export namespace Prisma {
   export type AuthoritativeContractCreateWithoutParentAmendmentsInput = {
     id?: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -70957,7 +74329,7 @@ export namespace Prisma {
     id?: string
     dealId: string
     version?: number
-    contentHash: string
+    authoritativeContractHash: string
     governingLaw: string
     signatureStatus: string
     isTransferableRecord?: boolean
@@ -70987,6 +74359,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutRequestedAmendmentsInput = {
@@ -71005,6 +74378,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutRequestedAmendmentsInput = {
@@ -71028,6 +74402,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutApprovedAmendmentsInput = {
@@ -71046,6 +74421,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutApprovedAmendmentsInput = {
@@ -71062,6 +74438,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     deal: DealCreateNestedOneWithoutGeneratedDocumentsInput
     authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutGeneratedDocumentsInput
@@ -71080,6 +74461,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     versions?: DocumentVersionUncheckedCreateNestedManyWithoutGeneratedDocumentInput
     custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDocumentInput
@@ -71142,6 +74528,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAmendmentsInput = {
@@ -71180,6 +74567,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutParentAmendmentsInput = {
@@ -71196,7 +74584,7 @@ export namespace Prisma {
   export type AuthoritativeContractUpdateWithoutParentAmendmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -71210,7 +74598,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dealId?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
-    contentHash?: StringFieldUpdateOperationsInput | string
+    authoritativeContractHash?: StringFieldUpdateOperationsInput | string
     governingLaw?: StringFieldUpdateOperationsInput | string
     signatureStatus?: StringFieldUpdateOperationsInput | string
     isTransferableRecord?: BoolFieldUpdateOperationsInput | boolean
@@ -71246,6 +74634,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRequestedAmendmentsInput = {
@@ -71264,6 +74653,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUpsertWithoutApprovedAmendmentsInput = {
@@ -71293,6 +74683,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApprovedAmendmentsInput = {
@@ -71311,6 +74702,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type GeneratedDocumentUpsertWithWhereUniqueWithoutAmendmentInput = {
@@ -71365,6 +74757,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCustodyEventsInput = {
@@ -71403,6 +74796,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCustodyEventsInput = {
@@ -71419,6 +74813,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     deal: DealCreateNestedOneWithoutGeneratedDocumentsInput
     authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutGeneratedDocumentsInput
@@ -71438,6 +74837,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     versions?: DocumentVersionUncheckedCreateNestedManyWithoutGeneratedDocumentInput
   }
@@ -71494,6 +74898,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCustodyEventsInput = {
@@ -71532,6 +74937,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithoutCustodyEventsInput = {
@@ -71554,6 +74960,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deal?: DealUpdateOneRequiredWithoutGeneratedDocumentsNestedInput
     authoritativeContract?: AuthoritativeContractUpdateOneWithoutGeneratedDocumentsNestedInput
@@ -71573,6 +74984,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: DocumentVersionUncheckedUpdateManyWithoutGeneratedDocumentNestedInput
   }
@@ -71586,6 +75002,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     deal: DealCreateNestedOneWithoutGeneratedDocumentsInput
     authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutGeneratedDocumentsInput
@@ -71605,6 +75026,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
     custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDocumentInput
   }
@@ -71634,6 +75060,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deal?: DealUpdateOneRequiredWithoutGeneratedDocumentsNestedInput
     authoritativeContract?: AuthoritativeContractUpdateOneWithoutGeneratedDocumentsNestedInput
@@ -71653,6 +75084,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDocumentNestedInput
   }
@@ -71693,6 +75129,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutComplianceChecksInput = {
@@ -71731,6 +75168,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutComplianceChecksInput = {
@@ -71785,6 +75223,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutComplianceChecksInput = {
@@ -71823,6 +75262,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutPrefundingValidationCertificateInput = {
@@ -71861,6 +75301,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPrefundingValidationCertificateInput = {
@@ -71899,6 +75340,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPrefundingValidationCertificateInput = {
@@ -71953,6 +75395,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPrefundingValidationCertificateInput = {
@@ -71991,6 +75434,179 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+  }
+
+  export type DealCreateWithoutAuditEventsInput = {
+    id?: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dealer: WorkspaceCreateNestedOneWithoutDealerDealsInput
+    lender: WorkspaceCreateNestedOneWithoutLenderDealsInput
+    dealerLenderLink: DealerLenderLinkCreateNestedOneWithoutDealsInput
+    loanPool?: LoanPoolCreateNestedOneWithoutDealsInput
+    parties?: DealPartyCreateNestedManyWithoutDealInput
+    vehicle?: VehicleCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
+    amendments?: AmendmentCreateNestedManyWithoutDealInput
+    notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
+  }
+
+  export type DealUncheckedCreateWithoutAuditEventsInput = {
+    id?: string
+    dealerId: string
+    lenderId: string
+    dealerLenderLinkId: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: string | null
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parties?: DealPartyUncheckedCreateNestedManyWithoutDealInput
+    vehicle?: VehicleUncheckedCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsUncheckedCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractUncheckedCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentUncheckedCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckUncheckedCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
+    amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+  }
+
+  export type DealCreateOrConnectWithoutAuditEventsInput = {
+    where: DealWhereUniqueInput
+    create: XOR<DealCreateWithoutAuditEventsInput, DealUncheckedCreateWithoutAuditEventsInput>
+  }
+
+  export type DealUpsertWithoutAuditEventsInput = {
+    update: XOR<DealUpdateWithoutAuditEventsInput, DealUncheckedUpdateWithoutAuditEventsInput>
+    create: XOR<DealCreateWithoutAuditEventsInput, DealUncheckedCreateWithoutAuditEventsInput>
+    where?: DealWhereInput
+  }
+
+  export type DealUpdateToOneWithWhereWithoutAuditEventsInput = {
+    where?: DealWhereInput
+    data: XOR<DealUpdateWithoutAuditEventsInput, DealUncheckedUpdateWithoutAuditEventsInput>
+  }
+
+  export type DealUpdateWithoutAuditEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerDealsNestedInput
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderDealsNestedInput
+    dealerLenderLink?: DealerLenderLinkUpdateOneRequiredWithoutDealsNestedInput
+    loanPool?: LoanPoolUpdateOneWithoutDealsNestedInput
+    parties?: DealPartyUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
+  }
+
+  export type DealUncheckedUpdateWithoutAuditEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parties?: DealPartyUncheckedUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUncheckedUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUncheckedUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUncheckedUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUncheckedUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUncheckedUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -72009,6 +75625,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -72027,6 +75644,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -72061,6 +75679,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -72079,6 +75698,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -72097,6 +75717,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -72115,6 +75736,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
     dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
     dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -72149,6 +75771,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -72167,6 +75790,7 @@ export namespace Prisma {
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
     dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
     dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -72272,6 +75896,33 @@ export namespace Prisma {
     isException?: boolean
     isResolved?: boolean
     resolvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LoanPoolCreateManyCreatedByInput = {
+    id?: string
+    lenderId: string
+    poolName: string
+    poolType: $Enums.LoanPoolType
+    description?: string | null
+    recourseStatus?: $Enums.RecourseStatus
+    targetSize: number
+    status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -72605,6 +76256,89 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LoanPoolUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
+    targetSize?: FloatFieldUpdateOperationsInput | number
+    status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLoanPoolsNestedInput
+    deals?: DealUpdateManyWithoutLoanPoolNestedInput
+  }
+
+  export type LoanPoolUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
+    targetSize?: FloatFieldUpdateOperationsInput | number
+    status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deals?: DealUncheckedUpdateManyWithoutLoanPoolNestedInput
+  }
+
+  export type LoanPoolUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
+    targetSize?: FloatFieldUpdateOperationsInput | number
+    status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MembershipCreateManyWorkspaceInput = {
     id?: string
     userId: string
@@ -72640,6 +76374,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -72656,6 +76391,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkCreateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkCreateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: Date | string | null
     expirationDate?: Date | string | null
     requestedBy?: string | null
@@ -72756,9 +76492,25 @@ export namespace Prisma {
     id?: string
     poolName: string
     poolType: $Enums.LoanPoolType
+    description?: string | null
     recourseStatus?: $Enums.RecourseStatus
     targetSize: number
     status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -72887,6 +76639,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72905,6 +76658,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72922,6 +76676,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72937,6 +76692,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72955,6 +76711,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72972,6 +76729,7 @@ export namespace Prisma {
     approvedStates?: DealerLenderLinkUpdateapprovedStatesInput | string[]
     allowedDealTypes?: DealerLenderLinkUpdateallowedDealTypesInput | string[]
     lenderOverrides?: JsonNullValueInput | InputJsonValue
+    lenderRuleProfile?: JsonNullValueInput | InputJsonValue
     effectiveDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     expirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     requestedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73065,6 +76823,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerInput = {
@@ -73103,6 +76862,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerInput = {
@@ -73164,6 +76924,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLenderInput = {
@@ -73202,6 +76963,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLenderInput = {
@@ -73308,11 +77070,27 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutLoanPoolsCreatedNestedInput
     deals?: DealUpdateManyWithoutLoanPoolNestedInput
   }
 
@@ -73320,9 +77098,25 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deals?: DealUncheckedUpdateManyWithoutLoanPoolNestedInput
@@ -73332,9 +77126,25 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     poolName?: StringFieldUpdateOperationsInput | string
     poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
     targetSize?: FloatFieldUpdateOperationsInput | number
     status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -73502,6 +77312,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerLenderLinkInput = {
@@ -73540,6 +77351,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerLenderLinkInput = {
@@ -73572,6 +77384,8 @@ export namespace Prisma {
     lastName: string
     address: string
     creditTier?: string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: string | null
   }
 
   export type GeneratedDocumentCreateManyDealInput = {
@@ -73585,6 +77399,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
   }
 
@@ -73683,6 +77502,24 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type DealAuditEventCreateManyDealInput = {
+    id?: string
+    workspaceId?: string | null
+    actorUserId?: string | null
+    actorRole?: string | null
+    authMethod?: string | null
+    action: string
+    entityType?: string | null
+    entityId?: string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    previousChainHash?: string | null
+    chainHash?: string | null
+    createdAt?: Date | string
+  }
+
   export type DealPartyUpdateWithoutDealInput = {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumDealPartyRoleFieldUpdateOperationsInput | $Enums.DealPartyRole
@@ -73690,6 +77527,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     creditTier?: NullableStringFieldUpdateOperationsInput | string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DealPartyUncheckedUpdateWithoutDealInput = {
@@ -73699,6 +77538,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     creditTier?: NullableStringFieldUpdateOperationsInput | string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DealPartyUncheckedUpdateManyWithoutDealInput = {
@@ -73708,6 +77549,8 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     creditTier?: NullableStringFieldUpdateOperationsInput | string | null
+    encryptedPii?: NullableJsonNullValueInput | InputJsonValue
+    defaultKmsKeyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type GeneratedDocumentUpdateWithoutDealInput = {
@@ -73719,6 +77562,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authoritativeContract?: AuthoritativeContractUpdateOneWithoutGeneratedDocumentsNestedInput
     amendment?: AmendmentUpdateOneWithoutGeneratedDocumentsNestedInput
@@ -73737,6 +77585,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: DocumentVersionUncheckedUpdateManyWithoutGeneratedDocumentNestedInput
     custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDocumentNestedInput
@@ -73753,6 +77606,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -74049,6 +77907,60 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DealAuditEventUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    entityType?: NullableStringFieldUpdateOperationsInput | string | null
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    previousChainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    chainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAuditEventUncheckedUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    entityType?: NullableStringFieldUpdateOperationsInput | string | null
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    previousChainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    chainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DealAuditEventUncheckedUpdateManyWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorRole?: NullableStringFieldUpdateOperationsInput | string | null
+    authMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    entityType?: NullableStringFieldUpdateOperationsInput | string | null
+    entityId?: NullableStringFieldUpdateOperationsInput | string | null
+    deltaBefore?: NullableJsonNullValueInput | InputJsonValue
+    deltaAfter?: NullableJsonNullValueInput | InputJsonValue
+    payloadJson?: JsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    previousChainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    chainHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GeneratedDocumentCreateManyAuthoritativeContractInput = {
     id?: string
     dealId: string
@@ -74060,6 +77972,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
   }
 
@@ -74085,6 +78002,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deal?: DealUpdateOneRequiredWithoutGeneratedDocumentsNestedInput
     amendment?: AmendmentUpdateOneWithoutGeneratedDocumentsNestedInput
@@ -74103,6 +78025,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: DocumentVersionUncheckedUpdateManyWithoutGeneratedDocumentNestedInput
     custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDocumentNestedInput
@@ -74119,6 +78046,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -74222,6 +78154,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLoanPoolInput = {
@@ -74260,6 +78193,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLoanPoolInput = {
@@ -74600,6 +78534,11 @@ export namespace Prisma {
     isAuthoritative?: boolean
     authoritativeContractHash?: string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: string | null
+    storageProvider?: string
+    integritySha256?: string | null
+    lifecycleStage?: $Enums.DocumentLifecycleStage
+    provenance?: $Enums.DocumentProvenance
     createdAt?: Date | string
   }
 
@@ -74612,6 +78551,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deal?: DealUpdateOneRequiredWithoutGeneratedDocumentsNestedInput
     authoritativeContract?: AuthoritativeContractUpdateOneWithoutGeneratedDocumentsNestedInput
@@ -74630,6 +78574,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: DocumentVersionUncheckedUpdateManyWithoutGeneratedDocumentNestedInput
     custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDocumentNestedInput
@@ -74646,6 +78595,11 @@ export namespace Prisma {
     isAuthoritative?: BoolFieldUpdateOperationsInput | boolean
     authoritativeContractHash?: NullableStringFieldUpdateOperationsInput | string | null
     valuesSnapshot?: JsonNullValueInput | InputJsonValue
+    storageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    storageProvider?: StringFieldUpdateOperationsInput | string
+    integritySha256?: NullableStringFieldUpdateOperationsInput | string | null
+    lifecycleStage?: EnumDocumentLifecycleStageFieldUpdateOperationsInput | $Enums.DocumentLifecycleStage
+    provenance?: EnumDocumentProvenanceFieldUpdateOperationsInput | $Enums.DocumentProvenance
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
