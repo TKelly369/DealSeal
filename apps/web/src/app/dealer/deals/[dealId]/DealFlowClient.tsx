@@ -11,7 +11,11 @@ import {
   retryAutopublishFormAction,
   submitUnsignedRISCAction,
   generateAiDealJacketDocsFormAction,
+  generateFinalOfficialPackageFormAction,
+  resubmitAfterCounterFormAction,
+  signDisclosureOnlineFormAction,
   uploadGreenStageDocAction,
+  uploadExecutedFinalPackageFormAction,
   uploadSignedRISCAction,
 } from "./actions";
 
@@ -71,12 +75,12 @@ export type DealFlowSnapshot = {
 };
 
 const STEPS = [
-  "Deal details",
-  "Gather unsigned deal jacket docs",
-  "Review lender-final contract",
-  "Upload signed contract",
-  "AI aligns full package",
-  "Download closing package",
+  "Disclosure gate",
+  "Mock-up package & lender review",
+  "Lender final OK",
+  "Generate final coordinated package",
+  "Upload live-signed final package",
+  "Funding approval",
 ] as const;
 
 function SubmitLabel({ idle }: { idle: string }) {
@@ -92,12 +96,27 @@ function hashSeal(hash: string | null | undefined) {
 function activeStepIndex(status: string): number {
   switch (status) {
     case "DISCLOSURE_REQUIRED":
+    case "DISCLOSURE_PENDING":
       return 0;
+    case "DISCLOSURE_SIGNED":
+    case "MOCKUP_SUBMITTED":
+    case "LENDER_REVIEW":
+    case "LENDER_COUNTER":
+    case "BUYER_REAUTH_PENDING":
     case "AUTHORIZED_FOR_STRUCTURING":
     case "GREEN_STAGE":
       return 1;
+    case "LENDER_FINAL_APPROVAL":
+      return 2;
     case "RISC_UNSIGNED_REVIEW":
       return 2;
+    case "FINAL_PACKAGE_GENERATED":
+    case "AWAITING_LIVE_SIGNATURES":
+      return 3;
+    case "AWAITING_FUNDING_UPLOAD":
+      return 4;
+    case "FUNDED":
+      return 5;
     case "RISC_LENDER_FINAL":
       return 3;
     case "FIRST_GREEN_PASSED":
@@ -223,6 +242,52 @@ export function DealFlowClient({
         </section>
       ) : null}
 
+      {deal.status === "LENDER_COUNTER" || deal.status === "BUYER_REAUTH_PENDING" ? (
+        <section className="card" style={{ borderColor: "#ca8a04" }}>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Counter / adjustment phase</h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>
+            Lender requested changes. Update back-end numbers, capture buyer re-authorization, and re-submit for final OK.
+          </p>
+          <form action={resubmitAfterCounterFormAction} style={{ display: "grid", gap: "0.5rem", marginTop: "0.5rem" }}>
+            <input type="hidden" name="dealId" value={deal.dealId} />
+            <label style={{ fontSize: "0.85rem" }}>
+              Fees (optional override)
+              <input
+                name="fees"
+                type="number"
+                step="0.01"
+                style={{ marginTop: "0.25rem", width: "100%", padding: "0.5rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+              />
+            </label>
+            <label style={{ fontSize: "0.85rem" }}>
+              Add-ons / GAP (optional override)
+              <input
+                name="gap"
+                type="number"
+                step="0.01"
+                style={{ marginTop: "0.25rem", width: "100%", padding: "0.5rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+              />
+            </label>
+            <label style={{ fontSize: "0.85rem" }}>
+              Warranty add-on (optional override)
+              <input
+                name="warranty"
+                type="number"
+                step="0.01"
+                style={{ marginTop: "0.25rem", width: "100%", padding: "0.5rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+              />
+            </label>
+            <label style={{ display: "flex", gap: "0.5rem", alignItems: "center", fontSize: "0.88rem", color: "var(--text-secondary)" }}>
+              <input type="checkbox" name="buyerReauthConfirmed" required />
+              Buyer re-authorization received for revised terms
+            </label>
+            <button type="submit" className="btn">
+              <SubmitLabel idle="Resubmit to lender for final OK" />
+            </button>
+          </form>
+        </section>
+      ) : null}
+
       {deal.alerts.length > 0 ? (
         <section className="card" style={{ borderColor: openAlerts.length > 0 ? "#b45309" : "#14532d" }}>
           <h2 style={{ marginTop: 0, fontSize: "1rem" }}>AI math & legal alerts</h2>
@@ -286,9 +351,9 @@ export function DealFlowClient({
       ) : null}
 
       {/* Step 1 */}
-      {deal.status === "DISCLOSURE_REQUIRED" ? (
+      {deal.status === "DISCLOSURE_REQUIRED" || deal.status === "DISCLOSURE_PENDING" ? (
         <section className="card">
-          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 1 · Enter deal details</h2>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 1 · Disclosure gate</h2>
           <p style={{ color: "var(--text-secondary)", lineHeight: 1.6, fontSize: "0.92rem" }}>
             Here is what we have on file. If anything is wrong, fix it with your team before you continue.
           </p>
@@ -304,7 +369,16 @@ export function DealFlowClient({
             </li>
           </ul>
           <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
-            Upload the signed DealSeal Initial Disclosure to unlock structuring, compliance, and lender submission workflows.
+            Deal cannot proceed to lender review until this initial disclosure is signed.
+          </p>
+          <form action={signDisclosureOnlineFormAction} style={{ marginBottom: "0.75rem" }}>
+            <input type="hidden" name="dealId" value={deal.dealId} />
+            <button type="submit" className="btn">
+              <SubmitLabel idle="Sign online (mock e-sign)" />
+            </button>
+          </form>
+          <p style={{ margin: "0.3rem 0 0.6rem", color: "var(--muted)", fontSize: "0.85rem" }}>
+            Or print, sign, and upload the signed disclosure scan:
           </p>
           <form action={acknowledgeDisclosureFormAction}>
             <input type="hidden" name="dealId" value={deal.dealId} />
@@ -357,9 +431,13 @@ export function DealFlowClient({
       )}
 
       {/* Step 2 */}
-      {deal.status === "AUTHORIZED_FOR_STRUCTURING" || deal.status === "GREEN_STAGE" ? (
+      {deal.status === "DISCLOSURE_SIGNED" ||
+      deal.status === "AUTHORIZED_FOR_STRUCTURING" ||
+      deal.status === "GREEN_STAGE" ||
+      deal.status === "LENDER_COUNTER" ||
+      deal.status === "BUYER_REAUTH_PENDING" ? (
         <section className="card">
-          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 2 · Gather unsigned deal jacket docs</h2>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Step 2 · Build mock-up package</h2>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
             Add insurance and stips. These are collection docs only and can hold estimated pricing before final contract signature.
           </p>
@@ -411,15 +489,15 @@ export function DealFlowClient({
             </button>
           </form>
           <hr style={{ borderColor: "#333", margin: "1.25rem 0" }} />
-          <p style={{ fontWeight: 600, fontSize: "0.95rem" }}>Send to lender for approval</p>
+          <p style={{ fontWeight: 600, fontSize: "0.95rem" }}>Submit mock-up to lender</p>
           <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>
-            Upload your unsigned retail contract. The lender returns the final contract, then AI reconciles all supporting docs to match before signing.
+            MOCK-UP - FOR REVIEW ONLY - NOT FOR SIGNATURE. If lender counters, you will adjust and re-submit.
           </p>
           <form action={submitUnsignedRISCAction} style={{ display: "grid", gap: "0.5rem", marginTop: "0.5rem" }}>
             <input type="hidden" name="dealId" value={deal.dealId} />
             <input type="file" name="file" required />
             <button type="submit" className="btn">
-              <SubmitLabel idle="Send to lender" />
+              <SubmitLabel idle="Submit mock-up to lender" />
             </button>
           </form>
         </section>
@@ -431,6 +509,43 @@ export function DealFlowClient({
           <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem" }}>
             Your contract is being reviewed. You will get the printable version here as soon as your lender posts it—check back shortly.
           </p>
+        </section>
+      ) : null}
+
+      {deal.status === "LENDER_FINAL_APPROVAL" ? (
+        <section className="card" style={{ borderColor: "#15803d" }}>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Generate final official package</h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>
+            Lender gave final OK. Generate the official coordinated package (authoritative contract + RISC + matching disclosures).
+          </p>
+          <form action={generateFinalOfficialPackageFormAction}>
+            <input type="hidden" name="dealId" value={deal.dealId} />
+            <button type="submit" className="btn">
+              <SubmitLabel idle="Generate final official package" />
+            </button>
+          </form>
+        </section>
+      ) : null}
+
+      {deal.status === "AWAITING_LIVE_SIGNATURES" || deal.status === "AWAITING_FUNDING_UPLOAD" || deal.status === "FUNDED" ? (
+        <section className="card" style={{ borderColor: "#15803d" }}>
+          <h2 style={{ marginTop: 0, fontSize: "1.05rem" }}>Live signatures & funding upload</h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>
+            Print final package, obtain wet-ink/e-sign execution, then upload fully executed scan for lender funding green light.
+          </p>
+          {deal.status !== "FUNDED" ? (
+            <form action={uploadExecutedFinalPackageFormAction} style={{ display: "grid", gap: "0.5rem", marginTop: "0.5rem" }}>
+              <input type="hidden" name="dealId" value={deal.dealId} />
+              <input type="file" name="file" required />
+              <button type="submit" className="btn">
+                <SubmitLabel idle="Upload fully executed final package" />
+              </button>
+            </form>
+          ) : (
+            <p style={{ color: "var(--verified)", marginTop: "0.5rem", fontSize: "0.9rem" }}>
+              Deal funded. Final package accepted by lender.
+            </p>
+          )}
         </section>
       ) : null}
 

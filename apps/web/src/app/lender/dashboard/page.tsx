@@ -14,6 +14,7 @@ import {
   type LenderDashboardDealRow,
 } from "@/lib/lender-dashboard-metrics";
 import type { CalendarEventKind } from "@/generated/prisma";
+import { LenderOpsService } from "@/lib/services/lender-ops.service";
 
 function MiniTable({
   rows,
@@ -77,6 +78,9 @@ export default async function LenderDashboardPage() {
     deal: { dealer: { name: string } };
   }[] = [];
   let partnerHighlights: Awaited<ReturnType<typeof getLenderPreferredDealersInTopStates>> | null = null;
+  let commandCenter = await LenderOpsService.getCommandCenterCounts(lenderId);
+  let lenderTasks = await LenderOpsService.listTasks(lenderId);
+  let opsAlerts = await LenderOpsService.listAlerts(lenderId);
 
   try {
     const now = new Date();
@@ -199,6 +203,7 @@ export default async function LenderDashboardPage() {
       INTERNAL_NOTE: "Internal note",
       ALERT_REMINDER: "Alert reminder",
     })[k] ?? k;
+  const unresolvedOpsAlerts = opsAlerts.filter((a) => String((a as { status?: string }).status ?? "").toUpperCase() !== "RESOLVED");
 
   return (
     <div className="ds-section-shell">
@@ -246,6 +251,25 @@ export default async function LenderDashboardPage() {
             </p>
             <h2 style={{ margin: "0.25rem 0 0" }}>{ryg.green}</h2>
           </div>
+        </div>
+      </section>
+
+      <section style={{ marginTop: "1.25rem" }} aria-label="Daily work command center">
+        <h2 className="ds-card-title" style={{ margin: "0 0 0.75rem" }}>
+          Daily work command center
+        </h2>
+        <div
+          className="ds-dashboard-bottom-grid"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(165px, 1fr))", marginTop: "0.75rem" }}
+        >
+          <div className="card"><p className="ds-card-title">New dealer submissions</p><h2>{commandCenter.newDealerSubmissions}</h2></div>
+          <div className="card"><p className="ds-card-title">Pending review</p><h2>{commandCenter.dealsPendingReview}</h2></div>
+          <div className="card"><p className="ds-card-title">Ready for funding</p><h2>{commandCenter.dealsReadyForFunding}</h2></div>
+          <div className="card"><p className="ds-card-title">Missing dealer items</p><h2>{commandCenter.missingDealerItems}</h2></div>
+          <div className="card"><p className="ds-card-title">Post-funding follow-up</p><h2>{commandCenter.postFundingFollowUps}</h2></div>
+          <div className="card"><p className="ds-card-title">Enforcement warnings</p><h2>{commandCenter.enforcementWarnings}</h2></div>
+          <div className="card"><p className="ds-card-title">Pooling ready</p><h2>{commandCenter.poolingReadyDeals}</h2></div>
+          <div className="card"><p className="ds-card-title">Secondary market alerts</p><h2>{commandCenter.secondaryMarketAlerts}</h2></div>
         </div>
       </section>
 
@@ -345,6 +369,7 @@ export default async function LenderDashboardPage() {
                       <span style={{ fontSize: "0.85rem" }}>
                         <span style={{ fontWeight: 800 }}>{d.grade}</span>{" "}
                         <span style={{ color: "var(--muted)" }}>({d.overallScore})</span>
+                        <span style={{ color: "var(--muted)", marginLeft: "0.35rem" }}>· 2nd green {d.secondGreenScore}</span>
                         <span style={{ color: "var(--muted)", marginLeft: "0.35rem" }}>· {d.dealCount} deals</span>
                       </span>
                     </li>
@@ -366,6 +391,50 @@ export default async function LenderDashboardPage() {
           gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))",
         }}
       >
+        <div className="card">
+          <h2 className="ds-card-title" style={{ marginTop: 0 }}>Task widgets</h2>
+          <ul style={{ margin: 0, paddingLeft: "1rem", lineHeight: 1.8 }}>
+            <li><Link href="/lender/deal-intake">Review New Deals</Link></li>
+            <li><Link href="/lender/funding">Funding Conditions</Link></li>
+            <li><Link href="/lender/tasks">Missing Dealer Items</Link></li>
+            <li><Link href="/lender/post-funding">Post-Funding Follow-Up</Link></li>
+            <li><Link href="/lender/deal-intake">Contract Integrity Review</Link></li>
+            <li><Link href="/lender/deal-intake">Assignment / Control Review</Link></li>
+            <li><Link href="/lender/deal-intake">Custody / Document Completeness</Link></li>
+            <li><Link href="/lender/enforcement-readiness">Enforcement Readiness</Link></li>
+            <li><Link href="/lender/pools">Pooling Queue</Link></li>
+            <li><Link href="/lender/secondary-market">Secondary Market Readiness</Link></li>
+          </ul>
+          <p style={{ marginTop: "0.75rem", color: "var(--muted)", fontSize: "0.82rem" }}>
+            Open lender tasks: {lenderTasks.filter((t) => t.status !== "completed").length}
+          </p>
+        </div>
+
+        <div className="card">
+          <h2 className="ds-card-title" style={{ marginTop: 0 }}>Operational alerts</h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginTop: 0 }}>
+            Missing title/registration/insurance/disclosures, credit-report-required flags, contract lock and governance checks, assignment trail, and pool package completeness.
+          </p>
+          {unresolvedOpsAlerts.length === 0 ? (
+            <p style={{ margin: 0, color: "var(--muted)" }}>No unresolved operational alerts.</p>
+          ) : (
+            <ul style={{ margin: 0, paddingLeft: "1rem" }}>
+              {unresolvedOpsAlerts.slice(0, 8).map((a) => (
+                <li key={a.id}>
+                  <Link href={a.dealId ? `/lender/deal-intake/${a.dealId}` : "/lender/alerts"}>
+                    {a.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p style={{ marginTop: "0.75rem" }}>
+            <Link href="/lender/alerts" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
+              Alerts panel
+            </Link>
+          </p>
+        </div>
+
         <div className="card">
           <h2 className="ds-card-title" style={{ marginTop: 0 }}>
             New dealer submissions

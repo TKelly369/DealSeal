@@ -79,6 +79,17 @@ enum DealerLenderLinkStatus {
 
 enum DealStatus {
   DISCLOSURE_REQUIRED
+  DISCLOSURE_PENDING
+  DISCLOSURE_SIGNED
+  MOCKUP_SUBMITTED
+  LENDER_REVIEW
+  LENDER_COUNTER
+  BUYER_REAUTH_PENDING
+  LENDER_FINAL_APPROVAL
+  FINAL_PACKAGE_GENERATED
+  AWAITING_LIVE_SIGNATURES
+  AWAITING_FUNDING_UPLOAD
+  FUNDED
   AUTHORIZED_FOR_STRUCTURING
   GREEN_STAGE
   RISC_UNSIGNED_REVIEW
@@ -88,6 +99,13 @@ enum DealStatus {
   GENERATING_CLOSING_PACKAGE
   CLOSING_PACKAGE_READY
   CONSUMMATED
+}
+
+enum MockupLenderStatus {
+  PENDING
+  APPROVED_NO_CHANGES
+  COUNTER_OFFERED
+  REJECTED
 }
 
 enum CustodyEventType {
@@ -156,6 +174,7 @@ enum LoanPoolType {
   WHOLE_LOAN
   SECURITIZATION
   PRIME
+  NEAR_PRIME
   SUBPRIME
   MIXED
   CUSTOM
@@ -239,6 +258,11 @@ enum GeneratedDocumentType {
   DISCLOSURE
   BUYERS_ORDER
   FUNDING_PACKET
+  INITIAL_DISCLOSURE
+  MOCKUP_CONTRACT
+  MOCKUP_PACKET
+  FINAL_RISC
+  FINAL_COORDINATED_PACKAGE
 }
 
 enum ComplianceRuleSet {
@@ -262,6 +286,48 @@ enum DealAlertSeverity {
   INFO
   WARNING
   CRITICAL
+}
+
+enum LenderTaskCategory {
+  dealer_relationship
+  deal_intake
+  contract_integrity
+  funding
+  post_funding
+  enforcement_readiness
+  pooling
+  secondary_market
+  document_custody
+}
+
+enum LenderTaskPriority {
+  low
+  medium
+  high
+  critical
+}
+
+enum LenderTaskStatus {
+  open
+  in_progress
+  blocked
+  completed
+  cancelled
+  overdue
+}
+
+enum MissingItemRequestStatus {
+  requested
+  uploaded
+  accepted
+  rejected
+  overdue
+}
+
+enum MissingItemReviewStatus {
+  pending
+  accepted
+  rejected
 }
 
 enum DealAlertAuditAction {
@@ -308,32 +374,36 @@ model User {
 }
 
 model Workspace {
-  id                      String                   @id @default(cuid())
-  name                    String
-  slug                    String                   @unique
-  type                    WorkspaceType            @default(DEALERSHIP)
-  organizationUsers       User[]                   @relation("UserOrganization")
-  memberships             Membership[]
-  documents               Document[]
-  subscriptions           Subscription[]
-  dealerProfile           DealerProfile?
-  lenderProfile           LenderProfile?
-  dealerLinks             DealerLenderLink[]       @relation("DealerWorkspaceLinks")
-  lenderLinks             DealerLenderLink[]       @relation("LenderWorkspaceLinks")
-  dealerOnboardingAnswers DealerOnboardingAnswer[] @relation("DealerWorkspaceAnswers")
-  lenderOnboardingAnswers LenderOnboardingAnswer[] @relation("LenderWorkspaceAnswers")
-  dealerDeals             Deal[]                   @relation("DealerDeals")
-  lenderDeals             Deal[]                   @relation("LenderDeals")
-  notifications           Notification[]
-  dealAlerts              DealAlert[]
-  loanPools               LoanPool[]
-  apiKeys                 ApiKey[]
-  webhookEndpoints        WebhookEndpoint[]
-  accessAudits            UserAccessAudit[]
-  dealCountCurrentPeriod  Int                      @default(0)
-  calendarEvents          CalendarEvent[]
-  createdAt               DateTime                 @default(now())
-  updatedAt               DateTime                 @updatedAt
+  id                        String                   @id @default(cuid())
+  name                      String
+  slug                      String                   @unique
+  type                      WorkspaceType            @default(DEALERSHIP)
+  organizationUsers         User[]                   @relation("UserOrganization")
+  memberships               Membership[]
+  documents                 Document[]
+  subscriptions             Subscription[]
+  dealerProfile             DealerProfile?
+  lenderProfile             LenderProfile?
+  dealerLinks               DealerLenderLink[]       @relation("DealerWorkspaceLinks")
+  lenderLinks               DealerLenderLink[]       @relation("LenderWorkspaceLinks")
+  dealerOnboardingAnswers   DealerOnboardingAnswer[] @relation("DealerWorkspaceAnswers")
+  lenderOnboardingAnswers   LenderOnboardingAnswer[] @relation("LenderWorkspaceAnswers")
+  dealerDeals               Deal[]                   @relation("DealerDeals")
+  lenderDeals               Deal[]                   @relation("LenderDeals")
+  notifications             Notification[]
+  dealAlerts                DealAlert[]
+  loanPools                 LoanPool[]
+  apiKeys                   ApiKey[]
+  webhookEndpoints          WebhookEndpoint[]
+  accessAudits              UserAccessAudit[]
+  dealCountCurrentPeriod    Int                      @default(0)
+  calendarEvents            CalendarEvent[]
+  lenderTasks               LenderTask[]             @relation("LenderWorkspaceTasks")
+  dealerTasks               LenderTask[]             @relation("DealerWorkspaceTasks")
+  lenderMissingItemRequests MissingItemRequest[]     @relation("LenderWorkspaceMissingItems")
+  dealerMissingItemRequests MissingItemRequest[]     @relation("DealerWorkspaceMissingItems")
+  createdAt                 DateTime                 @default(now())
+  updatedAt                 DateTime                 @updatedAt
 }
 
 model CalendarEvent {
@@ -488,6 +558,9 @@ model Deal {
   governingStateProfile           Json?
   preliminarySubmittedTerms       Json?
   lenderApprovedTerms             Json?
+  mockupLenderStatus              MockupLenderStatus               @default(PENDING)
+  requiresBuyerReauth             Boolean                          @default(false)
+  finalPackageHash                String?
   complianceStatus                DealComplianceStatus             @default(COMPLIANT)
   consummatedData                 Json?
   poolId                          String?
@@ -515,11 +588,67 @@ model Deal {
   comments                        DealComment[]
   auditEvents                     DealAuditEvent[]
   calendarEvents                  CalendarEvent[]
+  lenderTasks                     LenderTask[]
+  missingItemRequests             MissingItemRequest[]
   createdAt                       DateTime                         @default(now())
   updatedAt                       DateTime                         @updatedAt
 
   @@index([lenderId, secondaryMarketStatus])
   @@index([poolId])
+}
+
+model LenderTask {
+  id           String             @id @default(cuid())
+  lenderId     String
+  dealId       String?
+  dealerId     String?
+  poolId       String?
+  title        String
+  description  String?
+  category     LenderTaskCategory
+  priority     LenderTaskPriority @default(medium)
+  status       LenderTaskStatus   @default(open)
+  dueDate      DateTime?
+  assignedTo   String?
+  source       String?
+  auditEventId String?
+  completedAt  DateTime?
+  lender       Workspace          @relation("LenderWorkspaceTasks", fields: [lenderId], references: [id], onDelete: Cascade)
+  dealer       Workspace?         @relation("DealerWorkspaceTasks", fields: [dealerId], references: [id], onDelete: SetNull)
+  deal         Deal?              @relation(fields: [dealId], references: [id], onDelete: SetNull)
+  pool         LoanPool?          @relation(fields: [poolId], references: [id], onDelete: SetNull)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  @@index([lenderId, status, dueDate])
+  @@index([dealId, category])
+  @@index([poolId])
+}
+
+model MissingItemRequest {
+  id                 String                   @id @default(cuid())
+  lenderId           String
+  dealerId           String
+  dealId             String
+  requestedItemType  String
+  description        String?
+  required           Boolean                  @default(true)
+  priority           LenderTaskPriority       @default(medium)
+  dueDate            DateTime?
+  status             MissingItemRequestStatus @default(requested)
+  requestedBy        String
+  uploadedDocumentId String?
+  lenderReviewStatus MissingItemReviewStatus  @default(pending)
+  lender             Workspace                @relation("LenderWorkspaceMissingItems", fields: [lenderId], references: [id], onDelete: Cascade)
+  dealer             Workspace                @relation("DealerWorkspaceMissingItems", fields: [dealerId], references: [id], onDelete: Cascade)
+  deal               Deal                     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  createdAt          DateTime                 @default(now())
+  resolvedAt         DateTime?
+  updatedAt          DateTime                 @updatedAt
+
+  @@index([lenderId, status, dueDate])
+  @@index([dealerId, status])
+  @@index([dealId, status])
 }
 
 model DealParty {
@@ -624,6 +753,7 @@ model LoanPool {
   lender                    Workspace            @relation(fields: [lenderId], references: [id], onDelete: Cascade)
   createdBy                 User?                @relation("LoanPoolCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
   deals                     Deal[]
+  lenderTasks               LenderTask[]
   createdAt                 DateTime             @default(now())
   updatedAt                 DateTime             @updatedAt
 

@@ -29,6 +29,11 @@ const LENDER_ROUTES = [
   { value: "/lender/deal-intake", label: "Lender: Deal intake" },
   { value: "/lender/dealers", label: "Lender: Dealers" },
   { value: "/lender/dealers/performance", label: "Lender: Dealer grades" },
+  { value: "/lender/funding", label: "Lender: Funding" },
+  { value: "/lender/post-funding", label: "Lender: Post-funding" },
+  { value: "/lender/enforcement-readiness", label: "Lender: Enforcement readiness" },
+  { value: "/lender/pools", label: "Lender: Pools" },
+  { value: "/lender/secondary-market", label: "Lender: Secondary market" },
   { value: "/lender/calendar", label: "Lender: Calendar" },
   { value: "/lender/assets", label: "Lender: Assets & pools" },
 ];

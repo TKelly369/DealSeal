@@ -54,6 +54,9 @@ function emptyDealerSignals(
     totalAmendments: 0,
     jacketCompleteConsummated: 0,
     consummatedCycleHoursSum: 0,
+    postFundingStipOpenCount: 0,
+    postFundingStipResolvedCount: 0,
+    postFundingStipCureHoursSum: 0,
   };
 }
 
@@ -123,6 +126,19 @@ export async function listGradedDealersForLender(
       },
     })) as unknown as DealForPerf[];
 
+    const postFundingStipAlerts = await prisma.dealAlert.findMany({
+      where: {
+        deal: { lenderId: lenderWorkspaceId, status: "CONSUMMATED", createdAt: { gte: since } },
+        type: { contains: "STIP" },
+      },
+      select: {
+        dealId: true,
+        status: true,
+        createdAt: true,
+        resolvedAt: true,
+      },
+    });
+
     const alertWarnCounts = await prisma.dealAlert.groupBy({
       by: ["dealId"],
       where: { status: "OPEN", severity: "WARNING" },
@@ -176,6 +192,21 @@ export async function listGradedDealersForLender(
       const openWarn = warnByDeal.get(deal.id) ?? 0;
       const amend = amendByDeal.get(deal.id) ?? deal._count.amendments;
       accumulateDeal(acc, { ...deal, _count: { amendments: amend, alerts: deal._count.alerts } }, openCrit, openWarn);
+    }
+
+    const dealerIdByDeal = new Map(deals.map((d) => [d.id, d.dealerId]));
+    for (const alert of postFundingStipAlerts) {
+      const dealerId = dealerIdByDeal.get(alert.dealId);
+      if (!dealerId) continue;
+      const bucket = byDealer.get(dealerId);
+      if (!bucket) continue;
+      if (alert.status === "OPEN") {
+        bucket.postFundingStipOpenCount += 1;
+      } else if ((alert.status === "CLEARED" || alert.status === "OVERRIDDEN") && alert.resolvedAt) {
+        bucket.postFundingStipResolvedCount += 1;
+        const hours = (alert.resolvedAt.getTime() - alert.createdAt.getTime()) / 36e5;
+        bucket.postFundingStipCureHoursSum += Math.max(0, hours);
+      }
     }
 
     const rows = [...byDealer.values()]
@@ -311,6 +342,9 @@ function emptyLenderSegment(
     totalAmendments: 0,
     jacketCompleteConsummated: 0,
     consummatedCycleHoursSum: 0,
+    postFundingStipOpenCount: 0,
+    postFundingStipResolvedCount: 0,
+    postFundingStipCureHoursSum: 0,
     segment,
     segmentDealCount: 0,
   };
@@ -358,6 +392,19 @@ export async function listGradedLendersForDealer(
         },
       },
     })) as unknown as DealForPerf[];
+
+    const postFundingStipAlerts = await prisma.dealAlert.findMany({
+      where: {
+        deal: { dealerId: dealerWorkspaceId, status: "CONSUMMATED", createdAt: { gte: since } },
+        type: { contains: "STIP" },
+      },
+      select: {
+        dealId: true,
+        status: true,
+        createdAt: true,
+        resolvedAt: true,
+      },
+    });
 
     const alertWarnCounts = await prisma.dealAlert.groupBy({
       by: ["dealId"],
@@ -417,6 +464,28 @@ export async function listGradedLendersForDealer(
         accum.set(key(deal.lenderId, seg), bucket);
       }
       accumulateDeal(bucket, dealRow, openCrit, openWarn);
+    }
+
+    const lenderIdByDeal = new Map(deals.map((d) => [d.id, d.lenderId]));
+    const segmentByDeal = new Map<DealForPerf["id"], MarketSegment>();
+    for (const deal of deals) {
+      const partyTier = deal.parties[0]?.creditTier ?? null;
+      const amt = deal.financials?.amountFinanced != null ? Number(deal.financials.amountFinanced) : null;
+      segmentByDeal.set(deal.id, classifyCreditTier(partyTier, amt));
+    }
+    for (const alert of postFundingStipAlerts) {
+      const lenderId = lenderIdByDeal.get(alert.dealId);
+      if (!lenderId) continue;
+      const seg = segmentByDeal.get(alert.dealId) ?? "UNKNOWN";
+      const bucket = accum.get(key(lenderId, seg));
+      if (!bucket) continue;
+      if (alert.status === "OPEN") {
+        bucket.postFundingStipOpenCount += 1;
+      } else if ((alert.status === "CLEARED" || alert.status === "OVERRIDDEN") && alert.resolvedAt) {
+        bucket.postFundingStipResolvedCount += 1;
+        const hours = (alert.resolvedAt.getTime() - alert.createdAt.getTime()) / 36e5;
+        bucket.postFundingStipCureHoursSum += Math.max(0, hours);
+      }
     }
 
     const byLender = new Map<string, GradedLenderForDealer>();

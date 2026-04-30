@@ -50,9 +50,10 @@ export default async function LenderDealerPerformancePage({
       </div>
       <p style={{ color: "var(--muted)", maxWidth: 860, lineHeight: 1.6 }}>
         DealSeal scores each approved dealership on your book using recent deal flow: low problem rate (open alerts,
-        blocked compliance, amendments), completed jacket quality on consummated deals, volume, and cycle-time to
-        consummation. Use it to see who is performing cleanly in each state—preferred partners rise to the top for
-        sourcing and capacity planning.
+        blocked compliance, amendments), completed jacket quality on consummated deals, and a second-green-light metric
+        for post-funding stip cure speed. The longer stips stay open after funding, the more dealer score is reduced.
+        Use it to see who is performing cleanly in each state—preferred partners rise to the top for sourcing and
+        capacity planning.
       </p>
       {warning ? <p style={{ color: "#fecaca" }}>{warning}</p> : null}
 
@@ -89,8 +90,10 @@ export default async function LenderDealerPerformancePage({
               <th>System tier</th>
               <th>Problem-free</th>
               <th>Jacket</th>
+              <th>2nd green</th>
               <th>Volume</th>
               <th>Cycle</th>
+              <th>Open funded stips</th>
               <th>Deals (90d)</th>
             </tr>
           </thead>
@@ -115,15 +118,17 @@ export default async function LenderDealerPerformancePage({
                   <td style={{ color: ts.color, fontSize: "0.85rem", fontWeight: 600 }}>{ts.label}</td>
                   <td>{r.problemFreeScore}</td>
                   <td>{r.jacketScore}</td>
+                  <td>{r.secondGreenScore}</td>
                   <td>{r.volumeScore}</td>
                   <td>{r.cycleScore}</td>
+                  <td>{r.postFundingStipOpenCount}</td>
                   <td>{r.dealCount}</td>
                 </tr>
               );
             })}
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={9} style={{ color: "var(--muted)" }}>
+                <td colSpan={11} style={{ color: "var(--muted)" }}>
                   {stateFilter ? `No approved dealers match state ${stateFilter} in the current window.` : "No graded dealers yet."}
                 </td>
               </tr>
@@ -134,8 +139,9 @@ export default async function LenderDealerPerformancePage({
 
       <p style={{ marginTop: "1rem", fontSize: "0.82rem", color: "var(--muted)", maxWidth: 800 }}>
         Scores use a 90-day rolling window on your lender workspace. Jacket completeness looks for key closing document
-        types on consummated deals. Credit market segments for your counterparties are shown on the dealer-facing lender
-        scorecard.
+        types on consummated deals. Second green light measures post-funding stip cure discipline (open count plus cure
+        duration for cleared/overridden stip alerts). Credit market segments for your counterparties are shown on the
+        dealer-facing lender scorecard.
       </p>
     </div>
   );

@@ -191,6 +191,117 @@ Worker (`package.worker.ts`): deterministic document selection, manifest generat
 | POST | `/admin/api-keys` | Create key; returns full secret once |
 | POST | `/admin/api-keys/:id/revoke` | Deactivate key |
 
+## Admin role structure (critical internal control layer)
+
+The Admin platform supports multiple internal DealSeal roles with explicitly scoped permissions, responsibilities, and audit accountability. Admin is a structured internal organization with tiered authority, not a single role.
+
+### 1) DealSeal admin management roles (highest authority)
+
+- **Role examples:** `super_admin`, `compliance_admin`, `custody_admin`, `billing_admin`, `system_admin`.
+- **Capabilities:**
+  - Full system visibility across dealers, lenders, servicers, and secondary purchasers.
+  - Access to all deals, contracts, documents, audit logs, and custody records.
+  - Admin overrides (with required audit logging), including lock clearance, system-error resolution, custody status adjustment, governing contract authority management, compliance correction enforcement, exceptional condition approval/rejection, purge/archive control, billing controls, and platform-wide configuration.
+- **Restrictions:**
+  - Every action is audit-trailed.
+  - Overrides require reason, before/after state, timestamp, and admin identity.
+
+### 2) DealSeal admin representative roles (operational support)
+
+- **Role examples:** `admin_rep`, `account_manager`, `custody_rep`, `compliance_rep`.
+- **Capabilities:**
+  - Support dealers/lenders for onboarding, missing documents, workflow navigation, custody questions, and compliance clarification.
+  - View deals/documents within assigned scope.
+  - Initiate reminders, missing-item flags, and escalation to management.
+  - Read-only or limited-scope audit log access; add notes to deals/accounts.
+- **Restrictions:**
+  - Cannot perform high-level overrides (locks, contract authority changes, custody reassignment).
+  - Cannot alter authoritative contract records, modify audit logs, or bypass validation.
+  - All actions remain audit-trailed.
+
+### 3) DealSeal tech support roles (technical layer)
+
+- **Role examples:** `tech_support`, `system_support`, `dev_support`.
+- **Capabilities:**
+  - Diagnose system errors and failed processes.
+  - Review system/audit logs.
+  - Assist with login, routing, upload/storage, and integration issues.
+  - Trigger safe non-destructive technical fixes.
+- **Restrictions:**
+  - No authority over deal data modification, contract content, custody control, or assignment/control records.
+  - No legal/compliance overrides.
+  - All technical actions are logged with action taken, system affected, timestamp, and acting user.
+
+### 4) role-based access control (RBAC)
+
+Each admin user must include:
+
+- `role`
+- `permission set`
+- `organization` (DealSeal internal)
+- `scope` (global or assigned-account limited)
+
+Permissions are granular (examples):
+
+- `view_all_deals`
+- `view_all_documents`
+- `view_audit_logs`
+- `initiate_missing_item_request`
+- `escalate_issue`
+- `perform_override`
+- `manage_custody`
+- `manage_governing_contract`
+- `manage_billing`
+- `manage_users`
+- `manage_roles`
+- `access_system_logs`
+
+### 5) admin action audit requirements
+
+All admin roles are fully audit-trailed. For each action, record:
+
+- `adminUserId`
+- `role`
+- `actionType`
+- `affectedEntity`
+- `affectedEntityId`
+- `reason`
+- `beforeValue` (if applicable)
+- `afterValue` (if applicable)
+- `timestamp`
+- `overrideFlag` (`true` / `false`)
+- `escalationFlag` (`true` / `false`)
+
+### 6) UI role differentiation
+
+- **Management roles:** full dashboards, override tools, custody controls, billing panels, compliance monitors.
+- **Admin reps:** support dashboards, assigned accounts, queues/tasks, alerts, limited deal/document views.
+- **Tech support:** system health panels, logs, error tracking, and non-destructive debug tools.
+
+### 7) escalation workflow
+
+- **Admin Rep** escalates to **Admin Management**.
+- **Tech Support** escalates to **Admin Management**.
+
+Escalation payload includes:
+
+- issue description
+- affected deal/contract
+- urgency level
+- recommended action
+- audit reference
+
+### 8) strategic positioning
+
+This control layer ensures:
+
+- control without chaos
+- power with accountability
+- support without risk
+- technical access without legal exposure
+
+Outcome: Admin remains “eye-in-the-sky” while structured, controlled, auditable, and scalable, preventing unauthorized overrides, silent record manipulation, custody confusion, and compliance breakdowns.
+
 ### Analytics — `/analytics`
 
 | Method | Path | Description |

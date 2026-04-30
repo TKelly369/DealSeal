@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { DealWorkflowService } from "@/lib/services/deal-workflow.service";
 import { prisma } from "@/lib/db";
 import { AmendmentService } from "@/lib/services/amendment.service";
+import { LenderOpsService } from "@/lib/services/lender-ops.service";
 
 const intakeDealPath = (dealId: string) => `/lender/deal-intake/${dealId}`;
 
@@ -26,6 +27,51 @@ export async function lenderFinalRISCFormAction(formData: FormData) {
   await DealWorkflowService.lenderApproveAndSendFinalRISC(dealId, { fileName }, session.user.id, session.user.role);
   revalidatePath(intakeDealPath(dealId));
   revalidatePath(`/dealer/deals/${dealId}`);
+}
+
+export async function lenderMockupDecisionFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const decision = String(formData.get("decision") || "") as "APPROVED_NO_CHANGES" | "COUNTER_OFFERED" | "REJECTED";
+  const note = String(formData.get("note") || "").trim();
+  await requireLenderDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await DealWorkflowService.lenderReviewMockup(dealId, { decision, note: note || undefined }, session.user.id, session.user.role);
+  revalidatePath(intakeDealPath(dealId));
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
+export async function lenderFundingApprovalFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  await requireLenderDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await DealWorkflowService.lenderMarkFunded(dealId, session.user.id, session.user.role);
+  revalidatePath(intakeDealPath(dealId));
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
+export async function requestMissingDealerItemFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const requestedItemType = String(formData.get("requestedItemType") || "").trim();
+  const description = String(formData.get("description") || "").trim();
+  const dueDateRaw = String(formData.get("dueDate") || "").trim();
+  const priority = String(formData.get("priority") || "medium").trim() as "low" | "medium" | "high" | "critical";
+  const { session, deal } = await requireLenderDeal(dealId);
+  if (!requestedItemType) throw new Error("Requested item type is required.");
+  await LenderOpsService.requestMissingItem({
+    lenderId: session.user.workspaceId,
+    dealerId: deal.dealerId,
+    dealId,
+    requestedItemType,
+    description: description || undefined,
+    dueDate: dueDateRaw ? new Date(dueDateRaw) : undefined,
+    priority,
+    requestedBy: session.user.id,
+  });
+  revalidatePath(intakeDealPath(dealId));
+  revalidatePath("/lender/tasks");
+  revalidatePath("/lender/alerts");
 }
 
 export async function approveAmendmentIntakeFormAction(formData: FormData) {

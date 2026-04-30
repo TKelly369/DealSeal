@@ -25,6 +25,12 @@ export type DealerPerformanceSignals = {
   jacketCompleteConsummated: number;
   /** Sum of hours from created → last update for consummated deals (for average). */
   consummatedCycleHoursSum: number;
+  /** Post-funding stipulation alerts still open on consummated deals. */
+  postFundingStipOpenCount: number;
+  /** Count of post-funding stip alerts that were cured (cleared/overridden). */
+  postFundingStipResolvedCount: number;
+  /** Sum of hours to cure post-funding stip alerts. */
+  postFundingStipCureHoursSum: number;
 };
 
 export type LenderPerformanceSignals = {
@@ -40,6 +46,9 @@ export type LenderPerformanceSignals = {
   totalAmendments: number;
   jacketCompleteConsummated: number;
   consummatedCycleHoursSum: number;
+  postFundingStipOpenCount: number;
+  postFundingStipResolvedCount: number;
+  postFundingStipCureHoursSum: number;
   /** Deals in segment (by buyer credit tier / amount proxy). */
   segment: MarketSegment;
   segmentDealCount: number;
@@ -50,6 +59,7 @@ export type GradedDealerForLender = DealerPerformanceSignals & {
   jacketScore: number;
   volumeScore: number;
   cycleScore: number;
+  secondGreenScore: number;
   overallScore: number;
   grade: GradeLetter;
   preferredTier: "preferred" | "standard" | "watch";
@@ -57,9 +67,12 @@ export type GradedDealerForLender = DealerPerformanceSignals & {
 
 export type GradedLenderSegment = LenderPerformanceSignals & {
   problemFreeScore: number;
+  fileManagementScore: number;
+  dealsClosedScore: number;
   jacketScore: number;
   volumeScore: number;
   cycleScore: number;
+  secondGreenScore: number;
   overallScore: number;
   grade: GradeLetter;
   proficiencyTier: "lead" | "capable" | "developing";
@@ -151,12 +164,65 @@ export function cycleTimeScore(consummated: number, cycleHoursSum: number): numb
   return clamp(Math.round(55 - (avgDays - 35) * 2), 20, 65);
 }
 
+/**
+ * "Second green light": after funding/consummation, stipulations should be cured quickly.
+ * Open post-funding stips and slow cure times both reduce score.
+ */
+export function secondGreenScore(s: {
+  consummatedCount: number;
+  postFundingStipOpenCount: number;
+  postFundingStipResolvedCount: number;
+  postFundingStipCureHoursSum: number;
+}): number {
+  if (s.consummatedCount === 0) return 80;
+  const openRate = s.postFundingStipOpenCount / s.consummatedCount;
+  const avgCureHours =
+    s.postFundingStipResolvedCount > 0 ? s.postFundingStipCureHoursSum / s.postFundingStipResolvedCount : 0;
+  const avgCureDays = avgCureHours / 24;
+  let score = 100;
+  score -= clamp(openRate * 55, 0, 60);
+  if (s.postFundingStipResolvedCount > 0) {
+    if (avgCureDays <= 2) score -= 0;
+    else if (avgCureDays <= 5) score -= 8;
+    else if (avgCureDays <= 10) score -= 18;
+    else if (avgCureDays <= 20) score -= 32;
+    else score -= 45;
+  }
+  return clamp(Math.round(score), 0, 100);
+}
+
+/** Lender file management quality: complete jackets plus post-funding stip cure discipline. */
+export function fileManagementScore(s: {
+  consummatedCount: number;
+  jacketCompleteConsummated: number;
+  postFundingStipOpenCount: number;
+  postFundingStipResolvedCount: number;
+  postFundingStipCureHoursSum: number;
+}): number {
+  const jacket = jacketCompletenessScore(s.consummatedCount, s.jacketCompleteConsummated);
+  const secondGreen = secondGreenScore(s);
+  return clamp(Math.round(jacket * 0.6 + secondGreen * 0.4), 0, 100);
+}
+
+/** Lender closure performance: emphasizes completed deals and timeliness. */
+export function dealsClosedScore(s: {
+  dealCount: number;
+  consummatedCount: number;
+  consummatedCycleHoursSum: number;
+}): number {
+  const closeRate = s.dealCount > 0 ? s.consummatedCount / s.dealCount : 0;
+  const closeRateScore = clamp(Math.round(closeRate * 100), 0, 100);
+  const cycle = cycleTimeScore(s.consummatedCount, s.consummatedCycleHoursSum);
+  return clamp(Math.round(closeRateScore * 0.65 + cycle * 0.35), 0, 100);
+}
+
 export function gradeDealerForLender(s: DealerPerformanceSignals): GradedDealerForLender {
   const p = problemFreeScore(s);
   const j = jacketCompletenessScore(s.consummatedCount, s.jacketCompleteConsummated);
   const v = volumeScore(s.dealCount, s.consummatedCount);
   const c = cycleTimeScore(s.consummatedCount, s.consummatedCycleHoursSum);
-  const overall = Math.round(p * 0.38 + j * 0.22 + v * 0.22 + c * 0.18);
+  const sg = secondGreenScore(s);
+  const overall = Math.round(p * 0.32 + sg * 0.22 + j * 0.18 + v * 0.16 + c * 0.12);
   const grade = letterFromScore(overall);
   return {
     ...s,
@@ -164,6 +230,7 @@ export function gradeDealerForLender(s: DealerPerformanceSignals): GradedDealerF
     jacketScore: j,
     volumeScore: v,
     cycleScore: c,
+    secondGreenScore: sg,
     overallScore: overall,
     grade,
     preferredTier: preferredTier(overall, p),
@@ -172,24 +239,33 @@ export function gradeDealerForLender(s: DealerPerformanceSignals): GradedDealerF
 
 export function gradeLenderSegment(s: LenderPerformanceSignals): LenderPerformanceSignals & {
   problemFreeScore: number;
+  fileManagementScore: number;
+  dealsClosedScore: number;
   jacketScore: number;
   volumeScore: number;
   cycleScore: number;
+  secondGreenScore: number;
   overallScore: number;
   grade: GradeLetter;
   proficiencyTier: "lead" | "capable" | "developing";
 } {
   const p = problemFreeScore(s);
+  const fm = fileManagementScore(s);
+  const dc = dealsClosedScore(s);
   const j = jacketCompletenessScore(s.consummatedCount, s.jacketCompleteConsummated);
   const v = volumeScore(s.dealCount, s.consummatedCount);
   const c = cycleTimeScore(s.consummatedCount, s.consummatedCycleHoursSum);
-  const overall = Math.round(p * 0.38 + j * 0.22 + v * 0.22 + c * 0.18);
+  const sg = secondGreenScore(s);
+  const overall = Math.round(fm * 0.45 + dc * 0.35 + p * 0.2);
   return {
     ...s,
     problemFreeScore: p,
+    fileManagementScore: fm,
+    dealsClosedScore: dc,
     jacketScore: j,
     volumeScore: v,
     cycleScore: c,
+    secondGreenScore: sg,
     overallScore: overall,
     grade: letterFromScore(overall),
     proficiencyTier: proficiencyTier(overall),

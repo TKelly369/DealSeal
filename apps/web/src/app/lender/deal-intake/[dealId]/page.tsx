@@ -8,10 +8,19 @@ import {
 import { normalizeIntakeFilter } from "@/lib/lender-intake-filters";
 import { redirect } from "next/navigation";
 import { DealWorkflowService } from "@/lib/services/deal-workflow.service";
-import { lenderFinalRISCFormAction, approveAmendmentIntakeFormAction, rejectAmendmentIntakeFormAction } from "./actions";
+import {
+  lenderFinalRISCFormAction,
+  lenderMockupDecisionFormAction,
+  lenderFundingApprovalFormAction,
+  requestMissingDealerItemFormAction,
+  approveAmendmentIntakeFormAction,
+  rejectAmendmentIntakeFormAction,
+} from "./actions";
 import { prisma } from "@/lib/db";
 import { CommentService } from "@/lib/services/comment.service";
 import { LenderIntakeWithActivity } from "./LenderIntakeWithActivity";
+import { LenderOpsService } from "@/lib/services/lender-ops.service";
+import { submitFundingDecisionAction } from "@/app/lender/deals/[dealId]/review/actions";
 
 export default async function LenderDealIntakeDetailPage({
   params,
@@ -53,6 +62,16 @@ export default async function LenderDealIntakeDetailPage({
       metadata: e.metadata,
     })),
   );
+  const enforcement = await LenderOpsService.evaluateEnforcementReadiness(dealId, session.user.workspaceId);
+  const checklist = [
+    ["Dealer-uploaded credit report", creditReports.length > 0 || !canViewCredit],
+    ["Authoritative contract", Boolean(deal.authoritativeContract?.authoritativeContractHash)],
+    ["Governing copy identified", Boolean(deal.authoritativeContract)],
+    ["Signature status", deal.generatedDocuments.some((d) => d.documentType === "RISC_SIGNED")],
+    ["Assignment/control trail", deal.contractTransactionEvents.length > 0],
+    ["Audit trail status", deal.custodyEvents.length > 0],
+    ["Custody status", deal.custodyEvents.length > 0],
+  ] as const;
 
   return (
     <LenderIntakeWithActivity dealId={dealId} timeline={timeline} currentUserId={session.user.id}>
@@ -74,6 +93,82 @@ export default async function LenderDealIntakeDetailPage({
         <p style={{ color: "var(--muted)" }}>
           Status: <strong>{deal.status}</strong> · State: <strong>{deal.state}</strong>
         </p>
+        <div className="card">
+          <h2 style={{ marginTop: 0 }}>Deal review checklist</h2>
+          <p style={{ color: "var(--muted)", marginTop: 0 }}>
+            Deal status light:{" "}
+            <strong>
+              {deal.complianceStatus === "BLOCKED" ? "Red" : deal.complianceStatus === "WARNING" ? "Yellow" : "Green"}
+            </strong>
+          </p>
+          <ul style={{ margin: 0, paddingLeft: "1rem" }}>
+            {checklist.map(([label, ok]) => (
+              <li key={label} style={{ color: ok ? "#86efac" : "#fca5a5" }}>
+                {ok ? "✓" : "✕"} {label}
+              </li>
+            ))}
+          </ul>
+          <p style={{ marginTop: "0.65rem", color: "var(--muted)" }}>
+            Enforcement readiness: <strong>{enforcement.status}</strong> ({enforcement.score}%)
+          </p>
+        </div>
+
+        <div className="card">
+          <h2 style={{ marginTop: 0 }}>Request missing dealer item</h2>
+          <form action={requestMissingDealerItemFormAction} style={{ display: "grid", gap: "0.5rem" }}>
+            <input type="hidden" name="dealId" value={dealId} />
+            <select name="requestedItemType" className="ds-input" defaultValue="TITLE_DOCUMENT">
+              <option value="TITLE_DOCUMENT">Title document</option>
+              <option value="REGISTRATION_DOCUMENT">Registration</option>
+              <option value="INSURANCE_PROOF">Insurance proof</option>
+              <option value="REQUIRED_DISCLOSURE">Required disclosure</option>
+              <option value="SIGNED_FORM">Signed form</option>
+              <option value="DEALER_CERTIFICATE">Dealer certificate</option>
+              <option value="CREDIT_REPORT">Credit report (dealer-uploaded)</option>
+              <option value="ASSIGNMENT_FORM">Assignment form</option>
+              <option value="STATE_SPECIFIC_FORM">State-specific form</option>
+            </select>
+            <textarea className="ds-input" name="description" rows={2} placeholder="Notes for dealer" />
+            <div style={{ display: "grid", gap: "0.5rem", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" }}>
+              <input className="ds-input" type="date" name="dueDate" />
+              <select name="priority" className="ds-input" defaultValue="medium">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+            <button type="submit" className="btn btn-secondary">
+              Request item
+            </button>
+          </form>
+        </div>
+
+        <div className="card">
+          <h2 style={{ marginTop: 0 }}>Funding decision</h2>
+          <p style={{ color: "var(--muted)", marginTop: 0 }}>
+            Approve, condition, or reject from intake. All actions are audited and mirrored to dealer notifications.
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+            <form action={submitFundingDecisionAction}>
+              <input type="hidden" name="dealId" value={dealId} />
+              <input type="hidden" name="decision" value="APPROVE" />
+              <button type="submit" className="btn">Approve</button>
+            </form>
+            <form action={submitFundingDecisionAction}>
+              <input type="hidden" name="dealId" value={dealId} />
+              <input type="hidden" name="decision" value="CONDITION" />
+              <input type="hidden" name="note" value="Conditional approval pending missing items." />
+              <button type="submit" className="btn btn-secondary">Condition</button>
+            </form>
+            <form action={submitFundingDecisionAction}>
+              <input type="hidden" name="dealId" value={dealId} />
+              <input type="hidden" name="decision" value="REJECT" />
+              <input type="hidden" name="note" value="Rejected pending remediation." />
+              <button type="submit" className="btn btn-secondary">Reject</button>
+            </form>
+          </div>
+        </div>
 
         <div className="card" style={{ borderColor: "rgba(56, 189, 248, 0.35)" }}>
           <h2 style={{ marginTop: 0 }}>Dealer-uploaded credit report</h2>
@@ -169,6 +264,56 @@ export default async function LenderDealIntakeDetailPage({
           </div>
         ) : null}
 
+        {deal.status === "MOCKUP_SUBMITTED" || deal.status === "LENDER_REVIEW" ? (
+          <div className="card">
+            <h2 style={{ marginTop: 0 }}>Mock-up lender review</h2>
+            <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>
+              MOCK-UP - FOR REVIEW ONLY - NOT FOR SIGNATURE. Choose approval path for dealer.
+            </p>
+            {unsigned?.fileUrl ? (
+              <p>
+                <a href={unsigned.fileUrl} target="_blank" rel="noreferrer">
+                  View dealer mock-up contract
+                </a>
+              </p>
+            ) : null}
+            <div style={{ display: "grid", gap: "0.5rem", marginTop: "0.5rem" }}>
+              <form action={lenderMockupDecisionFormAction}>
+                <input type="hidden" name="dealId" value={dealId} />
+                <input type="hidden" name="decision" value="APPROVED_NO_CHANGES" />
+                <button type="submit" className="btn">
+                  Approve (No Changes)
+                </button>
+              </form>
+              <form action={lenderMockupDecisionFormAction} style={{ display: "grid", gap: "0.35rem" }}>
+                <input type="hidden" name="dealId" value={dealId} />
+                <input type="hidden" name="decision" value="COUNTER_OFFERED" />
+                <input
+                  name="note"
+                  required
+                  placeholder="Counter / requested changes"
+                  style={{ width: "100%", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+                />
+                <button type="submit" className="btn btn-secondary">
+                  Counter / Request Changes
+                </button>
+              </form>
+              <form action={lenderMockupDecisionFormAction} style={{ display: "grid", gap: "0.35rem" }}>
+                <input type="hidden" name="dealId" value={dealId} />
+                <input type="hidden" name="decision" value="REJECTED" />
+                <input
+                  name="note"
+                  placeholder="Optional rejection note"
+                  style={{ width: "100%", padding: "0.45rem", borderRadius: 6, border: "1px solid #333", background: "#111", color: "#eee" }}
+                />
+                <button type="submit" className="btn btn-secondary">
+                  Reject
+                </button>
+              </form>
+            </div>
+          </div>
+        ) : null}
+
         {deal.status === "RISC_UNSIGNED_REVIEW" ? (
           <div className="card">
             <h2 style={{ marginTop: 0 }}>Unsigned RISC review</h2>
@@ -189,6 +334,21 @@ export default async function LenderDealIntakeDetailPage({
               </label>
               <button type="submit" className="btn">
                 Approve &amp; upload final RISC
+              </button>
+            </form>
+          </div>
+        ) : null}
+
+        {deal.status === "AWAITING_FUNDING_UPLOAD" ? (
+          <div className="card" style={{ borderColor: "#15803d" }}>
+            <h2 style={{ marginTop: 0 }}>Final green light</h2>
+            <p style={{ color: "var(--muted)" }}>
+              Dealer uploaded executed final package. Mark funded to complete this lifecycle.
+            </p>
+            <form action={lenderFundingApprovalFormAction}>
+              <input type="hidden" name="dealId" value={dealId} />
+              <button type="submit" className="btn">
+                Funding approve (final green light)
               </button>
             </form>
           </div>

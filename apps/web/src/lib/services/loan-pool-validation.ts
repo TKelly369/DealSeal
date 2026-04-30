@@ -28,8 +28,8 @@ export async function evaluateDealForPooling(dealId: string, lenderId: string): 
     return { eligible: false, reasons: ["Deal not found or not owned by this lender."], warnings: [] };
   }
 
-  if (deal.status !== DealStatus.CONSUMMATED) {
-    reasons.push("Deal must be consummated (funded) before pooling.");
+  if (deal.status !== DealStatus.CONSUMMATED && deal.status !== DealStatus.FUNDED) {
+    reasons.push("Deal must be funded before pooling.");
   }
 
   if (!deal.authoritativeContract) {

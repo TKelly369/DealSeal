@@ -5,14 +5,18 @@ import {
   ClipboardCheck,
   FileText,
   FolderOpen,
+  Gavel,
   Handshake,
   Home,
   Inbox,
   LayoutDashboard,
   ListTodo,
+  PiggyBank,
+  ShieldAlert,
   ScrollText,
   Settings,
   Shield,
+  Wallet,
 } from "lucide-react";
 
 /** Lender platform shell — aligns with `/lender/*` route structure. */
@@ -21,6 +25,9 @@ export const lenderShellNavItems = [
   { href: "/lender/onboarding", label: "Onboarding", icon: ClipboardCheck },
   { href: "/lender/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/lender/deal-intake", label: "Deal intake", icon: Inbox },
+  { href: "/lender/funding", label: "Funding", icon: Wallet },
+  { href: "/lender/post-funding", label: "Post-funding", icon: ShieldAlert },
+  { href: "/lender/enforcement-readiness", label: "Enforcement readiness", icon: Gavel },
   { href: "/lender/dealers", label: "Dealers", icon: Handshake },
   { href: "/lender/dealers/performance", label: "Dealer grades", icon: Award },
   { href: "/lender/dealers/approval-queue", label: "Approval queue", icon: Shield },
@@ -30,5 +37,7 @@ export const lenderShellNavItems = [
   { href: "/lender/tasks", label: "Tasks", icon: ListTodo },
   { href: "/lender/calendar", label: "Calendar", icon: Calendar },
   { href: "/lender/alerts", label: "Alerts", icon: Bell },
+  { href: "/lender/pools", label: "Pools", icon: PiggyBank },
+  { href: "/lender/secondary-market", label: "Secondary market", icon: FolderOpen },
   { href: "/lender/settings", label: "Settings", icon: Settings },
 ] as const;

@@ -169,6 +169,7 @@ export const DealWorkflowService = {
         vehicle: true,
         parties: true,
         financials: true,
+        contractTransactionEvents: true,
         amendments: { orderBy: { createdAt: "desc" } },
       },
     });
@@ -215,7 +216,7 @@ export const DealWorkflowService = {
         data: {
           dealId,
           authoritativeContractId: null,
-          type: legacyTypeFor("INITIAL_DISCLOSURE_SIGNED"),
+          type: "INITIAL_DISCLOSURE",
           documentType: "INITIAL_DISCLOSURE_SIGNED",
           fileUrl,
           version,
@@ -255,7 +256,7 @@ export const DealWorkflowService = {
       return tx.deal.update({
         where: { id: dealId },
         data: {
-          status: "AUTHORIZED_FOR_STRUCTURING",
+          status: "DISCLOSURE_SIGNED",
           initialDisclosureAcceptedAt: new Date(),
           initialDisclosureHash: disclosureHash,
           initialDisclosureSignerName: signerName,
@@ -282,8 +283,13 @@ export const DealWorkflowService = {
     return prisma.$transaction(async (tx) => {
       const deal = await tx.deal.findUnique({ where: { id: dealId } });
       if (!deal) throw new Error("Deal not found.");
-      if (deal.status !== "AUTHORIZED_FOR_STRUCTURING" && deal.status !== "GREEN_STAGE") {
-        throw new Error(`Green-stage document upload is not allowed while deal is in ${deal.status}. Expected AUTHORIZED_FOR_STRUCTURING.`);
+      if (
+        deal.status !== "DISCLOSURE_SIGNED" &&
+        deal.status !== "AUTHORIZED_FOR_STRUCTURING" &&
+        deal.status !== "GREEN_STAGE" &&
+        deal.status !== "LENDER_COUNTER"
+      ) {
+        throw new Error(`Green-stage document upload is not allowed while deal is in ${deal.status}.`);
       }
 
       const version = await nextDocVersion(dealId, docType);
@@ -330,8 +336,14 @@ export const DealWorkflowService = {
     return prisma.$transaction(async (tx) => {
       const deal = await tx.deal.findUnique({ where: { id: dealId } });
       if (!deal) throw new Error("Deal not found.");
-      if (deal.status !== "AUTHORIZED_FOR_STRUCTURING" && deal.status !== "GREEN_STAGE") {
-        throw new Error(`Unsigned RISC submission is not allowed while deal is in ${deal.status}. Expected AUTHORIZED_FOR_STRUCTURING.`);
+      if (
+        deal.status !== "DISCLOSURE_SIGNED" &&
+        deal.status !== "AUTHORIZED_FOR_STRUCTURING" &&
+        deal.status !== "GREEN_STAGE" &&
+        deal.status !== "LENDER_COUNTER" &&
+        deal.status !== "BUYER_REAUTH_PENDING"
+      ) {
+        throw new Error(`Mock-up submission is not allowed while deal is in ${deal.status}.`);
       }
 
       const version = await nextDocVersion(dealId, "RISC_UNSIGNED");
@@ -342,7 +354,7 @@ export const DealWorkflowService = {
         data: {
           dealId,
           authoritativeContractId: null,
-          type: legacyTypeFor("RISC_UNSIGNED"),
+          type: "MOCKUP_CONTRACT",
           documentType: "RISC_UNSIGNED",
           fileUrl,
           version,
@@ -366,7 +378,9 @@ export const DealWorkflowService = {
       await tx.deal.update({
         where: { id: dealId },
         data: {
-          status: "RISC_UNSIGNED_REVIEW",
+          status: "LENDER_REVIEW",
+          mockupLenderStatus: "PENDING",
+          requiresBuyerReauth: false,
           preliminarySubmittedTerms: captureMaterialTerms({
             id: deal.id,
             state: deal.state,
@@ -375,6 +389,26 @@ export const DealWorkflowService = {
             vehicle: await tx.vehicle.findUnique({ where: { dealId } }),
             financials: await tx.dealFinancials.findUnique({ where: { dealId } }),
           }) as Prisma.InputJsonValue,
+        },
+      });
+
+      const packetVersion = await tx.generatedDocument.aggregate({
+        where: { dealId, type: "MOCKUP_PACKET" },
+        _max: { version: true },
+      });
+      const mockupPacketVersion = (packetVersion._max.version ?? 0) + 1;
+      await tx.generatedDocument.create({
+        data: {
+          dealId,
+          authoritativeContractId: null,
+          type: "MOCKUP_PACKET",
+          documentType: "DEALER_UPLOAD",
+          fileUrl: `/mock-uploads/${dealId}/mockup-packet-v${mockupPacketVersion}.json`,
+          version: mockupPacketVersion,
+          valuesSnapshot: {
+            label: "MOCK-UP - FOR REVIEW ONLY - NOT FOR SIGNATURE",
+            generatedAt: new Date().toISOString(),
+          },
         },
       });
 
@@ -690,6 +724,258 @@ export const DealWorkflowService = {
 
     await AutopublishService.generateUniformClosingPackage(dealId, userId, actorRole);
     return result;
+  },
+
+  async signDisclosureOnline(dealId: string, userId: string, actorRole: string) {
+    const now = new Date();
+    return this.acknowledgeDisclosure(
+      dealId,
+      {
+        signerName: "Online signer",
+        dateSigned: now.toISOString().slice(0, 10),
+        dealerRepresentative: "Dealer rep",
+        dealershipName: "Dealership",
+        stateProfile: "online-disclosure",
+        fileName: "initial-disclosure-esign.pdf",
+      },
+      userId,
+      actorRole,
+    );
+  },
+
+  async lenderReviewMockup(
+    dealId: string,
+    input: { decision: "APPROVED_NO_CHANGES" | "COUNTER_OFFERED" | "REJECTED"; note?: string },
+    userId: string,
+    actorRole: string,
+  ) {
+    return prisma.$transaction(async (tx) => {
+      const deal = await tx.deal.findUnique({ where: { id: dealId } });
+      if (!deal) throw new Error("Deal not found.");
+      if (deal.status !== "LENDER_REVIEW" && deal.status !== "MOCKUP_SUBMITTED") {
+        throw new Error(`Mock-up review is not allowed while deal is in ${deal.status}.`);
+      }
+      const nextStatus =
+        input.decision === "APPROVED_NO_CHANGES"
+          ? "LENDER_FINAL_APPROVAL"
+          : input.decision === "COUNTER_OFFERED"
+            ? "LENDER_COUNTER"
+            : "DISCLOSURE_SIGNED";
+      await tx.deal.update({
+        where: { id: dealId },
+        data: {
+          status: nextStatus,
+          mockupLenderStatus: input.decision,
+          requiresBuyerReauth: input.decision === "COUNTER_OFFERED",
+          lenderApprovedTerms: {
+            ...(typeof deal.lenderApprovedTerms === "object" && deal.lenderApprovedTerms ? deal.lenderApprovedTerms : {}),
+            mockupReview: {
+              decision: input.decision,
+              note: input.note ?? null,
+              reviewedAt: new Date().toISOString(),
+              reviewedBy: userId,
+            },
+          } as Prisma.InputJsonValue,
+        },
+      });
+      await logCustody(tx, {
+        dealId,
+        eventType: "MODIFIED",
+        actorUserId: userId,
+        actorRole,
+        metadata: { phase: "MOCKUP_REVIEW", decision: input.decision, note: input.note ?? null },
+      });
+    });
+  },
+
+  async dealerResubmitAfterCounter(
+    dealId: string,
+    input: { buyerReauthConfirmed: boolean; fees?: number; gap?: number; warranty?: number },
+    userId: string,
+    actorRole: string,
+  ) {
+    return prisma.$transaction(async (tx) => {
+      const deal = await tx.deal.findUnique({ where: { id: dealId } });
+      if (!deal) throw new Error("Deal not found.");
+      if (deal.status !== "LENDER_COUNTER" && deal.status !== "BUYER_REAUTH_PENDING") {
+        throw new Error(`Counter resubmit is not allowed while deal is in ${deal.status}.`);
+      }
+      if (!input.buyerReauthConfirmed) throw new Error("Buyer re-authorization is required.");
+      const financials = await tx.dealFinancials.findUnique({ where: { dealId } });
+      if (financials) {
+        await tx.dealFinancials.update({
+          where: { dealId },
+          data: {
+            fees: input.fees != null ? input.fees : undefined,
+            gap: input.gap != null ? input.gap : undefined,
+            warranty: input.warranty != null ? input.warranty : undefined,
+          },
+        });
+      }
+      await tx.deal.update({
+        where: { id: dealId },
+        data: {
+          status: "LENDER_REVIEW",
+          requiresBuyerReauth: false,
+          mockupLenderStatus: "PENDING",
+        },
+      });
+      await logCustody(tx, {
+        dealId,
+        eventType: "MODIFIED",
+        actorUserId: userId,
+        actorRole,
+        metadata: { phase: "COUNTER_RESUBMIT", buyerReauthConfirmed: true },
+      });
+    });
+  },
+
+  async generateFinalOfficialPackage(dealId: string, userId: string, actorRole: string) {
+    return prisma.$transaction(async (tx) => {
+      const deal = await tx.deal.findUnique({ where: { id: dealId } });
+      if (!deal) throw new Error("Deal not found.");
+      if (deal.status !== "LENDER_FINAL_APPROVAL") {
+        throw new Error(`Final package generation is not allowed while deal is in ${deal.status}.`);
+      }
+
+      const hash = crypto
+        .createHash("sha256")
+        .update(
+          JSON.stringify({
+            dealId,
+            generatedAt: new Date().toISOString(),
+            preliminary: deal.preliminarySubmittedTerms ?? null,
+          }),
+        )
+        .digest("hex");
+
+      const authoritative = await tx.authoritativeContract.upsert({
+        where: { dealId },
+        create: {
+          dealId,
+          version: 1,
+          authoritativeContractHash: hash,
+          governingLaw: deal.state,
+          signatureStatus: "FINAL_PACKAGE_GENERATED",
+          isTransferableRecord: true,
+        },
+        update: {
+          version: { increment: 1 },
+          authoritativeContractHash: hash,
+          signatureStatus: "FINAL_PACKAGE_GENERATED",
+        },
+      });
+
+      const finalRiscVersion = await tx.generatedDocument.aggregate({
+        where: { dealId, type: "FINAL_RISC" },
+        _max: { version: true },
+      });
+      await tx.generatedDocument.create({
+        data: {
+          dealId,
+          authoritativeContractId: authoritative.id,
+          type: "FINAL_RISC",
+          documentType: "RISC_LENDER_FINAL",
+          fileUrl: `/mock-uploads/${dealId}/final-risc-v${(finalRiscVersion._max.version ?? 0) + 1}.pdf`,
+          version: (finalRiscVersion._max.version ?? 0) + 1,
+          isAuthoritative: true,
+          authoritativeContractHash: hash,
+        },
+      });
+
+      const finalPkgVersion = await tx.generatedDocument.aggregate({
+        where: { dealId, type: "FINAL_COORDINATED_PACKAGE" },
+        _max: { version: true },
+      });
+      await tx.generatedDocument.create({
+        data: {
+          dealId,
+          authoritativeContractId: authoritative.id,
+          type: "FINAL_COORDINATED_PACKAGE",
+          documentType: "UCSP_CLOSING_MANIFEST",
+          fileUrl: `/mock-uploads/${dealId}/final-coordinated-package-v${(finalPkgVersion._max.version ?? 0) + 1}.zip`,
+          version: (finalPkgVersion._max.version ?? 0) + 1,
+          isAuthoritative: true,
+          authoritativeContractHash: hash,
+        },
+      });
+
+      await tx.deal.update({
+        where: { id: dealId },
+        data: {
+          status: "AWAITING_LIVE_SIGNATURES",
+          finalPackageHash: hash,
+        },
+      });
+      await logCustody(tx, {
+        dealId,
+        eventType: "GENERATED",
+        actorUserId: userId,
+        actorRole,
+        metadata: { phase: "FINAL_PACKAGE_GENERATED", finalPackageHash: hash },
+      });
+    });
+  },
+
+  async uploadExecutedFinalPackage(dealId: string, input: { fileName: string }, userId: string, actorRole: string) {
+    return prisma.$transaction(async (tx) => {
+      const deal = await tx.deal.findUnique({ where: { id: dealId } });
+      if (!deal) throw new Error("Deal not found.");
+      if (deal.status !== "AWAITING_LIVE_SIGNATURES" && deal.status !== "AWAITING_FUNDING_UPLOAD") {
+        throw new Error(`Final executed package upload is not allowed while deal is in ${deal.status}.`);
+      }
+      const versionAgg = await tx.generatedDocument.aggregate({
+        where: { dealId, type: "FINAL_COORDINATED_PACKAGE" },
+        _max: { version: true },
+      });
+      const version = (versionAgg._max.version ?? 0) + 1;
+      const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]/g, "_") || "final-executed-package.pdf";
+      const fileUrl = `/mock-uploads/${dealId}/final-executed-package-v${version}-${safeName}`;
+      const doc = await tx.generatedDocument.create({
+        data: {
+          dealId,
+          authoritativeContractId: null,
+          type: "FINAL_COORDINATED_PACKAGE",
+          documentType: "DEALER_UPLOAD",
+          fileUrl,
+          version,
+          valuesSnapshot: { executedPackage: true, fileName: input.fileName },
+        },
+      });
+      await logCustody(tx, {
+        dealId,
+        documentId: doc.id,
+        eventType: "UPLOADED",
+        actorUserId: userId,
+        actorRole,
+        metadata: { phase: "FINAL_EXECUTED_UPLOAD", fileUrl },
+      });
+      await tx.deal.update({
+        where: { id: dealId },
+        data: { status: "AWAITING_FUNDING_UPLOAD" },
+      });
+    });
+  },
+
+  async lenderMarkFunded(dealId: string, userId: string, actorRole: string) {
+    return prisma.$transaction(async (tx) => {
+      const deal = await tx.deal.findUnique({ where: { id: dealId } });
+      if (!deal) throw new Error("Deal not found.");
+      if (deal.status !== "AWAITING_FUNDING_UPLOAD") {
+        throw new Error(`Funding mark is not allowed while deal is in ${deal.status}.`);
+      }
+      await tx.deal.update({
+        where: { id: dealId },
+        data: { status: "FUNDED" },
+      });
+      await logCustody(tx, {
+        dealId,
+        eventType: "CERTIFIED",
+        actorUserId: userId,
+        actorRole,
+        metadata: { phase: "FUNDED_APPROVAL" },
+      });
+    });
   },
 
   async generateBMVCertification(_dealId: string, _userId: string, _actorRole: string) {

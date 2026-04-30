@@ -36,6 +36,13 @@ export async function acknowledgeDisclosureFormAction(formData: FormData) {
   revalidatePath(`/dealer/deals/${dealId}`);
 }
 
+export async function signDisclosureOnlineFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const { session } = await requireDealerDeal(dealId);
+  await DealWorkflowService.signDisclosureOnline(dealId, session.user.id, session.user.role);
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
 export async function uploadGreenStageDocAction(formData: FormData) {
   const dealId = String(formData.get("dealId") || "");
   const docType = String(formData.get("docType") || "");
@@ -61,6 +68,47 @@ export async function submitUnsignedRISCAction(formData: FormData) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
   await DealWorkflowService.submitUnsignedRISC(dealId, { fileName }, session.user.id, session.user.role);
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
+export async function resubmitAfterCounterFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const buyerReauthConfirmed = String(formData.get("buyerReauthConfirmed") || "") === "on";
+  const feesRaw = String(formData.get("fees") || "").trim();
+  const gapRaw = String(formData.get("gap") || "").trim();
+  const warrantyRaw = String(formData.get("warranty") || "").trim();
+  const fees = feesRaw ? Number(feesRaw) : undefined;
+  const gap = gapRaw ? Number(gapRaw) : undefined;
+  const warranty = warrantyRaw ? Number(warrantyRaw) : undefined;
+  await requireDealerDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await DealWorkflowService.dealerResubmitAfterCounter(
+    dealId,
+    { buyerReauthConfirmed, fees, gap, warranty },
+    session.user.id,
+    session.user.role,
+  );
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
+export async function generateFinalOfficialPackageFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  await requireDealerDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await DealWorkflowService.generateFinalOfficialPackage(dealId, session.user.id, session.user.role);
+  revalidatePath(`/dealer/deals/${dealId}`);
+}
+
+export async function uploadExecutedFinalPackageFormAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const file = formData.get("file");
+  const fileName = file instanceof File && file.name ? file.name : "final-executed-package.pdf";
+  await requireDealerDeal(dealId);
+  const session = await auth();
+  if (!session?.user) throw new Error("Unauthorized");
+  await DealWorkflowService.uploadExecutedFinalPackage(dealId, { fileName }, session.user.id, session.user.role);
   revalidatePath(`/dealer/deals/${dealId}`);
 }
 

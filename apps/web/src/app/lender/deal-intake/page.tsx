@@ -33,7 +33,14 @@ function needsLenderAttention(args: {
   pendingAmendments: number;
 }): boolean {
   if (args.pendingAmendments > 0) return true;
-  return args.status === "RISC_UNSIGNED_REVIEW" || args.status === "RISC_LENDER_FINAL";
+  return (
+    args.status === "RISC_UNSIGNED_REVIEW" ||
+    args.status === "RISC_LENDER_FINAL" ||
+    args.status === "LENDER_REVIEW" ||
+    args.status === "MOCKUP_SUBMITTED" ||
+    args.status === "LENDER_FINAL_APPROVAL" ||
+    args.status === "AWAITING_FUNDING_UPLOAD"
+  );
 }
 
 function intakePriority(args: {
@@ -44,6 +51,8 @@ function intakePriority(args: {
   let p = 0;
   if (args.pendingAmendments > 0) p += 100;
   if (args.status === "RISC_UNSIGNED_REVIEW" || args.status === "RISC_LENDER_FINAL") p += 80;
+  if (args.status === "LENDER_REVIEW" || args.status === "MOCKUP_SUBMITTED") p += 70;
+  if (args.status === "AWAITING_FUNDING_UPLOAD") p += 60;
   if (args.complianceStatus === "BLOCKED") p += 50;
   if (args.complianceStatus === "WARNING") p += 25;
   return p;

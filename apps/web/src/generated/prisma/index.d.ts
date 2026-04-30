@@ -74,6 +74,16 @@ export type LenderOnboardingAnswer = $Result.DefaultSelection<Prisma.$LenderOnbo
  */
 export type Deal = $Result.DefaultSelection<Prisma.$DealPayload>
 /**
+ * Model LenderTask
+ * 
+ */
+export type LenderTask = $Result.DefaultSelection<Prisma.$LenderTaskPayload>
+/**
+ * Model MissingItemRequest
+ * 
+ */
+export type MissingItemRequest = $Result.DefaultSelection<Prisma.$MissingItemRequestPayload>
+/**
  * Model DealParty
  * 
  */
@@ -311,6 +321,17 @@ export type DealerLenderLinkStatus = (typeof DealerLenderLinkStatus)[keyof typeo
 
 export const DealStatus: {
   DISCLOSURE_REQUIRED: 'DISCLOSURE_REQUIRED',
+  DISCLOSURE_PENDING: 'DISCLOSURE_PENDING',
+  DISCLOSURE_SIGNED: 'DISCLOSURE_SIGNED',
+  MOCKUP_SUBMITTED: 'MOCKUP_SUBMITTED',
+  LENDER_REVIEW: 'LENDER_REVIEW',
+  LENDER_COUNTER: 'LENDER_COUNTER',
+  BUYER_REAUTH_PENDING: 'BUYER_REAUTH_PENDING',
+  LENDER_FINAL_APPROVAL: 'LENDER_FINAL_APPROVAL',
+  FINAL_PACKAGE_GENERATED: 'FINAL_PACKAGE_GENERATED',
+  AWAITING_LIVE_SIGNATURES: 'AWAITING_LIVE_SIGNATURES',
+  AWAITING_FUNDING_UPLOAD: 'AWAITING_FUNDING_UPLOAD',
+  FUNDED: 'FUNDED',
   AUTHORIZED_FOR_STRUCTURING: 'AUTHORIZED_FOR_STRUCTURING',
   GREEN_STAGE: 'GREEN_STAGE',
   RISC_UNSIGNED_REVIEW: 'RISC_UNSIGNED_REVIEW',
@@ -323,6 +344,16 @@ export const DealStatus: {
 };
 
 export type DealStatus = (typeof DealStatus)[keyof typeof DealStatus]
+
+
+export const MockupLenderStatus: {
+  PENDING: 'PENDING',
+  APPROVED_NO_CHANGES: 'APPROVED_NO_CHANGES',
+  COUNTER_OFFERED: 'COUNTER_OFFERED',
+  REJECTED: 'REJECTED'
+};
+
+export type MockupLenderStatus = (typeof MockupLenderStatus)[keyof typeof MockupLenderStatus]
 
 
 export const CustodyEventType: {
@@ -408,6 +439,7 @@ export const LoanPoolType: {
   WHOLE_LOAN: 'WHOLE_LOAN',
   SECURITIZATION: 'SECURITIZATION',
   PRIME: 'PRIME',
+  NEAR_PRIME: 'NEAR_PRIME',
   SUBPRIME: 'SUBPRIME',
   MIXED: 'MIXED',
   CUSTOM: 'CUSTOM'
@@ -525,7 +557,12 @@ export const GeneratedDocumentType: {
   CONTRACT: 'CONTRACT',
   DISCLOSURE: 'DISCLOSURE',
   BUYERS_ORDER: 'BUYERS_ORDER',
-  FUNDING_PACKET: 'FUNDING_PACKET'
+  FUNDING_PACKET: 'FUNDING_PACKET',
+  INITIAL_DISCLOSURE: 'INITIAL_DISCLOSURE',
+  MOCKUP_CONTRACT: 'MOCKUP_CONTRACT',
+  MOCKUP_PACKET: 'MOCKUP_PACKET',
+  FINAL_RISC: 'FINAL_RISC',
+  FINAL_COORDINATED_PACKAGE: 'FINAL_COORDINATED_PACKAGE'
 };
 
 export type GeneratedDocumentType = (typeof GeneratedDocumentType)[keyof typeof GeneratedDocumentType]
@@ -564,6 +601,63 @@ export const DealAlertSeverity: {
 };
 
 export type DealAlertSeverity = (typeof DealAlertSeverity)[keyof typeof DealAlertSeverity]
+
+
+export const LenderTaskCategory: {
+  dealer_relationship: 'dealer_relationship',
+  deal_intake: 'deal_intake',
+  contract_integrity: 'contract_integrity',
+  funding: 'funding',
+  post_funding: 'post_funding',
+  enforcement_readiness: 'enforcement_readiness',
+  pooling: 'pooling',
+  secondary_market: 'secondary_market',
+  document_custody: 'document_custody'
+};
+
+export type LenderTaskCategory = (typeof LenderTaskCategory)[keyof typeof LenderTaskCategory]
+
+
+export const LenderTaskPriority: {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  critical: 'critical'
+};
+
+export type LenderTaskPriority = (typeof LenderTaskPriority)[keyof typeof LenderTaskPriority]
+
+
+export const LenderTaskStatus: {
+  open: 'open',
+  in_progress: 'in_progress',
+  blocked: 'blocked',
+  completed: 'completed',
+  cancelled: 'cancelled',
+  overdue: 'overdue'
+};
+
+export type LenderTaskStatus = (typeof LenderTaskStatus)[keyof typeof LenderTaskStatus]
+
+
+export const MissingItemRequestStatus: {
+  requested: 'requested',
+  uploaded: 'uploaded',
+  accepted: 'accepted',
+  rejected: 'rejected',
+  overdue: 'overdue'
+};
+
+export type MissingItemRequestStatus = (typeof MissingItemRequestStatus)[keyof typeof MissingItemRequestStatus]
+
+
+export const MissingItemReviewStatus: {
+  pending: 'pending',
+  accepted: 'accepted',
+  rejected: 'rejected'
+};
+
+export type MissingItemReviewStatus = (typeof MissingItemReviewStatus)[keyof typeof MissingItemReviewStatus]
 
 
 export const DealAlertAuditAction: {
@@ -635,6 +729,10 @@ export const DealerLenderLinkStatus: typeof $Enums.DealerLenderLinkStatus
 export type DealStatus = $Enums.DealStatus
 
 export const DealStatus: typeof $Enums.DealStatus
+
+export type MockupLenderStatus = $Enums.MockupLenderStatus
+
+export const MockupLenderStatus: typeof $Enums.MockupLenderStatus
 
 export type CustodyEventType = $Enums.CustodyEventType
 
@@ -727,6 +825,26 @@ export const DealAlertStatus: typeof $Enums.DealAlertStatus
 export type DealAlertSeverity = $Enums.DealAlertSeverity
 
 export const DealAlertSeverity: typeof $Enums.DealAlertSeverity
+
+export type LenderTaskCategory = $Enums.LenderTaskCategory
+
+export const LenderTaskCategory: typeof $Enums.LenderTaskCategory
+
+export type LenderTaskPriority = $Enums.LenderTaskPriority
+
+export const LenderTaskPriority: typeof $Enums.LenderTaskPriority
+
+export type LenderTaskStatus = $Enums.LenderTaskStatus
+
+export const LenderTaskStatus: typeof $Enums.LenderTaskStatus
+
+export type MissingItemRequestStatus = $Enums.MissingItemRequestStatus
+
+export const MissingItemRequestStatus: typeof $Enums.MissingItemRequestStatus
+
+export type MissingItemReviewStatus = $Enums.MissingItemReviewStatus
+
+export const MissingItemReviewStatus: typeof $Enums.MissingItemReviewStatus
 
 export type DealAlertAuditAction = $Enums.DealAlertAuditAction
 
@@ -973,6 +1091,26 @@ export class PrismaClient<
     * ```
     */
   get deal(): Prisma.DealDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.lenderTask`: Exposes CRUD operations for the **LenderTask** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LenderTasks
+    * const lenderTasks = await prisma.lenderTask.findMany()
+    * ```
+    */
+  get lenderTask(): Prisma.LenderTaskDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.missingItemRequest`: Exposes CRUD operations for the **MissingItemRequest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MissingItemRequests
+    * const missingItemRequests = await prisma.missingItemRequest.findMany()
+    * ```
+    */
+  get missingItemRequest(): Prisma.MissingItemRequestDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.dealParty`: Exposes CRUD operations for the **DealParty** model.
@@ -1696,6 +1834,8 @@ export namespace Prisma {
     DealerOnboardingAnswer: 'DealerOnboardingAnswer',
     LenderOnboardingAnswer: 'LenderOnboardingAnswer',
     Deal: 'Deal',
+    LenderTask: 'LenderTask',
+    MissingItemRequest: 'MissingItemRequest',
     DealParty: 'DealParty',
     Vehicle: 'Vehicle',
     DealFinancials: 'DealFinancials',
@@ -1741,7 +1881,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "calendarEvent" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "dealAuditEvent" | "account" | "session"
+      modelProps: "user" | "workspace" | "calendarEvent" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "lenderTask" | "missingItemRequest" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "dealAuditEvent" | "account" | "session"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2630,6 +2770,154 @@ export namespace Prisma {
           count: {
             args: Prisma.DealCountArgs<ExtArgs>
             result: $Utils.Optional<DealCountAggregateOutputType> | number
+          }
+        }
+      }
+      LenderTask: {
+        payload: Prisma.$LenderTaskPayload<ExtArgs>
+        fields: Prisma.LenderTaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LenderTaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LenderTaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>
+          }
+          findFirst: {
+            args: Prisma.LenderTaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LenderTaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>
+          }
+          findMany: {
+            args: Prisma.LenderTaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>[]
+          }
+          create: {
+            args: Prisma.LenderTaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>
+          }
+          createMany: {
+            args: Prisma.LenderTaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LenderTaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>[]
+          }
+          delete: {
+            args: Prisma.LenderTaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>
+          }
+          update: {
+            args: Prisma.LenderTaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.LenderTaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LenderTaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LenderTaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.LenderTaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LenderTaskPayload>
+          }
+          aggregate: {
+            args: Prisma.LenderTaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLenderTask>
+          }
+          groupBy: {
+            args: Prisma.LenderTaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LenderTaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LenderTaskCountArgs<ExtArgs>
+            result: $Utils.Optional<LenderTaskCountAggregateOutputType> | number
+          }
+        }
+      }
+      MissingItemRequest: {
+        payload: Prisma.$MissingItemRequestPayload<ExtArgs>
+        fields: Prisma.MissingItemRequestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MissingItemRequestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MissingItemRequestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>
+          }
+          findFirst: {
+            args: Prisma.MissingItemRequestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MissingItemRequestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>
+          }
+          findMany: {
+            args: Prisma.MissingItemRequestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>[]
+          }
+          create: {
+            args: Prisma.MissingItemRequestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>
+          }
+          createMany: {
+            args: Prisma.MissingItemRequestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MissingItemRequestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>[]
+          }
+          delete: {
+            args: Prisma.MissingItemRequestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>
+          }
+          update: {
+            args: Prisma.MissingItemRequestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>
+          }
+          deleteMany: {
+            args: Prisma.MissingItemRequestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MissingItemRequestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MissingItemRequestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>[]
+          }
+          upsert: {
+            args: Prisma.MissingItemRequestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MissingItemRequestPayload>
+          }
+          aggregate: {
+            args: Prisma.MissingItemRequestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMissingItemRequest>
+          }
+          groupBy: {
+            args: Prisma.MissingItemRequestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MissingItemRequestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MissingItemRequestCountArgs<ExtArgs>
+            result: $Utils.Optional<MissingItemRequestCountAggregateOutputType> | number
           }
         }
       }
@@ -4739,6 +5027,8 @@ export namespace Prisma {
     dealerOnboardingAnswer?: DealerOnboardingAnswerOmit
     lenderOnboardingAnswer?: LenderOnboardingAnswerOmit
     deal?: DealOmit
+    lenderTask?: LenderTaskOmit
+    missingItemRequest?: MissingItemRequestOmit
     dealParty?: DealPartyOmit
     vehicle?: VehicleOmit
     dealFinancials?: DealFinancialsOmit
@@ -4975,6 +5265,10 @@ export namespace Prisma {
     webhookEndpoints: number
     accessAudits: number
     calendarEvents: number
+    lenderTasks: number
+    dealerTasks: number
+    lenderMissingItemRequests: number
+    dealerMissingItemRequests: number
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4995,6 +5289,10 @@ export namespace Prisma {
     webhookEndpoints?: boolean | WorkspaceCountOutputTypeCountWebhookEndpointsArgs
     accessAudits?: boolean | WorkspaceCountOutputTypeCountAccessAuditsArgs
     calendarEvents?: boolean | WorkspaceCountOutputTypeCountCalendarEventsArgs
+    lenderTasks?: boolean | WorkspaceCountOutputTypeCountLenderTasksArgs
+    dealerTasks?: boolean | WorkspaceCountOutputTypeCountDealerTasksArgs
+    lenderMissingItemRequests?: boolean | WorkspaceCountOutputTypeCountLenderMissingItemRequestsArgs
+    dealerMissingItemRequests?: boolean | WorkspaceCountOutputTypeCountDealerMissingItemRequestsArgs
   }
 
   // Custom InputTypes
@@ -5127,6 +5425,34 @@ export namespace Prisma {
     where?: CalendarEventWhereInput
   }
 
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountLenderTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LenderTaskWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountDealerTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LenderTaskWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountLenderMissingItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MissingItemRequestWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountDealerMissingItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MissingItemRequestWhereInput
+  }
+
 
   /**
    * Count Type DealerLenderLinkCountOutputType
@@ -5176,6 +5502,8 @@ export namespace Prisma {
     comments: number
     auditEvents: number
     calendarEvents: number
+    lenderTasks: number
+    missingItemRequests: number
   }
 
   export type DealCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5191,6 +5519,8 @@ export namespace Prisma {
     comments?: boolean | DealCountOutputTypeCountCommentsArgs
     auditEvents?: boolean | DealCountOutputTypeCountAuditEventsArgs
     calendarEvents?: boolean | DealCountOutputTypeCountCalendarEventsArgs
+    lenderTasks?: boolean | DealCountOutputTypeCountLenderTasksArgs
+    missingItemRequests?: boolean | DealCountOutputTypeCountMissingItemRequestsArgs
   }
 
   // Custom InputTypes
@@ -5288,6 +5618,20 @@ export namespace Prisma {
     where?: CalendarEventWhereInput
   }
 
+  /**
+   * DealCountOutputType without action
+   */
+  export type DealCountOutputTypeCountLenderTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LenderTaskWhereInput
+  }
+
+  /**
+   * DealCountOutputType without action
+   */
+  export type DealCountOutputTypeCountMissingItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MissingItemRequestWhereInput
+  }
+
 
   /**
    * Count Type AuthoritativeContractCountOutputType
@@ -5335,10 +5679,12 @@ export namespace Prisma {
 
   export type LoanPoolCountOutputType = {
     deals: number
+    lenderTasks: number
   }
 
   export type LoanPoolCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deals?: boolean | LoanPoolCountOutputTypeCountDealsArgs
+    lenderTasks?: boolean | LoanPoolCountOutputTypeCountLenderTasksArgs
   }
 
   // Custom InputTypes
@@ -5357,6 +5703,13 @@ export namespace Prisma {
    */
   export type LoanPoolCountOutputTypeCountDealsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DealWhereInput
+  }
+
+  /**
+   * LoanPoolCountOutputType without action
+   */
+  export type LoanPoolCountOutputTypeCountLenderTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LenderTaskWhereInput
   }
 
 
@@ -7205,6 +7558,10 @@ export namespace Prisma {
     webhookEndpoints?: boolean | Workspace$webhookEndpointsArgs<ExtArgs>
     accessAudits?: boolean | Workspace$accessAuditsArgs<ExtArgs>
     calendarEvents?: boolean | Workspace$calendarEventsArgs<ExtArgs>
+    lenderTasks?: boolean | Workspace$lenderTasksArgs<ExtArgs>
+    dealerTasks?: boolean | Workspace$dealerTasksArgs<ExtArgs>
+    lenderMissingItemRequests?: boolean | Workspace$lenderMissingItemRequestsArgs<ExtArgs>
+    dealerMissingItemRequests?: boolean | Workspace$dealerMissingItemRequestsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
@@ -7259,6 +7616,10 @@ export namespace Prisma {
     webhookEndpoints?: boolean | Workspace$webhookEndpointsArgs<ExtArgs>
     accessAudits?: boolean | Workspace$accessAuditsArgs<ExtArgs>
     calendarEvents?: boolean | Workspace$calendarEventsArgs<ExtArgs>
+    lenderTasks?: boolean | Workspace$lenderTasksArgs<ExtArgs>
+    dealerTasks?: boolean | Workspace$dealerTasksArgs<ExtArgs>
+    lenderMissingItemRequests?: boolean | Workspace$lenderMissingItemRequestsArgs<ExtArgs>
+    dealerMissingItemRequests?: boolean | Workspace$dealerMissingItemRequestsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7286,6 +7647,10 @@ export namespace Prisma {
       webhookEndpoints: Prisma.$WebhookEndpointPayload<ExtArgs>[]
       accessAudits: Prisma.$UserAccessAuditPayload<ExtArgs>[]
       calendarEvents: Prisma.$CalendarEventPayload<ExtArgs>[]
+      lenderTasks: Prisma.$LenderTaskPayload<ExtArgs>[]
+      dealerTasks: Prisma.$LenderTaskPayload<ExtArgs>[]
+      lenderMissingItemRequests: Prisma.$MissingItemRequestPayload<ExtArgs>[]
+      dealerMissingItemRequests: Prisma.$MissingItemRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7708,6 +8073,10 @@ export namespace Prisma {
     webhookEndpoints<T extends Workspace$webhookEndpointsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$webhookEndpointsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookEndpointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accessAudits<T extends Workspace$accessAuditsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$accessAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserAccessAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     calendarEvents<T extends Workspace$calendarEventsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$calendarEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    lenderTasks<T extends Workspace$lenderTasksArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$lenderTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dealerTasks<T extends Workspace$dealerTasksArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$dealerTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    lenderMissingItemRequests<T extends Workspace$lenderMissingItemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$lenderMissingItemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dealerMissingItemRequests<T extends Workspace$dealerMissingItemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$dealerMissingItemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8575,6 +8944,102 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.lenderTasks
+   */
+  export type Workspace$lenderTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    where?: LenderTaskWhereInput
+    orderBy?: LenderTaskOrderByWithRelationInput | LenderTaskOrderByWithRelationInput[]
+    cursor?: LenderTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LenderTaskScalarFieldEnum | LenderTaskScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.dealerTasks
+   */
+  export type Workspace$dealerTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    where?: LenderTaskWhereInput
+    orderBy?: LenderTaskOrderByWithRelationInput | LenderTaskOrderByWithRelationInput[]
+    cursor?: LenderTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LenderTaskScalarFieldEnum | LenderTaskScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.lenderMissingItemRequests
+   */
+  export type Workspace$lenderMissingItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    where?: MissingItemRequestWhereInput
+    orderBy?: MissingItemRequestOrderByWithRelationInput | MissingItemRequestOrderByWithRelationInput[]
+    cursor?: MissingItemRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MissingItemRequestScalarFieldEnum | MissingItemRequestScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.dealerMissingItemRequests
+   */
+  export type Workspace$dealerMissingItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    where?: MissingItemRequestWhereInput
+    orderBy?: MissingItemRequestOrderByWithRelationInput | MissingItemRequestOrderByWithRelationInput[]
+    cursor?: MissingItemRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MissingItemRequestScalarFieldEnum | MissingItemRequestScalarFieldEnum[]
   }
 
   /**
@@ -18699,6 +19164,9 @@ export namespace Prisma {
     initialDisclosureHash: string | null
     initialDisclosureSignerName: string | null
     dealerRepresentativeName: string | null
+    mockupLenderStatus: $Enums.MockupLenderStatus | null
+    requiresBuyerReauth: boolean | null
+    finalPackageHash: string | null
     complianceStatus: $Enums.DealComplianceStatus | null
     poolId: string | null
     secondaryMarketStatus: $Enums.SecondaryMarketStatus | null
@@ -18719,6 +19187,9 @@ export namespace Prisma {
     initialDisclosureHash: string | null
     initialDisclosureSignerName: string | null
     dealerRepresentativeName: string | null
+    mockupLenderStatus: $Enums.MockupLenderStatus | null
+    requiresBuyerReauth: boolean | null
+    finalPackageHash: string | null
     complianceStatus: $Enums.DealComplianceStatus | null
     poolId: string | null
     secondaryMarketStatus: $Enums.SecondaryMarketStatus | null
@@ -18742,6 +19213,9 @@ export namespace Prisma {
     governingStateProfile: number
     preliminarySubmittedTerms: number
     lenderApprovedTerms: number
+    mockupLenderStatus: number
+    requiresBuyerReauth: number
+    finalPackageHash: number
     complianceStatus: number
     consummatedData: number
     poolId: number
@@ -18765,6 +19239,9 @@ export namespace Prisma {
     initialDisclosureHash?: true
     initialDisclosureSignerName?: true
     dealerRepresentativeName?: true
+    mockupLenderStatus?: true
+    requiresBuyerReauth?: true
+    finalPackageHash?: true
     complianceStatus?: true
     poolId?: true
     secondaryMarketStatus?: true
@@ -18785,6 +19262,9 @@ export namespace Prisma {
     initialDisclosureHash?: true
     initialDisclosureSignerName?: true
     dealerRepresentativeName?: true
+    mockupLenderStatus?: true
+    requiresBuyerReauth?: true
+    finalPackageHash?: true
     complianceStatus?: true
     poolId?: true
     secondaryMarketStatus?: true
@@ -18808,6 +19288,9 @@ export namespace Prisma {
     governingStateProfile?: true
     preliminarySubmittedTerms?: true
     lenderApprovedTerms?: true
+    mockupLenderStatus?: true
+    requiresBuyerReauth?: true
+    finalPackageHash?: true
     complianceStatus?: true
     consummatedData?: true
     poolId?: true
@@ -18905,6 +19388,9 @@ export namespace Prisma {
     governingStateProfile: JsonValue | null
     preliminarySubmittedTerms: JsonValue | null
     lenderApprovedTerms: JsonValue | null
+    mockupLenderStatus: $Enums.MockupLenderStatus
+    requiresBuyerReauth: boolean
+    finalPackageHash: string | null
     complianceStatus: $Enums.DealComplianceStatus
     consummatedData: JsonValue | null
     poolId: string | null
@@ -18946,6 +19432,9 @@ export namespace Prisma {
     governingStateProfile?: boolean
     preliminarySubmittedTerms?: boolean
     lenderApprovedTerms?: boolean
+    mockupLenderStatus?: boolean
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: boolean
     complianceStatus?: boolean
     consummatedData?: boolean
     poolId?: boolean
@@ -18975,6 +19464,8 @@ export namespace Prisma {
     comments?: boolean | Deal$commentsArgs<ExtArgs>
     auditEvents?: boolean | Deal$auditEventsArgs<ExtArgs>
     calendarEvents?: boolean | Deal$calendarEventsArgs<ExtArgs>
+    lenderTasks?: boolean | Deal$lenderTasksArgs<ExtArgs>
+    missingItemRequests?: boolean | Deal$missingItemRequestsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deal"]>
 
@@ -18992,6 +19483,9 @@ export namespace Prisma {
     governingStateProfile?: boolean
     preliminarySubmittedTerms?: boolean
     lenderApprovedTerms?: boolean
+    mockupLenderStatus?: boolean
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: boolean
     complianceStatus?: boolean
     consummatedData?: boolean
     poolId?: boolean
@@ -19020,6 +19514,9 @@ export namespace Prisma {
     governingStateProfile?: boolean
     preliminarySubmittedTerms?: boolean
     lenderApprovedTerms?: boolean
+    mockupLenderStatus?: boolean
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: boolean
     complianceStatus?: boolean
     consummatedData?: boolean
     poolId?: boolean
@@ -19048,6 +19545,9 @@ export namespace Prisma {
     governingStateProfile?: boolean
     preliminarySubmittedTerms?: boolean
     lenderApprovedTerms?: boolean
+    mockupLenderStatus?: boolean
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: boolean
     complianceStatus?: boolean
     consummatedData?: boolean
     poolId?: boolean
@@ -19058,7 +19558,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DealOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealerId" | "lenderId" | "dealerLenderLinkId" | "status" | "state" | "initialDisclosureAcceptedAt" | "initialDisclosureHash" | "initialDisclosureSignerName" | "dealerRepresentativeName" | "governingStateProfile" | "preliminarySubmittedTerms" | "lenderApprovedTerms" | "complianceStatus" | "consummatedData" | "poolId" | "secondaryMarketStatus" | "secondaryMarketGrade" | "apiIngressKeyId" | "createdAt" | "updatedAt", ExtArgs["result"]["deal"]>
+  export type DealOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "dealerId" | "lenderId" | "dealerLenderLinkId" | "status" | "state" | "initialDisclosureAcceptedAt" | "initialDisclosureHash" | "initialDisclosureSignerName" | "dealerRepresentativeName" | "governingStateProfile" | "preliminarySubmittedTerms" | "lenderApprovedTerms" | "mockupLenderStatus" | "requiresBuyerReauth" | "finalPackageHash" | "complianceStatus" | "consummatedData" | "poolId" | "secondaryMarketStatus" | "secondaryMarketGrade" | "apiIngressKeyId" | "createdAt" | "updatedAt", ExtArgs["result"]["deal"]>
   export type DealInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -19081,6 +19581,8 @@ export namespace Prisma {
     comments?: boolean | Deal$commentsArgs<ExtArgs>
     auditEvents?: boolean | Deal$auditEventsArgs<ExtArgs>
     calendarEvents?: boolean | Deal$calendarEventsArgs<ExtArgs>
+    lenderTasks?: boolean | Deal$lenderTasksArgs<ExtArgs>
+    missingItemRequests?: boolean | Deal$missingItemRequestsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DealIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19120,6 +19622,8 @@ export namespace Prisma {
       comments: Prisma.$DealCommentPayload<ExtArgs>[]
       auditEvents: Prisma.$DealAuditEventPayload<ExtArgs>[]
       calendarEvents: Prisma.$CalendarEventPayload<ExtArgs>[]
+      lenderTasks: Prisma.$LenderTaskPayload<ExtArgs>[]
+      missingItemRequests: Prisma.$MissingItemRequestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19135,6 +19639,9 @@ export namespace Prisma {
       governingStateProfile: Prisma.JsonValue | null
       preliminarySubmittedTerms: Prisma.JsonValue | null
       lenderApprovedTerms: Prisma.JsonValue | null
+      mockupLenderStatus: $Enums.MockupLenderStatus
+      requiresBuyerReauth: boolean
+      finalPackageHash: string | null
       complianceStatus: $Enums.DealComplianceStatus
       consummatedData: Prisma.JsonValue | null
       poolId: string | null
@@ -19558,6 +20065,8 @@ export namespace Prisma {
     comments<T extends Deal$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     auditEvents<T extends Deal$auditEventsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$auditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     calendarEvents<T extends Deal$calendarEventsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$calendarEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    lenderTasks<T extends Deal$lenderTasksArgs<ExtArgs> = {}>(args?: Subset<T, Deal$lenderTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    missingItemRequests<T extends Deal$missingItemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$missingItemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19600,6 +20109,9 @@ export namespace Prisma {
     readonly governingStateProfile: FieldRef<"Deal", 'Json'>
     readonly preliminarySubmittedTerms: FieldRef<"Deal", 'Json'>
     readonly lenderApprovedTerms: FieldRef<"Deal", 'Json'>
+    readonly mockupLenderStatus: FieldRef<"Deal", 'MockupLenderStatus'>
+    readonly requiresBuyerReauth: FieldRef<"Deal", 'Boolean'>
+    readonly finalPackageHash: FieldRef<"Deal", 'String'>
     readonly complianceStatus: FieldRef<"Deal", 'DealComplianceStatus'>
     readonly consummatedData: FieldRef<"Deal", 'Json'>
     readonly poolId: FieldRef<"Deal", 'String'>
@@ -20406,6 +20918,54 @@ export namespace Prisma {
   }
 
   /**
+   * Deal.lenderTasks
+   */
+  export type Deal$lenderTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    where?: LenderTaskWhereInput
+    orderBy?: LenderTaskOrderByWithRelationInput | LenderTaskOrderByWithRelationInput[]
+    cursor?: LenderTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LenderTaskScalarFieldEnum | LenderTaskScalarFieldEnum[]
+  }
+
+  /**
+   * Deal.missingItemRequests
+   */
+  export type Deal$missingItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    where?: MissingItemRequestWhereInput
+    orderBy?: MissingItemRequestOrderByWithRelationInput | MissingItemRequestOrderByWithRelationInput[]
+    cursor?: MissingItemRequestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MissingItemRequestScalarFieldEnum | MissingItemRequestScalarFieldEnum[]
+  }
+
+  /**
    * Deal without action
    */
   export type DealDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20421,6 +20981,2518 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DealInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LenderTask
+   */
+
+  export type AggregateLenderTask = {
+    _count: LenderTaskCountAggregateOutputType | null
+    _min: LenderTaskMinAggregateOutputType | null
+    _max: LenderTaskMaxAggregateOutputType | null
+  }
+
+  export type LenderTaskMinAggregateOutputType = {
+    id: string | null
+    lenderId: string | null
+    dealId: string | null
+    dealerId: string | null
+    poolId: string | null
+    title: string | null
+    description: string | null
+    category: $Enums.LenderTaskCategory | null
+    priority: $Enums.LenderTaskPriority | null
+    status: $Enums.LenderTaskStatus | null
+    dueDate: Date | null
+    assignedTo: string | null
+    source: string | null
+    auditEventId: string | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LenderTaskMaxAggregateOutputType = {
+    id: string | null
+    lenderId: string | null
+    dealId: string | null
+    dealerId: string | null
+    poolId: string | null
+    title: string | null
+    description: string | null
+    category: $Enums.LenderTaskCategory | null
+    priority: $Enums.LenderTaskPriority | null
+    status: $Enums.LenderTaskStatus | null
+    dueDate: Date | null
+    assignedTo: string | null
+    source: string | null
+    auditEventId: string | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LenderTaskCountAggregateOutputType = {
+    id: number
+    lenderId: number
+    dealId: number
+    dealerId: number
+    poolId: number
+    title: number
+    description: number
+    category: number
+    priority: number
+    status: number
+    dueDate: number
+    assignedTo: number
+    source: number
+    auditEventId: number
+    completedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LenderTaskMinAggregateInputType = {
+    id?: true
+    lenderId?: true
+    dealId?: true
+    dealerId?: true
+    poolId?: true
+    title?: true
+    description?: true
+    category?: true
+    priority?: true
+    status?: true
+    dueDate?: true
+    assignedTo?: true
+    source?: true
+    auditEventId?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LenderTaskMaxAggregateInputType = {
+    id?: true
+    lenderId?: true
+    dealId?: true
+    dealerId?: true
+    poolId?: true
+    title?: true
+    description?: true
+    category?: true
+    priority?: true
+    status?: true
+    dueDate?: true
+    assignedTo?: true
+    source?: true
+    auditEventId?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LenderTaskCountAggregateInputType = {
+    id?: true
+    lenderId?: true
+    dealId?: true
+    dealerId?: true
+    poolId?: true
+    title?: true
+    description?: true
+    category?: true
+    priority?: true
+    status?: true
+    dueDate?: true
+    assignedTo?: true
+    source?: true
+    auditEventId?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LenderTaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LenderTask to aggregate.
+     */
+    where?: LenderTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LenderTasks to fetch.
+     */
+    orderBy?: LenderTaskOrderByWithRelationInput | LenderTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LenderTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LenderTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LenderTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LenderTasks
+    **/
+    _count?: true | LenderTaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LenderTaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LenderTaskMaxAggregateInputType
+  }
+
+  export type GetLenderTaskAggregateType<T extends LenderTaskAggregateArgs> = {
+        [P in keyof T & keyof AggregateLenderTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLenderTask[P]>
+      : GetScalarType<T[P], AggregateLenderTask[P]>
+  }
+
+
+
+
+  export type LenderTaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LenderTaskWhereInput
+    orderBy?: LenderTaskOrderByWithAggregationInput | LenderTaskOrderByWithAggregationInput[]
+    by: LenderTaskScalarFieldEnum[] | LenderTaskScalarFieldEnum
+    having?: LenderTaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LenderTaskCountAggregateInputType | true
+    _min?: LenderTaskMinAggregateInputType
+    _max?: LenderTaskMaxAggregateInputType
+  }
+
+  export type LenderTaskGroupByOutputType = {
+    id: string
+    lenderId: string
+    dealId: string | null
+    dealerId: string | null
+    poolId: string | null
+    title: string
+    description: string | null
+    category: $Enums.LenderTaskCategory
+    priority: $Enums.LenderTaskPriority
+    status: $Enums.LenderTaskStatus
+    dueDate: Date | null
+    assignedTo: string | null
+    source: string | null
+    auditEventId: string | null
+    completedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: LenderTaskCountAggregateOutputType | null
+    _min: LenderTaskMinAggregateOutputType | null
+    _max: LenderTaskMaxAggregateOutputType | null
+  }
+
+  type GetLenderTaskGroupByPayload<T extends LenderTaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LenderTaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LenderTaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LenderTaskGroupByOutputType[P]>
+            : GetScalarType<T[P], LenderTaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LenderTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    lenderId?: boolean
+    dealId?: boolean
+    dealerId?: boolean
+    poolId?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    priority?: boolean
+    status?: boolean
+    dueDate?: boolean
+    assignedTo?: boolean
+    source?: boolean
+    auditEventId?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | LenderTask$dealerArgs<ExtArgs>
+    deal?: boolean | LenderTask$dealArgs<ExtArgs>
+    pool?: boolean | LenderTask$poolArgs<ExtArgs>
+  }, ExtArgs["result"]["lenderTask"]>
+
+  export type LenderTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    lenderId?: boolean
+    dealId?: boolean
+    dealerId?: boolean
+    poolId?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    priority?: boolean
+    status?: boolean
+    dueDate?: boolean
+    assignedTo?: boolean
+    source?: boolean
+    auditEventId?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | LenderTask$dealerArgs<ExtArgs>
+    deal?: boolean | LenderTask$dealArgs<ExtArgs>
+    pool?: boolean | LenderTask$poolArgs<ExtArgs>
+  }, ExtArgs["result"]["lenderTask"]>
+
+  export type LenderTaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    lenderId?: boolean
+    dealId?: boolean
+    dealerId?: boolean
+    poolId?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    priority?: boolean
+    status?: boolean
+    dueDate?: boolean
+    assignedTo?: boolean
+    source?: boolean
+    auditEventId?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | LenderTask$dealerArgs<ExtArgs>
+    deal?: boolean | LenderTask$dealArgs<ExtArgs>
+    pool?: boolean | LenderTask$poolArgs<ExtArgs>
+  }, ExtArgs["result"]["lenderTask"]>
+
+  export type LenderTaskSelectScalar = {
+    id?: boolean
+    lenderId?: boolean
+    dealId?: boolean
+    dealerId?: boolean
+    poolId?: boolean
+    title?: boolean
+    description?: boolean
+    category?: boolean
+    priority?: boolean
+    status?: boolean
+    dueDate?: boolean
+    assignedTo?: boolean
+    source?: boolean
+    auditEventId?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LenderTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "lenderId" | "dealId" | "dealerId" | "poolId" | "title" | "description" | "category" | "priority" | "status" | "dueDate" | "assignedTo" | "source" | "auditEventId" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["lenderTask"]>
+  export type LenderTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | LenderTask$dealerArgs<ExtArgs>
+    deal?: boolean | LenderTask$dealArgs<ExtArgs>
+    pool?: boolean | LenderTask$poolArgs<ExtArgs>
+  }
+  export type LenderTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | LenderTask$dealerArgs<ExtArgs>
+    deal?: boolean | LenderTask$dealArgs<ExtArgs>
+    pool?: boolean | LenderTask$poolArgs<ExtArgs>
+  }
+  export type LenderTaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | LenderTask$dealerArgs<ExtArgs>
+    deal?: boolean | LenderTask$dealArgs<ExtArgs>
+    pool?: boolean | LenderTask$poolArgs<ExtArgs>
+  }
+
+  export type $LenderTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LenderTask"
+    objects: {
+      lender: Prisma.$WorkspacePayload<ExtArgs>
+      dealer: Prisma.$WorkspacePayload<ExtArgs> | null
+      deal: Prisma.$DealPayload<ExtArgs> | null
+      pool: Prisma.$LoanPoolPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      lenderId: string
+      dealId: string | null
+      dealerId: string | null
+      poolId: string | null
+      title: string
+      description: string | null
+      category: $Enums.LenderTaskCategory
+      priority: $Enums.LenderTaskPriority
+      status: $Enums.LenderTaskStatus
+      dueDate: Date | null
+      assignedTo: string | null
+      source: string | null
+      auditEventId: string | null
+      completedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["lenderTask"]>
+    composites: {}
+  }
+
+  type LenderTaskGetPayload<S extends boolean | null | undefined | LenderTaskDefaultArgs> = $Result.GetResult<Prisma.$LenderTaskPayload, S>
+
+  type LenderTaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LenderTaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LenderTaskCountAggregateInputType | true
+    }
+
+  export interface LenderTaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LenderTask'], meta: { name: 'LenderTask' } }
+    /**
+     * Find zero or one LenderTask that matches the filter.
+     * @param {LenderTaskFindUniqueArgs} args - Arguments to find a LenderTask
+     * @example
+     * // Get one LenderTask
+     * const lenderTask = await prisma.lenderTask.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LenderTaskFindUniqueArgs>(args: SelectSubset<T, LenderTaskFindUniqueArgs<ExtArgs>>): Prisma__LenderTaskClient<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LenderTask that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LenderTaskFindUniqueOrThrowArgs} args - Arguments to find a LenderTask
+     * @example
+     * // Get one LenderTask
+     * const lenderTask = await prisma.lenderTask.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LenderTaskFindUniqueOrThrowArgs>(args: SelectSubset<T, LenderTaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LenderTaskClient<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LenderTask that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LenderTaskFindFirstArgs} args - Arguments to find a LenderTask
+     * @example
+     * // Get one LenderTask
+     * const lenderTask = await prisma.lenderTask.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LenderTaskFindFirstArgs>(args?: SelectSubset<T, LenderTaskFindFirstArgs<ExtArgs>>): Prisma__LenderTaskClient<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LenderTask that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LenderTaskFindFirstOrThrowArgs} args - Arguments to find a LenderTask
+     * @example
+     * // Get one LenderTask
+     * const lenderTask = await prisma.lenderTask.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LenderTaskFindFirstOrThrowArgs>(args?: SelectSubset<T, LenderTaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__LenderTaskClient<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LenderTasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LenderTaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LenderTasks
+     * const lenderTasks = await prisma.lenderTask.findMany()
+     * 
+     * // Get first 10 LenderTasks
+     * const lenderTasks = await prisma.lenderTask.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const lenderTaskWithIdOnly = await prisma.lenderTask.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LenderTaskFindManyArgs>(args?: SelectSubset<T, LenderTaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LenderTask.
+     * @param {LenderTaskCreateArgs} args - Arguments to create a LenderTask.
+     * @example
+     * // Create one LenderTask
+     * const LenderTask = await prisma.lenderTask.create({
+     *   data: {
+     *     // ... data to create a LenderTask
+     *   }
+     * })
+     * 
+     */
+    create<T extends LenderTaskCreateArgs>(args: SelectSubset<T, LenderTaskCreateArgs<ExtArgs>>): Prisma__LenderTaskClient<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LenderTasks.
+     * @param {LenderTaskCreateManyArgs} args - Arguments to create many LenderTasks.
+     * @example
+     * // Create many LenderTasks
+     * const lenderTask = await prisma.lenderTask.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LenderTaskCreateManyArgs>(args?: SelectSubset<T, LenderTaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LenderTasks and returns the data saved in the database.
+     * @param {LenderTaskCreateManyAndReturnArgs} args - Arguments to create many LenderTasks.
+     * @example
+     * // Create many LenderTasks
+     * const lenderTask = await prisma.lenderTask.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LenderTasks and only return the `id`
+     * const lenderTaskWithIdOnly = await prisma.lenderTask.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LenderTaskCreateManyAndReturnArgs>(args?: SelectSubset<T, LenderTaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LenderTask.
+     * @param {LenderTaskDeleteArgs} args - Arguments to delete one LenderTask.
+     * @example
+     * // Delete one LenderTask
+     * const LenderTask = await prisma.lenderTask.delete({
+     *   where: {
+     *     // ... filter to delete one LenderTask
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LenderTaskDeleteArgs>(args: SelectSubset<T, LenderTaskDeleteArgs<ExtArgs>>): Prisma__LenderTaskClient<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LenderTask.
+     * @param {LenderTaskUpdateArgs} args - Arguments to update one LenderTask.
+     * @example
+     * // Update one LenderTask
+     * const lenderTask = await prisma.lenderTask.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LenderTaskUpdateArgs>(args: SelectSubset<T, LenderTaskUpdateArgs<ExtArgs>>): Prisma__LenderTaskClient<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LenderTasks.
+     * @param {LenderTaskDeleteManyArgs} args - Arguments to filter LenderTasks to delete.
+     * @example
+     * // Delete a few LenderTasks
+     * const { count } = await prisma.lenderTask.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LenderTaskDeleteManyArgs>(args?: SelectSubset<T, LenderTaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LenderTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LenderTaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LenderTasks
+     * const lenderTask = await prisma.lenderTask.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LenderTaskUpdateManyArgs>(args: SelectSubset<T, LenderTaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LenderTasks and returns the data updated in the database.
+     * @param {LenderTaskUpdateManyAndReturnArgs} args - Arguments to update many LenderTasks.
+     * @example
+     * // Update many LenderTasks
+     * const lenderTask = await prisma.lenderTask.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LenderTasks and only return the `id`
+     * const lenderTaskWithIdOnly = await prisma.lenderTask.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LenderTaskUpdateManyAndReturnArgs>(args: SelectSubset<T, LenderTaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LenderTask.
+     * @param {LenderTaskUpsertArgs} args - Arguments to update or create a LenderTask.
+     * @example
+     * // Update or create a LenderTask
+     * const lenderTask = await prisma.lenderTask.upsert({
+     *   create: {
+     *     // ... data to create a LenderTask
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LenderTask we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LenderTaskUpsertArgs>(args: SelectSubset<T, LenderTaskUpsertArgs<ExtArgs>>): Prisma__LenderTaskClient<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LenderTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LenderTaskCountArgs} args - Arguments to filter LenderTasks to count.
+     * @example
+     * // Count the number of LenderTasks
+     * const count = await prisma.lenderTask.count({
+     *   where: {
+     *     // ... the filter for the LenderTasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends LenderTaskCountArgs>(
+      args?: Subset<T, LenderTaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LenderTaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LenderTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LenderTaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LenderTaskAggregateArgs>(args: Subset<T, LenderTaskAggregateArgs>): Prisma.PrismaPromise<GetLenderTaskAggregateType<T>>
+
+    /**
+     * Group by LenderTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LenderTaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LenderTaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LenderTaskGroupByArgs['orderBy'] }
+        : { orderBy?: LenderTaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LenderTaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLenderTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LenderTask model
+   */
+  readonly fields: LenderTaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LenderTask.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LenderTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lender<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    dealer<T extends LenderTask$dealerArgs<ExtArgs> = {}>(args?: Subset<T, LenderTask$dealerArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    deal<T extends LenderTask$dealArgs<ExtArgs> = {}>(args?: Subset<T, LenderTask$dealArgs<ExtArgs>>): Prisma__DealClient<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    pool<T extends LenderTask$poolArgs<ExtArgs> = {}>(args?: Subset<T, LenderTask$poolArgs<ExtArgs>>): Prisma__LoanPoolClient<$Result.GetResult<Prisma.$LoanPoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LenderTask model
+   */
+  interface LenderTaskFieldRefs {
+    readonly id: FieldRef<"LenderTask", 'String'>
+    readonly lenderId: FieldRef<"LenderTask", 'String'>
+    readonly dealId: FieldRef<"LenderTask", 'String'>
+    readonly dealerId: FieldRef<"LenderTask", 'String'>
+    readonly poolId: FieldRef<"LenderTask", 'String'>
+    readonly title: FieldRef<"LenderTask", 'String'>
+    readonly description: FieldRef<"LenderTask", 'String'>
+    readonly category: FieldRef<"LenderTask", 'LenderTaskCategory'>
+    readonly priority: FieldRef<"LenderTask", 'LenderTaskPriority'>
+    readonly status: FieldRef<"LenderTask", 'LenderTaskStatus'>
+    readonly dueDate: FieldRef<"LenderTask", 'DateTime'>
+    readonly assignedTo: FieldRef<"LenderTask", 'String'>
+    readonly source: FieldRef<"LenderTask", 'String'>
+    readonly auditEventId: FieldRef<"LenderTask", 'String'>
+    readonly completedAt: FieldRef<"LenderTask", 'DateTime'>
+    readonly createdAt: FieldRef<"LenderTask", 'DateTime'>
+    readonly updatedAt: FieldRef<"LenderTask", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LenderTask findUnique
+   */
+  export type LenderTaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which LenderTask to fetch.
+     */
+    where: LenderTaskWhereUniqueInput
+  }
+
+  /**
+   * LenderTask findUniqueOrThrow
+   */
+  export type LenderTaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which LenderTask to fetch.
+     */
+    where: LenderTaskWhereUniqueInput
+  }
+
+  /**
+   * LenderTask findFirst
+   */
+  export type LenderTaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which LenderTask to fetch.
+     */
+    where?: LenderTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LenderTasks to fetch.
+     */
+    orderBy?: LenderTaskOrderByWithRelationInput | LenderTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LenderTasks.
+     */
+    cursor?: LenderTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LenderTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LenderTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LenderTasks.
+     */
+    distinct?: LenderTaskScalarFieldEnum | LenderTaskScalarFieldEnum[]
+  }
+
+  /**
+   * LenderTask findFirstOrThrow
+   */
+  export type LenderTaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which LenderTask to fetch.
+     */
+    where?: LenderTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LenderTasks to fetch.
+     */
+    orderBy?: LenderTaskOrderByWithRelationInput | LenderTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LenderTasks.
+     */
+    cursor?: LenderTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LenderTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LenderTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LenderTasks.
+     */
+    distinct?: LenderTaskScalarFieldEnum | LenderTaskScalarFieldEnum[]
+  }
+
+  /**
+   * LenderTask findMany
+   */
+  export type LenderTaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which LenderTasks to fetch.
+     */
+    where?: LenderTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LenderTasks to fetch.
+     */
+    orderBy?: LenderTaskOrderByWithRelationInput | LenderTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LenderTasks.
+     */
+    cursor?: LenderTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LenderTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LenderTasks.
+     */
+    skip?: number
+    distinct?: LenderTaskScalarFieldEnum | LenderTaskScalarFieldEnum[]
+  }
+
+  /**
+   * LenderTask create
+   */
+  export type LenderTaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LenderTask.
+     */
+    data: XOR<LenderTaskCreateInput, LenderTaskUncheckedCreateInput>
+  }
+
+  /**
+   * LenderTask createMany
+   */
+  export type LenderTaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LenderTasks.
+     */
+    data: LenderTaskCreateManyInput | LenderTaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LenderTask createManyAndReturn
+   */
+  export type LenderTaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many LenderTasks.
+     */
+    data: LenderTaskCreateManyInput | LenderTaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LenderTask update
+   */
+  export type LenderTaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LenderTask.
+     */
+    data: XOR<LenderTaskUpdateInput, LenderTaskUncheckedUpdateInput>
+    /**
+     * Choose, which LenderTask to update.
+     */
+    where: LenderTaskWhereUniqueInput
+  }
+
+  /**
+   * LenderTask updateMany
+   */
+  export type LenderTaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LenderTasks.
+     */
+    data: XOR<LenderTaskUpdateManyMutationInput, LenderTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which LenderTasks to update
+     */
+    where?: LenderTaskWhereInput
+    /**
+     * Limit how many LenderTasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LenderTask updateManyAndReturn
+   */
+  export type LenderTaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * The data used to update LenderTasks.
+     */
+    data: XOR<LenderTaskUpdateManyMutationInput, LenderTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which LenderTasks to update
+     */
+    where?: LenderTaskWhereInput
+    /**
+     * Limit how many LenderTasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LenderTask upsert
+   */
+  export type LenderTaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LenderTask to update in case it exists.
+     */
+    where: LenderTaskWhereUniqueInput
+    /**
+     * In case the LenderTask found by the `where` argument doesn't exist, create a new LenderTask with this data.
+     */
+    create: XOR<LenderTaskCreateInput, LenderTaskUncheckedCreateInput>
+    /**
+     * In case the LenderTask was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LenderTaskUpdateInput, LenderTaskUncheckedUpdateInput>
+  }
+
+  /**
+   * LenderTask delete
+   */
+  export type LenderTaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    /**
+     * Filter which LenderTask to delete.
+     */
+    where: LenderTaskWhereUniqueInput
+  }
+
+  /**
+   * LenderTask deleteMany
+   */
+  export type LenderTaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LenderTasks to delete
+     */
+    where?: LenderTaskWhereInput
+    /**
+     * Limit how many LenderTasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LenderTask.dealer
+   */
+  export type LenderTask$dealerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Workspace
+     */
+    select?: WorkspaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Workspace
+     */
+    omit?: WorkspaceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkspaceInclude<ExtArgs> | null
+    where?: WorkspaceWhereInput
+  }
+
+  /**
+   * LenderTask.deal
+   */
+  export type LenderTask$dealArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deal
+     */
+    select?: DealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deal
+     */
+    omit?: DealOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealInclude<ExtArgs> | null
+    where?: DealWhereInput
+  }
+
+  /**
+   * LenderTask.pool
+   */
+  export type LenderTask$poolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LoanPool
+     */
+    select?: LoanPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LoanPool
+     */
+    omit?: LoanPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LoanPoolInclude<ExtArgs> | null
+    where?: LoanPoolWhereInput
+  }
+
+  /**
+   * LenderTask without action
+   */
+  export type LenderTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MissingItemRequest
+   */
+
+  export type AggregateMissingItemRequest = {
+    _count: MissingItemRequestCountAggregateOutputType | null
+    _min: MissingItemRequestMinAggregateOutputType | null
+    _max: MissingItemRequestMaxAggregateOutputType | null
+  }
+
+  export type MissingItemRequestMinAggregateOutputType = {
+    id: string | null
+    lenderId: string | null
+    dealerId: string | null
+    dealId: string | null
+    requestedItemType: string | null
+    description: string | null
+    required: boolean | null
+    priority: $Enums.LenderTaskPriority | null
+    dueDate: Date | null
+    status: $Enums.MissingItemRequestStatus | null
+    requestedBy: string | null
+    uploadedDocumentId: string | null
+    lenderReviewStatus: $Enums.MissingItemReviewStatus | null
+    createdAt: Date | null
+    resolvedAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MissingItemRequestMaxAggregateOutputType = {
+    id: string | null
+    lenderId: string | null
+    dealerId: string | null
+    dealId: string | null
+    requestedItemType: string | null
+    description: string | null
+    required: boolean | null
+    priority: $Enums.LenderTaskPriority | null
+    dueDate: Date | null
+    status: $Enums.MissingItemRequestStatus | null
+    requestedBy: string | null
+    uploadedDocumentId: string | null
+    lenderReviewStatus: $Enums.MissingItemReviewStatus | null
+    createdAt: Date | null
+    resolvedAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MissingItemRequestCountAggregateOutputType = {
+    id: number
+    lenderId: number
+    dealerId: number
+    dealId: number
+    requestedItemType: number
+    description: number
+    required: number
+    priority: number
+    dueDate: number
+    status: number
+    requestedBy: number
+    uploadedDocumentId: number
+    lenderReviewStatus: number
+    createdAt: number
+    resolvedAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MissingItemRequestMinAggregateInputType = {
+    id?: true
+    lenderId?: true
+    dealerId?: true
+    dealId?: true
+    requestedItemType?: true
+    description?: true
+    required?: true
+    priority?: true
+    dueDate?: true
+    status?: true
+    requestedBy?: true
+    uploadedDocumentId?: true
+    lenderReviewStatus?: true
+    createdAt?: true
+    resolvedAt?: true
+    updatedAt?: true
+  }
+
+  export type MissingItemRequestMaxAggregateInputType = {
+    id?: true
+    lenderId?: true
+    dealerId?: true
+    dealId?: true
+    requestedItemType?: true
+    description?: true
+    required?: true
+    priority?: true
+    dueDate?: true
+    status?: true
+    requestedBy?: true
+    uploadedDocumentId?: true
+    lenderReviewStatus?: true
+    createdAt?: true
+    resolvedAt?: true
+    updatedAt?: true
+  }
+
+  export type MissingItemRequestCountAggregateInputType = {
+    id?: true
+    lenderId?: true
+    dealerId?: true
+    dealId?: true
+    requestedItemType?: true
+    description?: true
+    required?: true
+    priority?: true
+    dueDate?: true
+    status?: true
+    requestedBy?: true
+    uploadedDocumentId?: true
+    lenderReviewStatus?: true
+    createdAt?: true
+    resolvedAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MissingItemRequestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MissingItemRequest to aggregate.
+     */
+    where?: MissingItemRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MissingItemRequests to fetch.
+     */
+    orderBy?: MissingItemRequestOrderByWithRelationInput | MissingItemRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MissingItemRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MissingItemRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MissingItemRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MissingItemRequests
+    **/
+    _count?: true | MissingItemRequestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MissingItemRequestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MissingItemRequestMaxAggregateInputType
+  }
+
+  export type GetMissingItemRequestAggregateType<T extends MissingItemRequestAggregateArgs> = {
+        [P in keyof T & keyof AggregateMissingItemRequest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMissingItemRequest[P]>
+      : GetScalarType<T[P], AggregateMissingItemRequest[P]>
+  }
+
+
+
+
+  export type MissingItemRequestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MissingItemRequestWhereInput
+    orderBy?: MissingItemRequestOrderByWithAggregationInput | MissingItemRequestOrderByWithAggregationInput[]
+    by: MissingItemRequestScalarFieldEnum[] | MissingItemRequestScalarFieldEnum
+    having?: MissingItemRequestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MissingItemRequestCountAggregateInputType | true
+    _min?: MissingItemRequestMinAggregateInputType
+    _max?: MissingItemRequestMaxAggregateInputType
+  }
+
+  export type MissingItemRequestGroupByOutputType = {
+    id: string
+    lenderId: string
+    dealerId: string
+    dealId: string
+    requestedItemType: string
+    description: string | null
+    required: boolean
+    priority: $Enums.LenderTaskPriority
+    dueDate: Date | null
+    status: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId: string | null
+    lenderReviewStatus: $Enums.MissingItemReviewStatus
+    createdAt: Date
+    resolvedAt: Date | null
+    updatedAt: Date
+    _count: MissingItemRequestCountAggregateOutputType | null
+    _min: MissingItemRequestMinAggregateOutputType | null
+    _max: MissingItemRequestMaxAggregateOutputType | null
+  }
+
+  type GetMissingItemRequestGroupByPayload<T extends MissingItemRequestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MissingItemRequestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MissingItemRequestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MissingItemRequestGroupByOutputType[P]>
+            : GetScalarType<T[P], MissingItemRequestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MissingItemRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    lenderId?: boolean
+    dealerId?: boolean
+    dealId?: boolean
+    requestedItemType?: boolean
+    description?: boolean
+    required?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    status?: boolean
+    requestedBy?: boolean
+    uploadedDocumentId?: boolean
+    lenderReviewStatus?: boolean
+    createdAt?: boolean
+    resolvedAt?: boolean
+    updatedAt?: boolean
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["missingItemRequest"]>
+
+  export type MissingItemRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    lenderId?: boolean
+    dealerId?: boolean
+    dealId?: boolean
+    requestedItemType?: boolean
+    description?: boolean
+    required?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    status?: boolean
+    requestedBy?: boolean
+    uploadedDocumentId?: boolean
+    lenderReviewStatus?: boolean
+    createdAt?: boolean
+    resolvedAt?: boolean
+    updatedAt?: boolean
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["missingItemRequest"]>
+
+  export type MissingItemRequestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    lenderId?: boolean
+    dealerId?: boolean
+    dealId?: boolean
+    requestedItemType?: boolean
+    description?: boolean
+    required?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    status?: boolean
+    requestedBy?: boolean
+    uploadedDocumentId?: boolean
+    lenderReviewStatus?: boolean
+    createdAt?: boolean
+    resolvedAt?: boolean
+    updatedAt?: boolean
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["missingItemRequest"]>
+
+  export type MissingItemRequestSelectScalar = {
+    id?: boolean
+    lenderId?: boolean
+    dealerId?: boolean
+    dealId?: boolean
+    requestedItemType?: boolean
+    description?: boolean
+    required?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    status?: boolean
+    requestedBy?: boolean
+    uploadedDocumentId?: boolean
+    lenderReviewStatus?: boolean
+    createdAt?: boolean
+    resolvedAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MissingItemRequestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "lenderId" | "dealerId" | "dealId" | "requestedItemType" | "description" | "required" | "priority" | "dueDate" | "status" | "requestedBy" | "uploadedDocumentId" | "lenderReviewStatus" | "createdAt" | "resolvedAt" | "updatedAt", ExtArgs["result"]["missingItemRequest"]>
+  export type MissingItemRequestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+  }
+  export type MissingItemRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+  }
+  export type MissingItemRequestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    dealer?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | DealDefaultArgs<ExtArgs>
+  }
+
+  export type $MissingItemRequestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MissingItemRequest"
+    objects: {
+      lender: Prisma.$WorkspacePayload<ExtArgs>
+      dealer: Prisma.$WorkspacePayload<ExtArgs>
+      deal: Prisma.$DealPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      lenderId: string
+      dealerId: string
+      dealId: string
+      requestedItemType: string
+      description: string | null
+      required: boolean
+      priority: $Enums.LenderTaskPriority
+      dueDate: Date | null
+      status: $Enums.MissingItemRequestStatus
+      requestedBy: string
+      uploadedDocumentId: string | null
+      lenderReviewStatus: $Enums.MissingItemReviewStatus
+      createdAt: Date
+      resolvedAt: Date | null
+      updatedAt: Date
+    }, ExtArgs["result"]["missingItemRequest"]>
+    composites: {}
+  }
+
+  type MissingItemRequestGetPayload<S extends boolean | null | undefined | MissingItemRequestDefaultArgs> = $Result.GetResult<Prisma.$MissingItemRequestPayload, S>
+
+  type MissingItemRequestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MissingItemRequestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MissingItemRequestCountAggregateInputType | true
+    }
+
+  export interface MissingItemRequestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MissingItemRequest'], meta: { name: 'MissingItemRequest' } }
+    /**
+     * Find zero or one MissingItemRequest that matches the filter.
+     * @param {MissingItemRequestFindUniqueArgs} args - Arguments to find a MissingItemRequest
+     * @example
+     * // Get one MissingItemRequest
+     * const missingItemRequest = await prisma.missingItemRequest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MissingItemRequestFindUniqueArgs>(args: SelectSubset<T, MissingItemRequestFindUniqueArgs<ExtArgs>>): Prisma__MissingItemRequestClient<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MissingItemRequest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MissingItemRequestFindUniqueOrThrowArgs} args - Arguments to find a MissingItemRequest
+     * @example
+     * // Get one MissingItemRequest
+     * const missingItemRequest = await prisma.missingItemRequest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MissingItemRequestFindUniqueOrThrowArgs>(args: SelectSubset<T, MissingItemRequestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MissingItemRequestClient<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MissingItemRequest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissingItemRequestFindFirstArgs} args - Arguments to find a MissingItemRequest
+     * @example
+     * // Get one MissingItemRequest
+     * const missingItemRequest = await prisma.missingItemRequest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MissingItemRequestFindFirstArgs>(args?: SelectSubset<T, MissingItemRequestFindFirstArgs<ExtArgs>>): Prisma__MissingItemRequestClient<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MissingItemRequest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissingItemRequestFindFirstOrThrowArgs} args - Arguments to find a MissingItemRequest
+     * @example
+     * // Get one MissingItemRequest
+     * const missingItemRequest = await prisma.missingItemRequest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MissingItemRequestFindFirstOrThrowArgs>(args?: SelectSubset<T, MissingItemRequestFindFirstOrThrowArgs<ExtArgs>>): Prisma__MissingItemRequestClient<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MissingItemRequests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissingItemRequestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MissingItemRequests
+     * const missingItemRequests = await prisma.missingItemRequest.findMany()
+     * 
+     * // Get first 10 MissingItemRequests
+     * const missingItemRequests = await prisma.missingItemRequest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const missingItemRequestWithIdOnly = await prisma.missingItemRequest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MissingItemRequestFindManyArgs>(args?: SelectSubset<T, MissingItemRequestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MissingItemRequest.
+     * @param {MissingItemRequestCreateArgs} args - Arguments to create a MissingItemRequest.
+     * @example
+     * // Create one MissingItemRequest
+     * const MissingItemRequest = await prisma.missingItemRequest.create({
+     *   data: {
+     *     // ... data to create a MissingItemRequest
+     *   }
+     * })
+     * 
+     */
+    create<T extends MissingItemRequestCreateArgs>(args: SelectSubset<T, MissingItemRequestCreateArgs<ExtArgs>>): Prisma__MissingItemRequestClient<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MissingItemRequests.
+     * @param {MissingItemRequestCreateManyArgs} args - Arguments to create many MissingItemRequests.
+     * @example
+     * // Create many MissingItemRequests
+     * const missingItemRequest = await prisma.missingItemRequest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MissingItemRequestCreateManyArgs>(args?: SelectSubset<T, MissingItemRequestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MissingItemRequests and returns the data saved in the database.
+     * @param {MissingItemRequestCreateManyAndReturnArgs} args - Arguments to create many MissingItemRequests.
+     * @example
+     * // Create many MissingItemRequests
+     * const missingItemRequest = await prisma.missingItemRequest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MissingItemRequests and only return the `id`
+     * const missingItemRequestWithIdOnly = await prisma.missingItemRequest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MissingItemRequestCreateManyAndReturnArgs>(args?: SelectSubset<T, MissingItemRequestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MissingItemRequest.
+     * @param {MissingItemRequestDeleteArgs} args - Arguments to delete one MissingItemRequest.
+     * @example
+     * // Delete one MissingItemRequest
+     * const MissingItemRequest = await prisma.missingItemRequest.delete({
+     *   where: {
+     *     // ... filter to delete one MissingItemRequest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MissingItemRequestDeleteArgs>(args: SelectSubset<T, MissingItemRequestDeleteArgs<ExtArgs>>): Prisma__MissingItemRequestClient<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MissingItemRequest.
+     * @param {MissingItemRequestUpdateArgs} args - Arguments to update one MissingItemRequest.
+     * @example
+     * // Update one MissingItemRequest
+     * const missingItemRequest = await prisma.missingItemRequest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MissingItemRequestUpdateArgs>(args: SelectSubset<T, MissingItemRequestUpdateArgs<ExtArgs>>): Prisma__MissingItemRequestClient<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MissingItemRequests.
+     * @param {MissingItemRequestDeleteManyArgs} args - Arguments to filter MissingItemRequests to delete.
+     * @example
+     * // Delete a few MissingItemRequests
+     * const { count } = await prisma.missingItemRequest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MissingItemRequestDeleteManyArgs>(args?: SelectSubset<T, MissingItemRequestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MissingItemRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissingItemRequestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MissingItemRequests
+     * const missingItemRequest = await prisma.missingItemRequest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MissingItemRequestUpdateManyArgs>(args: SelectSubset<T, MissingItemRequestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MissingItemRequests and returns the data updated in the database.
+     * @param {MissingItemRequestUpdateManyAndReturnArgs} args - Arguments to update many MissingItemRequests.
+     * @example
+     * // Update many MissingItemRequests
+     * const missingItemRequest = await prisma.missingItemRequest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MissingItemRequests and only return the `id`
+     * const missingItemRequestWithIdOnly = await prisma.missingItemRequest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MissingItemRequestUpdateManyAndReturnArgs>(args: SelectSubset<T, MissingItemRequestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MissingItemRequest.
+     * @param {MissingItemRequestUpsertArgs} args - Arguments to update or create a MissingItemRequest.
+     * @example
+     * // Update or create a MissingItemRequest
+     * const missingItemRequest = await prisma.missingItemRequest.upsert({
+     *   create: {
+     *     // ... data to create a MissingItemRequest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MissingItemRequest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MissingItemRequestUpsertArgs>(args: SelectSubset<T, MissingItemRequestUpsertArgs<ExtArgs>>): Prisma__MissingItemRequestClient<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MissingItemRequests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissingItemRequestCountArgs} args - Arguments to filter MissingItemRequests to count.
+     * @example
+     * // Count the number of MissingItemRequests
+     * const count = await prisma.missingItemRequest.count({
+     *   where: {
+     *     // ... the filter for the MissingItemRequests we want to count
+     *   }
+     * })
+    **/
+    count<T extends MissingItemRequestCountArgs>(
+      args?: Subset<T, MissingItemRequestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MissingItemRequestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MissingItemRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissingItemRequestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MissingItemRequestAggregateArgs>(args: Subset<T, MissingItemRequestAggregateArgs>): Prisma.PrismaPromise<GetMissingItemRequestAggregateType<T>>
+
+    /**
+     * Group by MissingItemRequest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MissingItemRequestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MissingItemRequestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MissingItemRequestGroupByArgs['orderBy'] }
+        : { orderBy?: MissingItemRequestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MissingItemRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMissingItemRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MissingItemRequest model
+   */
+  readonly fields: MissingItemRequestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MissingItemRequest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MissingItemRequestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lender<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    dealer<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    deal<T extends DealDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DealDefaultArgs<ExtArgs>>): Prisma__DealClient<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MissingItemRequest model
+   */
+  interface MissingItemRequestFieldRefs {
+    readonly id: FieldRef<"MissingItemRequest", 'String'>
+    readonly lenderId: FieldRef<"MissingItemRequest", 'String'>
+    readonly dealerId: FieldRef<"MissingItemRequest", 'String'>
+    readonly dealId: FieldRef<"MissingItemRequest", 'String'>
+    readonly requestedItemType: FieldRef<"MissingItemRequest", 'String'>
+    readonly description: FieldRef<"MissingItemRequest", 'String'>
+    readonly required: FieldRef<"MissingItemRequest", 'Boolean'>
+    readonly priority: FieldRef<"MissingItemRequest", 'LenderTaskPriority'>
+    readonly dueDate: FieldRef<"MissingItemRequest", 'DateTime'>
+    readonly status: FieldRef<"MissingItemRequest", 'MissingItemRequestStatus'>
+    readonly requestedBy: FieldRef<"MissingItemRequest", 'String'>
+    readonly uploadedDocumentId: FieldRef<"MissingItemRequest", 'String'>
+    readonly lenderReviewStatus: FieldRef<"MissingItemRequest", 'MissingItemReviewStatus'>
+    readonly createdAt: FieldRef<"MissingItemRequest", 'DateTime'>
+    readonly resolvedAt: FieldRef<"MissingItemRequest", 'DateTime'>
+    readonly updatedAt: FieldRef<"MissingItemRequest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MissingItemRequest findUnique
+   */
+  export type MissingItemRequestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MissingItemRequest to fetch.
+     */
+    where: MissingItemRequestWhereUniqueInput
+  }
+
+  /**
+   * MissingItemRequest findUniqueOrThrow
+   */
+  export type MissingItemRequestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MissingItemRequest to fetch.
+     */
+    where: MissingItemRequestWhereUniqueInput
+  }
+
+  /**
+   * MissingItemRequest findFirst
+   */
+  export type MissingItemRequestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MissingItemRequest to fetch.
+     */
+    where?: MissingItemRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MissingItemRequests to fetch.
+     */
+    orderBy?: MissingItemRequestOrderByWithRelationInput | MissingItemRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MissingItemRequests.
+     */
+    cursor?: MissingItemRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MissingItemRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MissingItemRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MissingItemRequests.
+     */
+    distinct?: MissingItemRequestScalarFieldEnum | MissingItemRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MissingItemRequest findFirstOrThrow
+   */
+  export type MissingItemRequestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MissingItemRequest to fetch.
+     */
+    where?: MissingItemRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MissingItemRequests to fetch.
+     */
+    orderBy?: MissingItemRequestOrderByWithRelationInput | MissingItemRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MissingItemRequests.
+     */
+    cursor?: MissingItemRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MissingItemRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MissingItemRequests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MissingItemRequests.
+     */
+    distinct?: MissingItemRequestScalarFieldEnum | MissingItemRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MissingItemRequest findMany
+   */
+  export type MissingItemRequestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter, which MissingItemRequests to fetch.
+     */
+    where?: MissingItemRequestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MissingItemRequests to fetch.
+     */
+    orderBy?: MissingItemRequestOrderByWithRelationInput | MissingItemRequestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MissingItemRequests.
+     */
+    cursor?: MissingItemRequestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MissingItemRequests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MissingItemRequests.
+     */
+    skip?: number
+    distinct?: MissingItemRequestScalarFieldEnum | MissingItemRequestScalarFieldEnum[]
+  }
+
+  /**
+   * MissingItemRequest create
+   */
+  export type MissingItemRequestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MissingItemRequest.
+     */
+    data: XOR<MissingItemRequestCreateInput, MissingItemRequestUncheckedCreateInput>
+  }
+
+  /**
+   * MissingItemRequest createMany
+   */
+  export type MissingItemRequestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MissingItemRequests.
+     */
+    data: MissingItemRequestCreateManyInput | MissingItemRequestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MissingItemRequest createManyAndReturn
+   */
+  export type MissingItemRequestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * The data used to create many MissingItemRequests.
+     */
+    data: MissingItemRequestCreateManyInput | MissingItemRequestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MissingItemRequest update
+   */
+  export type MissingItemRequestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MissingItemRequest.
+     */
+    data: XOR<MissingItemRequestUpdateInput, MissingItemRequestUncheckedUpdateInput>
+    /**
+     * Choose, which MissingItemRequest to update.
+     */
+    where: MissingItemRequestWhereUniqueInput
+  }
+
+  /**
+   * MissingItemRequest updateMany
+   */
+  export type MissingItemRequestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MissingItemRequests.
+     */
+    data: XOR<MissingItemRequestUpdateManyMutationInput, MissingItemRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which MissingItemRequests to update
+     */
+    where?: MissingItemRequestWhereInput
+    /**
+     * Limit how many MissingItemRequests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MissingItemRequest updateManyAndReturn
+   */
+  export type MissingItemRequestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * The data used to update MissingItemRequests.
+     */
+    data: XOR<MissingItemRequestUpdateManyMutationInput, MissingItemRequestUncheckedUpdateManyInput>
+    /**
+     * Filter which MissingItemRequests to update
+     */
+    where?: MissingItemRequestWhereInput
+    /**
+     * Limit how many MissingItemRequests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MissingItemRequest upsert
+   */
+  export type MissingItemRequestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MissingItemRequest to update in case it exists.
+     */
+    where: MissingItemRequestWhereUniqueInput
+    /**
+     * In case the MissingItemRequest found by the `where` argument doesn't exist, create a new MissingItemRequest with this data.
+     */
+    create: XOR<MissingItemRequestCreateInput, MissingItemRequestUncheckedCreateInput>
+    /**
+     * In case the MissingItemRequest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MissingItemRequestUpdateInput, MissingItemRequestUncheckedUpdateInput>
+  }
+
+  /**
+   * MissingItemRequest delete
+   */
+  export type MissingItemRequestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
+    /**
+     * Filter which MissingItemRequest to delete.
+     */
+    where: MissingItemRequestWhereUniqueInput
+  }
+
+  /**
+   * MissingItemRequest deleteMany
+   */
+  export type MissingItemRequestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MissingItemRequests to delete
+     */
+    where?: MissingItemRequestWhereInput
+    /**
+     * Limit how many MissingItemRequests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MissingItemRequest without action
+   */
+  export type MissingItemRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MissingItemRequest
+     */
+    select?: MissingItemRequestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MissingItemRequest
+     */
+    omit?: MissingItemRequestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MissingItemRequestInclude<ExtArgs> | null
   }
 
 
@@ -26597,6 +29669,7 @@ export namespace Prisma {
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
     createdBy?: boolean | LoanPool$createdByArgs<ExtArgs>
     deals?: boolean | LoanPool$dealsArgs<ExtArgs>
+    lenderTasks?: boolean | LoanPool$lenderTasksArgs<ExtArgs>
     _count?: boolean | LoanPoolCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["loanPool"]>
 
@@ -26693,6 +29766,7 @@ export namespace Prisma {
     lender?: boolean | WorkspaceDefaultArgs<ExtArgs>
     createdBy?: boolean | LoanPool$createdByArgs<ExtArgs>
     deals?: boolean | LoanPool$dealsArgs<ExtArgs>
+    lenderTasks?: boolean | LoanPool$lenderTasksArgs<ExtArgs>
     _count?: boolean | LoanPoolCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LoanPoolIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26710,6 +29784,7 @@ export namespace Prisma {
       lender: Prisma.$WorkspacePayload<ExtArgs>
       createdBy: Prisma.$UserPayload<ExtArgs> | null
       deals: Prisma.$DealPayload<ExtArgs>[]
+      lenderTasks: Prisma.$LenderTaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -27137,6 +30212,7 @@ export namespace Prisma {
     lender<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     createdBy<T extends LoanPool$createdByArgs<ExtArgs> = {}>(args?: Subset<T, LoanPool$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     deals<T extends LoanPool$dealsArgs<ExtArgs> = {}>(args?: Subset<T, LoanPool$dealsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    lenderTasks<T extends LoanPool$lenderTasksArgs<ExtArgs> = {}>(args?: Subset<T, LoanPool$lenderTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -27627,6 +30703,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DealScalarFieldEnum | DealScalarFieldEnum[]
+  }
+
+  /**
+   * LoanPool.lenderTasks
+   */
+  export type LoanPool$lenderTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LenderTask
+     */
+    select?: LenderTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LenderTask
+     */
+    omit?: LenderTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LenderTaskInclude<ExtArgs> | null
+    where?: LenderTaskWhereInput
+    orderBy?: LenderTaskOrderByWithRelationInput | LenderTaskOrderByWithRelationInput[]
+    cursor?: LenderTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LenderTaskScalarFieldEnum | LenderTaskScalarFieldEnum[]
   }
 
   /**
@@ -51806,6 +54906,9 @@ export namespace Prisma {
     governingStateProfile: 'governingStateProfile',
     preliminarySubmittedTerms: 'preliminarySubmittedTerms',
     lenderApprovedTerms: 'lenderApprovedTerms',
+    mockupLenderStatus: 'mockupLenderStatus',
+    requiresBuyerReauth: 'requiresBuyerReauth',
+    finalPackageHash: 'finalPackageHash',
     complianceStatus: 'complianceStatus',
     consummatedData: 'consummatedData',
     poolId: 'poolId',
@@ -51817,6 +54920,51 @@ export namespace Prisma {
   };
 
   export type DealScalarFieldEnum = (typeof DealScalarFieldEnum)[keyof typeof DealScalarFieldEnum]
+
+
+  export const LenderTaskScalarFieldEnum: {
+    id: 'id',
+    lenderId: 'lenderId',
+    dealId: 'dealId',
+    dealerId: 'dealerId',
+    poolId: 'poolId',
+    title: 'title',
+    description: 'description',
+    category: 'category',
+    priority: 'priority',
+    status: 'status',
+    dueDate: 'dueDate',
+    assignedTo: 'assignedTo',
+    source: 'source',
+    auditEventId: 'auditEventId',
+    completedAt: 'completedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LenderTaskScalarFieldEnum = (typeof LenderTaskScalarFieldEnum)[keyof typeof LenderTaskScalarFieldEnum]
+
+
+  export const MissingItemRequestScalarFieldEnum: {
+    id: 'id',
+    lenderId: 'lenderId',
+    dealerId: 'dealerId',
+    dealId: 'dealId',
+    requestedItemType: 'requestedItemType',
+    description: 'description',
+    required: 'required',
+    priority: 'priority',
+    dueDate: 'dueDate',
+    status: 'status',
+    requestedBy: 'requestedBy',
+    uploadedDocumentId: 'uploadedDocumentId',
+    lenderReviewStatus: 'lenderReviewStatus',
+    createdAt: 'createdAt',
+    resolvedAt: 'resolvedAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MissingItemRequestScalarFieldEnum = (typeof MissingItemRequestScalarFieldEnum)[keyof typeof MissingItemRequestScalarFieldEnum]
 
 
   export const DealPartyScalarFieldEnum: {
@@ -52541,6 +55689,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'MockupLenderStatus'
+   */
+  export type EnumMockupLenderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MockupLenderStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MockupLenderStatus[]'
+   */
+  export type ListEnumMockupLenderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MockupLenderStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DealComplianceStatus'
    */
   export type EnumDealComplianceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealComplianceStatus'>
@@ -52565,6 +55727,76 @@ export namespace Prisma {
    * Reference to a field of type 'SecondaryMarketStatus[]'
    */
   export type ListEnumSecondaryMarketStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SecondaryMarketStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'LenderTaskCategory'
+   */
+  export type EnumLenderTaskCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LenderTaskCategory'>
+    
+
+
+  /**
+   * Reference to a field of type 'LenderTaskCategory[]'
+   */
+  export type ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LenderTaskCategory[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'LenderTaskPriority'
+   */
+  export type EnumLenderTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LenderTaskPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'LenderTaskPriority[]'
+   */
+  export type ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LenderTaskPriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'LenderTaskStatus'
+   */
+  export type EnumLenderTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LenderTaskStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'LenderTaskStatus[]'
+   */
+  export type ListEnumLenderTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LenderTaskStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MissingItemRequestStatus'
+   */
+  export type EnumMissingItemRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MissingItemRequestStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MissingItemRequestStatus[]'
+   */
+  export type ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MissingItemRequestStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MissingItemReviewStatus'
+   */
+  export type EnumMissingItemReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MissingItemReviewStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MissingItemReviewStatus[]'
+   */
+  export type ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MissingItemReviewStatus[]'>
     
 
 
@@ -53037,6 +56269,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointListRelationFilter
     accessAudits?: UserAccessAuditListRelationFilter
     calendarEvents?: CalendarEventListRelationFilter
+    lenderTasks?: LenderTaskListRelationFilter
+    dealerTasks?: LenderTaskListRelationFilter
+    lenderMissingItemRequests?: MissingItemRequestListRelationFilter
+    dealerMissingItemRequests?: MissingItemRequestListRelationFilter
   }
 
   export type WorkspaceOrderByWithRelationInput = {
@@ -53066,6 +56302,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointOrderByRelationAggregateInput
     accessAudits?: UserAccessAuditOrderByRelationAggregateInput
     calendarEvents?: CalendarEventOrderByRelationAggregateInput
+    lenderTasks?: LenderTaskOrderByRelationAggregateInput
+    dealerTasks?: LenderTaskOrderByRelationAggregateInput
+    lenderMissingItemRequests?: MissingItemRequestOrderByRelationAggregateInput
+    dealerMissingItemRequests?: MissingItemRequestOrderByRelationAggregateInput
   }
 
   export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -53098,6 +56338,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointListRelationFilter
     accessAudits?: UserAccessAuditListRelationFilter
     calendarEvents?: CalendarEventListRelationFilter
+    lenderTasks?: LenderTaskListRelationFilter
+    dealerTasks?: LenderTaskListRelationFilter
+    lenderMissingItemRequests?: MissingItemRequestListRelationFilter
+    dealerMissingItemRequests?: MissingItemRequestListRelationFilter
   }, "id" | "slug">
 
   export type WorkspaceOrderByWithAggregationInput = {
@@ -53859,6 +57103,9 @@ export namespace Prisma {
     governingStateProfile?: JsonNullableFilter<"Deal">
     preliminarySubmittedTerms?: JsonNullableFilter<"Deal">
     lenderApprovedTerms?: JsonNullableFilter<"Deal">
+    mockupLenderStatus?: EnumMockupLenderStatusFilter<"Deal"> | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFilter<"Deal"> | boolean
+    finalPackageHash?: StringNullableFilter<"Deal"> | string | null
     complianceStatus?: EnumDealComplianceStatusFilter<"Deal"> | $Enums.DealComplianceStatus
     consummatedData?: JsonNullableFilter<"Deal">
     poolId?: StringNullableFilter<"Deal"> | string | null
@@ -53888,6 +57135,8 @@ export namespace Prisma {
     comments?: DealCommentListRelationFilter
     auditEvents?: DealAuditEventListRelationFilter
     calendarEvents?: CalendarEventListRelationFilter
+    lenderTasks?: LenderTaskListRelationFilter
+    missingItemRequests?: MissingItemRequestListRelationFilter
   }
 
   export type DealOrderByWithRelationInput = {
@@ -53904,6 +57153,9 @@ export namespace Prisma {
     governingStateProfile?: SortOrderInput | SortOrder
     preliminarySubmittedTerms?: SortOrderInput | SortOrder
     lenderApprovedTerms?: SortOrderInput | SortOrder
+    mockupLenderStatus?: SortOrder
+    requiresBuyerReauth?: SortOrder
+    finalPackageHash?: SortOrderInput | SortOrder
     complianceStatus?: SortOrder
     consummatedData?: SortOrderInput | SortOrder
     poolId?: SortOrderInput | SortOrder
@@ -53933,6 +57185,8 @@ export namespace Prisma {
     comments?: DealCommentOrderByRelationAggregateInput
     auditEvents?: DealAuditEventOrderByRelationAggregateInput
     calendarEvents?: CalendarEventOrderByRelationAggregateInput
+    lenderTasks?: LenderTaskOrderByRelationAggregateInput
+    missingItemRequests?: MissingItemRequestOrderByRelationAggregateInput
   }
 
   export type DealWhereUniqueInput = Prisma.AtLeast<{
@@ -53952,6 +57206,9 @@ export namespace Prisma {
     governingStateProfile?: JsonNullableFilter<"Deal">
     preliminarySubmittedTerms?: JsonNullableFilter<"Deal">
     lenderApprovedTerms?: JsonNullableFilter<"Deal">
+    mockupLenderStatus?: EnumMockupLenderStatusFilter<"Deal"> | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFilter<"Deal"> | boolean
+    finalPackageHash?: StringNullableFilter<"Deal"> | string | null
     complianceStatus?: EnumDealComplianceStatusFilter<"Deal"> | $Enums.DealComplianceStatus
     consummatedData?: JsonNullableFilter<"Deal">
     poolId?: StringNullableFilter<"Deal"> | string | null
@@ -53981,6 +57238,8 @@ export namespace Prisma {
     comments?: DealCommentListRelationFilter
     auditEvents?: DealAuditEventListRelationFilter
     calendarEvents?: CalendarEventListRelationFilter
+    lenderTasks?: LenderTaskListRelationFilter
+    missingItemRequests?: MissingItemRequestListRelationFilter
   }, "id">
 
   export type DealOrderByWithAggregationInput = {
@@ -53997,6 +57256,9 @@ export namespace Prisma {
     governingStateProfile?: SortOrderInput | SortOrder
     preliminarySubmittedTerms?: SortOrderInput | SortOrder
     lenderApprovedTerms?: SortOrderInput | SortOrder
+    mockupLenderStatus?: SortOrder
+    requiresBuyerReauth?: SortOrder
+    finalPackageHash?: SortOrderInput | SortOrder
     complianceStatus?: SortOrder
     consummatedData?: SortOrderInput | SortOrder
     poolId?: SortOrderInput | SortOrder
@@ -54027,6 +57289,9 @@ export namespace Prisma {
     governingStateProfile?: JsonNullableWithAggregatesFilter<"Deal">
     preliminarySubmittedTerms?: JsonNullableWithAggregatesFilter<"Deal">
     lenderApprovedTerms?: JsonNullableWithAggregatesFilter<"Deal">
+    mockupLenderStatus?: EnumMockupLenderStatusWithAggregatesFilter<"Deal"> | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolWithAggregatesFilter<"Deal"> | boolean
+    finalPackageHash?: StringNullableWithAggregatesFilter<"Deal"> | string | null
     complianceStatus?: EnumDealComplianceStatusWithAggregatesFilter<"Deal"> | $Enums.DealComplianceStatus
     consummatedData?: JsonNullableWithAggregatesFilter<"Deal">
     poolId?: StringNullableWithAggregatesFilter<"Deal"> | string | null
@@ -54035,6 +57300,246 @@ export namespace Prisma {
     apiIngressKeyId?: StringNullableWithAggregatesFilter<"Deal"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Deal"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Deal"> | Date | string
+  }
+
+  export type LenderTaskWhereInput = {
+    AND?: LenderTaskWhereInput | LenderTaskWhereInput[]
+    OR?: LenderTaskWhereInput[]
+    NOT?: LenderTaskWhereInput | LenderTaskWhereInput[]
+    id?: StringFilter<"LenderTask"> | string
+    lenderId?: StringFilter<"LenderTask"> | string
+    dealId?: StringNullableFilter<"LenderTask"> | string | null
+    dealerId?: StringNullableFilter<"LenderTask"> | string | null
+    poolId?: StringNullableFilter<"LenderTask"> | string | null
+    title?: StringFilter<"LenderTask"> | string
+    description?: StringNullableFilter<"LenderTask"> | string | null
+    category?: EnumLenderTaskCategoryFilter<"LenderTask"> | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFilter<"LenderTask"> | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFilter<"LenderTask"> | $Enums.LenderTaskStatus
+    dueDate?: DateTimeNullableFilter<"LenderTask"> | Date | string | null
+    assignedTo?: StringNullableFilter<"LenderTask"> | string | null
+    source?: StringNullableFilter<"LenderTask"> | string | null
+    auditEventId?: StringNullableFilter<"LenderTask"> | string | null
+    completedAt?: DateTimeNullableFilter<"LenderTask"> | Date | string | null
+    createdAt?: DateTimeFilter<"LenderTask"> | Date | string
+    updatedAt?: DateTimeFilter<"LenderTask"> | Date | string
+    lender?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    dealer?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
+    deal?: XOR<DealNullableScalarRelationFilter, DealWhereInput> | null
+    pool?: XOR<LoanPoolNullableScalarRelationFilter, LoanPoolWhereInput> | null
+  }
+
+  export type LenderTaskOrderByWithRelationInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealId?: SortOrderInput | SortOrder
+    dealerId?: SortOrderInput | SortOrder
+    poolId?: SortOrderInput | SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    assignedTo?: SortOrderInput | SortOrder
+    source?: SortOrderInput | SortOrder
+    auditEventId?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    lender?: WorkspaceOrderByWithRelationInput
+    dealer?: WorkspaceOrderByWithRelationInput
+    deal?: DealOrderByWithRelationInput
+    pool?: LoanPoolOrderByWithRelationInput
+  }
+
+  export type LenderTaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LenderTaskWhereInput | LenderTaskWhereInput[]
+    OR?: LenderTaskWhereInput[]
+    NOT?: LenderTaskWhereInput | LenderTaskWhereInput[]
+    lenderId?: StringFilter<"LenderTask"> | string
+    dealId?: StringNullableFilter<"LenderTask"> | string | null
+    dealerId?: StringNullableFilter<"LenderTask"> | string | null
+    poolId?: StringNullableFilter<"LenderTask"> | string | null
+    title?: StringFilter<"LenderTask"> | string
+    description?: StringNullableFilter<"LenderTask"> | string | null
+    category?: EnumLenderTaskCategoryFilter<"LenderTask"> | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFilter<"LenderTask"> | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFilter<"LenderTask"> | $Enums.LenderTaskStatus
+    dueDate?: DateTimeNullableFilter<"LenderTask"> | Date | string | null
+    assignedTo?: StringNullableFilter<"LenderTask"> | string | null
+    source?: StringNullableFilter<"LenderTask"> | string | null
+    auditEventId?: StringNullableFilter<"LenderTask"> | string | null
+    completedAt?: DateTimeNullableFilter<"LenderTask"> | Date | string | null
+    createdAt?: DateTimeFilter<"LenderTask"> | Date | string
+    updatedAt?: DateTimeFilter<"LenderTask"> | Date | string
+    lender?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    dealer?: XOR<WorkspaceNullableScalarRelationFilter, WorkspaceWhereInput> | null
+    deal?: XOR<DealNullableScalarRelationFilter, DealWhereInput> | null
+    pool?: XOR<LoanPoolNullableScalarRelationFilter, LoanPoolWhereInput> | null
+  }, "id">
+
+  export type LenderTaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealId?: SortOrderInput | SortOrder
+    dealerId?: SortOrderInput | SortOrder
+    poolId?: SortOrderInput | SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    assignedTo?: SortOrderInput | SortOrder
+    source?: SortOrderInput | SortOrder
+    auditEventId?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LenderTaskCountOrderByAggregateInput
+    _max?: LenderTaskMaxOrderByAggregateInput
+    _min?: LenderTaskMinOrderByAggregateInput
+  }
+
+  export type LenderTaskScalarWhereWithAggregatesInput = {
+    AND?: LenderTaskScalarWhereWithAggregatesInput | LenderTaskScalarWhereWithAggregatesInput[]
+    OR?: LenderTaskScalarWhereWithAggregatesInput[]
+    NOT?: LenderTaskScalarWhereWithAggregatesInput | LenderTaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LenderTask"> | string
+    lenderId?: StringWithAggregatesFilter<"LenderTask"> | string
+    dealId?: StringNullableWithAggregatesFilter<"LenderTask"> | string | null
+    dealerId?: StringNullableWithAggregatesFilter<"LenderTask"> | string | null
+    poolId?: StringNullableWithAggregatesFilter<"LenderTask"> | string | null
+    title?: StringWithAggregatesFilter<"LenderTask"> | string
+    description?: StringNullableWithAggregatesFilter<"LenderTask"> | string | null
+    category?: EnumLenderTaskCategoryWithAggregatesFilter<"LenderTask"> | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityWithAggregatesFilter<"LenderTask"> | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusWithAggregatesFilter<"LenderTask"> | $Enums.LenderTaskStatus
+    dueDate?: DateTimeNullableWithAggregatesFilter<"LenderTask"> | Date | string | null
+    assignedTo?: StringNullableWithAggregatesFilter<"LenderTask"> | string | null
+    source?: StringNullableWithAggregatesFilter<"LenderTask"> | string | null
+    auditEventId?: StringNullableWithAggregatesFilter<"LenderTask"> | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"LenderTask"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"LenderTask"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"LenderTask"> | Date | string
+  }
+
+  export type MissingItemRequestWhereInput = {
+    AND?: MissingItemRequestWhereInput | MissingItemRequestWhereInput[]
+    OR?: MissingItemRequestWhereInput[]
+    NOT?: MissingItemRequestWhereInput | MissingItemRequestWhereInput[]
+    id?: StringFilter<"MissingItemRequest"> | string
+    lenderId?: StringFilter<"MissingItemRequest"> | string
+    dealerId?: StringFilter<"MissingItemRequest"> | string
+    dealId?: StringFilter<"MissingItemRequest"> | string
+    requestedItemType?: StringFilter<"MissingItemRequest"> | string
+    description?: StringNullableFilter<"MissingItemRequest"> | string | null
+    required?: BoolFilter<"MissingItemRequest"> | boolean
+    priority?: EnumLenderTaskPriorityFilter<"MissingItemRequest"> | $Enums.LenderTaskPriority
+    dueDate?: DateTimeNullableFilter<"MissingItemRequest"> | Date | string | null
+    status?: EnumMissingItemRequestStatusFilter<"MissingItemRequest"> | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFilter<"MissingItemRequest"> | string
+    uploadedDocumentId?: StringNullableFilter<"MissingItemRequest"> | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFilter<"MissingItemRequest"> | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFilter<"MissingItemRequest"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"MissingItemRequest"> | Date | string | null
+    updatedAt?: DateTimeFilter<"MissingItemRequest"> | Date | string
+    lender?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    dealer?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    deal?: XOR<DealScalarRelationFilter, DealWhereInput>
+  }
+
+  export type MissingItemRequestOrderByWithRelationInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealerId?: SortOrder
+    dealId?: SortOrder
+    requestedItemType?: SortOrder
+    description?: SortOrderInput | SortOrder
+    required?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    requestedBy?: SortOrder
+    uploadedDocumentId?: SortOrderInput | SortOrder
+    lenderReviewStatus?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    lender?: WorkspaceOrderByWithRelationInput
+    dealer?: WorkspaceOrderByWithRelationInput
+    deal?: DealOrderByWithRelationInput
+  }
+
+  export type MissingItemRequestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MissingItemRequestWhereInput | MissingItemRequestWhereInput[]
+    OR?: MissingItemRequestWhereInput[]
+    NOT?: MissingItemRequestWhereInput | MissingItemRequestWhereInput[]
+    lenderId?: StringFilter<"MissingItemRequest"> | string
+    dealerId?: StringFilter<"MissingItemRequest"> | string
+    dealId?: StringFilter<"MissingItemRequest"> | string
+    requestedItemType?: StringFilter<"MissingItemRequest"> | string
+    description?: StringNullableFilter<"MissingItemRequest"> | string | null
+    required?: BoolFilter<"MissingItemRequest"> | boolean
+    priority?: EnumLenderTaskPriorityFilter<"MissingItemRequest"> | $Enums.LenderTaskPriority
+    dueDate?: DateTimeNullableFilter<"MissingItemRequest"> | Date | string | null
+    status?: EnumMissingItemRequestStatusFilter<"MissingItemRequest"> | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFilter<"MissingItemRequest"> | string
+    uploadedDocumentId?: StringNullableFilter<"MissingItemRequest"> | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFilter<"MissingItemRequest"> | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFilter<"MissingItemRequest"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"MissingItemRequest"> | Date | string | null
+    updatedAt?: DateTimeFilter<"MissingItemRequest"> | Date | string
+    lender?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    dealer?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    deal?: XOR<DealScalarRelationFilter, DealWhereInput>
+  }, "id">
+
+  export type MissingItemRequestOrderByWithAggregationInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealerId?: SortOrder
+    dealId?: SortOrder
+    requestedItemType?: SortOrder
+    description?: SortOrderInput | SortOrder
+    required?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    status?: SortOrder
+    requestedBy?: SortOrder
+    uploadedDocumentId?: SortOrderInput | SortOrder
+    lenderReviewStatus?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    updatedAt?: SortOrder
+    _count?: MissingItemRequestCountOrderByAggregateInput
+    _max?: MissingItemRequestMaxOrderByAggregateInput
+    _min?: MissingItemRequestMinOrderByAggregateInput
+  }
+
+  export type MissingItemRequestScalarWhereWithAggregatesInput = {
+    AND?: MissingItemRequestScalarWhereWithAggregatesInput | MissingItemRequestScalarWhereWithAggregatesInput[]
+    OR?: MissingItemRequestScalarWhereWithAggregatesInput[]
+    NOT?: MissingItemRequestScalarWhereWithAggregatesInput | MissingItemRequestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MissingItemRequest"> | string
+    lenderId?: StringWithAggregatesFilter<"MissingItemRequest"> | string
+    dealerId?: StringWithAggregatesFilter<"MissingItemRequest"> | string
+    dealId?: StringWithAggregatesFilter<"MissingItemRequest"> | string
+    requestedItemType?: StringWithAggregatesFilter<"MissingItemRequest"> | string
+    description?: StringNullableWithAggregatesFilter<"MissingItemRequest"> | string | null
+    required?: BoolWithAggregatesFilter<"MissingItemRequest"> | boolean
+    priority?: EnumLenderTaskPriorityWithAggregatesFilter<"MissingItemRequest"> | $Enums.LenderTaskPriority
+    dueDate?: DateTimeNullableWithAggregatesFilter<"MissingItemRequest"> | Date | string | null
+    status?: EnumMissingItemRequestStatusWithAggregatesFilter<"MissingItemRequest"> | $Enums.MissingItemRequestStatus
+    requestedBy?: StringWithAggregatesFilter<"MissingItemRequest"> | string
+    uploadedDocumentId?: StringNullableWithAggregatesFilter<"MissingItemRequest"> | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusWithAggregatesFilter<"MissingItemRequest"> | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeWithAggregatesFilter<"MissingItemRequest"> | Date | string
+    resolvedAt?: DateTimeNullableWithAggregatesFilter<"MissingItemRequest"> | Date | string | null
+    updatedAt?: DateTimeWithAggregatesFilter<"MissingItemRequest"> | Date | string
   }
 
   export type DealPartyWhereInput = {
@@ -54461,6 +57966,7 @@ export namespace Prisma {
     lender?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     deals?: DealListRelationFilter
+    lenderTasks?: LenderTaskListRelationFilter
   }
 
   export type LoanPoolOrderByWithRelationInput = {
@@ -54492,6 +57998,7 @@ export namespace Prisma {
     lender?: WorkspaceOrderByWithRelationInput
     createdBy?: UserOrderByWithRelationInput
     deals?: DealOrderByRelationAggregateInput
+    lenderTasks?: LenderTaskOrderByRelationAggregateInput
   }
 
   export type LoanPoolWhereUniqueInput = Prisma.AtLeast<{
@@ -54526,6 +58033,7 @@ export namespace Prisma {
     lender?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     deals?: DealListRelationFilter
+    lenderTasks?: LenderTaskListRelationFilter
   }, "id">
 
   export type LoanPoolOrderByWithAggregationInput = {
@@ -56457,6 +59965,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateInput = {
@@ -56486,6 +59998,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUpdateInput = {
@@ -56515,6 +60031,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateInput = {
@@ -56544,6 +60064,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateManyInput = {
@@ -57370,6 +60894,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -57398,6 +60925,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateInput = {
@@ -57414,6 +60943,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -57439,6 +60971,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealUpdateInput = {
@@ -57452,6 +60986,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -57480,6 +61017,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateInput = {
@@ -57496,6 +61035,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57521,6 +61063,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateManyInput = {
@@ -57537,6 +61081,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -57558,6 +61105,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -57581,6 +61131,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -57588,6 +61141,272 @@ export namespace Prisma {
     secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
     apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLenderTasksInput
+    dealer?: WorkspaceCreateNestedOneWithoutDealerTasksInput
+    deal?: DealCreateNestedOneWithoutLenderTasksInput
+    pool?: LoanPoolCreateNestedOneWithoutLenderTasksInput
+  }
+
+  export type LenderTaskUncheckedCreateInput = {
+    id?: string
+    lenderId: string
+    dealId?: string | null
+    dealerId?: string | null
+    poolId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderTasksNestedInput
+    dealer?: WorkspaceUpdateOneWithoutDealerTasksNestedInput
+    deal?: DealUpdateOneWithoutLenderTasksNestedInput
+    pool?: LoanPoolUpdateOneWithoutLenderTasksNestedInput
+  }
+
+  export type LenderTaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerId?: NullableStringFieldUpdateOperationsInput | string | null
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskCreateManyInput = {
+    id?: string
+    lenderId: string
+    dealId?: string | null
+    dealerId?: string | null
+    poolId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerId?: NullableStringFieldUpdateOperationsInput | string | null
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestCreateInput = {
+    id?: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLenderMissingItemRequestsInput
+    dealer: WorkspaceCreateNestedOneWithoutDealerMissingItemRequestsInput
+    deal: DealCreateNestedOneWithoutMissingItemRequestsInput
+  }
+
+  export type MissingItemRequestUncheckedCreateInput = {
+    id?: string
+    lenderId: string
+    dealerId: string
+    dealId: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type MissingItemRequestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderMissingItemRequestsNestedInput
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerMissingItemRequestsNestedInput
+    deal?: DealUpdateOneRequiredWithoutMissingItemRequestsNestedInput
+  }
+
+  export type MissingItemRequestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestCreateManyInput = {
+    id?: string
+    lenderId: string
+    dealerId: string
+    dealId: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type MissingItemRequestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -58040,6 +61859,7 @@ export namespace Prisma {
     lender: WorkspaceCreateNestedOneWithoutLoanPoolsInput
     createdBy?: UserCreateNestedOneWithoutLoanPoolsCreatedInput
     deals?: DealCreateNestedManyWithoutLoanPoolInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutPoolInput
   }
 
   export type LoanPoolUncheckedCreateInput = {
@@ -58069,6 +61889,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deals?: DealUncheckedCreateNestedManyWithoutLoanPoolInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutPoolInput
   }
 
   export type LoanPoolUpdateInput = {
@@ -58098,6 +61919,7 @@ export namespace Prisma {
     lender?: WorkspaceUpdateOneRequiredWithoutLoanPoolsNestedInput
     createdBy?: UserUpdateOneWithoutLoanPoolsCreatedNestedInput
     deals?: DealUpdateManyWithoutLoanPoolNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutPoolNestedInput
   }
 
   export type LoanPoolUncheckedUpdateInput = {
@@ -58127,6 +61949,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deals?: DealUncheckedUpdateManyWithoutLoanPoolNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutPoolNestedInput
   }
 
   export type LoanPoolCreateManyInput = {
@@ -60411,6 +64234,18 @@ export namespace Prisma {
     none?: CalendarEventWhereInput
   }
 
+  export type LenderTaskListRelationFilter = {
+    every?: LenderTaskWhereInput
+    some?: LenderTaskWhereInput
+    none?: LenderTaskWhereInput
+  }
+
+  export type MissingItemRequestListRelationFilter = {
+    every?: MissingItemRequestWhereInput
+    some?: MissingItemRequestWhereInput
+    none?: MissingItemRequestWhereInput
+  }
+
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -60452,6 +64287,14 @@ export namespace Prisma {
   }
 
   export type CalendarEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LenderTaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MissingItemRequestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -61130,6 +64973,13 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type EnumMockupLenderStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MockupLenderStatus | EnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MockupLenderStatus[] | ListEnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MockupLenderStatus[] | ListEnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMockupLenderStatusFilter<$PrismaModel> | $Enums.MockupLenderStatus
+  }
+
   export type EnumDealComplianceStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
@@ -61263,6 +65113,9 @@ export namespace Prisma {
     governingStateProfile?: SortOrder
     preliminarySubmittedTerms?: SortOrder
     lenderApprovedTerms?: SortOrder
+    mockupLenderStatus?: SortOrder
+    requiresBuyerReauth?: SortOrder
+    finalPackageHash?: SortOrder
     complianceStatus?: SortOrder
     consummatedData?: SortOrder
     poolId?: SortOrder
@@ -61284,6 +65137,9 @@ export namespace Prisma {
     initialDisclosureHash?: SortOrder
     initialDisclosureSignerName?: SortOrder
     dealerRepresentativeName?: SortOrder
+    mockupLenderStatus?: SortOrder
+    requiresBuyerReauth?: SortOrder
+    finalPackageHash?: SortOrder
     complianceStatus?: SortOrder
     poolId?: SortOrder
     secondaryMarketStatus?: SortOrder
@@ -61304,6 +65160,9 @@ export namespace Prisma {
     initialDisclosureHash?: SortOrder
     initialDisclosureSignerName?: SortOrder
     dealerRepresentativeName?: SortOrder
+    mockupLenderStatus?: SortOrder
+    requiresBuyerReauth?: SortOrder
+    finalPackageHash?: SortOrder
     complianceStatus?: SortOrder
     poolId?: SortOrder
     secondaryMarketStatus?: SortOrder
@@ -61349,6 +65208,16 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type EnumMockupLenderStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MockupLenderStatus | EnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MockupLenderStatus[] | ListEnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MockupLenderStatus[] | ListEnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMockupLenderStatusWithAggregatesFilter<$PrismaModel> | $Enums.MockupLenderStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMockupLenderStatusFilter<$PrismaModel>
+    _max?: NestedEnumMockupLenderStatusFilter<$PrismaModel>
+  }
+
   export type EnumDealComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
@@ -61369,16 +65238,223 @@ export namespace Prisma {
     _max?: NestedEnumSecondaryMarketStatusFilter<$PrismaModel>
   }
 
-  export type EnumDealPartyRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.DealPartyRole | EnumDealPartyRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.DealPartyRole[] | ListEnumDealPartyRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DealPartyRole[] | ListEnumDealPartyRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumDealPartyRoleFilter<$PrismaModel> | $Enums.DealPartyRole
+  export type EnumLenderTaskCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskCategory | EnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskCategory[] | ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskCategory[] | ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskCategoryFilter<$PrismaModel> | $Enums.LenderTaskCategory
+  }
+
+  export type EnumLenderTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskPriority | EnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskPriority[] | ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskPriority[] | ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskPriorityFilter<$PrismaModel> | $Enums.LenderTaskPriority
+  }
+
+  export type EnumLenderTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskStatus | EnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskStatus[] | ListEnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskStatus[] | ListEnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskStatusFilter<$PrismaModel> | $Enums.LenderTaskStatus
+  }
+
+  export type WorkspaceNullableScalarRelationFilter = {
+    is?: WorkspaceWhereInput | null
+    isNot?: WorkspaceWhereInput | null
+  }
+
+  export type LenderTaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealId?: SortOrder
+    dealerId?: SortOrder
+    poolId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    dueDate?: SortOrder
+    assignedTo?: SortOrder
+    source?: SortOrder
+    auditEventId?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LenderTaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealId?: SortOrder
+    dealerId?: SortOrder
+    poolId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    dueDate?: SortOrder
+    assignedTo?: SortOrder
+    source?: SortOrder
+    auditEventId?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LenderTaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealId?: SortOrder
+    dealerId?: SortOrder
+    poolId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    priority?: SortOrder
+    status?: SortOrder
+    dueDate?: SortOrder
+    assignedTo?: SortOrder
+    source?: SortOrder
+    auditEventId?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumLenderTaskCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskCategory | EnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskCategory[] | ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskCategory[] | ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskCategoryWithAggregatesFilter<$PrismaModel> | $Enums.LenderTaskCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLenderTaskCategoryFilter<$PrismaModel>
+    _max?: NestedEnumLenderTaskCategoryFilter<$PrismaModel>
+  }
+
+  export type EnumLenderTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskPriority | EnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskPriority[] | ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskPriority[] | ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskPriorityWithAggregatesFilter<$PrismaModel> | $Enums.LenderTaskPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLenderTaskPriorityFilter<$PrismaModel>
+    _max?: NestedEnumLenderTaskPriorityFilter<$PrismaModel>
+  }
+
+  export type EnumLenderTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskStatus | EnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskStatus[] | ListEnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskStatus[] | ListEnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.LenderTaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLenderTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumLenderTaskStatusFilter<$PrismaModel>
+  }
+
+  export type EnumMissingItemRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingItemRequestStatus | EnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissingItemRequestStatus[] | ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissingItemRequestStatus[] | ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissingItemRequestStatusFilter<$PrismaModel> | $Enums.MissingItemRequestStatus
+  }
+
+  export type EnumMissingItemReviewStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingItemReviewStatus | EnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissingItemReviewStatus[] | ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissingItemReviewStatus[] | ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel> | $Enums.MissingItemReviewStatus
   }
 
   export type DealScalarRelationFilter = {
     is?: DealWhereInput
     isNot?: DealWhereInput
+  }
+
+  export type MissingItemRequestCountOrderByAggregateInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealerId?: SortOrder
+    dealId?: SortOrder
+    requestedItemType?: SortOrder
+    description?: SortOrder
+    required?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    status?: SortOrder
+    requestedBy?: SortOrder
+    uploadedDocumentId?: SortOrder
+    lenderReviewStatus?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MissingItemRequestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealerId?: SortOrder
+    dealId?: SortOrder
+    requestedItemType?: SortOrder
+    description?: SortOrder
+    required?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    status?: SortOrder
+    requestedBy?: SortOrder
+    uploadedDocumentId?: SortOrder
+    lenderReviewStatus?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MissingItemRequestMinOrderByAggregateInput = {
+    id?: SortOrder
+    lenderId?: SortOrder
+    dealerId?: SortOrder
+    dealId?: SortOrder
+    requestedItemType?: SortOrder
+    description?: SortOrder
+    required?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    status?: SortOrder
+    requestedBy?: SortOrder
+    uploadedDocumentId?: SortOrder
+    lenderReviewStatus?: SortOrder
+    createdAt?: SortOrder
+    resolvedAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumMissingItemRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingItemRequestStatus | EnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissingItemRequestStatus[] | ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissingItemRequestStatus[] | ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissingItemRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.MissingItemRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMissingItemRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumMissingItemRequestStatusFilter<$PrismaModel>
+  }
+
+  export type EnumMissingItemReviewStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingItemReviewStatus | EnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissingItemReviewStatus[] | ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissingItemReviewStatus[] | ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissingItemReviewStatusWithAggregatesFilter<$PrismaModel> | $Enums.MissingItemReviewStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel>
+    _max?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel>
+  }
+
+  export type EnumDealPartyRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.DealPartyRole | EnumDealPartyRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.DealPartyRole[] | ListEnumDealPartyRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DealPartyRole[] | ListEnumDealPartyRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumDealPartyRoleFilter<$PrismaModel> | $Enums.DealPartyRole
   }
 
   export type DealPartyCountOrderByAggregateInput = {
@@ -63665,6 +67741,34 @@ export namespace Prisma {
     connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
   }
 
+  export type LenderTaskCreateNestedManyWithoutLenderInput = {
+    create?: XOR<LenderTaskCreateWithoutLenderInput, LenderTaskUncheckedCreateWithoutLenderInput> | LenderTaskCreateWithoutLenderInput[] | LenderTaskUncheckedCreateWithoutLenderInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutLenderInput | LenderTaskCreateOrConnectWithoutLenderInput[]
+    createMany?: LenderTaskCreateManyLenderInputEnvelope
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+  }
+
+  export type LenderTaskCreateNestedManyWithoutDealerInput = {
+    create?: XOR<LenderTaskCreateWithoutDealerInput, LenderTaskUncheckedCreateWithoutDealerInput> | LenderTaskCreateWithoutDealerInput[] | LenderTaskUncheckedCreateWithoutDealerInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutDealerInput | LenderTaskCreateOrConnectWithoutDealerInput[]
+    createMany?: LenderTaskCreateManyDealerInputEnvelope
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+  }
+
+  export type MissingItemRequestCreateNestedManyWithoutLenderInput = {
+    create?: XOR<MissingItemRequestCreateWithoutLenderInput, MissingItemRequestUncheckedCreateWithoutLenderInput> | MissingItemRequestCreateWithoutLenderInput[] | MissingItemRequestUncheckedCreateWithoutLenderInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutLenderInput | MissingItemRequestCreateOrConnectWithoutLenderInput[]
+    createMany?: MissingItemRequestCreateManyLenderInputEnvelope
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+  }
+
+  export type MissingItemRequestCreateNestedManyWithoutDealerInput = {
+    create?: XOR<MissingItemRequestCreateWithoutDealerInput, MissingItemRequestUncheckedCreateWithoutDealerInput> | MissingItemRequestCreateWithoutDealerInput[] | MissingItemRequestUncheckedCreateWithoutDealerInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealerInput | MissingItemRequestCreateOrConnectWithoutDealerInput[]
+    createMany?: MissingItemRequestCreateManyDealerInputEnvelope
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput = {
     create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
@@ -63794,6 +67898,34 @@ export namespace Prisma {
     connectOrCreate?: CalendarEventCreateOrConnectWithoutWorkspaceInput | CalendarEventCreateOrConnectWithoutWorkspaceInput[]
     createMany?: CalendarEventCreateManyWorkspaceInputEnvelope
     connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+  }
+
+  export type LenderTaskUncheckedCreateNestedManyWithoutLenderInput = {
+    create?: XOR<LenderTaskCreateWithoutLenderInput, LenderTaskUncheckedCreateWithoutLenderInput> | LenderTaskCreateWithoutLenderInput[] | LenderTaskUncheckedCreateWithoutLenderInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutLenderInput | LenderTaskCreateOrConnectWithoutLenderInput[]
+    createMany?: LenderTaskCreateManyLenderInputEnvelope
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+  }
+
+  export type LenderTaskUncheckedCreateNestedManyWithoutDealerInput = {
+    create?: XOR<LenderTaskCreateWithoutDealerInput, LenderTaskUncheckedCreateWithoutDealerInput> | LenderTaskCreateWithoutDealerInput[] | LenderTaskUncheckedCreateWithoutDealerInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutDealerInput | LenderTaskCreateOrConnectWithoutDealerInput[]
+    createMany?: LenderTaskCreateManyDealerInputEnvelope
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+  }
+
+  export type MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput = {
+    create?: XOR<MissingItemRequestCreateWithoutLenderInput, MissingItemRequestUncheckedCreateWithoutLenderInput> | MissingItemRequestCreateWithoutLenderInput[] | MissingItemRequestUncheckedCreateWithoutLenderInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutLenderInput | MissingItemRequestCreateOrConnectWithoutLenderInput[]
+    createMany?: MissingItemRequestCreateManyLenderInputEnvelope
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+  }
+
+  export type MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput = {
+    create?: XOR<MissingItemRequestCreateWithoutDealerInput, MissingItemRequestUncheckedCreateWithoutDealerInput> | MissingItemRequestCreateWithoutDealerInput[] | MissingItemRequestUncheckedCreateWithoutDealerInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealerInput | MissingItemRequestCreateOrConnectWithoutDealerInput[]
+    createMany?: MissingItemRequestCreateManyDealerInputEnvelope
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
   }
 
   export type EnumWorkspaceTypeFieldUpdateOperationsInput = {
@@ -64066,6 +68198,62 @@ export namespace Prisma {
     deleteMany?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
   }
 
+  export type LenderTaskUpdateManyWithoutLenderNestedInput = {
+    create?: XOR<LenderTaskCreateWithoutLenderInput, LenderTaskUncheckedCreateWithoutLenderInput> | LenderTaskCreateWithoutLenderInput[] | LenderTaskUncheckedCreateWithoutLenderInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutLenderInput | LenderTaskCreateOrConnectWithoutLenderInput[]
+    upsert?: LenderTaskUpsertWithWhereUniqueWithoutLenderInput | LenderTaskUpsertWithWhereUniqueWithoutLenderInput[]
+    createMany?: LenderTaskCreateManyLenderInputEnvelope
+    set?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    disconnect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    delete?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    update?: LenderTaskUpdateWithWhereUniqueWithoutLenderInput | LenderTaskUpdateWithWhereUniqueWithoutLenderInput[]
+    updateMany?: LenderTaskUpdateManyWithWhereWithoutLenderInput | LenderTaskUpdateManyWithWhereWithoutLenderInput[]
+    deleteMany?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+  }
+
+  export type LenderTaskUpdateManyWithoutDealerNestedInput = {
+    create?: XOR<LenderTaskCreateWithoutDealerInput, LenderTaskUncheckedCreateWithoutDealerInput> | LenderTaskCreateWithoutDealerInput[] | LenderTaskUncheckedCreateWithoutDealerInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutDealerInput | LenderTaskCreateOrConnectWithoutDealerInput[]
+    upsert?: LenderTaskUpsertWithWhereUniqueWithoutDealerInput | LenderTaskUpsertWithWhereUniqueWithoutDealerInput[]
+    createMany?: LenderTaskCreateManyDealerInputEnvelope
+    set?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    disconnect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    delete?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    update?: LenderTaskUpdateWithWhereUniqueWithoutDealerInput | LenderTaskUpdateWithWhereUniqueWithoutDealerInput[]
+    updateMany?: LenderTaskUpdateManyWithWhereWithoutDealerInput | LenderTaskUpdateManyWithWhereWithoutDealerInput[]
+    deleteMany?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+  }
+
+  export type MissingItemRequestUpdateManyWithoutLenderNestedInput = {
+    create?: XOR<MissingItemRequestCreateWithoutLenderInput, MissingItemRequestUncheckedCreateWithoutLenderInput> | MissingItemRequestCreateWithoutLenderInput[] | MissingItemRequestUncheckedCreateWithoutLenderInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutLenderInput | MissingItemRequestCreateOrConnectWithoutLenderInput[]
+    upsert?: MissingItemRequestUpsertWithWhereUniqueWithoutLenderInput | MissingItemRequestUpsertWithWhereUniqueWithoutLenderInput[]
+    createMany?: MissingItemRequestCreateManyLenderInputEnvelope
+    set?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    disconnect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    delete?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    update?: MissingItemRequestUpdateWithWhereUniqueWithoutLenderInput | MissingItemRequestUpdateWithWhereUniqueWithoutLenderInput[]
+    updateMany?: MissingItemRequestUpdateManyWithWhereWithoutLenderInput | MissingItemRequestUpdateManyWithWhereWithoutLenderInput[]
+    deleteMany?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
+  }
+
+  export type MissingItemRequestUpdateManyWithoutDealerNestedInput = {
+    create?: XOR<MissingItemRequestCreateWithoutDealerInput, MissingItemRequestUncheckedCreateWithoutDealerInput> | MissingItemRequestCreateWithoutDealerInput[] | MissingItemRequestUncheckedCreateWithoutDealerInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealerInput | MissingItemRequestCreateOrConnectWithoutDealerInput[]
+    upsert?: MissingItemRequestUpsertWithWhereUniqueWithoutDealerInput | MissingItemRequestUpsertWithWhereUniqueWithoutDealerInput[]
+    createMany?: MissingItemRequestCreateManyDealerInputEnvelope
+    set?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    disconnect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    delete?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    update?: MissingItemRequestUpdateWithWhereUniqueWithoutDealerInput | MissingItemRequestUpdateWithWhereUniqueWithoutDealerInput[]
+    updateMany?: MissingItemRequestUpdateManyWithWhereWithoutDealerInput | MissingItemRequestUpdateManyWithWhereWithoutDealerInput[]
+    deleteMany?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput = {
     create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
@@ -64322,6 +68510,62 @@ export namespace Prisma {
     update?: CalendarEventUpdateWithWhereUniqueWithoutWorkspaceInput | CalendarEventUpdateWithWhereUniqueWithoutWorkspaceInput[]
     updateMany?: CalendarEventUpdateManyWithWhereWithoutWorkspaceInput | CalendarEventUpdateManyWithWhereWithoutWorkspaceInput[]
     deleteMany?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
+  }
+
+  export type LenderTaskUncheckedUpdateManyWithoutLenderNestedInput = {
+    create?: XOR<LenderTaskCreateWithoutLenderInput, LenderTaskUncheckedCreateWithoutLenderInput> | LenderTaskCreateWithoutLenderInput[] | LenderTaskUncheckedCreateWithoutLenderInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutLenderInput | LenderTaskCreateOrConnectWithoutLenderInput[]
+    upsert?: LenderTaskUpsertWithWhereUniqueWithoutLenderInput | LenderTaskUpsertWithWhereUniqueWithoutLenderInput[]
+    createMany?: LenderTaskCreateManyLenderInputEnvelope
+    set?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    disconnect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    delete?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    update?: LenderTaskUpdateWithWhereUniqueWithoutLenderInput | LenderTaskUpdateWithWhereUniqueWithoutLenderInput[]
+    updateMany?: LenderTaskUpdateManyWithWhereWithoutLenderInput | LenderTaskUpdateManyWithWhereWithoutLenderInput[]
+    deleteMany?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+  }
+
+  export type LenderTaskUncheckedUpdateManyWithoutDealerNestedInput = {
+    create?: XOR<LenderTaskCreateWithoutDealerInput, LenderTaskUncheckedCreateWithoutDealerInput> | LenderTaskCreateWithoutDealerInput[] | LenderTaskUncheckedCreateWithoutDealerInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutDealerInput | LenderTaskCreateOrConnectWithoutDealerInput[]
+    upsert?: LenderTaskUpsertWithWhereUniqueWithoutDealerInput | LenderTaskUpsertWithWhereUniqueWithoutDealerInput[]
+    createMany?: LenderTaskCreateManyDealerInputEnvelope
+    set?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    disconnect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    delete?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    update?: LenderTaskUpdateWithWhereUniqueWithoutDealerInput | LenderTaskUpdateWithWhereUniqueWithoutDealerInput[]
+    updateMany?: LenderTaskUpdateManyWithWhereWithoutDealerInput | LenderTaskUpdateManyWithWhereWithoutDealerInput[]
+    deleteMany?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+  }
+
+  export type MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput = {
+    create?: XOR<MissingItemRequestCreateWithoutLenderInput, MissingItemRequestUncheckedCreateWithoutLenderInput> | MissingItemRequestCreateWithoutLenderInput[] | MissingItemRequestUncheckedCreateWithoutLenderInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutLenderInput | MissingItemRequestCreateOrConnectWithoutLenderInput[]
+    upsert?: MissingItemRequestUpsertWithWhereUniqueWithoutLenderInput | MissingItemRequestUpsertWithWhereUniqueWithoutLenderInput[]
+    createMany?: MissingItemRequestCreateManyLenderInputEnvelope
+    set?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    disconnect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    delete?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    update?: MissingItemRequestUpdateWithWhereUniqueWithoutLenderInput | MissingItemRequestUpdateWithWhereUniqueWithoutLenderInput[]
+    updateMany?: MissingItemRequestUpdateManyWithWhereWithoutLenderInput | MissingItemRequestUpdateManyWithWhereWithoutLenderInput[]
+    deleteMany?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
+  }
+
+  export type MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput = {
+    create?: XOR<MissingItemRequestCreateWithoutDealerInput, MissingItemRequestUncheckedCreateWithoutDealerInput> | MissingItemRequestCreateWithoutDealerInput[] | MissingItemRequestUncheckedCreateWithoutDealerInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealerInput | MissingItemRequestCreateOrConnectWithoutDealerInput[]
+    upsert?: MissingItemRequestUpsertWithWhereUniqueWithoutDealerInput | MissingItemRequestUpsertWithWhereUniqueWithoutDealerInput[]
+    createMany?: MissingItemRequestCreateManyDealerInputEnvelope
+    set?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    disconnect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    delete?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    update?: MissingItemRequestUpdateWithWhereUniqueWithoutDealerInput | MissingItemRequestUpdateWithWhereUniqueWithoutDealerInput[]
+    updateMany?: MissingItemRequestUpdateManyWithWhereWithoutDealerInput | MissingItemRequestUpdateManyWithWhereWithoutDealerInput[]
+    deleteMany?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
   }
 
   export type WorkspaceCreateNestedOneWithoutCalendarEventsInput = {
@@ -64772,6 +69016,20 @@ export namespace Prisma {
     connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
   }
 
+  export type LenderTaskCreateNestedManyWithoutDealInput = {
+    create?: XOR<LenderTaskCreateWithoutDealInput, LenderTaskUncheckedCreateWithoutDealInput> | LenderTaskCreateWithoutDealInput[] | LenderTaskUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutDealInput | LenderTaskCreateOrConnectWithoutDealInput[]
+    createMany?: LenderTaskCreateManyDealInputEnvelope
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+  }
+
+  export type MissingItemRequestCreateNestedManyWithoutDealInput = {
+    create?: XOR<MissingItemRequestCreateWithoutDealInput, MissingItemRequestUncheckedCreateWithoutDealInput> | MissingItemRequestCreateWithoutDealInput[] | MissingItemRequestUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealInput | MissingItemRequestCreateOrConnectWithoutDealInput[]
+    createMany?: MissingItemRequestCreateManyDealInputEnvelope
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+  }
+
   export type DealPartyUncheckedCreateNestedManyWithoutDealInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -64886,8 +69144,26 @@ export namespace Prisma {
     connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
   }
 
+  export type LenderTaskUncheckedCreateNestedManyWithoutDealInput = {
+    create?: XOR<LenderTaskCreateWithoutDealInput, LenderTaskUncheckedCreateWithoutDealInput> | LenderTaskCreateWithoutDealInput[] | LenderTaskUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutDealInput | LenderTaskCreateOrConnectWithoutDealInput[]
+    createMany?: LenderTaskCreateManyDealInputEnvelope
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+  }
+
+  export type MissingItemRequestUncheckedCreateNestedManyWithoutDealInput = {
+    create?: XOR<MissingItemRequestCreateWithoutDealInput, MissingItemRequestUncheckedCreateWithoutDealInput> | MissingItemRequestCreateWithoutDealInput[] | MissingItemRequestUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealInput | MissingItemRequestCreateOrConnectWithoutDealInput[]
+    createMany?: MissingItemRequestCreateManyDealInputEnvelope
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+  }
+
   export type EnumDealStatusFieldUpdateOperationsInput = {
     set?: $Enums.DealStatus
+  }
+
+  export type EnumMockupLenderStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MockupLenderStatus
   }
 
   export type EnumDealComplianceStatusFieldUpdateOperationsInput = {
@@ -65150,6 +69426,34 @@ export namespace Prisma {
     deleteMany?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
   }
 
+  export type LenderTaskUpdateManyWithoutDealNestedInput = {
+    create?: XOR<LenderTaskCreateWithoutDealInput, LenderTaskUncheckedCreateWithoutDealInput> | LenderTaskCreateWithoutDealInput[] | LenderTaskUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutDealInput | LenderTaskCreateOrConnectWithoutDealInput[]
+    upsert?: LenderTaskUpsertWithWhereUniqueWithoutDealInput | LenderTaskUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: LenderTaskCreateManyDealInputEnvelope
+    set?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    disconnect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    delete?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    update?: LenderTaskUpdateWithWhereUniqueWithoutDealInput | LenderTaskUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: LenderTaskUpdateManyWithWhereWithoutDealInput | LenderTaskUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+  }
+
+  export type MissingItemRequestUpdateManyWithoutDealNestedInput = {
+    create?: XOR<MissingItemRequestCreateWithoutDealInput, MissingItemRequestUncheckedCreateWithoutDealInput> | MissingItemRequestCreateWithoutDealInput[] | MissingItemRequestUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealInput | MissingItemRequestCreateOrConnectWithoutDealInput[]
+    upsert?: MissingItemRequestUpsertWithWhereUniqueWithoutDealInput | MissingItemRequestUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: MissingItemRequestCreateManyDealInputEnvelope
+    set?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    disconnect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    delete?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    update?: MissingItemRequestUpdateWithWhereUniqueWithoutDealInput | MissingItemRequestUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: MissingItemRequestUpdateManyWithWhereWithoutDealInput | MissingItemRequestUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
+  }
+
   export type DealPartyUncheckedUpdateManyWithoutDealNestedInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -65366,6 +69670,158 @@ export namespace Prisma {
     update?: CalendarEventUpdateWithWhereUniqueWithoutDealInput | CalendarEventUpdateWithWhereUniqueWithoutDealInput[]
     updateMany?: CalendarEventUpdateManyWithWhereWithoutDealInput | CalendarEventUpdateManyWithWhereWithoutDealInput[]
     deleteMany?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
+  }
+
+  export type LenderTaskUncheckedUpdateManyWithoutDealNestedInput = {
+    create?: XOR<LenderTaskCreateWithoutDealInput, LenderTaskUncheckedCreateWithoutDealInput> | LenderTaskCreateWithoutDealInput[] | LenderTaskUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutDealInput | LenderTaskCreateOrConnectWithoutDealInput[]
+    upsert?: LenderTaskUpsertWithWhereUniqueWithoutDealInput | LenderTaskUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: LenderTaskCreateManyDealInputEnvelope
+    set?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    disconnect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    delete?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    update?: LenderTaskUpdateWithWhereUniqueWithoutDealInput | LenderTaskUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: LenderTaskUpdateManyWithWhereWithoutDealInput | LenderTaskUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+  }
+
+  export type MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput = {
+    create?: XOR<MissingItemRequestCreateWithoutDealInput, MissingItemRequestUncheckedCreateWithoutDealInput> | MissingItemRequestCreateWithoutDealInput[] | MissingItemRequestUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealInput | MissingItemRequestCreateOrConnectWithoutDealInput[]
+    upsert?: MissingItemRequestUpsertWithWhereUniqueWithoutDealInput | MissingItemRequestUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: MissingItemRequestCreateManyDealInputEnvelope
+    set?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    disconnect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    delete?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+    update?: MissingItemRequestUpdateWithWhereUniqueWithoutDealInput | MissingItemRequestUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: MissingItemRequestUpdateManyWithWhereWithoutDealInput | MissingItemRequestUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
+  }
+
+  export type WorkspaceCreateNestedOneWithoutLenderTasksInput = {
+    create?: XOR<WorkspaceCreateWithoutLenderTasksInput, WorkspaceUncheckedCreateWithoutLenderTasksInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutLenderTasksInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type WorkspaceCreateNestedOneWithoutDealerTasksInput = {
+    create?: XOR<WorkspaceCreateWithoutDealerTasksInput, WorkspaceUncheckedCreateWithoutDealerTasksInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutDealerTasksInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type DealCreateNestedOneWithoutLenderTasksInput = {
+    create?: XOR<DealCreateWithoutLenderTasksInput, DealUncheckedCreateWithoutLenderTasksInput>
+    connectOrCreate?: DealCreateOrConnectWithoutLenderTasksInput
+    connect?: DealWhereUniqueInput
+  }
+
+  export type LoanPoolCreateNestedOneWithoutLenderTasksInput = {
+    create?: XOR<LoanPoolCreateWithoutLenderTasksInput, LoanPoolUncheckedCreateWithoutLenderTasksInput>
+    connectOrCreate?: LoanPoolCreateOrConnectWithoutLenderTasksInput
+    connect?: LoanPoolWhereUniqueInput
+  }
+
+  export type EnumLenderTaskCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.LenderTaskCategory
+  }
+
+  export type EnumLenderTaskPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.LenderTaskPriority
+  }
+
+  export type EnumLenderTaskStatusFieldUpdateOperationsInput = {
+    set?: $Enums.LenderTaskStatus
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutLenderTasksNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutLenderTasksInput, WorkspaceUncheckedCreateWithoutLenderTasksInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutLenderTasksInput
+    upsert?: WorkspaceUpsertWithoutLenderTasksInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutLenderTasksInput, WorkspaceUpdateWithoutLenderTasksInput>, WorkspaceUncheckedUpdateWithoutLenderTasksInput>
+  }
+
+  export type WorkspaceUpdateOneWithoutDealerTasksNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutDealerTasksInput, WorkspaceUncheckedCreateWithoutDealerTasksInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutDealerTasksInput
+    upsert?: WorkspaceUpsertWithoutDealerTasksInput
+    disconnect?: WorkspaceWhereInput | boolean
+    delete?: WorkspaceWhereInput | boolean
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutDealerTasksInput, WorkspaceUpdateWithoutDealerTasksInput>, WorkspaceUncheckedUpdateWithoutDealerTasksInput>
+  }
+
+  export type DealUpdateOneWithoutLenderTasksNestedInput = {
+    create?: XOR<DealCreateWithoutLenderTasksInput, DealUncheckedCreateWithoutLenderTasksInput>
+    connectOrCreate?: DealCreateOrConnectWithoutLenderTasksInput
+    upsert?: DealUpsertWithoutLenderTasksInput
+    disconnect?: DealWhereInput | boolean
+    delete?: DealWhereInput | boolean
+    connect?: DealWhereUniqueInput
+    update?: XOR<XOR<DealUpdateToOneWithWhereWithoutLenderTasksInput, DealUpdateWithoutLenderTasksInput>, DealUncheckedUpdateWithoutLenderTasksInput>
+  }
+
+  export type LoanPoolUpdateOneWithoutLenderTasksNestedInput = {
+    create?: XOR<LoanPoolCreateWithoutLenderTasksInput, LoanPoolUncheckedCreateWithoutLenderTasksInput>
+    connectOrCreate?: LoanPoolCreateOrConnectWithoutLenderTasksInput
+    upsert?: LoanPoolUpsertWithoutLenderTasksInput
+    disconnect?: LoanPoolWhereInput | boolean
+    delete?: LoanPoolWhereInput | boolean
+    connect?: LoanPoolWhereUniqueInput
+    update?: XOR<XOR<LoanPoolUpdateToOneWithWhereWithoutLenderTasksInput, LoanPoolUpdateWithoutLenderTasksInput>, LoanPoolUncheckedUpdateWithoutLenderTasksInput>
+  }
+
+  export type WorkspaceCreateNestedOneWithoutLenderMissingItemRequestsInput = {
+    create?: XOR<WorkspaceCreateWithoutLenderMissingItemRequestsInput, WorkspaceUncheckedCreateWithoutLenderMissingItemRequestsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutLenderMissingItemRequestsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type WorkspaceCreateNestedOneWithoutDealerMissingItemRequestsInput = {
+    create?: XOR<WorkspaceCreateWithoutDealerMissingItemRequestsInput, WorkspaceUncheckedCreateWithoutDealerMissingItemRequestsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutDealerMissingItemRequestsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type DealCreateNestedOneWithoutMissingItemRequestsInput = {
+    create?: XOR<DealCreateWithoutMissingItemRequestsInput, DealUncheckedCreateWithoutMissingItemRequestsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutMissingItemRequestsInput
+    connect?: DealWhereUniqueInput
+  }
+
+  export type EnumMissingItemRequestStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MissingItemRequestStatus
+  }
+
+  export type EnumMissingItemReviewStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MissingItemReviewStatus
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutLenderMissingItemRequestsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutLenderMissingItemRequestsInput, WorkspaceUncheckedCreateWithoutLenderMissingItemRequestsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutLenderMissingItemRequestsInput
+    upsert?: WorkspaceUpsertWithoutLenderMissingItemRequestsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutLenderMissingItemRequestsInput, WorkspaceUpdateWithoutLenderMissingItemRequestsInput>, WorkspaceUncheckedUpdateWithoutLenderMissingItemRequestsInput>
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutDealerMissingItemRequestsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutDealerMissingItemRequestsInput, WorkspaceUncheckedCreateWithoutDealerMissingItemRequestsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutDealerMissingItemRequestsInput
+    upsert?: WorkspaceUpsertWithoutDealerMissingItemRequestsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutDealerMissingItemRequestsInput, WorkspaceUpdateWithoutDealerMissingItemRequestsInput>, WorkspaceUncheckedUpdateWithoutDealerMissingItemRequestsInput>
+  }
+
+  export type DealUpdateOneRequiredWithoutMissingItemRequestsNestedInput = {
+    create?: XOR<DealCreateWithoutMissingItemRequestsInput, DealUncheckedCreateWithoutMissingItemRequestsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutMissingItemRequestsInput
+    upsert?: DealUpsertWithoutMissingItemRequestsInput
+    connect?: DealWhereUniqueInput
+    update?: XOR<XOR<DealUpdateToOneWithWhereWithoutMissingItemRequestsInput, DealUpdateWithoutMissingItemRequestsInput>, DealUncheckedUpdateWithoutMissingItemRequestsInput>
   }
 
   export type DealCreateNestedOneWithoutPartiesInput = {
@@ -65585,11 +70041,25 @@ export namespace Prisma {
     connect?: DealWhereUniqueInput | DealWhereUniqueInput[]
   }
 
+  export type LenderTaskCreateNestedManyWithoutPoolInput = {
+    create?: XOR<LenderTaskCreateWithoutPoolInput, LenderTaskUncheckedCreateWithoutPoolInput> | LenderTaskCreateWithoutPoolInput[] | LenderTaskUncheckedCreateWithoutPoolInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutPoolInput | LenderTaskCreateOrConnectWithoutPoolInput[]
+    createMany?: LenderTaskCreateManyPoolInputEnvelope
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+  }
+
   export type DealUncheckedCreateNestedManyWithoutLoanPoolInput = {
     create?: XOR<DealCreateWithoutLoanPoolInput, DealUncheckedCreateWithoutLoanPoolInput> | DealCreateWithoutLoanPoolInput[] | DealUncheckedCreateWithoutLoanPoolInput[]
     connectOrCreate?: DealCreateOrConnectWithoutLoanPoolInput | DealCreateOrConnectWithoutLoanPoolInput[]
     createMany?: DealCreateManyLoanPoolInputEnvelope
     connect?: DealWhereUniqueInput | DealWhereUniqueInput[]
+  }
+
+  export type LenderTaskUncheckedCreateNestedManyWithoutPoolInput = {
+    create?: XOR<LenderTaskCreateWithoutPoolInput, LenderTaskUncheckedCreateWithoutPoolInput> | LenderTaskCreateWithoutPoolInput[] | LenderTaskUncheckedCreateWithoutPoolInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutPoolInput | LenderTaskCreateOrConnectWithoutPoolInput[]
+    createMany?: LenderTaskCreateManyPoolInputEnvelope
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
   }
 
   export type EnumLoanPoolTypeFieldUpdateOperationsInput = {
@@ -65664,6 +70134,20 @@ export namespace Prisma {
     deleteMany?: DealScalarWhereInput | DealScalarWhereInput[]
   }
 
+  export type LenderTaskUpdateManyWithoutPoolNestedInput = {
+    create?: XOR<LenderTaskCreateWithoutPoolInput, LenderTaskUncheckedCreateWithoutPoolInput> | LenderTaskCreateWithoutPoolInput[] | LenderTaskUncheckedCreateWithoutPoolInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutPoolInput | LenderTaskCreateOrConnectWithoutPoolInput[]
+    upsert?: LenderTaskUpsertWithWhereUniqueWithoutPoolInput | LenderTaskUpsertWithWhereUniqueWithoutPoolInput[]
+    createMany?: LenderTaskCreateManyPoolInputEnvelope
+    set?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    disconnect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    delete?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    update?: LenderTaskUpdateWithWhereUniqueWithoutPoolInput | LenderTaskUpdateWithWhereUniqueWithoutPoolInput[]
+    updateMany?: LenderTaskUpdateManyWithWhereWithoutPoolInput | LenderTaskUpdateManyWithWhereWithoutPoolInput[]
+    deleteMany?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+  }
+
   export type DealUncheckedUpdateManyWithoutLoanPoolNestedInput = {
     create?: XOR<DealCreateWithoutLoanPoolInput, DealUncheckedCreateWithoutLoanPoolInput> | DealCreateWithoutLoanPoolInput[] | DealUncheckedCreateWithoutLoanPoolInput[]
     connectOrCreate?: DealCreateOrConnectWithoutLoanPoolInput | DealCreateOrConnectWithoutLoanPoolInput[]
@@ -65676,6 +70160,20 @@ export namespace Prisma {
     update?: DealUpdateWithWhereUniqueWithoutLoanPoolInput | DealUpdateWithWhereUniqueWithoutLoanPoolInput[]
     updateMany?: DealUpdateManyWithWhereWithoutLoanPoolInput | DealUpdateManyWithWhereWithoutLoanPoolInput[]
     deleteMany?: DealScalarWhereInput | DealScalarWhereInput[]
+  }
+
+  export type LenderTaskUncheckedUpdateManyWithoutPoolNestedInput = {
+    create?: XOR<LenderTaskCreateWithoutPoolInput, LenderTaskUncheckedCreateWithoutPoolInput> | LenderTaskCreateWithoutPoolInput[] | LenderTaskUncheckedCreateWithoutPoolInput[]
+    connectOrCreate?: LenderTaskCreateOrConnectWithoutPoolInput | LenderTaskCreateOrConnectWithoutPoolInput[]
+    upsert?: LenderTaskUpsertWithWhereUniqueWithoutPoolInput | LenderTaskUpsertWithWhereUniqueWithoutPoolInput[]
+    createMany?: LenderTaskCreateManyPoolInputEnvelope
+    set?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    disconnect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    delete?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    connect?: LenderTaskWhereUniqueInput | LenderTaskWhereUniqueInput[]
+    update?: LenderTaskUpdateWithWhereUniqueWithoutPoolInput | LenderTaskUpdateWithWhereUniqueWithoutPoolInput[]
+    updateMany?: LenderTaskUpdateManyWithWhereWithoutPoolInput | LenderTaskUpdateManyWithWhereWithoutPoolInput[]
+    deleteMany?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
   }
 
   export type DealCreateNestedOneWithoutNegotiableInstrumentInput = {
@@ -66963,6 +71461,13 @@ export namespace Prisma {
     not?: NestedEnumDealStatusFilter<$PrismaModel> | $Enums.DealStatus
   }
 
+  export type NestedEnumMockupLenderStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MockupLenderStatus | EnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MockupLenderStatus[] | ListEnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MockupLenderStatus[] | ListEnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMockupLenderStatusFilter<$PrismaModel> | $Enums.MockupLenderStatus
+  }
+
   export type NestedEnumDealComplianceStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
@@ -67010,6 +71515,16 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedEnumMockupLenderStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MockupLenderStatus | EnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MockupLenderStatus[] | ListEnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MockupLenderStatus[] | ListEnumMockupLenderStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMockupLenderStatusWithAggregatesFilter<$PrismaModel> | $Enums.MockupLenderStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMockupLenderStatusFilter<$PrismaModel>
+    _max?: NestedEnumMockupLenderStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumDealComplianceStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.DealComplianceStatus | EnumDealComplianceStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DealComplianceStatus[] | ListEnumDealComplianceStatusFieldRefInput<$PrismaModel>
@@ -67028,6 +71543,91 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSecondaryMarketStatusFilter<$PrismaModel>
     _max?: NestedEnumSecondaryMarketStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLenderTaskCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskCategory | EnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskCategory[] | ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskCategory[] | ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskCategoryFilter<$PrismaModel> | $Enums.LenderTaskCategory
+  }
+
+  export type NestedEnumLenderTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskPriority | EnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskPriority[] | ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskPriority[] | ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskPriorityFilter<$PrismaModel> | $Enums.LenderTaskPriority
+  }
+
+  export type NestedEnumLenderTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskStatus | EnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskStatus[] | ListEnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskStatus[] | ListEnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskStatusFilter<$PrismaModel> | $Enums.LenderTaskStatus
+  }
+
+  export type NestedEnumLenderTaskCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskCategory | EnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskCategory[] | ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskCategory[] | ListEnumLenderTaskCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskCategoryWithAggregatesFilter<$PrismaModel> | $Enums.LenderTaskCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLenderTaskCategoryFilter<$PrismaModel>
+    _max?: NestedEnumLenderTaskCategoryFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLenderTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskPriority | EnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskPriority[] | ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskPriority[] | ListEnumLenderTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskPriorityWithAggregatesFilter<$PrismaModel> | $Enums.LenderTaskPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLenderTaskPriorityFilter<$PrismaModel>
+    _max?: NestedEnumLenderTaskPriorityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLenderTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LenderTaskStatus | EnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.LenderTaskStatus[] | ListEnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LenderTaskStatus[] | ListEnumLenderTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumLenderTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.LenderTaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLenderTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumLenderTaskStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMissingItemRequestStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingItemRequestStatus | EnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissingItemRequestStatus[] | ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissingItemRequestStatus[] | ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissingItemRequestStatusFilter<$PrismaModel> | $Enums.MissingItemRequestStatus
+  }
+
+  export type NestedEnumMissingItemReviewStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingItemReviewStatus | EnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissingItemReviewStatus[] | ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissingItemReviewStatus[] | ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel> | $Enums.MissingItemReviewStatus
+  }
+
+  export type NestedEnumMissingItemRequestStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingItemRequestStatus | EnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissingItemRequestStatus[] | ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissingItemRequestStatus[] | ListEnumMissingItemRequestStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissingItemRequestStatusWithAggregatesFilter<$PrismaModel> | $Enums.MissingItemRequestStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMissingItemRequestStatusFilter<$PrismaModel>
+    _max?: NestedEnumMissingItemRequestStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMissingItemReviewStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MissingItemReviewStatus | EnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MissingItemReviewStatus[] | ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MissingItemReviewStatus[] | ListEnumMissingItemReviewStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMissingItemReviewStatusWithAggregatesFilter<$PrismaModel> | $Enums.MissingItemReviewStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel>
+    _max?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumDealPartyRoleFilter<$PrismaModel = never> = {
@@ -67543,6 +72143,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutOrganizationUsersInput = {
@@ -67571,6 +72175,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutOrganizationUsersInput = {
@@ -67916,6 +72524,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     lender: WorkspaceCreateNestedOneWithoutLoanPoolsInput
     deals?: DealCreateNestedManyWithoutLoanPoolInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutPoolInput
   }
 
   export type LoanPoolUncheckedCreateWithoutCreatedByInput = {
@@ -67944,6 +72553,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deals?: DealUncheckedCreateNestedManyWithoutLoanPoolInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutPoolInput
   }
 
   export type LoanPoolCreateOrConnectWithoutCreatedByInput = {
@@ -67993,6 +72603,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutOrganizationUsersInput = {
@@ -68021,6 +72635,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -68682,6 +73300,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -68709,6 +73330,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerInput = {
@@ -68724,6 +73347,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -68749,6 +73375,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerInput = {
@@ -68772,6 +73400,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -68799,6 +73430,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLenderInput = {
@@ -68814,6 +73447,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -68839,6 +73475,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLenderInput = {
@@ -68949,6 +73587,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutLoanPoolsCreatedInput
     deals?: DealCreateNestedManyWithoutLoanPoolInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutPoolInput
   }
 
   export type LoanPoolUncheckedCreateWithoutLenderInput = {
@@ -68977,6 +73616,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deals?: DealUncheckedCreateNestedManyWithoutLoanPoolInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutPoolInput
   }
 
   export type LoanPoolCreateOrConnectWithoutLenderInput = {
@@ -69122,6 +73762,194 @@ export namespace Prisma {
 
   export type CalendarEventCreateManyWorkspaceInputEnvelope = {
     data: CalendarEventCreateManyWorkspaceInput | CalendarEventCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LenderTaskCreateWithoutLenderInput = {
+    id?: string
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dealer?: WorkspaceCreateNestedOneWithoutDealerTasksInput
+    deal?: DealCreateNestedOneWithoutLenderTasksInput
+    pool?: LoanPoolCreateNestedOneWithoutLenderTasksInput
+  }
+
+  export type LenderTaskUncheckedCreateWithoutLenderInput = {
+    id?: string
+    dealId?: string | null
+    dealerId?: string | null
+    poolId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskCreateOrConnectWithoutLenderInput = {
+    where: LenderTaskWhereUniqueInput
+    create: XOR<LenderTaskCreateWithoutLenderInput, LenderTaskUncheckedCreateWithoutLenderInput>
+  }
+
+  export type LenderTaskCreateManyLenderInputEnvelope = {
+    data: LenderTaskCreateManyLenderInput | LenderTaskCreateManyLenderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LenderTaskCreateWithoutDealerInput = {
+    id?: string
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLenderTasksInput
+    deal?: DealCreateNestedOneWithoutLenderTasksInput
+    pool?: LoanPoolCreateNestedOneWithoutLenderTasksInput
+  }
+
+  export type LenderTaskUncheckedCreateWithoutDealerInput = {
+    id?: string
+    lenderId: string
+    dealId?: string | null
+    poolId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskCreateOrConnectWithoutDealerInput = {
+    where: LenderTaskWhereUniqueInput
+    create: XOR<LenderTaskCreateWithoutDealerInput, LenderTaskUncheckedCreateWithoutDealerInput>
+  }
+
+  export type LenderTaskCreateManyDealerInputEnvelope = {
+    data: LenderTaskCreateManyDealerInput | LenderTaskCreateManyDealerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MissingItemRequestCreateWithoutLenderInput = {
+    id?: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+    dealer: WorkspaceCreateNestedOneWithoutDealerMissingItemRequestsInput
+    deal: DealCreateNestedOneWithoutMissingItemRequestsInput
+  }
+
+  export type MissingItemRequestUncheckedCreateWithoutLenderInput = {
+    id?: string
+    dealerId: string
+    dealId: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type MissingItemRequestCreateOrConnectWithoutLenderInput = {
+    where: MissingItemRequestWhereUniqueInput
+    create: XOR<MissingItemRequestCreateWithoutLenderInput, MissingItemRequestUncheckedCreateWithoutLenderInput>
+  }
+
+  export type MissingItemRequestCreateManyLenderInputEnvelope = {
+    data: MissingItemRequestCreateManyLenderInput | MissingItemRequestCreateManyLenderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MissingItemRequestCreateWithoutDealerInput = {
+    id?: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLenderMissingItemRequestsInput
+    deal: DealCreateNestedOneWithoutMissingItemRequestsInput
+  }
+
+  export type MissingItemRequestUncheckedCreateWithoutDealerInput = {
+    id?: string
+    lenderId: string
+    dealId: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type MissingItemRequestCreateOrConnectWithoutDealerInput = {
+    where: MissingItemRequestWhereUniqueInput
+    create: XOR<MissingItemRequestCreateWithoutDealerInput, MissingItemRequestUncheckedCreateWithoutDealerInput>
+  }
+
+  export type MissingItemRequestCreateManyDealerInputEnvelope = {
+    data: MissingItemRequestCreateManyDealerInput | MissingItemRequestCreateManyDealerInput[]
     skipDuplicates?: boolean
   }
 
@@ -69455,6 +74283,9 @@ export namespace Prisma {
     governingStateProfile?: JsonNullableFilter<"Deal">
     preliminarySubmittedTerms?: JsonNullableFilter<"Deal">
     lenderApprovedTerms?: JsonNullableFilter<"Deal">
+    mockupLenderStatus?: EnumMockupLenderStatusFilter<"Deal"> | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFilter<"Deal"> | boolean
+    finalPackageHash?: StringNullableFilter<"Deal"> | string | null
     complianceStatus?: EnumDealComplianceStatusFilter<"Deal"> | $Enums.DealComplianceStatus
     consummatedData?: JsonNullableFilter<"Deal">
     poolId?: StringNullableFilter<"Deal"> | string | null
@@ -69658,6 +74489,115 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"CalendarEvent"> | Date | string
   }
 
+  export type LenderTaskUpsertWithWhereUniqueWithoutLenderInput = {
+    where: LenderTaskWhereUniqueInput
+    update: XOR<LenderTaskUpdateWithoutLenderInput, LenderTaskUncheckedUpdateWithoutLenderInput>
+    create: XOR<LenderTaskCreateWithoutLenderInput, LenderTaskUncheckedCreateWithoutLenderInput>
+  }
+
+  export type LenderTaskUpdateWithWhereUniqueWithoutLenderInput = {
+    where: LenderTaskWhereUniqueInput
+    data: XOR<LenderTaskUpdateWithoutLenderInput, LenderTaskUncheckedUpdateWithoutLenderInput>
+  }
+
+  export type LenderTaskUpdateManyWithWhereWithoutLenderInput = {
+    where: LenderTaskScalarWhereInput
+    data: XOR<LenderTaskUpdateManyMutationInput, LenderTaskUncheckedUpdateManyWithoutLenderInput>
+  }
+
+  export type LenderTaskScalarWhereInput = {
+    AND?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+    OR?: LenderTaskScalarWhereInput[]
+    NOT?: LenderTaskScalarWhereInput | LenderTaskScalarWhereInput[]
+    id?: StringFilter<"LenderTask"> | string
+    lenderId?: StringFilter<"LenderTask"> | string
+    dealId?: StringNullableFilter<"LenderTask"> | string | null
+    dealerId?: StringNullableFilter<"LenderTask"> | string | null
+    poolId?: StringNullableFilter<"LenderTask"> | string | null
+    title?: StringFilter<"LenderTask"> | string
+    description?: StringNullableFilter<"LenderTask"> | string | null
+    category?: EnumLenderTaskCategoryFilter<"LenderTask"> | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFilter<"LenderTask"> | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFilter<"LenderTask"> | $Enums.LenderTaskStatus
+    dueDate?: DateTimeNullableFilter<"LenderTask"> | Date | string | null
+    assignedTo?: StringNullableFilter<"LenderTask"> | string | null
+    source?: StringNullableFilter<"LenderTask"> | string | null
+    auditEventId?: StringNullableFilter<"LenderTask"> | string | null
+    completedAt?: DateTimeNullableFilter<"LenderTask"> | Date | string | null
+    createdAt?: DateTimeFilter<"LenderTask"> | Date | string
+    updatedAt?: DateTimeFilter<"LenderTask"> | Date | string
+  }
+
+  export type LenderTaskUpsertWithWhereUniqueWithoutDealerInput = {
+    where: LenderTaskWhereUniqueInput
+    update: XOR<LenderTaskUpdateWithoutDealerInput, LenderTaskUncheckedUpdateWithoutDealerInput>
+    create: XOR<LenderTaskCreateWithoutDealerInput, LenderTaskUncheckedCreateWithoutDealerInput>
+  }
+
+  export type LenderTaskUpdateWithWhereUniqueWithoutDealerInput = {
+    where: LenderTaskWhereUniqueInput
+    data: XOR<LenderTaskUpdateWithoutDealerInput, LenderTaskUncheckedUpdateWithoutDealerInput>
+  }
+
+  export type LenderTaskUpdateManyWithWhereWithoutDealerInput = {
+    where: LenderTaskScalarWhereInput
+    data: XOR<LenderTaskUpdateManyMutationInput, LenderTaskUncheckedUpdateManyWithoutDealerInput>
+  }
+
+  export type MissingItemRequestUpsertWithWhereUniqueWithoutLenderInput = {
+    where: MissingItemRequestWhereUniqueInput
+    update: XOR<MissingItemRequestUpdateWithoutLenderInput, MissingItemRequestUncheckedUpdateWithoutLenderInput>
+    create: XOR<MissingItemRequestCreateWithoutLenderInput, MissingItemRequestUncheckedCreateWithoutLenderInput>
+  }
+
+  export type MissingItemRequestUpdateWithWhereUniqueWithoutLenderInput = {
+    where: MissingItemRequestWhereUniqueInput
+    data: XOR<MissingItemRequestUpdateWithoutLenderInput, MissingItemRequestUncheckedUpdateWithoutLenderInput>
+  }
+
+  export type MissingItemRequestUpdateManyWithWhereWithoutLenderInput = {
+    where: MissingItemRequestScalarWhereInput
+    data: XOR<MissingItemRequestUpdateManyMutationInput, MissingItemRequestUncheckedUpdateManyWithoutLenderInput>
+  }
+
+  export type MissingItemRequestScalarWhereInput = {
+    AND?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
+    OR?: MissingItemRequestScalarWhereInput[]
+    NOT?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
+    id?: StringFilter<"MissingItemRequest"> | string
+    lenderId?: StringFilter<"MissingItemRequest"> | string
+    dealerId?: StringFilter<"MissingItemRequest"> | string
+    dealId?: StringFilter<"MissingItemRequest"> | string
+    requestedItemType?: StringFilter<"MissingItemRequest"> | string
+    description?: StringNullableFilter<"MissingItemRequest"> | string | null
+    required?: BoolFilter<"MissingItemRequest"> | boolean
+    priority?: EnumLenderTaskPriorityFilter<"MissingItemRequest"> | $Enums.LenderTaskPriority
+    dueDate?: DateTimeNullableFilter<"MissingItemRequest"> | Date | string | null
+    status?: EnumMissingItemRequestStatusFilter<"MissingItemRequest"> | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFilter<"MissingItemRequest"> | string
+    uploadedDocumentId?: StringNullableFilter<"MissingItemRequest"> | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFilter<"MissingItemRequest"> | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFilter<"MissingItemRequest"> | Date | string
+    resolvedAt?: DateTimeNullableFilter<"MissingItemRequest"> | Date | string | null
+    updatedAt?: DateTimeFilter<"MissingItemRequest"> | Date | string
+  }
+
+  export type MissingItemRequestUpsertWithWhereUniqueWithoutDealerInput = {
+    where: MissingItemRequestWhereUniqueInput
+    update: XOR<MissingItemRequestUpdateWithoutDealerInput, MissingItemRequestUncheckedUpdateWithoutDealerInput>
+    create: XOR<MissingItemRequestCreateWithoutDealerInput, MissingItemRequestUncheckedCreateWithoutDealerInput>
+  }
+
+  export type MissingItemRequestUpdateWithWhereUniqueWithoutDealerInput = {
+    where: MissingItemRequestWhereUniqueInput
+    data: XOR<MissingItemRequestUpdateWithoutDealerInput, MissingItemRequestUncheckedUpdateWithoutDealerInput>
+  }
+
+  export type MissingItemRequestUpdateManyWithWhereWithoutDealerInput = {
+    where: MissingItemRequestScalarWhereInput
+    data: XOR<MissingItemRequestUpdateManyMutationInput, MissingItemRequestUncheckedUpdateManyWithoutDealerInput>
+  }
+
   export type WorkspaceCreateWithoutCalendarEventsInput = {
     id?: string
     name: string
@@ -69684,6 +74624,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutCalendarEventsInput = {
@@ -69712,6 +74656,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutCalendarEventsInput = {
@@ -69730,6 +74678,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -69757,6 +74708,8 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCalendarEventsInput = {
@@ -69773,6 +74726,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -69797,6 +74753,8 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCalendarEventsInput = {
@@ -69841,6 +74799,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutCalendarEventsInput = {
@@ -69869,6 +74831,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type DealUpsertWithoutCalendarEventsInput = {
@@ -69893,6 +74859,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -69920,6 +74889,8 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCalendarEventsInput = {
@@ -69936,6 +74907,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69960,6 +74934,8 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserCreateWithoutMembershipsInput = {
@@ -70033,6 +75009,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutMembershipsInput = {
@@ -70061,6 +75041,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutMembershipsInput = {
@@ -70156,6 +75140,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutMembershipsInput = {
@@ -70184,6 +75172,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateWithoutDocumentsInput = {
@@ -70212,6 +75204,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDocumentsInput = {
@@ -70240,6 +75236,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDocumentsInput = {
@@ -70284,6 +75284,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDocumentsInput = {
@@ -70312,6 +75316,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateWithoutSubscriptionsInput = {
@@ -70340,6 +75348,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutSubscriptionsInput = {
@@ -70368,6 +75380,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutSubscriptionsInput = {
@@ -70412,6 +75428,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutSubscriptionsInput = {
@@ -70440,6 +75460,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerProfileInput = {
@@ -70468,6 +75492,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerProfileInput = {
@@ -70496,6 +75524,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerProfileInput = {
@@ -70540,6 +75572,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerProfileInput = {
@@ -70568,6 +75604,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateWithoutLenderProfileInput = {
@@ -70596,6 +75636,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderProfileInput = {
@@ -70624,6 +75668,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderProfileInput = {
@@ -70668,6 +75716,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderProfileInput = {
@@ -70696,6 +75748,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerLinksInput = {
@@ -70724,6 +75780,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerLinksInput = {
@@ -70752,6 +75812,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerLinksInput = {
@@ -70785,6 +75849,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderLinksInput = {
@@ -70813,6 +75881,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderLinksInput = {
@@ -70831,6 +75903,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -70858,6 +75933,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerLenderLinkInput = {
@@ -70873,6 +75950,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -70898,6 +75978,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerLenderLinkInput = {
@@ -70947,6 +76029,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerLinksInput = {
@@ -70975,6 +76061,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUpsertWithoutLenderLinksInput = {
@@ -71014,6 +76104,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderLinksInput = {
@@ -71042,6 +76136,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type DealUpsertWithWhereUniqueWithoutDealerLenderLinkInput = {
@@ -71086,6 +76184,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerOnboardingAnswersInput = {
@@ -71114,6 +76216,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerOnboardingAnswersInput = {
@@ -71158,6 +76264,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerOnboardingAnswersInput = {
@@ -71186,6 +76296,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateWithoutLenderOnboardingAnswersInput = {
@@ -71214,6 +76328,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderOnboardingAnswersInput = {
@@ -71242,6 +76360,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderOnboardingAnswersInput = {
@@ -71286,6 +76408,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderOnboardingAnswersInput = {
@@ -71314,6 +76440,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerDealsInput = {
@@ -71342,6 +76472,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerDealsInput = {
@@ -71370,6 +76504,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerDealsInput = {
@@ -71403,6 +76541,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderDealsInput = {
@@ -71431,6 +76573,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderDealsInput = {
@@ -71505,6 +76651,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     lender: WorkspaceCreateNestedOneWithoutLoanPoolsInput
     createdBy?: UserCreateNestedOneWithoutLoanPoolsCreatedInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutPoolInput
   }
 
   export type LoanPoolUncheckedCreateWithoutDealsInput = {
@@ -71533,6 +76680,7 @@ export namespace Prisma {
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutPoolInput
   }
 
   export type LoanPoolCreateOrConnectWithoutDealsInput = {
@@ -72137,6 +77285,100 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LenderTaskCreateWithoutDealInput = {
+    id?: string
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLenderTasksInput
+    dealer?: WorkspaceCreateNestedOneWithoutDealerTasksInput
+    pool?: LoanPoolCreateNestedOneWithoutLenderTasksInput
+  }
+
+  export type LenderTaskUncheckedCreateWithoutDealInput = {
+    id?: string
+    lenderId: string
+    dealerId?: string | null
+    poolId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskCreateOrConnectWithoutDealInput = {
+    where: LenderTaskWhereUniqueInput
+    create: XOR<LenderTaskCreateWithoutDealInput, LenderTaskUncheckedCreateWithoutDealInput>
+  }
+
+  export type LenderTaskCreateManyDealInputEnvelope = {
+    data: LenderTaskCreateManyDealInput | LenderTaskCreateManyDealInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MissingItemRequestCreateWithoutDealInput = {
+    id?: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLenderMissingItemRequestsInput
+    dealer: WorkspaceCreateNestedOneWithoutDealerMissingItemRequestsInput
+  }
+
+  export type MissingItemRequestUncheckedCreateWithoutDealInput = {
+    id?: string
+    lenderId: string
+    dealerId: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type MissingItemRequestCreateOrConnectWithoutDealInput = {
+    where: MissingItemRequestWhereUniqueInput
+    create: XOR<MissingItemRequestCreateWithoutDealInput, MissingItemRequestUncheckedCreateWithoutDealInput>
+  }
+
+  export type MissingItemRequestCreateManyDealInputEnvelope = {
+    data: MissingItemRequestCreateManyDealInput | MissingItemRequestCreateManyDealInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutDealerDealsInput = {
     update: XOR<WorkspaceUpdateWithoutDealerDealsInput, WorkspaceUncheckedUpdateWithoutDealerDealsInput>
     create: XOR<WorkspaceCreateWithoutDealerDealsInput, WorkspaceUncheckedCreateWithoutDealerDealsInput>
@@ -72174,6 +77416,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerDealsInput = {
@@ -72202,6 +77448,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUpsertWithoutLenderDealsInput = {
@@ -72241,6 +77491,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderDealsInput = {
@@ -72269,6 +77523,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type DealerLenderLinkUpsertWithoutDealsInput = {
@@ -72355,6 +77613,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lender?: WorkspaceUpdateOneRequiredWithoutLoanPoolsNestedInput
     createdBy?: UserUpdateOneWithoutLoanPoolsCreatedNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutPoolNestedInput
   }
 
   export type LoanPoolUncheckedUpdateWithoutDealsInput = {
@@ -72383,6 +77642,7 @@ export namespace Prisma {
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutPoolNestedInput
   }
 
   export type DealPartyUpsertWithWhereUniqueWithoutDealInput = {
@@ -72878,6 +78138,1138 @@ export namespace Prisma {
     data: XOR<CalendarEventUpdateManyMutationInput, CalendarEventUncheckedUpdateManyWithoutDealInput>
   }
 
+  export type LenderTaskUpsertWithWhereUniqueWithoutDealInput = {
+    where: LenderTaskWhereUniqueInput
+    update: XOR<LenderTaskUpdateWithoutDealInput, LenderTaskUncheckedUpdateWithoutDealInput>
+    create: XOR<LenderTaskCreateWithoutDealInput, LenderTaskUncheckedCreateWithoutDealInput>
+  }
+
+  export type LenderTaskUpdateWithWhereUniqueWithoutDealInput = {
+    where: LenderTaskWhereUniqueInput
+    data: XOR<LenderTaskUpdateWithoutDealInput, LenderTaskUncheckedUpdateWithoutDealInput>
+  }
+
+  export type LenderTaskUpdateManyWithWhereWithoutDealInput = {
+    where: LenderTaskScalarWhereInput
+    data: XOR<LenderTaskUpdateManyMutationInput, LenderTaskUncheckedUpdateManyWithoutDealInput>
+  }
+
+  export type MissingItemRequestUpsertWithWhereUniqueWithoutDealInput = {
+    where: MissingItemRequestWhereUniqueInput
+    update: XOR<MissingItemRequestUpdateWithoutDealInput, MissingItemRequestUncheckedUpdateWithoutDealInput>
+    create: XOR<MissingItemRequestCreateWithoutDealInput, MissingItemRequestUncheckedCreateWithoutDealInput>
+  }
+
+  export type MissingItemRequestUpdateWithWhereUniqueWithoutDealInput = {
+    where: MissingItemRequestWhereUniqueInput
+    data: XOR<MissingItemRequestUpdateWithoutDealInput, MissingItemRequestUncheckedUpdateWithoutDealInput>
+  }
+
+  export type MissingItemRequestUpdateManyWithWhereWithoutDealInput = {
+    where: MissingItemRequestScalarWhereInput
+    data: XOR<MissingItemRequestUpdateManyMutationInput, MissingItemRequestUncheckedUpdateManyWithoutDealInput>
+  }
+
+  export type WorkspaceCreateWithoutLenderTasksInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutLenderTasksInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutLenderTasksInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutLenderTasksInput, WorkspaceUncheckedCreateWithoutLenderTasksInput>
+  }
+
+  export type WorkspaceCreateWithoutDealerTasksInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutDealerTasksInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutDealerTasksInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutDealerTasksInput, WorkspaceUncheckedCreateWithoutDealerTasksInput>
+  }
+
+  export type DealCreateWithoutLenderTasksInput = {
+    id?: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dealer: WorkspaceCreateNestedOneWithoutDealerDealsInput
+    lender: WorkspaceCreateNestedOneWithoutLenderDealsInput
+    dealerLenderLink: DealerLenderLinkCreateNestedOneWithoutDealsInput
+    loanPool?: LoanPoolCreateNestedOneWithoutDealsInput
+    parties?: DealPartyCreateNestedManyWithoutDealInput
+    vehicle?: VehicleCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
+    amendments?: AmendmentCreateNestedManyWithoutDealInput
+    notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
+  }
+
+  export type DealUncheckedCreateWithoutLenderTasksInput = {
+    id?: string
+    dealerId: string
+    lenderId: string
+    dealerLenderLinkId: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: string | null
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parties?: DealPartyUncheckedCreateNestedManyWithoutDealInput
+    vehicle?: VehicleUncheckedCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsUncheckedCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractUncheckedCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentUncheckedCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckUncheckedCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
+    amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
+  }
+
+  export type DealCreateOrConnectWithoutLenderTasksInput = {
+    where: DealWhereUniqueInput
+    create: XOR<DealCreateWithoutLenderTasksInput, DealUncheckedCreateWithoutLenderTasksInput>
+  }
+
+  export type LoanPoolCreateWithoutLenderTasksInput = {
+    id?: string
+    poolName: string
+    poolType: $Enums.LoanPoolType
+    description?: string | null
+    recourseStatus?: $Enums.RecourseStatus
+    targetSize: number
+    status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLoanPoolsInput
+    createdBy?: UserCreateNestedOneWithoutLoanPoolsCreatedInput
+    deals?: DealCreateNestedManyWithoutLoanPoolInput
+  }
+
+  export type LoanPoolUncheckedCreateWithoutLenderTasksInput = {
+    id?: string
+    lenderId: string
+    poolName: string
+    poolType: $Enums.LoanPoolType
+    description?: string | null
+    recourseStatus?: $Enums.RecourseStatus
+    targetSize: number
+    status?: $Enums.LoanPoolStatus
+    totalLoanCount?: number
+    totalPrincipalBalance?: Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: number | null
+    riskClassification?: string | null
+    poolIntegrityStatus?: $Enums.DealComplianceStatus
+    auditStatus?: string
+    saleStage?: $Enums.LoanPoolSaleStage
+    transferDate?: Date | string | null
+    transferEntityName?: string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: string | null
+    lastPackageGeneratedAt?: Date | string | null
+    createdByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deals?: DealUncheckedCreateNestedManyWithoutLoanPoolInput
+  }
+
+  export type LoanPoolCreateOrConnectWithoutLenderTasksInput = {
+    where: LoanPoolWhereUniqueInput
+    create: XOR<LoanPoolCreateWithoutLenderTasksInput, LoanPoolUncheckedCreateWithoutLenderTasksInput>
+  }
+
+  export type WorkspaceUpsertWithoutLenderTasksInput = {
+    update: XOR<WorkspaceUpdateWithoutLenderTasksInput, WorkspaceUncheckedUpdateWithoutLenderTasksInput>
+    create: XOR<WorkspaceCreateWithoutLenderTasksInput, WorkspaceUncheckedCreateWithoutLenderTasksInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutLenderTasksInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutLenderTasksInput, WorkspaceUncheckedUpdateWithoutLenderTasksInput>
+  }
+
+  export type WorkspaceUpdateWithoutLenderTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutLenderTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+  }
+
+  export type WorkspaceUpsertWithoutDealerTasksInput = {
+    update: XOR<WorkspaceUpdateWithoutDealerTasksInput, WorkspaceUncheckedUpdateWithoutDealerTasksInput>
+    create: XOR<WorkspaceCreateWithoutDealerTasksInput, WorkspaceUncheckedCreateWithoutDealerTasksInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutDealerTasksInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutDealerTasksInput, WorkspaceUncheckedUpdateWithoutDealerTasksInput>
+  }
+
+  export type WorkspaceUpdateWithoutDealerTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutDealerTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+  }
+
+  export type DealUpsertWithoutLenderTasksInput = {
+    update: XOR<DealUpdateWithoutLenderTasksInput, DealUncheckedUpdateWithoutLenderTasksInput>
+    create: XOR<DealCreateWithoutLenderTasksInput, DealUncheckedCreateWithoutLenderTasksInput>
+    where?: DealWhereInput
+  }
+
+  export type DealUpdateToOneWithWhereWithoutLenderTasksInput = {
+    where?: DealWhereInput
+    data: XOR<DealUpdateWithoutLenderTasksInput, DealUncheckedUpdateWithoutLenderTasksInput>
+  }
+
+  export type DealUpdateWithoutLenderTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerDealsNestedInput
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderDealsNestedInput
+    dealerLenderLink?: DealerLenderLinkUpdateOneRequiredWithoutDealsNestedInput
+    loanPool?: LoanPoolUpdateOneWithoutDealsNestedInput
+    parties?: DealPartyUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
+  }
+
+  export type DealUncheckedUpdateWithoutLenderTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parties?: DealPartyUncheckedUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUncheckedUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUncheckedUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUncheckedUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUncheckedUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUncheckedUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
+  }
+
+  export type LoanPoolUpsertWithoutLenderTasksInput = {
+    update: XOR<LoanPoolUpdateWithoutLenderTasksInput, LoanPoolUncheckedUpdateWithoutLenderTasksInput>
+    create: XOR<LoanPoolCreateWithoutLenderTasksInput, LoanPoolUncheckedCreateWithoutLenderTasksInput>
+    where?: LoanPoolWhereInput
+  }
+
+  export type LoanPoolUpdateToOneWithWhereWithoutLenderTasksInput = {
+    where?: LoanPoolWhereInput
+    data: XOR<LoanPoolUpdateWithoutLenderTasksInput, LoanPoolUncheckedUpdateWithoutLenderTasksInput>
+  }
+
+  export type LoanPoolUpdateWithoutLenderTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
+    targetSize?: FloatFieldUpdateOperationsInput | number
+    status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLoanPoolsNestedInput
+    createdBy?: UserUpdateOneWithoutLoanPoolsCreatedNestedInput
+    deals?: DealUpdateManyWithoutLoanPoolNestedInput
+  }
+
+  export type LoanPoolUncheckedUpdateWithoutLenderTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    poolName?: StringFieldUpdateOperationsInput | string
+    poolType?: EnumLoanPoolTypeFieldUpdateOperationsInput | $Enums.LoanPoolType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    recourseStatus?: EnumRecourseStatusFieldUpdateOperationsInput | $Enums.RecourseStatus
+    targetSize?: FloatFieldUpdateOperationsInput | number
+    status?: EnumLoanPoolStatusFieldUpdateOperationsInput | $Enums.LoanPoolStatus
+    totalLoanCount?: IntFieldUpdateOperationsInput | number
+    totalPrincipalBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weightedAverageApr?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    weightedAverageTermMonths?: NullableIntFieldUpdateOperationsInput | number | null
+    riskClassification?: NullableStringFieldUpdateOperationsInput | string | null
+    poolIntegrityStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    auditStatus?: StringFieldUpdateOperationsInput | string
+    saleStage?: EnumLoanPoolSaleStageFieldUpdateOperationsInput | $Enums.LoanPoolSaleStage
+    transferDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    transferEntityName?: NullableStringFieldUpdateOperationsInput | string | null
+    custodyTransitionJson?: NullableJsonNullValueInput | InputJsonValue
+    filterCriteriaJson?: NullableJsonNullValueInput | InputJsonValue
+    lastPackageStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPackageGeneratedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deals?: DealUncheckedUpdateManyWithoutLoanPoolNestedInput
+  }
+
+  export type WorkspaceCreateWithoutLenderMissingItemRequestsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutLenderMissingItemRequestsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutLenderMissingItemRequestsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutLenderMissingItemRequestsInput, WorkspaceUncheckedCreateWithoutLenderMissingItemRequestsInput>
+  }
+
+  export type WorkspaceCreateWithoutDealerMissingItemRequestsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutDealerMissingItemRequestsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutDealerMissingItemRequestsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutDealerMissingItemRequestsInput, WorkspaceUncheckedCreateWithoutDealerMissingItemRequestsInput>
+  }
+
+  export type DealCreateWithoutMissingItemRequestsInput = {
+    id?: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dealer: WorkspaceCreateNestedOneWithoutDealerDealsInput
+    lender: WorkspaceCreateNestedOneWithoutLenderDealsInput
+    dealerLenderLink: DealerLenderLinkCreateNestedOneWithoutDealsInput
+    loanPool?: LoanPoolCreateNestedOneWithoutDealsInput
+    parties?: DealPartyCreateNestedManyWithoutDealInput
+    vehicle?: VehicleCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
+    amendments?: AmendmentCreateNestedManyWithoutDealInput
+    notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+  }
+
+  export type DealUncheckedCreateWithoutMissingItemRequestsInput = {
+    id?: string
+    dealerId: string
+    lenderId: string
+    dealerLenderLinkId: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: string | null
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parties?: DealPartyUncheckedCreateNestedManyWithoutDealInput
+    vehicle?: VehicleUncheckedCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsUncheckedCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractUncheckedCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentUncheckedCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckUncheckedCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
+    amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+  }
+
+  export type DealCreateOrConnectWithoutMissingItemRequestsInput = {
+    where: DealWhereUniqueInput
+    create: XOR<DealCreateWithoutMissingItemRequestsInput, DealUncheckedCreateWithoutMissingItemRequestsInput>
+  }
+
+  export type WorkspaceUpsertWithoutLenderMissingItemRequestsInput = {
+    update: XOR<WorkspaceUpdateWithoutLenderMissingItemRequestsInput, WorkspaceUncheckedUpdateWithoutLenderMissingItemRequestsInput>
+    create: XOR<WorkspaceCreateWithoutLenderMissingItemRequestsInput, WorkspaceUncheckedCreateWithoutLenderMissingItemRequestsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutLenderMissingItemRequestsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutLenderMissingItemRequestsInput, WorkspaceUncheckedUpdateWithoutLenderMissingItemRequestsInput>
+  }
+
+  export type WorkspaceUpdateWithoutLenderMissingItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutLenderMissingItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+  }
+
+  export type WorkspaceUpsertWithoutDealerMissingItemRequestsInput = {
+    update: XOR<WorkspaceUpdateWithoutDealerMissingItemRequestsInput, WorkspaceUncheckedUpdateWithoutDealerMissingItemRequestsInput>
+    create: XOR<WorkspaceCreateWithoutDealerMissingItemRequestsInput, WorkspaceUncheckedCreateWithoutDealerMissingItemRequestsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutDealerMissingItemRequestsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutDealerMissingItemRequestsInput, WorkspaceUncheckedUpdateWithoutDealerMissingItemRequestsInput>
+  }
+
+  export type WorkspaceUpdateWithoutDealerMissingItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutDealerMissingItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+  }
+
+  export type DealUpsertWithoutMissingItemRequestsInput = {
+    update: XOR<DealUpdateWithoutMissingItemRequestsInput, DealUncheckedUpdateWithoutMissingItemRequestsInput>
+    create: XOR<DealCreateWithoutMissingItemRequestsInput, DealUncheckedCreateWithoutMissingItemRequestsInput>
+    where?: DealWhereInput
+  }
+
+  export type DealUpdateToOneWithWhereWithoutMissingItemRequestsInput = {
+    where?: DealWhereInput
+    data: XOR<DealUpdateWithoutMissingItemRequestsInput, DealUncheckedUpdateWithoutMissingItemRequestsInput>
+  }
+
+  export type DealUpdateWithoutMissingItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerDealsNestedInput
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderDealsNestedInput
+    dealerLenderLink?: DealerLenderLinkUpdateOneRequiredWithoutDealsNestedInput
+    loanPool?: LoanPoolUpdateOneWithoutDealsNestedInput
+    parties?: DealPartyUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+  }
+
+  export type DealUncheckedUpdateWithoutMissingItemRequestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parties?: DealPartyUncheckedUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUncheckedUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUncheckedUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUncheckedUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUncheckedUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUncheckedUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+  }
+
   export type DealCreateWithoutPartiesInput = {
     id?: string
     status?: $Enums.DealStatus
@@ -72889,6 +79281,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -72916,6 +79311,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPartiesInput = {
@@ -72932,6 +79329,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -72956,6 +79356,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPartiesInput = {
@@ -72985,6 +79387,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -73012,6 +79417,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPartiesInput = {
@@ -73028,6 +79435,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73052,6 +79462,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutVehicleInput = {
@@ -73065,6 +79477,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -73092,6 +79507,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutVehicleInput = {
@@ -73108,6 +79525,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -73132,6 +79552,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutVehicleInput = {
@@ -73161,6 +79583,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -73188,6 +79613,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutVehicleInput = {
@@ -73204,6 +79631,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73228,6 +79658,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutFinancialsInput = {
@@ -73241,6 +79673,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -73268,6 +79703,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutFinancialsInput = {
@@ -73284,6 +79721,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -73308,6 +79748,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutFinancialsInput = {
@@ -73337,6 +79779,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -73364,6 +79809,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutFinancialsInput = {
@@ -73380,6 +79827,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73404,6 +79854,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutAuthoritativeContractInput = {
@@ -73417,6 +79869,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -73444,6 +79899,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAuthoritativeContractInput = {
@@ -73460,6 +79917,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -73484,6 +79944,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAuthoritativeContractInput = {
@@ -73603,6 +80065,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -73630,6 +80095,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAuthoritativeContractInput = {
@@ -73646,6 +80113,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73670,6 +80140,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithWhereUniqueWithoutAuthoritativeContractInput = {
@@ -73715,6 +80187,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -73742,6 +80217,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutContractTransactionEventsInput = {
@@ -73758,6 +80235,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -73782,6 +80262,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutContractTransactionEventsInput = {
@@ -73838,6 +80320,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -73865,6 +80350,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutContractTransactionEventsInput = {
@@ -73881,6 +80368,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73905,6 +80395,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithoutLinkedContractEventsInput = {
@@ -73966,6 +80458,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLoanPoolsInput = {
@@ -73994,6 +80490,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLoanPoolsInput = {
@@ -74057,6 +80557,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -74084,6 +80587,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLoanPoolInput = {
@@ -74100,6 +80605,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -74124,6 +80632,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLoanPoolInput = {
@@ -74133,6 +80643,54 @@ export namespace Prisma {
 
   export type DealCreateManyLoanPoolInputEnvelope = {
     data: DealCreateManyLoanPoolInput | DealCreateManyLoanPoolInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LenderTaskCreateWithoutPoolInput = {
+    id?: string
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    lender: WorkspaceCreateNestedOneWithoutLenderTasksInput
+    dealer?: WorkspaceCreateNestedOneWithoutDealerTasksInput
+    deal?: DealCreateNestedOneWithoutLenderTasksInput
+  }
+
+  export type LenderTaskUncheckedCreateWithoutPoolInput = {
+    id?: string
+    lenderId: string
+    dealId?: string | null
+    dealerId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskCreateOrConnectWithoutPoolInput = {
+    where: LenderTaskWhereUniqueInput
+    create: XOR<LenderTaskCreateWithoutPoolInput, LenderTaskUncheckedCreateWithoutPoolInput>
+  }
+
+  export type LenderTaskCreateManyPoolInputEnvelope = {
+    data: LenderTaskCreateManyPoolInput | LenderTaskCreateManyPoolInput[]
     skipDuplicates?: boolean
   }
 
@@ -74173,6 +80731,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLoanPoolsInput = {
@@ -74201,6 +80763,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type UserUpsertWithoutLoanPoolsCreatedInput = {
@@ -74270,6 +80836,22 @@ export namespace Prisma {
     data: XOR<DealUpdateManyMutationInput, DealUncheckedUpdateManyWithoutLoanPoolInput>
   }
 
+  export type LenderTaskUpsertWithWhereUniqueWithoutPoolInput = {
+    where: LenderTaskWhereUniqueInput
+    update: XOR<LenderTaskUpdateWithoutPoolInput, LenderTaskUncheckedUpdateWithoutPoolInput>
+    create: XOR<LenderTaskCreateWithoutPoolInput, LenderTaskUncheckedCreateWithoutPoolInput>
+  }
+
+  export type LenderTaskUpdateWithWhereUniqueWithoutPoolInput = {
+    where: LenderTaskWhereUniqueInput
+    data: XOR<LenderTaskUpdateWithoutPoolInput, LenderTaskUncheckedUpdateWithoutPoolInput>
+  }
+
+  export type LenderTaskUpdateManyWithWhereWithoutPoolInput = {
+    where: LenderTaskScalarWhereInput
+    data: XOR<LenderTaskUpdateManyMutationInput, LenderTaskUncheckedUpdateManyWithoutPoolInput>
+  }
+
   export type DealCreateWithoutNegotiableInstrumentInput = {
     id?: string
     status?: $Enums.DealStatus
@@ -74281,6 +80863,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -74308,6 +80893,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNegotiableInstrumentInput = {
@@ -74324,6 +80911,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -74348,6 +80938,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNegotiableInstrumentInput = {
@@ -74409,6 +81001,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -74436,6 +81031,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNegotiableInstrumentInput = {
@@ -74452,6 +81049,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74476,6 +81076,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithWhereUniqueWithoutInstrumentInput = {
@@ -74505,6 +81107,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -74532,6 +81137,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutInstrumentTransferEventsInput = {
@@ -74548,6 +81155,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -74572,6 +81182,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutInstrumentTransferEventsInput = {
@@ -74666,6 +81278,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -74693,6 +81308,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutInstrumentTransferEventsInput = {
@@ -74709,6 +81326,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74733,6 +81353,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type NegotiableInstrumentUpsertWithoutTransferEventsInput = {
@@ -74801,6 +81423,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -74828,6 +81453,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutGeneratedDocumentsInput = {
@@ -74844,6 +81471,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -74868,6 +81498,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutGeneratedDocumentsInput = {
@@ -75015,6 +81647,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -75042,6 +81677,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutGeneratedDocumentsInput = {
@@ -75058,6 +81695,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75082,6 +81722,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutGeneratedDocumentsInput = {
@@ -75229,6 +81871,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutNotificationsInput = {
@@ -75257,6 +81903,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutNotificationsInput = {
@@ -75320,6 +81970,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -75347,6 +82000,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNotificationsInput = {
@@ -75363,6 +82018,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -75387,6 +82045,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNotificationsInput = {
@@ -75431,6 +82091,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutNotificationsInput = {
@@ -75459,6 +82123,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type UserUpsertWithoutNotificationsInput = {
@@ -75534,6 +82202,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -75561,6 +82232,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNotificationsInput = {
@@ -75577,6 +82250,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75601,6 +82277,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceCreateWithoutApiKeysInput = {
@@ -75629,6 +82307,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutApiKeysInput = {
@@ -75657,6 +82339,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutApiKeysInput = {
@@ -75701,6 +82387,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutApiKeysInput = {
@@ -75729,6 +82419,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceCreateWithoutWebhookEndpointsInput = {
@@ -75757,6 +82451,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutWebhookEndpointsInput = {
@@ -75785,6 +82483,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutWebhookEndpointsInput = {
@@ -75863,6 +82565,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutWebhookEndpointsInput = {
@@ -75891,6 +82597,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type WebhookDeliveryUpsertWithWhereUniqueWithoutWebhookEndpointInput = {
@@ -76056,6 +82766,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutAccessAuditsInput = {
@@ -76084,6 +82798,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutAccessAuditsInput = {
@@ -76179,6 +82897,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutAccessAuditsInput = {
@@ -76207,6 +82929,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type DealCreateWithoutCommentsInput = {
@@ -76220,6 +82946,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -76247,6 +82976,8 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCommentsInput = {
@@ -76263,6 +82994,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -76287,6 +83021,8 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCommentsInput = {
@@ -76485,6 +83221,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -76512,6 +83251,8 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCommentsInput = {
@@ -76528,6 +83269,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76552,6 +83296,8 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserUpsertWithoutDealCommentsAuthoredInput = {
@@ -76726,6 +83472,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -76753,6 +83502,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAlertsInput = {
@@ -76769,6 +83520,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -76793,6 +83547,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAlertsInput = {
@@ -76826,6 +83582,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealAlertsInput = {
@@ -76854,6 +83614,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealAlertsInput = {
@@ -76913,6 +83677,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -76940,6 +83707,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAlertsInput = {
@@ -76956,6 +83725,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76980,6 +83752,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceUpsertWithoutDealAlertsInput = {
@@ -77019,6 +83793,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealAlertsInput = {
@@ -77047,6 +83825,10 @@ export namespace Prisma {
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
   }
 
   export type DealAlertAuditUpsertWithWhereUniqueWithoutDealAlertInput = {
@@ -77166,6 +83948,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -77193,6 +83978,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAmendmentsInput = {
@@ -77209,6 +83996,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -77233,6 +84023,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAmendmentsInput = {
@@ -77435,6 +84227,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -77462,6 +84257,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAmendmentsInput = {
@@ -77478,6 +84275,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77502,6 +84302,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutParentAmendmentsInput = {
@@ -77670,6 +84472,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -77697,6 +84502,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCustodyEventsInput = {
@@ -77713,6 +84520,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -77737,6 +84547,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCustodyEventsInput = {
@@ -77813,6 +84625,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -77840,6 +84655,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCustodyEventsInput = {
@@ -77856,6 +84673,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77880,6 +84700,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithoutCustodyEventsInput = {
@@ -78046,6 +84868,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -78073,6 +84898,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutComplianceChecksInput = {
@@ -78089,6 +84916,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -78113,6 +84943,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutComplianceChecksInput = {
@@ -78142,6 +84974,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -78169,6 +85004,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutComplianceChecksInput = {
@@ -78185,6 +85022,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78209,6 +85049,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutPrefundingValidationCertificateInput = {
@@ -78222,6 +85064,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -78249,6 +85094,8 @@ export namespace Prisma {
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPrefundingValidationCertificateInput = {
@@ -78265,6 +85112,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -78289,6 +85139,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPrefundingValidationCertificateInput = {
@@ -78318,6 +85170,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -78345,6 +85200,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPrefundingValidationCertificateInput = {
@@ -78361,6 +85218,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78385,6 +85245,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutAuditEventsInput = {
@@ -78398,6 +85260,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
@@ -78425,6 +85290,8 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAuditEventsInput = {
@@ -78441,6 +85308,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -78465,6 +85335,8 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealInput
+    missingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAuditEventsInput = {
@@ -78494,6 +85366,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -78521,6 +85396,8 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAuditEventsInput = {
@@ -78537,6 +85414,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78561,6 +85441,8 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -79244,6 +86126,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lender?: WorkspaceUpdateOneRequiredWithoutLoanPoolsNestedInput
     deals?: DealUpdateManyWithoutLoanPoolNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutPoolNestedInput
   }
 
   export type LoanPoolUncheckedUpdateWithoutCreatedByInput = {
@@ -79272,6 +86155,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deals?: DealUncheckedUpdateManyWithoutLoanPoolNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutPoolNestedInput
   }
 
   export type LoanPoolUncheckedUpdateManyWithoutCreatedByInput = {
@@ -79402,6 +86286,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -79425,6 +86312,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -79531,6 +86421,80 @@ export namespace Prisma {
     allDay?: boolean
     dealId?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskCreateManyLenderInput = {
+    id?: string
+    dealId?: string | null
+    dealerId?: string | null
+    poolId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskCreateManyDealerInput = {
+    id?: string
+    lenderId: string
+    dealId?: string | null
+    poolId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MissingItemRequestCreateManyLenderInput = {
+    id?: string
+    dealerId: string
+    dealId: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
+    updatedAt?: Date | string
+  }
+
+  export type MissingItemRequestCreateManyDealerInput = {
+    id?: string
+    lenderId: string
+    dealId: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
     updatedAt?: Date | string
   }
 
@@ -79833,6 +86797,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -79860,6 +86827,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerInput = {
@@ -79875,6 +86844,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -79900,6 +86872,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerInput = {
@@ -79915,6 +86889,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -79936,6 +86913,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -79963,6 +86943,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLenderInput = {
@@ -79978,6 +86960,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80003,6 +86988,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLenderInput = {
@@ -80018,6 +87005,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80131,6 +87121,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutLoanPoolsCreatedNestedInput
     deals?: DealUpdateManyWithoutLoanPoolNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutPoolNestedInput
   }
 
   export type LoanPoolUncheckedUpdateWithoutLenderInput = {
@@ -80159,6 +87150,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deals?: DealUncheckedUpdateManyWithoutLoanPoolNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutPoolNestedInput
   }
 
   export type LoanPoolUncheckedUpdateManyWithoutLenderInput = {
@@ -80331,6 +87323,228 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LenderTaskUpdateWithoutLenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: WorkspaceUpdateOneWithoutDealerTasksNestedInput
+    deal?: DealUpdateOneWithoutLenderTasksNestedInput
+    pool?: LoanPoolUpdateOneWithoutLenderTasksNestedInput
+  }
+
+  export type LenderTaskUncheckedUpdateWithoutLenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerId?: NullableStringFieldUpdateOperationsInput | string | null
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskUncheckedUpdateManyWithoutLenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerId?: NullableStringFieldUpdateOperationsInput | string | null
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskUpdateWithoutDealerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderTasksNestedInput
+    deal?: DealUpdateOneWithoutLenderTasksNestedInput
+    pool?: LoanPoolUpdateOneWithoutLenderTasksNestedInput
+  }
+
+  export type LenderTaskUncheckedUpdateWithoutDealerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskUncheckedUpdateManyWithoutDealerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestUpdateWithoutLenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerMissingItemRequestsNestedInput
+    deal?: DealUpdateOneRequiredWithoutMissingItemRequestsNestedInput
+  }
+
+  export type MissingItemRequestUncheckedUpdateWithoutLenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestUncheckedUpdateManyWithoutLenderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestUpdateWithoutDealerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderMissingItemRequestsNestedInput
+    deal?: DealUpdateOneRequiredWithoutMissingItemRequestsNestedInput
+  }
+
+  export type MissingItemRequestUncheckedUpdateWithoutDealerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestUncheckedUpdateManyWithoutDealerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealId?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DealCreateManyDealerLenderLinkInput = {
     id?: string
     dealerId: string
@@ -80344,6 +87558,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: string | null
@@ -80365,6 +87582,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -80392,6 +87612,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerLenderLinkInput = {
@@ -80407,6 +87629,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80432,6 +87657,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerLenderLinkInput = {
@@ -80447,6 +87674,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     poolId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80610,6 +87840,43 @@ export namespace Prisma {
     endsAt?: Date | string | null
     allDay?: boolean
     createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskCreateManyDealInput = {
+    id?: string
+    lenderId: string
+    dealerId?: string | null
+    poolId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MissingItemRequestCreateManyDealInput = {
+    id?: string
+    lenderId: string
+    dealerId: string
+    requestedItemType: string
+    description?: string | null
+    required?: boolean
+    priority?: $Enums.LenderTaskPriority
+    dueDate?: Date | string | null
+    status?: $Enums.MissingItemRequestStatus
+    requestedBy: string
+    uploadedDocumentId?: string | null
+    lenderReviewStatus?: $Enums.MissingItemReviewStatus
+    createdAt?: Date | string
+    resolvedAt?: Date | string | null
     updatedAt?: Date | string
   }
 
@@ -81093,6 +88360,117 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LenderTaskUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderTasksNestedInput
+    dealer?: WorkspaceUpdateOneWithoutDealerTasksNestedInput
+    pool?: LoanPoolUpdateOneWithoutLenderTasksNestedInput
+  }
+
+  export type LenderTaskUncheckedUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerId?: NullableStringFieldUpdateOperationsInput | string | null
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskUncheckedUpdateManyWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerId?: NullableStringFieldUpdateOperationsInput | string | null
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderMissingItemRequestsNestedInput
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerMissingItemRequestsNestedInput
+  }
+
+  export type MissingItemRequestUncheckedUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MissingItemRequestUncheckedUpdateManyWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    requestedItemType?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    required?: BoolFieldUpdateOperationsInput | boolean
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumMissingItemRequestStatusFieldUpdateOperationsInput | $Enums.MissingItemRequestStatus
+    requestedBy?: StringFieldUpdateOperationsInput | string
+    uploadedDocumentId?: NullableStringFieldUpdateOperationsInput | string | null
+    lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GeneratedDocumentCreateManyAuthoritativeContractInput = {
     id?: string
     dealId: string
@@ -81241,11 +88619,33 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: $Enums.MockupLenderStatus
+    requiresBuyerReauth?: boolean
+    finalPackageHash?: string | null
     complianceStatus?: $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: $Enums.SecondaryMarketStatus
     secondaryMarketGrade?: string | null
     apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LenderTaskCreateManyPoolInput = {
+    id?: string
+    lenderId: string
+    dealId?: string | null
+    dealerId?: string | null
+    title: string
+    description?: string | null
+    category: $Enums.LenderTaskCategory
+    priority?: $Enums.LenderTaskPriority
+    status?: $Enums.LenderTaskStatus
+    dueDate?: Date | string | null
+    assignedTo?: string | null
+    source?: string | null
+    auditEventId?: string | null
+    completedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -81261,6 +88661,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -81288,6 +88691,8 @@ export namespace Prisma {
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLoanPoolInput = {
@@ -81304,6 +88709,9 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
@@ -81328,6 +88736,8 @@ export namespace Prisma {
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+    missingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLoanPoolInput = {
@@ -81344,11 +88754,71 @@ export namespace Prisma {
     governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
     preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
     lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    mockupLenderStatus?: EnumMockupLenderStatusFieldUpdateOperationsInput | $Enums.MockupLenderStatus
+    requiresBuyerReauth?: BoolFieldUpdateOperationsInput | boolean
+    finalPackageHash?: NullableStringFieldUpdateOperationsInput | string | null
     complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
     consummatedData?: NullableJsonNullValueInput | InputJsonValue
     secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
     secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
     apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskUpdateWithoutPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderTasksNestedInput
+    dealer?: WorkspaceUpdateOneWithoutDealerTasksNestedInput
+    deal?: DealUpdateOneWithoutLenderTasksNestedInput
+  }
+
+  export type LenderTaskUncheckedUpdateWithoutPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LenderTaskUncheckedUpdateManyWithoutPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerId?: NullableStringFieldUpdateOperationsInput | string | null
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: EnumLenderTaskCategoryFieldUpdateOperationsInput | $Enums.LenderTaskCategory
+    priority?: EnumLenderTaskPriorityFieldUpdateOperationsInput | $Enums.LenderTaskPriority
+    status?: EnumLenderTaskStatusFieldUpdateOperationsInput | $Enums.LenderTaskStatus
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    auditEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -269,6 +269,9 @@ exports.Prisma.DealScalarFieldEnum = {
   governingStateProfile: 'governingStateProfile',
   preliminarySubmittedTerms: 'preliminarySubmittedTerms',
   lenderApprovedTerms: 'lenderApprovedTerms',
+  mockupLenderStatus: 'mockupLenderStatus',
+  requiresBuyerReauth: 'requiresBuyerReauth',
+  finalPackageHash: 'finalPackageHash',
   complianceStatus: 'complianceStatus',
   consummatedData: 'consummatedData',
   poolId: 'poolId',
@@ -276,6 +279,45 @@ exports.Prisma.DealScalarFieldEnum = {
   secondaryMarketGrade: 'secondaryMarketGrade',
   apiIngressKeyId: 'apiIngressKeyId',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LenderTaskScalarFieldEnum = {
+  id: 'id',
+  lenderId: 'lenderId',
+  dealId: 'dealId',
+  dealerId: 'dealerId',
+  poolId: 'poolId',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  priority: 'priority',
+  status: 'status',
+  dueDate: 'dueDate',
+  assignedTo: 'assignedTo',
+  source: 'source',
+  auditEventId: 'auditEventId',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MissingItemRequestScalarFieldEnum = {
+  id: 'id',
+  lenderId: 'lenderId',
+  dealerId: 'dealerId',
+  dealId: 'dealId',
+  requestedItemType: 'requestedItemType',
+  description: 'description',
+  required: 'required',
+  priority: 'priority',
+  dueDate: 'dueDate',
+  status: 'status',
+  requestedBy: 'requestedBy',
+  uploadedDocumentId: 'uploadedDocumentId',
+  lenderReviewStatus: 'lenderReviewStatus',
+  createdAt: 'createdAt',
+  resolvedAt: 'resolvedAt',
   updatedAt: 'updatedAt'
 };
 
@@ -744,6 +786,17 @@ exports.DealerLenderLinkStatus = exports.$Enums.DealerLenderLinkStatus = {
 
 exports.DealStatus = exports.$Enums.DealStatus = {
   DISCLOSURE_REQUIRED: 'DISCLOSURE_REQUIRED',
+  DISCLOSURE_PENDING: 'DISCLOSURE_PENDING',
+  DISCLOSURE_SIGNED: 'DISCLOSURE_SIGNED',
+  MOCKUP_SUBMITTED: 'MOCKUP_SUBMITTED',
+  LENDER_REVIEW: 'LENDER_REVIEW',
+  LENDER_COUNTER: 'LENDER_COUNTER',
+  BUYER_REAUTH_PENDING: 'BUYER_REAUTH_PENDING',
+  LENDER_FINAL_APPROVAL: 'LENDER_FINAL_APPROVAL',
+  FINAL_PACKAGE_GENERATED: 'FINAL_PACKAGE_GENERATED',
+  AWAITING_LIVE_SIGNATURES: 'AWAITING_LIVE_SIGNATURES',
+  AWAITING_FUNDING_UPLOAD: 'AWAITING_FUNDING_UPLOAD',
+  FUNDED: 'FUNDED',
   AUTHORIZED_FOR_STRUCTURING: 'AUTHORIZED_FOR_STRUCTURING',
   GREEN_STAGE: 'GREEN_STAGE',
   RISC_UNSIGNED_REVIEW: 'RISC_UNSIGNED_REVIEW',
@@ -753,6 +806,13 @@ exports.DealStatus = exports.$Enums.DealStatus = {
   GENERATING_CLOSING_PACKAGE: 'GENERATING_CLOSING_PACKAGE',
   CLOSING_PACKAGE_READY: 'CLOSING_PACKAGE_READY',
   CONSUMMATED: 'CONSUMMATED'
+};
+
+exports.MockupLenderStatus = exports.$Enums.MockupLenderStatus = {
+  PENDING: 'PENDING',
+  APPROVED_NO_CHANGES: 'APPROVED_NO_CHANGES',
+  COUNTER_OFFERED: 'COUNTER_OFFERED',
+  REJECTED: 'REJECTED'
 };
 
 exports.DealComplianceStatus = exports.$Enums.DealComplianceStatus = {
@@ -765,6 +825,48 @@ exports.SecondaryMarketStatus = exports.$Enums.SecondaryMarketStatus = {
   HELD_FOR_INVESTMENT: 'HELD_FOR_INVESTMENT',
   AVAILABLE_FOR_SALE: 'AVAILABLE_FOR_SALE',
   SOLD: 'SOLD'
+};
+
+exports.LenderTaskCategory = exports.$Enums.LenderTaskCategory = {
+  dealer_relationship: 'dealer_relationship',
+  deal_intake: 'deal_intake',
+  contract_integrity: 'contract_integrity',
+  funding: 'funding',
+  post_funding: 'post_funding',
+  enforcement_readiness: 'enforcement_readiness',
+  pooling: 'pooling',
+  secondary_market: 'secondary_market',
+  document_custody: 'document_custody'
+};
+
+exports.LenderTaskPriority = exports.$Enums.LenderTaskPriority = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  critical: 'critical'
+};
+
+exports.LenderTaskStatus = exports.$Enums.LenderTaskStatus = {
+  open: 'open',
+  in_progress: 'in_progress',
+  blocked: 'blocked',
+  completed: 'completed',
+  cancelled: 'cancelled',
+  overdue: 'overdue'
+};
+
+exports.MissingItemRequestStatus = exports.$Enums.MissingItemRequestStatus = {
+  requested: 'requested',
+  uploaded: 'uploaded',
+  accepted: 'accepted',
+  rejected: 'rejected',
+  overdue: 'overdue'
+};
+
+exports.MissingItemReviewStatus = exports.$Enums.MissingItemReviewStatus = {
+  pending: 'pending',
+  accepted: 'accepted',
+  rejected: 'rejected'
 };
 
 exports.DealPartyRole = exports.$Enums.DealPartyRole = {
@@ -788,6 +890,7 @@ exports.LoanPoolType = exports.$Enums.LoanPoolType = {
   WHOLE_LOAN: 'WHOLE_LOAN',
   SECURITIZATION: 'SECURITIZATION',
   PRIME: 'PRIME',
+  NEAR_PRIME: 'NEAR_PRIME',
   SUBPRIME: 'SUBPRIME',
   MIXED: 'MIXED',
   CUSTOM: 'CUSTOM'
@@ -841,7 +944,12 @@ exports.GeneratedDocumentType = exports.$Enums.GeneratedDocumentType = {
   CONTRACT: 'CONTRACT',
   DISCLOSURE: 'DISCLOSURE',
   BUYERS_ORDER: 'BUYERS_ORDER',
-  FUNDING_PACKET: 'FUNDING_PACKET'
+  FUNDING_PACKET: 'FUNDING_PACKET',
+  INITIAL_DISCLOSURE: 'INITIAL_DISCLOSURE',
+  MOCKUP_CONTRACT: 'MOCKUP_CONTRACT',
+  MOCKUP_PACKET: 'MOCKUP_PACKET',
+  FINAL_RISC: 'FINAL_RISC',
+  FINAL_COORDINATED_PACKAGE: 'FINAL_COORDINATED_PACKAGE'
 };
 
 exports.DocumentType = exports.$Enums.DocumentType = {
@@ -947,6 +1055,8 @@ exports.Prisma.ModelName = {
   DealerOnboardingAnswer: 'DealerOnboardingAnswer',
   LenderOnboardingAnswer: 'LenderOnboardingAnswer',
   Deal: 'Deal',
+  LenderTask: 'LenderTask',
+  MissingItemRequest: 'MissingItemRequest',
   DealParty: 'DealParty',
   Vehicle: 'Vehicle',
   DealFinancials: 'DealFinancials',

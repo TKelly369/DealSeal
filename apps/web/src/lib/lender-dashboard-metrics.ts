@@ -13,19 +13,29 @@ export type LenderDashboardDealRow = {
   amendments: { id: string }[];
 };
 
-const PENDING_LENDER_REVIEW: DealStatus[] = ["RISC_UNSIGNED_REVIEW", "RISC_LENDER_FINAL"];
+const PENDING_LENDER_REVIEW: DealStatus[] = [
+  "RISC_UNSIGNED_REVIEW",
+  "RISC_LENDER_FINAL",
+  "LENDER_REVIEW",
+  "MOCKUP_SUBMITTED",
+  "LENDER_FINAL_APPROVAL",
+  "AWAITING_FUNDING_UPLOAD",
+];
 
 const TYPICALLY_NEEDS_DOCS: DealStatus[] = [
   "AUTHORIZED_FOR_STRUCTURING",
   "GREEN_STAGE",
   "RISC_UNSIGNED_REVIEW",
   "GENERATING_CLOSING_PACKAGE",
+  "DISCLOSURE_SIGNED",
+  "LENDER_COUNTER",
+  "BUYER_REAUTH_PENDING",
 ];
 
 const MS_DAY = 86_400_000;
 
 export function isInLenderPipeline(deal: LenderDashboardDealRow): boolean {
-  return deal.status !== "CONSUMMATED";
+  return deal.status !== "CONSUMMATED" && deal.status !== "FUNDED";
 }
 
 export function dealNeedsDocumentsRow(deal: LenderDashboardDealRow): boolean {

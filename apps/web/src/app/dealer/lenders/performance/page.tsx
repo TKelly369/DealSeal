@@ -30,9 +30,9 @@ export default async function DealerLenderPerformancePage() {
       </div>
       <p style={{ color: "var(--muted)", maxWidth: 860, lineHeight: 1.6 }}>
         See how each approved lender performs on <strong>your</strong> deals, split by prime, subprime, and
-        uncategorized flow. Scores emphasize clean execution (fewer open problems and amendments), complete deal
-        jackets at consummation, throughput, and time-to-consummation—so you can route paper to lenders who are strongest
-        in each credit market and licensed geography.
+        uncategorized flow. Lenders are graded primarily on <strong>file management</strong> (jacket completeness +
+        post-funding stip cure discipline) and <strong>deals closed</strong> performance (closure rate + cycle speed), so
+        you can route paper to lenders who consistently close clean in each credit market.
       </p>
       {warning ? <p style={{ color: "#fecaca" }}>{warning}</p> : null}
 
@@ -58,10 +58,10 @@ export default async function DealerLenderPerformancePage() {
                     <th>Segment</th>
                     <th>Grade</th>
                     <th>Tier</th>
+                    <th>File mgmt</th>
+                    <th>Deals closed</th>
                     <th>Problem-free</th>
-                    <th>Jacket</th>
-                    <th>Volume</th>
-                    <th>Cycle</th>
+                    <th>Open funded stips</th>
                     <th>Deals</th>
                   </tr>
                 </thead>
@@ -76,10 +76,10 @@ export default async function DealerLenderPerformancePage() {
                           <span style={{ color: "var(--muted)", fontSize: "0.85rem" }}>({s.overallScore})</span>
                         </td>
                         <td style={{ color: tl.color, fontSize: "0.85rem", fontWeight: 600 }}>{tl.text}</td>
+                        <td>{s.fileManagementScore}</td>
+                        <td>{s.dealsClosedScore}</td>
                         <td>{s.problemFreeScore}</td>
-                        <td>{s.jacketScore}</td>
-                        <td>{s.volumeScore}</td>
-                        <td>{s.cycleScore}</td>
+                        <td>{s.postFundingStipOpenCount}</td>
                         <td>{s.segmentDealCount}</td>
                       </tr>
                     );
@@ -101,7 +101,8 @@ export default async function DealerLenderPerformancePage() {
 
       <p style={{ marginTop: "1rem", fontSize: "0.82rem", color: "var(--muted)", maxWidth: 800 }}>
         Segment labels use buyer credit tier when present, with a conservative amount-financed fallback. UNKNOWN captures
-        deals without enough structure to classify—still scored, but review raw deal data for placement decisions.
+        deals without enough structure to classify—still scored. File management blends jacket completeness and second
+        green-light cure discipline; deals closed blends close-rate and close-cycle speed.
       </p>
     </div>
   );
