@@ -14,7 +14,6 @@ import {
   PiggyBank,
   ShieldAlert,
   ScrollText,
-  Settings,
   Shield,
   Wallet,
 } from "lucide-react";
@@ -39,5 +38,4 @@ export const lenderShellNavItems = [
   { href: "/lender/alerts", label: "Alerts", icon: Bell },
   { href: "/lender/pools", label: "Pools", icon: PiggyBank },
   { href: "/lender/secondary-market", label: "Secondary market", icon: FolderOpen },
-  { href: "/lender/settings", label: "Settings", icon: Settings },
 ] as const;

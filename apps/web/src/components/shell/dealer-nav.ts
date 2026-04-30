@@ -9,7 +9,6 @@ import {
   Kanban,
   LayoutDashboard,
   ListTodo,
-  Settings,
 } from "lucide-react";
 
 /** Dealer platform shell — aligns with `/dealer/*` route structure. */
@@ -24,5 +23,4 @@ export const dealerShellNavItems = [
   { href: "/dealer/lenders/performance", label: "Lender grades", icon: Award },
   { href: "/dealer/calendar", label: "Calendar", icon: Calendar },
   { href: "/dealer/tasks", label: "Tasks", icon: ListTodo },
-  { href: "/dealer/settings", label: "Settings", icon: Settings },
 ] as const;
