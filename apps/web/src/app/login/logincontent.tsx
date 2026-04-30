@@ -31,19 +31,52 @@ function signInErrorToMessage(err: string | undefined): string {
   return `Sign-in failed: ${err}`;
 }
 
-function sanitizeNextPath(requestedNext: string | null): string {
-  if (!requestedNext) return "/dashboard";
-  return requestedNext.startsWith("/") ? requestedNext : "/dashboard";
+function sanitizeNextPath(requestedNext: string | null, fallback: string): string {
+  if (!requestedNext) return fallback;
+  return requestedNext.startsWith("/") ? requestedNext : fallback;
 }
 
-export default function LoginContent() {
+export type LoginContentProps = {
+  /** Scoped sign-in: pre-fills demo account and default `next` when no `?next=` is present. */
+  variant?: "default" | "dealer" | "lender" | "admin";
+};
+
+const VARIANT_CONFIG = {
+  default: {
+    heading: "Sign in",
+    hint: "Confirm identity and sign in on one screen to begin the audit trail.",
+    email: "user@dealseal1.com",
+    defaultNext: "/dashboard" as const,
+  },
+  dealer: {
+    heading: "Dealer sign in",
+    hint: "Access your dealership workspace, deals, and lender submissions.",
+    email: "dealer.admin@dealseal1.com",
+    defaultNext: "/dealer" as const,
+  },
+  lender: {
+    heading: "Lender sign in",
+    hint: "Access lender intake, assets, pools, and funding workflows.",
+    email: "lender.admin@dealseal1.com",
+    defaultNext: "/lender" as const,
+  },
+  admin: {
+    heading: "Admin sign in",
+    hint: "Platform and governance console (users, audit, configuration).",
+    email: "admin@dealseal1.com",
+    defaultNext: "/admin" as const,
+  },
+} as const;
+
+export default function LoginContent({ variant = "default" }: LoginContentProps) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const sp = useSearchParams();
+  const cfg = VARIANT_CONFIG[variant];
   const { register, handleSubmit, setValue } = useForm<LoginInput>({
     defaultValues: {
-      email: "user@dealseal1.com",
+      email: cfg.email,
       password: "dealseal123",
       fullName: "",
       title: "",
@@ -82,7 +115,7 @@ export default function LoginContent() {
       setError(signInErrorToMessage(res.error));
       return;
     }
-    const requestedNext = sanitizeNextPath(sp.get("next"));
+    const requestedNext = sanitizeNextPath(sp.get("next"), cfg.defaultNext);
     const freshSession = await getSession();
     const currentUser = freshSession?.user;
     const nextPath =
@@ -109,38 +142,62 @@ export default function LoginContent() {
     router.replace(nextPath);
   });
 
+  const showAllPortals = variant === "default";
+
   return (
     <div className="card" style={{ width: "100%", maxWidth: 420, margin: "3rem auto" }}>
-      <h1 style={{ marginTop: 0 }}>Sign in</h1>
-      <p style={{ color: "var(--muted)", marginTop: 0 }}>
-        Confirm identity and sign in on one screen to begin the audit trail.
-      </p>
-      <div className="row" style={{ marginBottom: "0.75rem", gap: "0.35rem" }}>
-        <button type="button" className="btn btn-secondary" onClick={() => {
-          setValue("email", "dealer.admin@dealseal1.com");
-          setValue("password", "dealseal123");
-        }}>
-          Dealer Login
-        </button>
-        <button type="button" className="btn btn-secondary" onClick={() => {
-          setValue("email", "lender.admin@dealseal1.com");
-          setValue("password", "dealseal123");
-        }}>
-          Lender Login
-        </button>
-        <button type="button" className="btn btn-secondary" onClick={() => {
-          setValue("email", "admin@dealseal1.com");
-          setValue("password", "dealseal123");
-        }}>
-          Admin Login
-        </button>
-        <button type="button" className="btn btn-secondary" onClick={() => {
-          setValue("email", "platform.admin@dealseal1.com");
-          setValue("password", "dealseal123");
-        }}>
-          Platform Admin
-        </button>
-      </div>
+      <h1 style={{ marginTop: 0 }}>{cfg.heading}</h1>
+      <p style={{ color: "var(--muted)", marginTop: 0 }}>{cfg.hint}</p>
+      {showAllPortals ? (
+        <div className="row" style={{ marginBottom: "0.75rem", gap: "0.35rem", flexWrap: "wrap" }}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => {
+              setValue("email", "dealer.admin@dealseal1.com");
+              setValue("password", "dealseal123");
+            }}
+          >
+            Dealer Login
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => {
+              setValue("email", "lender.admin@dealseal1.com");
+              setValue("password", "dealseal123");
+            }}
+          >
+            Lender Login
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => {
+              setValue("email", "admin@dealseal1.com");
+              setValue("password", "dealseal123");
+            }}
+          >
+            Admin Login
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => {
+              setValue("email", "platform.admin@dealseal1.com");
+              setValue("password", "dealseal123");
+            }}
+          >
+            Super admin
+          </button>
+        </div>
+      ) : (
+        <p style={{ margin: "0 0 0.75rem", fontSize: 13 }}>
+          <a href="/login" style={{ color: "var(--muted)" }}>
+            Other sign-in portals →
+          </a>
+        </p>
+      )}
       <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.75rem" }}>
         <label style={{ display: "grid", gap: 6, color: "var(--text-secondary)", fontSize: 14 }}>
           Email
@@ -175,11 +232,14 @@ export default function LoginContent() {
         Demo user: user@dealseal1.com / dealseal123
       </p>
       <p style={{ color: "var(--muted)", fontSize: 12, marginBottom: 0 }}>
-        Dealer: dealer.admin@dealseal1.com · Lender: lender.admin@dealseal1.com · Admin: admin@dealseal1.com · Platform: platform.admin@dealseal1.com
+        Dealer: dealer.admin@… · Lender: lender.admin@… · Admin: admin@… · Super: platform.admin@…
       </p>
-      <div className="row" style={{ marginTop: "0.6rem" }}>
+      <div className="row" style={{ marginTop: "0.6rem", gap: "0.75rem", flexWrap: "wrap" }}>
         <a href="/login/recover" style={{ fontSize: 12 }}>
           Forgot password or username?
+        </a>
+        <a href="/signup" style={{ fontSize: 12 }}>
+          Create an organization
         </a>
       </div>
     </div>

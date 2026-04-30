@@ -9,6 +9,7 @@ import {
   UserAdminUpdateSchema,
 } from "@/lib/types";
 import { prisma } from "@/lib/db";
+import { isAdminManagementRole } from "@/lib/role-policy";
 
 export type AdminUserRow = {
   id: string;
@@ -39,9 +40,9 @@ export type AuditLogRow = {
 async function requireAdminSession() {
   const session = await auth();
   if (!session?.user) {
-    redirect("/login?next=/admin");
+    redirect("/admin/login?next=/admin");
   }
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") {
+  if (!isAdminManagementRole(session.user.role)) {
     redirect("/dashboard");
   }
   return session;

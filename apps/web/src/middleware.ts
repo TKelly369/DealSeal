@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import NextAuth from "next-auth";
+import type { UserRole } from "@/generated/prisma";
 import { createAuthConfig } from "@/lib/auth.config";
+import {
+  defaultHomeForRole,
+  isAdminShellRole,
+  isCustodianAdminBlockedPath,
+  redirectHomeForUnauthorizedAdmin,
+} from "@/lib/role-policy";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis/cloudflare";
 
@@ -54,10 +61,37 @@ function nextWithPathname(req: NextRequest, pathname: string) {
 }
 
 function roleHomePath(role: string | undefined): string {
-  if (role === "DEALER_ADMIN" || role === "USER") return "/dealer/dashboard";
-  if (role === "LENDER_ADMIN") return "/lender/dashboard";
-  if (role === "ADMIN" || role === "PLATFORM_ADMIN") return "/admin";
-  return "/dashboard";
+  if (!role) return "/dashboard";
+  return defaultHomeForRole(role);
+}
+
+/** Public auth UI (not protected by session). Logged-in users with identity cookie are redirected home. */
+const AUTH_ENTRY_PATHS = new Set([
+  "/login",
+  "/signup",
+  "/register",
+  "/dealer/login",
+  "/lender/login",
+  "/admin/login",
+]);
+
+function loginPageForReturnPath(returnPath: string): string {
+  if (returnPath.startsWith("/dealer")) return "/dealer/login";
+  if (returnPath.startsWith("/lender")) return "/lender/login";
+  if (returnPath.startsWith("/admin") || returnPath.startsWith("/audit")) return "/admin/login";
+  return "/login";
+}
+
+function isProtectedAppPath(pathname: string): boolean {
+  if (AUTH_ENTRY_PATHS.has(pathname)) return false;
+  return (
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/settings") ||
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/audit") ||
+    pathname.startsWith("/dealer") ||
+    pathname.startsWith("/lender")
+  );
 }
 
 export default auth(async (req) => {
@@ -85,56 +119,46 @@ export default auth(async (req) => {
     return NextResponse.next();
   }
 
-  // 2) Logged-in users hitting /login are sent to app only after identity is confirmed.
-  if (pathname === "/login" && req.auth?.user) {
+  // 2) Logged-in users hitting auth entry pages go home once identity is confirmed.
+  if (AUTH_ENTRY_PATHS.has(pathname) && req.auth?.user) {
     const hasIdentity = req.cookies.get("ds_identity_ok")?.value === "1";
     if (hasIdentity) {
       const requestedNext = nextUrl.searchParams.get("next");
       const safeNext = requestedNext && requestedNext.startsWith("/") ? requestedNext : roleHomePath(req.auth.user.role);
       return NextResponse.redirect(new URL(safeNext, nextUrl.origin));
     }
-    return NextResponse.next();
+    return nextWithPathname(req, pathname);
   }
 
   // 3) App shell routes: role checks, session-identity, admin splits.
-  const isProtected =
-    pathname.startsWith("/dashboard") ||
-    pathname.startsWith("/settings") ||
-    pathname.startsWith("/admin") ||
-    pathname.startsWith("/audit") ||
-    pathname.startsWith("/dealer") ||
-    pathname.startsWith("/lender");
+  const isProtected = isProtectedAppPath(pathname);
 
-  if (!isProtected) return NextResponse.next();
+  if (!isProtected) return nextWithPathname(req, pathname);
 
   if (!req.auth?.user) {
-    const loginUrl = new URL("/login", nextUrl.origin);
+    const loginUrl = new URL(loginPageForReturnPath(pathname), nextUrl.origin);
     loginUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isProtected) {
-    const hasIdentity = req.cookies.get("ds_identity_ok")?.value === "1";
-    if (!hasIdentity) {
-      const loginUrl = new URL("/login", nextUrl.origin);
-      loginUrl.searchParams.set("next", pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+  const hasIdentity = req.cookies.get("ds_identity_ok")?.value === "1";
+  if (!hasIdentity) {
+    const loginUrl = new URL(loginPageForReturnPath(pathname), nextUrl.origin);
+    loginUrl.searchParams.set("next", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
-  if (
-    (pathname.startsWith("/admin") || pathname.startsWith("/audit")) &&
-    req.auth.user.role !== "ADMIN" &&
-    req.auth.user.role !== "PLATFORM_ADMIN"
-  ) {
+  const adminOrAudit = pathname.startsWith("/admin") || pathname.startsWith("/audit");
+  if (adminOrAudit && !isAdminShellRole(req.auth.user.role as UserRole)) {
     const role = req.auth.user.role;
-    if (role === "DEALER_ADMIN") {
-      return NextResponse.redirect(new URL("/dealer/dashboard", nextUrl.origin));
-    }
-    if (role === "LENDER_ADMIN") {
-      return NextResponse.redirect(new URL("/lender/dashboard", nextUrl.origin));
-    }
-    return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
+    return NextResponse.redirect(new URL(redirectHomeForUnauthorizedAdmin(role), nextUrl.origin));
+  }
+  if (
+    req.auth.user.role === "CUSTODIAN_ADMIN" &&
+    adminOrAudit &&
+    isCustodianAdminBlockedPath(pathname)
+  ) {
+    return NextResponse.redirect(new URL("/admin/audit", nextUrl.origin));
   }
   if (pathname === "/audit") {
     return NextResponse.redirect(new URL("/admin/audit", nextUrl.origin));
@@ -157,5 +181,8 @@ export const config = {
     "/lender/:path*",
     "/session-identity",
     "/login",
+    "/login/:path*",
+    "/signup",
+    "/register",
   ],
 };

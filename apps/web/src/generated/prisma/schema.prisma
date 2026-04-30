@@ -11,11 +11,13 @@ datasource db {
 }
 
 enum UserRole {
-  ADMIN
-  USER
-  DEALER_ADMIN
-  LENDER_ADMIN
-  PLATFORM_ADMIN
+  DEALER_USER
+  DEALER_MANAGER
+  LENDER_USER
+  LENDER_MANAGER
+  ADMIN_USER
+  CUSTODIAN_ADMIN
+  SUPER_ADMIN
 }
 
 enum MembershipRole {
@@ -39,6 +41,8 @@ enum SubscriptionStatus {
 enum WorkspaceType {
   DEALERSHIP
   LENDER
+  /// DealSeal platform staff (admin console); not a dealer or lender org.
+  INTERNAL
 }
 
 enum VehicleTypeSelection {
@@ -266,23 +270,26 @@ enum DealAlertAuditAction {
 }
 
 model User {
-  id                   String            @id @default(cuid())
-  email                String            @unique
-  name                 String?
-  role                 UserRole          @default(USER)
-  image                String?
-  accounts             Account[]
-  sessions             Session[]
-  memberships          Membership[]
-  requestedAmendments  Amendment[]       @relation("AmendmentRequester")
-  approvedAmendments   Amendment[]       @relation("AmendmentApprover")
-  notifications        Notification[]
-  accessAudits         UserAccessAudit[]
-  dealCommentsAuthored DealComment[]     @relation("DealCommentAuthor")
-  dealCommentsResolved DealComment[]     @relation("DealCommentResolver")
-  loanPoolsCreated     LoanPool[]        @relation("LoanPoolCreatedBy")
-  createdAt            DateTime          @default(now())
-  updatedAt            DateTime          @updatedAt
+  id                      String            @id @default(cuid())
+  email                   String            @unique
+  name                    String?
+  role                    UserRole          @default(DEALER_USER)
+  /// Home organization (Workspace). Must match role: dealer → DEALERSHIP, lender → LENDER, admin → INTERNAL.
+  organizationWorkspaceId String
+  organizationWorkspace   Workspace         @relation("UserOrganization", fields: [organizationWorkspaceId], references: [id], onDelete: Restrict)
+  image                   String?
+  accounts                Account[]
+  sessions                Session[]
+  memberships             Membership[]
+  requestedAmendments     Amendment[]       @relation("AmendmentRequester")
+  approvedAmendments      Amendment[]       @relation("AmendmentApprover")
+  notifications           Notification[]
+  accessAudits            UserAccessAudit[]
+  dealCommentsAuthored    DealComment[]     @relation("DealCommentAuthor")
+  dealCommentsResolved    DealComment[]     @relation("DealCommentResolver")
+  loanPoolsCreated        LoanPool[]        @relation("LoanPoolCreatedBy")
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
 }
 
 model Workspace {
@@ -290,6 +297,7 @@ model Workspace {
   name                    String
   slug                    String                   @unique
   type                    WorkspaceType            @default(DEALERSHIP)
+  organizationUsers       User[]                   @relation("UserOrganization")
   memberships             Membership[]
   documents               Document[]
   subscriptions           Subscription[]

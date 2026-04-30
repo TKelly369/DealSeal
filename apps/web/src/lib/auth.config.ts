@@ -3,6 +3,8 @@
  * Use `createAuthConfig()` in `middleware.ts`; the Credentials provider and Prisma live in `auth.ts` + `runtime = "nodejs"`.
  */
 import type { NextAuthConfig } from "next-auth";
+import type { UserRole } from "@/generated/prisma";
+import { demoWorkspaceIdForRole } from "@/lib/role-policy";
 import { secureSessionCookies } from "@/lib/cookie-security";
 
 const DEV_AUTH_SECRET_FALLBACK =
@@ -28,7 +30,7 @@ const sharedCallbacks: NextAuthConfig["callbacks"] = {
   async jwt({ token, user }) {
     const mutable = token as typeof token & {
       id?: string;
-      role?: "USER" | "ADMIN" | "DEALER_ADMIN" | "LENDER_ADMIN" | "PLATFORM_ADMIN";
+      role?: UserRole;
       workspaceId?: string;
     };
     if (user) {
@@ -41,13 +43,14 @@ const sharedCallbacks: NextAuthConfig["callbacks"] = {
   async session({ session, token }) {
     const typed = token as typeof token & {
       id?: string;
-      role?: "USER" | "ADMIN" | "DEALER_ADMIN" | "LENDER_ADMIN" | "PLATFORM_ADMIN";
+      role?: UserRole;
       workspaceId?: string;
     };
     if (session.user) {
       session.user.id = typed.id ?? "";
-      session.user.role = typed.role ?? "USER";
-      session.user.workspaceId = typed.workspaceId ?? "workspace-main";
+      session.user.role = typed.role ?? "DEALER_USER";
+      session.user.workspaceId =
+        typed.workspaceId ?? demoWorkspaceIdForRole((typed.role ?? "DEALER_USER") as UserRole);
     }
     return session;
   },

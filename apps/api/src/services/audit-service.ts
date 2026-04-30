@@ -2,6 +2,11 @@ import type { Prisma } from "@prisma/client";
 import { computeAuditChainHash } from "@dealseal/shared/audit-hash-chain";
 import { prisma } from "../lib/prisma.js";
 
+function optionalJsonField(value: Prisma.InputJsonValue | null | undefined): Prisma.InputJsonValue | undefined {
+  if (value === undefined || value === null) return undefined;
+  return value;
+}
+
 function advisoryLockKey(): bigint {
   const raw = process.env.AUDIT_CHAIN_LOCK_KEY;
   if (raw !== undefined && raw !== "") {
@@ -91,12 +96,8 @@ export async function recordAudit(input: {
         resource: input.resource,
         resourceId: input.resourceId ?? undefined,
         payloadJson: input.payload ?? {},
-        ...(input.deltaBefore !== undefined && input.deltaBefore !== null
-          ? { deltaBefore: input.deltaBefore }
-          : {}),
-        ...(input.deltaAfter !== undefined && input.deltaAfter !== null
-          ? { deltaAfter: input.deltaAfter }
-          : {}),
+        deltaBefore: optionalJsonField(input.deltaBefore),
+        deltaAfter: optionalJsonField(input.deltaAfter),
         ip: input.ip ?? undefined,
         userAgent: input.userAgent ?? undefined,
         previousChainHash: last?.chainHash ?? undefined,

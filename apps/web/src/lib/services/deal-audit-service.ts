@@ -4,6 +4,11 @@ import { prisma } from "@/lib/db";
 
 const DEAL_AUDIT_LOCK = BigInt(99187234);
 
+function optionalJsonField(value: Prisma.InputJsonValue | null | undefined): Prisma.InputJsonValue | undefined {
+  if (value === undefined || value === null) return undefined;
+  return value;
+}
+
 export async function recordDealAuditEvent(input: {
   dealId?: string | null;
   workspaceId?: string | null;
@@ -61,12 +66,8 @@ export async function recordDealAuditEvent(input: {
         action: input.action,
         entityType: input.entityType ?? undefined,
         entityId: input.entityId ?? undefined,
-        ...(input.deltaBefore !== undefined && input.deltaBefore !== null
-          ? { deltaBefore: input.deltaBefore }
-          : {}),
-        ...(input.deltaAfter !== undefined && input.deltaAfter !== null
-          ? { deltaAfter: input.deltaAfter }
-          : {}),
+        deltaBefore: optionalJsonField(input.deltaBefore),
+        deltaAfter: optionalJsonField(input.deltaAfter),
         payloadJson: input.payload ?? {},
         ipAddress: input.ipAddress ?? undefined,
         previousChainHash: last?.chainHash ?? undefined,

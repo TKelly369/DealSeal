@@ -6,6 +6,7 @@ import { Menu, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { shellNavItems } from "@/components/shell/nav";
 import { ShellUser } from "@/components/shell/types";
+import { isAdminShellRole, roleDisplayLabel } from "@/lib/role-policy";
 import { useShellUiState } from "@/lib/ui-state";
 
 function NavContent({ user, compact = false }: { user: ShellUser; compact?: boolean }) {
@@ -13,7 +14,7 @@ function NavContent({ user, compact = false }: { user: ShellUser; compact?: bool
   return (
     <nav className="ds-shell-nav">
       {shellNavItems
-        .filter((item) => !item.adminOnly || user.role === "ADMIN" || user.role === "PLATFORM_ADMIN")
+        .filter((item) => !item.adminOnly || isAdminShellRole(user.role))
         .map((item) => {
           const Icon = item.icon;
           return (
@@ -47,7 +48,7 @@ export function Sidebar({ user }: { user: ShellUser }) {
             {sidebarCollapsed ? <PanelLeftOpen size={16} /> : <PanelLeftClose size={16} />}
           </button>
         </div>
-        <p className="ds-shell-muted">{sidebarCollapsed ? user.role.toUpperCase() : user.workspaceName}</p>
+        <p className="ds-shell-muted">{sidebarCollapsed ? roleDisplayLabel(user.role) : user.workspaceName}</p>
         <NavContent user={user} compact={sidebarCollapsed} />
       </aside>
 

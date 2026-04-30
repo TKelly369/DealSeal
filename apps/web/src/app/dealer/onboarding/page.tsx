@@ -72,7 +72,7 @@ export default async function DealerOnboardingPage() {
             ruleInference: ruleInference as Prisma.InputJsonValue,
           },
         });
-        redirect("/dealer/dashboard");
+        redirect("/dealer");
       }}
     />
   );

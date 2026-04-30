@@ -2,12 +2,15 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { auth } from "@/lib/auth";
+import { isAdminShellRole, isDealerStaffRole } from "@/lib/role-policy";
 import { getWorkspaceType, hasCompletedDealerOnboarding } from "@/lib/onboarding-status";
 
 export default async function DealerLayout({ children }: { children: ReactNode }) {
   const pathname = (await headers()).get("x-dealseal-pathname") ?? "";
   if (
     !pathname ||
+    pathname === "/dealer" ||
+    pathname === "/dealer/login" ||
     pathname === "/dealer/onboarding" ||
     pathname.startsWith("/dealer/onboarding/")
   ) {
@@ -17,14 +20,14 @@ export default async function DealerLayout({ children }: { children: ReactNode }
   const session = await auth();
   if (!session?.user) return children;
 
-  if (session.user.role === "ADMIN" || session.user.role === "PLATFORM_ADMIN") {
+  if (isAdminShellRole(session.user.role)) {
     return children;
   }
 
   const wsType = await getWorkspaceType(session.user.workspaceId);
   if (wsType !== "DEALERSHIP") return children;
 
-  if (session.user.role !== "DEALER_ADMIN" && session.user.role !== "USER") {
+  if (!isDealerStaffRole(session.user.role)) {
     return children;
   }
 

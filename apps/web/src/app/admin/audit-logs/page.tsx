@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
+import { isAdminShellRole } from "@/lib/role-policy";
 import { getAuditLogs } from "@/app/admin/actions";
 import { AuditLogTable } from "@/components/admin/AuditLogTable";
 import { prisma } from "@/lib/db";
@@ -13,7 +14,7 @@ export default async function AdminAuditLogsPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/audit-logs");
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+  if (!isAdminShellRole(session.user.role)) redirect("/dashboard");
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page || 1));
   const data = await getAuditLogs({ page, limit: 15 });

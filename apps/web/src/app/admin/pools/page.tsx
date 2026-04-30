@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { isAdminManagementRole } from "@/lib/role-policy";
 import { prisma } from "@/lib/db";
 
 export default async function AdminPoolsPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/pools");
-  if (session.user.role !== "PLATFORM_ADMIN" && session.user.role !== "ADMIN") {
+  if (!isAdminManagementRole(session.user.role)) {
     redirect("/dashboard");
   }
 

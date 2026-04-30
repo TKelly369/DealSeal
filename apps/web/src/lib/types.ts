@@ -4,7 +4,15 @@ export const UserSchema = z.object({
   id: z.string(),
   email: z.string().email(),
   name: z.string(),
-  role: z.enum(["USER", "ADMIN"]),
+  role: z.enum([
+    "DEALER_USER",
+    "DEALER_MANAGER",
+    "LENDER_USER",
+    "LENDER_MANAGER",
+    "ADMIN_USER",
+    "CUSTODIAN_ADMIN",
+    "SUPER_ADMIN",
+  ]),
   workspaceId: z.string(),
 });
 

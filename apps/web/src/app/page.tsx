@@ -14,13 +14,13 @@ const valueCards: {
     title: "Dealers",
     headline: "Close Cleaner Deals.",
     body: "AI-guided workflows ensure every contract is state-specific, lender-compliant, and fundable before you submit.",
-    href: "/login?next=/dealer/dashboard",
+    href: "/dealer/login?next=/dealer",
   },
   {
     title: "Lenders",
     headline: "Fund with Surety.",
     body: "Verified authoritative contracts, clean assignment trails, and integrated funding validation certificates reduce post-funding legal risk.",
-    href: "/login?next=/lender/dashboard",
+    href: "/lender/login?next=/lender",
   },
   {
     title: "Consumers",
@@ -34,16 +34,16 @@ const footerColumns: { title: string; links: { label: string; href: string }[] }
     title: "Product",
     links: [
       { label: "Deal Builder", href: "/#deal-builder" },
-      { label: "Compliance Engine", href: "/ai-checkpoints" },
-      { label: "Document Generator", href: "/documents" },
+      { label: "Compliance & funding workflow", href: "/#deal-builder" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
     title: "Roles",
     links: [
-      { label: "Dealer Platform", href: "/login?next=/dealer/dashboard" },
-      { label: "Lender Platform", href: "/login?next=/lender/dashboard" },
-      { label: "Admin Oversight", href: "/login?next=/admin" },
+      { label: "Dealer Platform", href: "/dealer/login?next=/dealer" },
+      { label: "Lender Platform", href: "/lender/login?next=/lender" },
+      { label: "Admin Oversight", href: "/admin/login?next=/admin" },
     ],
   },
   {
@@ -141,10 +141,10 @@ export default function HomePage() {
               gap: "0.85rem",
             }}
           >
-            <Button href="/login?next=/dealer/dashboard" className="btn">
+            <Button href="/dealer/login?next=/dealer" className="btn">
               For Dealers
             </Button>
-            <Button href="/login?next=/lender/dashboard" className="btn btn-secondary">
+            <Button href="/lender/login?next=/lender" className="btn btn-secondary">
               For Lenders
             </Button>
           </div>
@@ -205,19 +205,6 @@ export default function HomePage() {
           })}
         </section>
 
-        <section className="card" style={{ marginBottom: "2rem" }}>
-          <h2 style={{ margin: 0, fontSize: "1.25rem", color: "#ffffff" }}>Platform entry</h2>
-          <p style={{ margin: "0.5rem 0 1rem", color: "#a8a8a8", fontSize: "0.9rem" }}>
-            Signed-in workspaces use the enterprise shell. Explore compliance demos without an account.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-            <Link href="/login?next=/dashboard">Dashboard</Link>
-            <Link href="/ai-checkpoints">AI compliance checkpoints</Link>
-            <Link href="/records/demo-record-001">Certified rendering demo</Link>
-            <Link href="/verify">Verify a record</Link>
-          </div>
-        </section>
-
         <section
           id="deal-builder"
           style={{
@@ -249,8 +236,8 @@ export default function HomePage() {
             />
           </div>
           <div style={{ display: "flex", gap: "0.65rem", flexWrap: "wrap", marginTop: "0.95rem" }}>
-            <Button href="/ai-checkpoints" className="btn btn-secondary">
-              View Compliance Engine
+            <Button href="/dealer/login?next=/dealer" className="btn btn-secondary">
+              Sign in to explore your workspace
             </Button>
           </div>
         </section>

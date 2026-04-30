@@ -209,11 +209,13 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  */
 export namespace $Enums {
   export const UserRole: {
-  ADMIN: 'ADMIN',
-  USER: 'USER',
-  DEALER_ADMIN: 'DEALER_ADMIN',
-  LENDER_ADMIN: 'LENDER_ADMIN',
-  PLATFORM_ADMIN: 'PLATFORM_ADMIN'
+  DEALER_USER: 'DEALER_USER',
+  DEALER_MANAGER: 'DEALER_MANAGER',
+  LENDER_USER: 'LENDER_USER',
+  LENDER_MANAGER: 'LENDER_MANAGER',
+  ADMIN_USER: 'ADMIN_USER',
+  CUSTODIAN_ADMIN: 'CUSTODIAN_ADMIN',
+  SUPER_ADMIN: 'SUPER_ADMIN'
 };
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
@@ -248,7 +250,8 @@ export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof Subscr
 
 export const WorkspaceType: {
   DEALERSHIP: 'DEALERSHIP',
-  LENDER: 'LENDER'
+  LENDER: 'LENDER',
+  INTERNAL: 'INTERNAL'
 };
 
 export type WorkspaceType = (typeof WorkspaceType)[keyof typeof WorkspaceType]
@@ -4844,6 +4847,7 @@ export namespace Prisma {
    */
 
   export type WorkspaceCountOutputType = {
+    organizationUsers: number
     memberships: number
     documents: number
     subscriptions: number
@@ -4862,6 +4866,7 @@ export namespace Prisma {
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizationUsers?: boolean | WorkspaceCountOutputTypeCountOrganizationUsersArgs
     memberships?: boolean | WorkspaceCountOutputTypeCountMembershipsArgs
     documents?: boolean | WorkspaceCountOutputTypeCountDocumentsArgs
     subscriptions?: boolean | WorkspaceCountOutputTypeCountSubscriptionsArgs
@@ -4888,6 +4893,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the WorkspaceCountOutputType
      */
     select?: WorkspaceCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountOrganizationUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
   /**
@@ -5464,6 +5476,7 @@ export namespace Prisma {
     email: string | null
     name: string | null
     role: $Enums.UserRole | null
+    organizationWorkspaceId: string | null
     image: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5474,6 +5487,7 @@ export namespace Prisma {
     email: string | null
     name: string | null
     role: $Enums.UserRole | null
+    organizationWorkspaceId: string | null
     image: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5484,6 +5498,7 @@ export namespace Prisma {
     email: number
     name: number
     role: number
+    organizationWorkspaceId: number
     image: number
     createdAt: number
     updatedAt: number
@@ -5496,6 +5511,7 @@ export namespace Prisma {
     email?: true
     name?: true
     role?: true
+    organizationWorkspaceId?: true
     image?: true
     createdAt?: true
     updatedAt?: true
@@ -5506,6 +5522,7 @@ export namespace Prisma {
     email?: true
     name?: true
     role?: true
+    organizationWorkspaceId?: true
     image?: true
     createdAt?: true
     updatedAt?: true
@@ -5516,6 +5533,7 @@ export namespace Prisma {
     email?: true
     name?: true
     role?: true
+    organizationWorkspaceId?: true
     image?: true
     createdAt?: true
     updatedAt?: true
@@ -5599,6 +5617,7 @@ export namespace Prisma {
     email: string
     name: string | null
     role: $Enums.UserRole
+    organizationWorkspaceId: string
     image: string | null
     createdAt: Date
     updatedAt: Date
@@ -5626,9 +5645,11 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     role?: boolean
+    organizationWorkspaceId?: boolean
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    organizationWorkspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     memberships?: boolean | User$membershipsArgs<ExtArgs>
@@ -5647,9 +5668,11 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     role?: boolean
+    organizationWorkspaceId?: boolean
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    organizationWorkspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5657,9 +5680,11 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     role?: boolean
+    organizationWorkspaceId?: boolean
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    organizationWorkspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -5667,13 +5692,15 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     role?: boolean
+    organizationWorkspaceId?: boolean
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "role" | "organizationWorkspaceId" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizationWorkspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     memberships?: boolean | User$membershipsArgs<ExtArgs>
@@ -5686,12 +5713,17 @@ export namespace Prisma {
     loanPoolsCreated?: boolean | User$loanPoolsCreatedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizationWorkspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizationWorkspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      organizationWorkspace: Prisma.$WorkspacePayload<ExtArgs>
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       memberships: Prisma.$MembershipPayload<ExtArgs>[]
@@ -5708,6 +5740,10 @@ export namespace Prisma {
       email: string
       name: string | null
       role: $Enums.UserRole
+      /**
+       * Home organization (Workspace). Must match role: dealer → DEALERSHIP, lender → LENDER, admin → INTERNAL.
+       */
+      organizationWorkspaceId: string
       image: string | null
       createdAt: Date
       updatedAt: Date
@@ -6105,6 +6141,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    organizationWorkspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     memberships<T extends User$membershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6148,6 +6185,7 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
+    readonly organizationWorkspaceId: FieldRef<"User", 'String'>
     readonly image: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
@@ -6400,6 +6438,10 @@ export namespace Prisma {
      */
     data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6470,6 +6512,10 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7011,6 +7057,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    organizationUsers?: boolean | Workspace$organizationUsersArgs<ExtArgs>
     memberships?: boolean | Workspace$membershipsArgs<ExtArgs>
     documents?: boolean | Workspace$documentsArgs<ExtArgs>
     subscriptions?: boolean | Workspace$subscriptionsArgs<ExtArgs>
@@ -7063,6 +7110,7 @@ export namespace Prisma {
 
   export type WorkspaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "type" | "dealCountCurrentPeriod" | "createdAt" | "updatedAt", ExtArgs["result"]["workspace"]>
   export type WorkspaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizationUsers?: boolean | Workspace$organizationUsersArgs<ExtArgs>
     memberships?: boolean | Workspace$membershipsArgs<ExtArgs>
     documents?: boolean | Workspace$documentsArgs<ExtArgs>
     subscriptions?: boolean | Workspace$subscriptionsArgs<ExtArgs>
@@ -7088,6 +7136,7 @@ export namespace Prisma {
   export type $WorkspacePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Workspace"
     objects: {
+      organizationUsers: Prisma.$UserPayload<ExtArgs>[]
       memberships: Prisma.$MembershipPayload<ExtArgs>[]
       documents: Prisma.$DocumentPayload<ExtArgs>[]
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
@@ -7508,6 +7557,7 @@ export namespace Prisma {
    */
   export interface Prisma__WorkspaceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    organizationUsers<T extends Workspace$organizationUsersArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$organizationUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     memberships<T extends Workspace$membershipsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     documents<T extends Workspace$documentsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscriptions<T extends Workspace$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7946,6 +7996,30 @@ export namespace Prisma {
      * Limit how many Workspaces to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Workspace.organizationUsers
+   */
+  export type Workspace$organizationUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -50153,6 +50227,7 @@ export namespace Prisma {
     email: 'email',
     name: 'name',
     role: 'role',
+    organizationWorkspaceId: 'organizationWorkspaceId',
     image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -51402,9 +51477,11 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    organizationWorkspaceId?: StringFilter<"User"> | string
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    organizationWorkspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     memberships?: MembershipListRelationFilter
@@ -51422,9 +51499,11 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrderInput | SortOrder
     role?: SortOrder
+    organizationWorkspaceId?: SortOrder
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    organizationWorkspace?: WorkspaceOrderByWithRelationInput
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     memberships?: MembershipOrderByRelationAggregateInput
@@ -51445,9 +51524,11 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    organizationWorkspaceId?: StringFilter<"User"> | string
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    organizationWorkspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     memberships?: MembershipListRelationFilter
@@ -51465,6 +51546,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrderInput | SortOrder
     role?: SortOrder
+    organizationWorkspaceId?: SortOrder
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -51481,6 +51563,7 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
+    organizationWorkspaceId?: StringWithAggregatesFilter<"User"> | string
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -51497,6 +51580,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFilter<"Workspace"> | number
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     updatedAt?: DateTimeFilter<"Workspace"> | Date | string
+    organizationUsers?: UserListRelationFilter
     memberships?: MembershipListRelationFilter
     documents?: DocumentListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
@@ -51524,6 +51608,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    organizationUsers?: UserOrderByRelationAggregateInput
     memberships?: MembershipOrderByRelationAggregateInput
     documents?: DocumentOrderByRelationAggregateInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
@@ -51554,6 +51639,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFilter<"Workspace"> | number
     createdAt?: DateTimeFilter<"Workspace"> | Date | string
     updatedAt?: DateTimeFilter<"Workspace"> | Date | string
+    organizationUsers?: UserListRelationFilter
     memberships?: MembershipListRelationFilter
     documents?: DocumentListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
@@ -54684,6 +54770,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
@@ -54701,6 +54788,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -54724,6 +54812,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
@@ -54741,6 +54830,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54761,6 +54851,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -54781,6 +54872,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54794,6 +54886,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -54821,6 +54914,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -54848,6 +54942,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -54875,6 +54970,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -58354,6 +58450,11 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type WorkspaceScalarRelationFilter = {
+    is?: WorkspaceWhereInput
+    isNot?: WorkspaceWhereInput
+  }
+
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
@@ -58444,6 +58545,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    organizationWorkspaceId?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -58454,6 +58556,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    organizationWorkspaceId?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -58464,6 +58567,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     role?: SortOrder
+    organizationWorkspaceId?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -58547,6 +58651,12 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
   export type DocumentListRelationFilter = {
     every?: DocumentWhereInput
     some?: DocumentWhereInput
@@ -58609,6 +58719,10 @@ export namespace Prisma {
     every?: WebhookEndpointWhereInput
     some?: WebhookEndpointWhereInput
     none?: WebhookEndpointWhereInput
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type DocumentOrderByRelationAggregateInput = {
@@ -58721,11 +58835,6 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
-  }
-
-  export type WorkspaceScalarRelationFilter = {
-    is?: WorkspaceWhereInput
-    isNot?: WorkspaceWhereInput
   }
 
   export type MembershipUserIdWorkspaceIdCompoundUniqueInput = {
@@ -61210,6 +61319,12 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
+  export type WorkspaceCreateNestedOneWithoutOrganizationUsersInput = {
+    create?: XOR<WorkspaceCreateWithoutOrganizationUsersInput, WorkspaceUncheckedCreateWithoutOrganizationUsersInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutOrganizationUsersInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -61364,6 +61479,14 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutOrganizationUsersInput, WorkspaceUncheckedCreateWithoutOrganizationUsersInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutOrganizationUsersInput
+    upsert?: WorkspaceUpsertWithoutOrganizationUsersInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutOrganizationUsersInput, WorkspaceUpdateWithoutOrganizationUsersInput>, WorkspaceUncheckedUpdateWithoutOrganizationUsersInput>
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -61646,6 +61769,13 @@ export namespace Prisma {
     deleteMany?: LoanPoolScalarWhereInput | LoanPoolScalarWhereInput[]
   }
 
+  export type UserCreateNestedManyWithoutOrganizationWorkspaceInput = {
+    create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
+    createMany?: UserCreateManyOrganizationWorkspaceInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
   export type MembershipCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<MembershipCreateWithoutWorkspaceInput, MembershipUncheckedCreateWithoutWorkspaceInput> | MembershipCreateWithoutWorkspaceInput[] | MembershipUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: MembershipCreateOrConnectWithoutWorkspaceInput | MembershipCreateOrConnectWithoutWorkspaceInput[]
@@ -61761,6 +61891,13 @@ export namespace Prisma {
     connectOrCreate?: UserAccessAuditCreateOrConnectWithoutWorkspaceInput | UserAccessAuditCreateOrConnectWithoutWorkspaceInput[]
     createMany?: UserAccessAuditCreateManyWorkspaceInputEnvelope
     connect?: UserAccessAuditWhereUniqueInput | UserAccessAuditWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput = {
+    create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
+    createMany?: UserCreateManyOrganizationWorkspaceInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
   export type MembershipUncheckedCreateNestedManyWithoutWorkspaceInput = {
@@ -61890,6 +62027,20 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type UserUpdateManyWithoutOrganizationWorkspaceNestedInput = {
+    create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutOrganizationWorkspaceInput | UserUpsertWithWhereUniqueWithoutOrganizationWorkspaceInput[]
+    createMany?: UserCreateManyOrganizationWorkspaceInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutOrganizationWorkspaceInput | UserUpdateWithWhereUniqueWithoutOrganizationWorkspaceInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutOrganizationWorkspaceInput | UserUpdateManyWithWhereWithoutOrganizationWorkspaceInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type MembershipUpdateManyWithoutWorkspaceNestedInput = {
@@ -62120,6 +62271,20 @@ export namespace Prisma {
     update?: UserAccessAuditUpdateWithWhereUniqueWithoutWorkspaceInput | UserAccessAuditUpdateWithWhereUniqueWithoutWorkspaceInput[]
     updateMany?: UserAccessAuditUpdateManyWithWhereWithoutWorkspaceInput | UserAccessAuditUpdateManyWithWhereWithoutWorkspaceInput[]
     deleteMany?: UserAccessAuditScalarWhereInput | UserAccessAuditScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput = {
+    create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutOrganizationWorkspaceInput | UserUpsertWithWhereUniqueWithoutOrganizationWorkspaceInput[]
+    createMany?: UserCreateManyOrganizationWorkspaceInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutOrganizationWorkspaceInput | UserUpdateWithWhereUniqueWithoutOrganizationWorkspaceInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutOrganizationWorkspaceInput | UserUpdateManyWithWhereWithoutOrganizationWorkspaceInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput = {
@@ -65452,6 +65617,65 @@ export namespace Prisma {
     _max?: NestedEnumComplianceRuleSetFilter<$PrismaModel>
   }
 
+  export type WorkspaceCreateWithoutOrganizationUsersInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutOrganizationUsersInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutOrganizationUsersInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutOrganizationUsersInput, WorkspaceUncheckedCreateWithoutOrganizationUsersInput>
+  }
+
   export type AccountCreateWithoutUserInput = {
     id?: string
     type: string
@@ -65830,6 +66054,71 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type WorkspaceUpsertWithoutOrganizationUsersInput = {
+    update: XOR<WorkspaceUpdateWithoutOrganizationUsersInput, WorkspaceUncheckedUpdateWithoutOrganizationUsersInput>
+    create: XOR<WorkspaceCreateWithoutOrganizationUsersInput, WorkspaceUncheckedCreateWithoutOrganizationUsersInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutOrganizationUsersInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutOrganizationUsersInput, WorkspaceUncheckedUpdateWithoutOrganizationUsersInput>
+  }
+
+  export type WorkspaceUpdateWithoutOrganizationUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutOrganizationUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -66126,6 +66415,56 @@ export namespace Prisma {
     createdByUserId?: StringNullableFilter<"LoanPool"> | string | null
     createdAt?: DateTimeFilter<"LoanPool"> | Date | string
     updatedAt?: DateTimeFilter<"LoanPool"> | Date | string
+  }
+
+  export type UserCreateWithoutOrganizationWorkspaceInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    memberships?: MembershipCreateNestedManyWithoutUserInput
+    requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
+    approvedAmendments?: AmendmentCreateNestedManyWithoutApprovingUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutOrganizationWorkspaceInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    requestedAmendments?: AmendmentUncheckedCreateNestedManyWithoutRequestingUserInput
+    approvedAmendments?: AmendmentUncheckedCreateNestedManyWithoutApprovingUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutUserInput
+    dealCommentsAuthored?: DealCommentUncheckedCreateNestedManyWithoutAuthorInput
+    dealCommentsResolved?: DealCommentUncheckedCreateNestedManyWithoutResolvedByInput
+    loanPoolsCreated?: LoanPoolUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutOrganizationWorkspaceInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput>
+  }
+
+  export type UserCreateManyOrganizationWorkspaceInputEnvelope = {
+    data: UserCreateManyOrganizationWorkspaceInput | UserCreateManyOrganizationWorkspaceInput[]
+    skipDuplicates?: boolean
   }
 
   export type MembershipCreateWithoutWorkspaceInput = {
@@ -66834,6 +67173,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserUpsertWithWhereUniqueWithoutOrganizationWorkspaceInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutOrganizationWorkspaceInput, UserUncheckedUpdateWithoutOrganizationWorkspaceInput>
+    create: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutOrganizationWorkspaceInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutOrganizationWorkspaceInput, UserUncheckedUpdateWithoutOrganizationWorkspaceInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutOrganizationWorkspaceInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutOrganizationWorkspaceInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    name?: StringNullableFilter<"User"> | string | null
+    role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    organizationWorkspaceId?: StringFilter<"User"> | string
+    image?: StringNullableFilter<"User"> | string | null
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+  }
+
   export type MembershipUpsertWithWhereUniqueWithoutWorkspaceInput = {
     where: MembershipWhereUniqueInput
     update: XOR<MembershipUpdateWithoutWorkspaceInput, MembershipUncheckedUpdateWithoutWorkspaceInput>
@@ -67304,6 +67673,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
@@ -67320,6 +67690,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -67347,6 +67718,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
@@ -67373,6 +67745,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
     dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
@@ -67415,6 +67788,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
@@ -67431,6 +67805,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67464,6 +67839,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
@@ -67490,6 +67866,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
     dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
@@ -67516,6 +67893,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
@@ -67542,6 +67920,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
     dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
@@ -67584,6 +67963,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
@@ -67610,6 +67990,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
     dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
@@ -67636,6 +68017,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
@@ -67662,6 +68044,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
@@ -67704,6 +68087,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
@@ -67730,6 +68114,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
@@ -67756,6 +68141,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -67782,6 +68168,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -67824,6 +68211,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -67850,6 +68238,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -67876,6 +68265,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -67902,6 +68292,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -67944,6 +68335,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -67970,6 +68362,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -67996,6 +68389,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -68022,6 +68416,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -68053,6 +68448,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -68079,6 +68475,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -68209,6 +68606,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -68235,6 +68633,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -68272,6 +68671,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -68298,6 +68698,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -68340,6 +68741,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -68366,6 +68768,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -68408,6 +68811,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -68434,6 +68838,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -68460,6 +68865,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -68486,6 +68892,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -68528,6 +68935,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -68554,6 +68962,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -68580,6 +68989,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -68606,6 +69016,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -68637,6 +69048,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -68663,6 +69075,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -69368,6 +69781,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -69394,6 +69808,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -69431,6 +69846,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -69457,6 +69873,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -71116,6 +71533,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -71142,6 +71560,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -71173,6 +71592,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
@@ -71189,6 +71609,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -71315,6 +71736,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -71341,6 +71763,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -71378,6 +71801,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
@@ -71394,6 +71818,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72353,6 +72778,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -72379,6 +72805,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -72410,6 +72837,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
@@ -72426,6 +72854,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -72547,6 +72976,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -72573,6 +73003,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -72610,6 +73041,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
@@ -72626,6 +73058,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72737,6 +73170,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -72763,6 +73197,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -72805,6 +73240,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -72831,6 +73267,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -72857,6 +73294,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -72883,6 +73321,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -72959,6 +73398,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -72985,6 +73425,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -73103,6 +73544,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
@@ -73119,6 +73561,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73146,6 +73589,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -73172,6 +73616,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -73214,6 +73659,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
@@ -73230,6 +73676,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73263,6 +73710,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -73289,6 +73737,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -73398,6 +73847,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
@@ -73414,6 +73864,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73520,6 +73971,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
@@ -73536,6 +73988,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73663,6 +74116,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
@@ -73679,6 +74133,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73771,6 +74226,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
@@ -73787,6 +74243,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73892,6 +74349,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
@@ -73918,6 +74376,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
     documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -74079,6 +74538,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
@@ -74105,6 +74565,7 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -74351,6 +74812,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
@@ -74367,6 +74829,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74394,6 +74857,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
@@ -74410,6 +74874,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74626,6 +75091,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
@@ -74642,6 +75108,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74675,6 +75142,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
@@ -74691,6 +75159,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75617,6 +76086,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
     requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
@@ -75633,6 +76103,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -75671,6 +76142,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
@@ -75687,6 +76159,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75709,6 +76182,7 @@ export namespace Prisma {
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizationWorkspace: WorkspaceCreateNestedOneWithoutOrganizationUsersInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
     requestedAmendments?: AmendmentCreateNestedManyWithoutRequestingUserInput
@@ -75725,6 +76199,7 @@ export namespace Prisma {
     email: string
     name?: string | null
     role?: $Enums.UserRole
+    organizationWorkspaceId: string
     image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -75763,6 +76238,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationWorkspace?: WorkspaceUpdateOneRequiredWithoutOrganizationUsersNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
@@ -75779,6 +76255,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    organizationWorkspaceId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76339,6 +76816,16 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserCreateManyOrganizationWorkspaceInput = {
+    id?: string
+    email: string
+    name?: string | null
+    role?: $Enums.UserRole
+    image?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type MembershipCreateManyWorkspaceInput = {
     id?: string
     userId: string
@@ -76547,6 +77034,56 @@ export namespace Prisma {
     userAgent?: string | null
     metadata?: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
+  }
+
+  export type UserUpdateWithoutOrganizationWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    requestedAmendments?: AmendmentUpdateManyWithoutRequestingUserNestedInput
+    approvedAmendments?: AmendmentUpdateManyWithoutApprovingUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrganizationWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    requestedAmendments?: AmendmentUncheckedUpdateManyWithoutRequestingUserNestedInput
+    approvedAmendments?: AmendmentUncheckedUpdateManyWithoutApprovingUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutUserNestedInput
+    dealCommentsAuthored?: DealCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    dealCommentsResolved?: DealCommentUncheckedUpdateManyWithoutResolvedByNestedInput
+    loanPoolsCreated?: LoanPoolUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutOrganizationWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MembershipUpdateWithoutWorkspaceInput = {

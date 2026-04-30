@@ -57,6 +57,17 @@ async function main() {
     },
   });
 
+  const internalWorkspace = await prisma.workspace.upsert({
+    where: { slug: "dealseal-internal" },
+    update: { name: "DealSeal Internal", type: WorkspaceType.INTERNAL },
+    create: {
+      id: "ws-dealseal-internal",
+      slug: "dealseal-internal",
+      name: "DealSeal Internal",
+      type: WorkspaceType.INTERNAL,
+    },
+  });
+
   await prisma.dealerProfile.upsert({
     where: { workspaceId: workspace.id },
     update: {},
@@ -104,56 +115,88 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: "admin@dealseal1.com" },
-    update: { name: "DealSeal Admin", role: UserRole.ADMIN },
+    update: {
+      name: "DealSeal Admin",
+      role: UserRole.ADMIN_USER,
+      organizationWorkspaceId: internalWorkspace.id,
+    },
     create: {
       id: "admin-001",
       email: "admin@dealseal1.com",
       name: "DealSeal Admin",
-      role: UserRole.ADMIN,
+      role: UserRole.ADMIN_USER,
+      organizationWorkspaceId: internalWorkspace.id,
     },
   });
 
   const standardUser = await prisma.user.upsert({
     where: { email: "user@dealseal1.com" },
-    update: { name: "DealSeal User", role: UserRole.USER },
+    update: {
+      name: "DealSeal User",
+      role: UserRole.DEALER_USER,
+      organizationWorkspaceId: workspace.id,
+    },
     create: {
       id: "user-001",
       email: "user@dealseal1.com",
       name: "DealSeal User",
-      role: UserRole.USER,
+      role: UserRole.DEALER_USER,
+      organizationWorkspaceId: workspace.id,
     },
   });
 
   const lenderAdmin = await prisma.user.upsert({
     where: { email: "lender.admin@dealseal1.com" },
-    update: { name: "Lender Admin", role: UserRole.LENDER_ADMIN },
+    update: {
+      name: "Lender Manager",
+      role: UserRole.LENDER_MANAGER,
+      organizationWorkspaceId: lenderWorkspace.id,
+    },
     create: {
       id: "lender-admin-001",
       email: "lender.admin@dealseal1.com",
-      name: "Lender Admin",
-      role: UserRole.LENDER_ADMIN,
+      name: "Lender Manager",
+      role: UserRole.LENDER_MANAGER,
+      organizationWorkspaceId: lenderWorkspace.id,
     },
   });
 
   const dealerAdmin = await prisma.user.upsert({
     where: { email: "dealer.admin@dealseal1.com" },
-    update: { name: "Dealer Admin", role: UserRole.DEALER_ADMIN },
+    update: {
+      name: "Dealer Manager",
+      role: UserRole.DEALER_MANAGER,
+      organizationWorkspaceId: workspace.id,
+    },
     create: {
       id: "dealer-admin-001",
       email: "dealer.admin@dealseal1.com",
-      name: "Dealer Admin",
-      role: UserRole.DEALER_ADMIN,
+      name: "Dealer Manager",
+      role: UserRole.DEALER_MANAGER,
+      organizationWorkspaceId: workspace.id,
     },
   });
 
   const platformAdmin = await prisma.user.upsert({
     where: { email: "platform.admin@dealseal1.com" },
-    update: { name: "Platform Admin", role: UserRole.PLATFORM_ADMIN },
+    update: {
+      name: "Super Admin",
+      role: UserRole.SUPER_ADMIN,
+      organizationWorkspaceId: internalWorkspace.id,
+    },
     create: {
       id: "platform-admin-001",
       email: "platform.admin@dealseal1.com",
-      name: "Platform Admin",
-      role: UserRole.PLATFORM_ADMIN,
+      name: "Super Admin",
+      role: UserRole.SUPER_ADMIN,
+      organizationWorkspaceId: internalWorkspace.id,
+    },
+  });
+
+  await prisma.membership.deleteMany({
+    where: {
+      userId: { in: [admin.id, platformAdmin.id] },
+      workspaceId: workspace.id,
     },
   });
 
@@ -161,13 +204,13 @@ async function main() {
     where: {
       userId_workspaceId: {
         userId: admin.id,
-        workspaceId: workspace.id,
+        workspaceId: internalWorkspace.id,
       },
     },
     update: { role: MembershipRole.OWNER },
     create: {
       userId: admin.id,
-      workspaceId: workspace.id,
+      workspaceId: internalWorkspace.id,
       role: MembershipRole.OWNER,
     },
   });
@@ -221,13 +264,13 @@ async function main() {
     where: {
       userId_workspaceId: {
         userId: platformAdmin.id,
-        workspaceId: workspace.id,
+        workspaceId: internalWorkspace.id,
       },
     },
     update: { role: MembershipRole.ADMIN },
     create: {
       userId: platformAdmin.id,
-      workspaceId: workspace.id,
+      workspaceId: internalWorkspace.id,
       role: MembershipRole.ADMIN,
     },
   });
@@ -272,6 +315,21 @@ async function main() {
     },
     create: {
       workspaceId: workspace.id,
+      status: SubscriptionStatus.CANCELED,
+      stripePriceId: process.env.STRIPE_PRO_PRICE_ID ?? null,
+    },
+  });
+
+  await prisma.subscription.upsert({
+    where: { workspaceId: internalWorkspace.id },
+    update: {
+      status: SubscriptionStatus.CANCELED,
+      stripeCustomerId: null,
+      stripeSubscriptionId: null,
+      stripePriceId: process.env.STRIPE_PRO_PRICE_ID ?? null,
+    },
+    create: {
+      workspaceId: internalWorkspace.id,
       status: SubscriptionStatus.CANCELED,
       stripePriceId: process.env.STRIPE_PRO_PRICE_ID ?? null,
     },

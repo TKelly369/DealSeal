@@ -1,11 +1,12 @@
 import { auth } from "@/lib/auth";
+import { isAdminManagementRole } from "@/lib/role-policy";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 
 export default async function AdminLinksPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/links");
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+  if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
   const links = await prisma.dealerLenderLink.findMany({
     include: {
       dealer: { select: { name: true } },
@@ -37,7 +38,7 @@ export default async function AdminLinksPage() {
                     "use server";
                     const fresh = await auth();
                     if (!fresh?.user) redirect("/login?next=/admin/links");
-                    if (fresh.user.role !== "ADMIN" && fresh.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+                    if (!isAdminManagementRole(fresh.user.role)) redirect("/dashboard");
                     await prisma.dealerLenderLink.update({ where: { id: link.id }, data: { status: "SUSPENDED" } });
                   }}
                 >

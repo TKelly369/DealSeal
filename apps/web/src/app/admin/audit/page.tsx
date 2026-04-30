@@ -1,11 +1,12 @@
 import { auth } from "@/lib/auth";
+import { isAdminShellRole } from "@/lib/role-policy";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 
 export default async function AdminAuditPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/audit");
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+  if (!isAdminShellRole(session.user.role)) redirect("/dashboard");
 
   const certs = await prisma.preFundingValidationCertificate.findMany({
     orderBy: { createdAt: "desc" },

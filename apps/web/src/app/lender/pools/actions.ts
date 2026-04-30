@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { LoanPoolStatus, LoanPoolType, LoanPoolSaleStage } from "@/generated/prisma";
 import { getWorkspaceType } from "@/lib/onboarding-status";
+import { isLenderManagerRole } from "@/lib/role-policy";
 import { LoanPoolService } from "@/lib/services/loan-pool.service";
 
 async function requireLenderWorkspace() {
@@ -16,8 +17,16 @@ async function requireLenderWorkspace() {
   return session.user;
 }
 
-export async function createLoanPoolAction(formData: FormData) {
+async function requireLenderPoolManager() {
   const user = await requireLenderWorkspace();
+  if (!isLenderManagerRole(user.role)) {
+    throw new Error("Loan pool changes require a lender manager role.");
+  }
+  return user;
+}
+
+export async function createLoanPoolAction(formData: FormData) {
+  const user = await requireLenderPoolManager();
   const poolName = String(formData.get("poolName") ?? "").trim();
   const poolTypeRaw = String(formData.get("poolType") ?? "CUSTOM").trim();
   const description = String(formData.get("description") ?? "").trim() || undefined;
@@ -42,7 +51,7 @@ export async function createLoanPoolAction(formData: FormData) {
 }
 
 export async function addDealToPoolAction(poolId: string, dealId: string) {
-  const user = await requireLenderWorkspace();
+  const user = await requireLenderPoolManager();
   await LoanPoolService.addDealToPool({
     poolId,
     dealId: dealId.trim(),
@@ -54,7 +63,7 @@ export async function addDealToPoolAction(poolId: string, dealId: string) {
 }
 
 export async function removeDealFromPoolAction(poolId: string, dealId: string) {
-  const user = await requireLenderWorkspace();
+  const user = await requireLenderPoolManager();
   await LoanPoolService.removeDealFromPool({
     poolId,
     dealId: dealId.trim(),
@@ -69,7 +78,7 @@ export async function updatePoolStatusAction(
   status: LoanPoolStatus,
   saleStage?: LoanPoolSaleStage | null,
 ) {
-  const user = await requireLenderWorkspace();
+  const user = await requireLenderPoolManager();
   await LoanPoolService.updatePoolStatus({
     poolId,
     lenderId: user.workspaceId,
@@ -81,14 +90,14 @@ export async function updatePoolStatusAction(
 }
 
 export async function generatePoolPackageAction(poolId: string) {
-  const user = await requireLenderWorkspace();
+  const user = await requireLenderPoolManager();
   const result = await LoanPoolService.generatePoolPackagePlaceholder(poolId, user.workspaceId);
   revalidatePath(`/lender/pools/${poolId}`);
   return result;
 }
 
 export async function transitionPoolAction(formData: FormData) {
-  const user = await requireLenderWorkspace();
+  const user = await requireLenderPoolManager();
   const poolId = String(formData.get("poolId") ?? "").trim();
   const intent = String(formData.get("intent") ?? "").trim();
   if (!poolId) throw new Error("Missing pool.");

@@ -6,7 +6,7 @@ import { DealerLenderLinkService } from "@/lib/services/link.service";
 
 export default async function DealerDashboardPage() {
   const session = await auth();
-  if (!session?.user) redirect("/login?next=/dealer/dashboard");
+  if (!session?.user) redirect("/dealer/login?next=/dealer");
   const dealerId = session.user.workspaceId;
   let deals: Awaited<ReturnType<typeof DealService.listDealsForDealer>> = [];
   let links: Awaited<ReturnType<typeof DealerLenderLinkService.getActiveLinksForDealer>> = [];

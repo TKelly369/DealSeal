@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { isPlatformSuperRole } from "@/lib/role-policy";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ dealId: string }> }) {
   const session = await auth();
@@ -20,7 +21,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ dealId:
   });
   if (
     !deal ||
-    (deal.dealerId !== session.user.workspaceId && session.user.role !== "PLATFORM_ADMIN")
+    (deal.dealerId !== session.user.workspaceId && !isPlatformSuperRole(session.user.role))
   ) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }

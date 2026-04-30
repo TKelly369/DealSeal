@@ -126,6 +126,7 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   name: 'name',
   role: 'role',
+  organizationWorkspaceId: 'organizationWorkspaceId',
   image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -646,16 +647,19 @@ exports.Prisma.JsonNullValueFilter = {
   AnyNull: Prisma.AnyNull
 };
 exports.UserRole = exports.$Enums.UserRole = {
-  ADMIN: 'ADMIN',
-  USER: 'USER',
-  DEALER_ADMIN: 'DEALER_ADMIN',
-  LENDER_ADMIN: 'LENDER_ADMIN',
-  PLATFORM_ADMIN: 'PLATFORM_ADMIN'
+  DEALER_USER: 'DEALER_USER',
+  DEALER_MANAGER: 'DEALER_MANAGER',
+  LENDER_USER: 'LENDER_USER',
+  LENDER_MANAGER: 'LENDER_MANAGER',
+  ADMIN_USER: 'ADMIN_USER',
+  CUSTODIAN_ADMIN: 'CUSTODIAN_ADMIN',
+  SUPER_ADMIN: 'SUPER_ADMIN'
 };
 
 exports.WorkspaceType = exports.$Enums.WorkspaceType = {
   DEALERSHIP: 'DEALERSHIP',
-  LENDER: 'LENDER'
+  LENDER: 'LENDER',
+  INTERNAL: 'INTERNAL'
 };
 
 exports.MembershipRole = exports.$Enums.MembershipRole = {

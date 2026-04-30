@@ -90,7 +90,7 @@ export async function POST(req: Request) {
     },
     {
       authMethod: "API_KEY",
-      actorRole: "DEALER_ADMIN",
+      actorRole: "DEALER_MANAGER",
       ip: req.headers.get("x-forwarded-for") ?? undefined,
     },
   );

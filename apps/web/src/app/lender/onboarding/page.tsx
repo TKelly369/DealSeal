@@ -67,7 +67,7 @@ export default async function LenderOnboardingPage() {
             ruleInference: ruleInference as Prisma.InputJsonValue,
           },
         });
-        redirect("/lender/dashboard");
+        redirect("/lender");
       }}
     />
   );

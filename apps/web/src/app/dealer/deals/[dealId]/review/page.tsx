@@ -17,7 +17,7 @@ export default async function DealerDealReviewPage({ params }: { params: Promise
     },
   });
   if (!deal || deal.dealerId !== session.user.workspaceId) {
-    redirect("/dealer/dashboard");
+    redirect("/dealer");
   }
 
   const certificate =
@@ -62,7 +62,7 @@ export default async function DealerDealReviewPage({ params }: { params: Promise
       <Link href={`/dealer/deals/${dealId}`} className="btn">
         Deal lifecycle &amp; custody
       </Link>
-      <Link href="/dealer/dashboard">Back to dashboard</Link>
+      <Link href="/dealer">Back to dealer home</Link>
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import { auth } from "@/lib/auth";
+import { isAdminManagementRole } from "@/lib/role-policy";
 import { redirect } from "next/navigation";
 
 export default async function AdminRulesPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/rules");
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+  if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
 
   return (
     <div className="card">

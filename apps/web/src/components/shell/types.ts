@@ -1,7 +1,9 @@
+import type { UserRole } from "@/generated/prisma";
+
 export type ShellUser = {
   email: string;
   name: string;
-  role: "ADMIN" | "USER" | "DEALER_ADMIN" | "LENDER_ADMIN" | "PLATFORM_ADMIN";
+  role: UserRole;
   workspaceName: string;
   workspaceId: string;
 };

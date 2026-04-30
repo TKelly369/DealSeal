@@ -2,12 +2,15 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { auth } from "@/lib/auth";
+import { isAdminShellRole, isLenderStaffRole } from "@/lib/role-policy";
 import { getWorkspaceType, hasCompletedLenderOnboarding } from "@/lib/onboarding-status";
 
 export default async function LenderLayout({ children }: { children: ReactNode }) {
   const pathname = (await headers()).get("x-dealseal-pathname") ?? "";
   if (
     !pathname ||
+    pathname === "/lender" ||
+    pathname === "/lender/login" ||
     pathname === "/lender/onboarding" ||
     pathname.startsWith("/lender/onboarding/")
   ) {
@@ -17,14 +20,14 @@ export default async function LenderLayout({ children }: { children: ReactNode }
   const session = await auth();
   if (!session?.user) return children;
 
-  if (session.user.role === "ADMIN" || session.user.role === "PLATFORM_ADMIN") {
+  if (isAdminShellRole(session.user.role)) {
     return children;
   }
 
   const wsType = await getWorkspaceType(session.user.workspaceId);
   if (wsType !== "LENDER") return children;
 
-  if (session.user.role !== "LENDER_ADMIN" && session.user.role !== "USER") {
+  if (!isLenderStaffRole(session.user.role)) {
     return children;
   }
 

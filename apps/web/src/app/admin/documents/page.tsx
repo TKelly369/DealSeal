@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { isAdminManagementRole } from "@/lib/role-policy";
 import { getPendingCertificationDocuments } from "@/app/admin/actions";
 import { CertificationQueueTable } from "@/components/admin/CertificationQueueTable";
 
@@ -10,7 +11,7 @@ export default async function AdminDocumentsPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/documents");
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+  if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
 
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page || 1));

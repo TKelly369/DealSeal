@@ -1,5 +1,6 @@
 "use server";
 
+import type { UserRole } from "@/generated/prisma";
 import { auth } from "@/lib/auth";
 import { secureSessionCookies } from "@/lib/cookie-security";
 import { prisma } from "@/lib/db";
@@ -8,6 +9,12 @@ import {
   hasCompletedDealerOnboarding,
   hasCompletedLenderOnboarding,
 } from "@/lib/onboarding-status";
+import {
+  isAdminShellRole,
+  isDealerStaffRole,
+  isLenderStaffRole,
+  ROLE_HOME,
+} from "@/lib/role-policy";
 import { cookies, headers } from "next/headers";
 
 /**
@@ -22,22 +29,24 @@ function roleFallbackDestination(
   const isGenericDealerEntry =
     !next ||
     next === "/dashboard" ||
+    next === ROLE_HOME.dealer ||
     next === "/dealer/dashboard" ||
     next === "/dealer/onboarding";
   const isGenericLenderEntry =
     !next ||
     next === "/dashboard" ||
+    next === ROLE_HOME.lender ||
     next === "/lender/dashboard" ||
     next === "/lender/onboarding";
 
-  if (role === "LENDER_ADMIN" || workspaceId === "ws-lender-demo") {
-    return isGenericLenderEntry ? "/lender/dashboard" : next;
+  if (isLenderStaffRole(role as UserRole) || workspaceId === "ws-lender-demo") {
+    return isGenericLenderEntry ? ROLE_HOME.lender : next;
   }
-  if (role === "DEALER_ADMIN" || role === "USER") {
-    return isGenericDealerEntry ? "/dealer/dashboard" : next;
+  if (isDealerStaffRole(role as UserRole)) {
+    return isGenericDealerEntry ? ROLE_HOME.dealer : next;
   }
-  if (role === "ADMIN" || role === "PLATFORM_ADMIN") {
-    return next || "/dashboard";
+  if (isAdminShellRole(role as UserRole)) {
+    return next || ROLE_HOME.admin;
   }
   return next || "/dashboard";
 }
@@ -69,31 +78,29 @@ export async function resolvePostLoginDestination(requestedNext: string | null):
     const isGenericDealerEntry =
       !next ||
       next === "/dashboard" ||
+      next === ROLE_HOME.dealer ||
       next === "/dealer/dashboard" ||
       next === "/dealer/onboarding";
 
     const isGenericLenderEntry =
       !next ||
       next === "/dashboard" ||
+      next === ROLE_HOME.lender ||
       next === "/lender/dashboard" ||
       next === "/lender/onboarding";
 
-    if (
-      wsType === "DEALERSHIP" &&
-      (role === "DEALER_ADMIN" || role === "USER") &&
-      isGenericDealerEntry
-    ) {
+    if (wsType === "DEALERSHIP" && isDealerStaffRole(role) && isGenericDealerEntry) {
       const completed = await hasCompletedDealerOnboarding(workspaceId);
-      return completed ? "/dealer/dashboard" : "/dealer/onboarding";
+      return completed ? ROLE_HOME.dealer : "/dealer/onboarding";
     }
 
-    if (
-      wsType === "LENDER" &&
-      (role === "LENDER_ADMIN" || role === "USER") &&
-      isGenericLenderEntry
-    ) {
+    if (wsType === "LENDER" && isLenderStaffRole(role) && isGenericLenderEntry) {
       const completed = await hasCompletedLenderOnboarding(workspaceId);
-      return completed ? "/lender/dashboard" : "/lender/onboarding";
+      return completed ? ROLE_HOME.lender : "/lender/onboarding";
+    }
+
+    if (wsType === "INTERNAL" && isAdminShellRole(role)) {
+      return next || ROLE_HOME.admin;
     }
 
     return next || "/dashboard";
@@ -126,45 +133,43 @@ export async function resolvePostLoginDestinationForSession(input: ResolvePostLo
     // Landing "Dealers" vs "Lenders" tabs: if the signed-in workspace is the other platform, snap to the correct home
     // so users are not left on the wrong shell after login.
     if (wsType === "DEALERSHIP" && next.startsWith("/lender")) {
-      next = "/dealer/dashboard";
+      next = ROLE_HOME.dealer;
     } else if (wsType === "LENDER" && next.startsWith("/dealer")) {
-      next = "/lender/dashboard";
+      next = ROLE_HOME.lender;
     }
 
     const isGenericDealerEntry =
       !next ||
       next === "/dashboard" ||
+      next === ROLE_HOME.dealer ||
       next === "/dealer/dashboard" ||
       next === "/dealer/onboarding";
 
     const isGenericLenderEntry =
       !next ||
       next === "/dashboard" ||
+      next === ROLE_HOME.lender ||
       next === "/lender/dashboard" ||
       next === "/lender/onboarding";
 
-    if (
-      wsType === "DEALERSHIP" &&
-      (input.role === "DEALER_ADMIN" || input.role === "USER") &&
-      isGenericDealerEntry
-    ) {
+    if (wsType === "DEALERSHIP" && isDealerStaffRole(input.role as UserRole) && isGenericDealerEntry) {
       if (!owner) {
-        return "/dealer/dashboard";
+        return ROLE_HOME.dealer;
       }
       const completed = await hasCompletedDealerOnboarding(input.workspaceId);
-      return completed ? "/dealer/dashboard" : "/dealer/onboarding";
+      return completed ? ROLE_HOME.dealer : "/dealer/onboarding";
     }
 
-    if (
-      wsType === "LENDER" &&
-      (input.role === "LENDER_ADMIN" || input.role === "USER") &&
-      isGenericLenderEntry
-    ) {
+    if (wsType === "LENDER" && isLenderStaffRole(input.role as UserRole) && isGenericLenderEntry) {
       if (!owner) {
-        return "/lender/dashboard";
+        return ROLE_HOME.lender;
       }
       const completed = await hasCompletedLenderOnboarding(input.workspaceId);
-      return completed ? "/lender/dashboard" : "/lender/onboarding";
+      return completed ? ROLE_HOME.lender : "/lender/onboarding";
+    }
+
+    if (wsType === "INTERNAL" && isAdminShellRole(input.role as UserRole)) {
+      return next || ROLE_HOME.admin;
     }
 
     return next || roleFallbackDestination(input.role, input.workspaceId, next);

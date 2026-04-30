@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getUsers } from "@/app/admin/actions";
 import { auth } from "@/lib/auth";
+import { isAdminManagementRole } from "@/lib/role-policy";
 import { UserAdminRoleSchema } from "@/lib/types";
 import { TableSkeleton } from "@/components/shared/Skeletons";
 import { UsersTable } from "@/components/admin/UsersTable";
@@ -12,7 +13,7 @@ export default async function AdminUsersPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/users");
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+  if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
 
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page || 1));

@@ -1,13 +1,22 @@
 "use client";
 
 import { Session } from "next-auth";
+import type { UserRole } from "@/generated/prisma";
+import { demoWorkspaceIdForRole } from "@/lib/role-policy";
 import { CommandMenu } from "@/components/shell/CommandMenu";
 import { Header } from "@/components/shell/Header";
 import { Sidebar } from "@/components/shell/Sidebar";
 import { ShellUser } from "@/components/shell/types";
 import { usePathname } from "next/navigation";
 
-const noShell = new Set(["/login", "/register"]);
+const noShell = new Set([
+  "/login",
+  "/register",
+  "/signup",
+  "/dealer/login",
+  "/lender/login",
+  "/admin/login",
+]);
 
 export function AppShell({ children, session }: { children: React.ReactNode; session: Session | null }) {
   const path = usePathname() ?? "";
@@ -15,8 +24,10 @@ export function AppShell({ children, session }: { children: React.ReactNode; ses
   const user: ShellUser = {
     name: session?.user?.name ?? "DealSeal User",
     email: session?.user?.email ?? "user@dealseal1.com",
-    role: session?.user?.role ?? "USER",
-    workspaceId: session?.user?.workspaceId ?? "workspace-main",
+    role: session?.user?.role ?? "DEALER_USER",
+    workspaceId:
+      session?.user?.workspaceId ??
+      demoWorkspaceIdForRole((session?.user?.role ?? "DEALER_USER") as UserRole),
     workspaceName: "DealSeal Enterprise Workspace",
   };
 

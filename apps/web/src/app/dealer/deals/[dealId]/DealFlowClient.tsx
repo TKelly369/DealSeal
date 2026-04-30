@@ -131,7 +131,7 @@ export function DealFlowClient({
     <div className="ds-section-shell" style={{ maxWidth: "100%" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "0.5rem" }}>
         <h1 style={{ margin: 0, fontSize: "1.35rem" }}>Your deal</h1>
-        <Link href="/dealer/dashboard" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
+        <Link href="/dealer" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
           Dashboard
         </Link>
       </div>

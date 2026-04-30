@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
+import { isAdminManagementRole } from "@/lib/role-policy";
 import { ApiKeyService } from "@/lib/services/api-key.service";
 import { WebhookService } from "@/lib/services/webhook.service";
 
@@ -20,7 +21,7 @@ export default async function SettingsApiKeysPage({
   const session = await auth();
   if (!session?.user) redirect("/login?next=/settings/api-keys");
   const workspaceId = session.user.workspaceId;
-  const isAdminRole = session.user.role === "ADMIN" || session.user.role === "PLATFORM_ADMIN";
+  const isAdminRole = isAdminManagementRole(session.user.role);
   const sp = await searchParams;
 
   const [apiKeys, webhooks] = await Promise.all([
@@ -150,7 +151,7 @@ export default async function SettingsApiKeysPage({
               "use server";
               const fresh = await auth();
               if (!fresh?.user) redirect("/login?next=/settings/api-keys");
-              if (fresh.user.role !== "ADMIN" && fresh.user.role !== "PLATFORM_ADMIN") {
+              if (!isAdminManagementRole(fresh.user.role)) {
                 throw new Error("Only admins can run retry sweeps.");
               }
               const result = await WebhookService.processDueRetries(50);

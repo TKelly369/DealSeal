@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 
 export default async function LenderDashboardPage() {
   const session = await auth();
-  if (!session?.user) redirect("/login?next=/lender/dashboard");
+  if (!session?.user) redirect("/lender/login?next=/lender");
   const lenderId = session.user.workspaceId;
   let deals: Awaited<ReturnType<typeof DealService.listDealsForLender>> = [];
   let exceptions = 0;

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { isAdminShellRole } from "@/lib/role-policy";
 import { AuditExplorer } from "./AuditExplorer";
 
 export default async function AuditPage() {
@@ -7,7 +8,7 @@ export default async function AuditPage() {
   if (!session?.user) {
     redirect("/login?next=/admin/audit");
   }
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") {
+  if (!isAdminShellRole(session.user.role)) {
     redirect("/dashboard");
   }
   return (

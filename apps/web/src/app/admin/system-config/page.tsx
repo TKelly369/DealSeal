@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { isAdminManagementRole } from "@/lib/role-policy";
 import {
   executeCustodialPurgeRun,
   getCustodialPerformanceReport,
@@ -9,7 +10,7 @@ import {
 export default async function AdminSystemConfigPage() {
   const session = await auth();
   if (!session?.user) redirect("/login?next=/admin/system-config");
-  if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+  if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
   const custody = await getCustodialPerformanceReport();
 
   return (
@@ -22,7 +23,7 @@ export default async function AdminSystemConfigPage() {
             "use server";
             const session = await auth();
             if (!session?.user) redirect("/login?next=/admin/system-config");
-            if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+            if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
             await updateSystemConfig({
               maxDocumentsPerMonth: Number(formData.get("maxDocumentsPerMonth") || 5000),
               platformFeePercent: Number(formData.get("platformFeePercent") || 2.5),
@@ -85,7 +86,7 @@ export default async function AdminSystemConfigPage() {
             "use server";
             const session = await auth();
             if (!session?.user) redirect("/login?next=/admin/system-config");
-            if (session.user.role !== "ADMIN" && session.user.role !== "PLATFORM_ADMIN") redirect("/dashboard");
+            if (!isAdminManagementRole(session.user.role)) redirect("/dashboard");
             await executeCustodialPurgeRun();
             redirect("/admin/system-config");
           }}

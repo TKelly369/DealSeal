@@ -1,6 +1,7 @@
 import type { Deal, DealFinancials, DealStatus, UserRole } from "@/generated/prisma";
 import { Prisma } from "@/generated/prisma";
 import { prisma } from "@/lib/db";
+import { isAdminShellRole } from "@/lib/role-policy";
 
 export type SessionUser = {
   id: string;
@@ -8,8 +9,23 @@ export type SessionUser = {
   workspaceId: string;
 };
 
-const DEALER_ROLES: UserRole[] = ["DEALER_ADMIN", "ADMIN", "USER", "PLATFORM_ADMIN"];
-const LENDER_ROLES: UserRole[] = ["LENDER_ADMIN", "PLATFORM_ADMIN"];
+/** Dealer-tenant deal access (workspace must match dealerId). */
+const DEALER_ROLES: UserRole[] = [
+  "DEALER_USER",
+  "DEALER_MANAGER",
+  "ADMIN_USER",
+  "CUSTODIAN_ADMIN",
+  "SUPER_ADMIN",
+];
+
+/** Lender-tenant deal access (workspace must match lenderId). */
+const LENDER_ROLES: UserRole[] = [
+  "LENDER_USER",
+  "LENDER_MANAGER",
+  "ADMIN_USER",
+  "CUSTODIAN_ADMIN",
+  "SUPER_ADMIN",
+];
 
 /** Lender may see structured financials only after the deal has left early structuring gates. */
 const LENDER_FINANCIAL_VISIBLE: DealStatus[] = [
@@ -62,7 +78,8 @@ export async function getDealForSession(
   });
   if (!deal) return null;
 
-  if (session.role === "PLATFORM_ADMIN") {
+  /** Platform admins use INTERNAL workspace id — not dealer/lender tenant ids. */
+  if (isAdminShellRole(session.role)) {
     return { deal, financialsView: deal.financials };
   }
 
@@ -70,10 +87,7 @@ export async function getDealForSession(
     return { deal, financialsView: deal.financials };
   }
 
-  if (
-    (LENDER_ROLES.includes(session.role) || session.role === "USER") &&
-    deal.lenderId === session.workspaceId
-  ) {
+  if (LENDER_ROLES.includes(session.role) && deal.lenderId === session.workspaceId) {
     if (deal.dealerLenderLink.status !== "APPROVED") return null;
     const profile = parseRuleProfile(deal.dealerLenderLink.lenderRuleProfile);
     const canSeeFinancials = LENDER_FINANCIAL_VISIBLE.includes(deal.status);
@@ -87,10 +101,14 @@ export async function getDealForSession(
 
 export async function assertDealerDealAccess(session: SessionUser, dealId: string): Promise<Deal> {
   const row = await getDealForSession(session, dealId);
-  if (!row || row.deal.dealerId !== session.workspaceId) {
+  if (!row) {
     throw new Error("FORBIDDEN_DEAL_ACCESS");
   }
-  if (!["DEALER_ADMIN", "ADMIN", "USER", "PLATFORM_ADMIN"].includes(session.role)) {
+  const dealerActors: UserRole[] = [...DEALER_ROLES];
+  if (!dealerActors.includes(session.role)) {
+    throw new Error("FORBIDDEN_DEAL_ACCESS");
+  }
+  if (!isAdminShellRole(session.role) && row.deal.dealerId !== session.workspaceId) {
     throw new Error("FORBIDDEN_DEAL_ACCESS");
   }
   return row.deal;
