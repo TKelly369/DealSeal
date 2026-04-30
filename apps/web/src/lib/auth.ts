@@ -166,7 +166,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             // Prisma/DB override unavailable — continue with scaffold credentials.
           }
 
-          if (process.env.NODE_ENV !== "production") {
+          // Demo scaffold accounts: dev always; production only when explicitly enabled (real prod should use DB users + overrides).
+          const scaffoldLoginAllowed =
+            process.env.NODE_ENV !== "production" ||
+            process.env.DEALSEAL_ALLOW_SCAFFOLD_LOGIN === "true";
+          if (scaffoldLoginAllowed) {
             const found = MOCK_USERS.find(
               (u) => u.email.toLowerCase() === normalizedEmail && u.password === password,
             );

@@ -11,7 +11,8 @@ import { beginLoginAuditTrail, resolvePostLoginDestinationForSession } from "./a
 const LoginSchema = z.object({
   email: z.string().email("Enter a valid email"),
   password: z.string().min(1, "Password is required"),
-  fullName: z.string().min(1, "Full name is required"),
+  /** Optional for sign-in; used for post-login audit when provided. */
+  fullName: z.string().optional(),
   title: z.string().optional(),
   phone: z.string().optional(),
 });
@@ -78,7 +79,7 @@ export default function LoginContent({ variant = "default" }: LoginContentProps)
     defaultValues: {
       email: cfg.email,
       password: "dealseal123",
-      fullName: "",
+      fullName: "Demo user",
       title: "",
       phone: "",
     },
@@ -133,7 +134,7 @@ export default function LoginContent({ variant = "default" }: LoginContentProps)
 
     // Best-effort server audit write; do not block successful sign-in navigation.
     void beginLoginAuditTrail({
-      fullName: parsed.data.fullName,
+      fullName: parsed.data.fullName?.trim() ?? "",
       title: parsed.data.title,
       phone: parsed.data.phone,
       loginPath: nextPath,
