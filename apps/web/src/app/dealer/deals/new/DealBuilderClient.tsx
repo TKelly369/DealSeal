@@ -136,6 +136,7 @@ export function DealBuilderClient({
   createDeal,
   runCompliance,
   generateDoc,
+  suggestDraft,
 }: {
   links: LinkOption[];
   createDeal: (formData: FormData) => Promise<{ dealId: string }>;
@@ -144,6 +145,37 @@ export function DealBuilderClient({
     dealId: string,
     docType: "CONTRACT" | "DISCLOSURE" | "BUYERS_ORDER" | "FUNDING_PACKET",
   ) => Promise<{ id: string; type: string; version: number }>;
+  suggestDraft: (input: {
+    state: string;
+    firstName: string;
+    lastName: string;
+    year: string;
+    make: string;
+    model: string;
+    dealerLenderLinkId: string;
+    amountFinanced: string;
+    taxesAmount: string;
+    feesAmount: string;
+    downPaymentAmount: string;
+    totalSalePrice: string;
+    pricingNotes: string;
+    taxesNotes: string;
+    feesNotes: string;
+    addOnsNotes: string;
+    tradeInNotes: string;
+  }) => Promise<{
+    pricingNotes: string;
+    taxesNotes: string;
+    feesNotes: string;
+    addOnsNotes: string;
+    tradeInNotes: string;
+    amountFinanced: string;
+    taxesAmount: string;
+    feesAmount: string;
+    downPaymentAmount: string;
+    totalSalePrice: string;
+    confidenceSummary: string;
+  }>;
 }) {
   const [step, setStep] = useState(0);
   const [s, setS] = useState<BuilderState>(() => initialBuilderState());
@@ -152,6 +184,8 @@ export function DealBuilderClient({
   const [docs, setDocs] = useState<{ id: string; type: string; version: number }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiSummary, setAiSummary] = useState<string | null>(null);
 
   const update = useCallback(<K extends keyof BuilderState>(key: K, value: BuilderState[K]) => {
     setS((prev) => ({ ...prev, [key]: value }));
@@ -221,6 +255,51 @@ export function DealBuilderClient({
 
   const noApprovedLenders = links.length === 0;
 
+  const runAiAssist = async () => {
+    setError(null);
+    setAiSummary(null);
+    setAiBusy(true);
+    try {
+      const suggestion = await suggestDraft({
+        state: s.state,
+        firstName: s.firstName,
+        lastName: s.lastName,
+        year: s.year,
+        make: s.make,
+        model: s.model,
+        dealerLenderLinkId: s.dealerLenderLinkId,
+        amountFinanced: s.amountFinanced,
+        taxesAmount: s.taxesAmount,
+        feesAmount: s.feesAmount,
+        downPaymentAmount: s.downPaymentAmount,
+        totalSalePrice: s.totalSalePrice,
+        pricingNotes: s.pricingNotes,
+        taxesNotes: s.taxesNotes,
+        feesNotes: s.feesNotes,
+        addOnsNotes: s.addOnsNotes,
+        tradeInNotes: s.tradeInNotes,
+      });
+      setS((prev) => ({
+        ...prev,
+        pricingNotes: suggestion.pricingNotes || prev.pricingNotes,
+        taxesNotes: suggestion.taxesNotes || prev.taxesNotes,
+        feesNotes: suggestion.feesNotes || prev.feesNotes,
+        addOnsNotes: suggestion.addOnsNotes || prev.addOnsNotes,
+        tradeInNotes: suggestion.tradeInNotes || prev.tradeInNotes,
+        amountFinanced: suggestion.amountFinanced || prev.amountFinanced,
+        taxesAmount: suggestion.taxesAmount || prev.taxesAmount,
+        feesAmount: suggestion.feesAmount || prev.feesAmount,
+        downPaymentAmount: suggestion.downPaymentAmount || prev.downPaymentAmount,
+        totalSalePrice: suggestion.totalSalePrice || prev.totalSalePrice,
+      }));
+      setAiSummary(suggestion.confidenceSummary || "AI suggestions applied.");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "AI assist failed");
+    } finally {
+      setAiBusy(false);
+    }
+  };
+
   return (
     <div className="ds-section-shell">
       <h1 style={{ marginTop: 0 }}>Deal Builder</h1>
@@ -282,6 +361,17 @@ export function DealBuilderClient({
         <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>
           Stage {step + 1}: {STEPS[step]}
         </h2>
+        <div style={{ marginBottom: "0.75rem", display: "flex", gap: "0.45rem", flexWrap: "wrap", alignItems: "center" }}>
+          <button type="button" className="btn btn-secondary" disabled={aiBusy} onClick={() => void runAiAssist()}>
+            {aiBusy ? "AI assisting..." : "AI auto-populate numbers/forms"}
+          </button>
+          <span style={{ color: "var(--muted)", fontSize: "0.85rem" }}>
+            Uses LLM assist to draft taxes, fees, pricing, add-ons, and trade notes for faster deal setup.
+          </span>
+        </div>
+        {aiSummary ? (
+          <p style={{ marginTop: 0, color: "var(--muted)", fontSize: "0.9rem" }}>{aiSummary}</p>
+        ) : null}
 
         {step === 0 && (
           <div className="ds-form-grid">

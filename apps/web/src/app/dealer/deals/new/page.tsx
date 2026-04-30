@@ -7,6 +7,7 @@ import { ComplianceEngineService } from "@/lib/services/compliance.service";
 import { BillingGateService, BillingLimitExceeded } from "@/lib/services/billing-gate.service";
 import { prisma } from "@/lib/db";
 import { DealBuilderClient } from "./DealBuilderClient";
+import { suggestDealDraftFromAI } from "@/lib/ai/services/deal-draft-ai";
 
 export default async function DealerDealBuilderPage() {
   const session = await auth();
@@ -168,6 +169,39 @@ export default async function DealerDealBuilderPage() {
         }
         const doc = await AuthoritativeContractService.generateDownstreamDocument(dealId, docType);
         return { id: doc.id, type: doc.type, version: doc.version };
+      }}
+      suggestDraft={async (input) => {
+        "use server";
+        const fresh = await auth();
+        if (!fresh?.user) redirect("/dealer/login?next=/dealer/deals/new");
+
+        const lender = input.dealerLenderLinkId
+          ? await prisma.dealerLenderLink.findFirst({
+              where: { id: input.dealerLenderLinkId, dealerId: fresh.user.workspaceId },
+              include: { lender: { select: { name: true } } },
+            })
+          : null;
+
+        const ai = await suggestDealDraftFromAI({
+          state: input.state || "TX",
+          buyerName: `${input.firstName || ""} ${input.lastName || ""}`.trim() || "Unknown buyer",
+          vehicleLabel: `${input.year || ""} ${input.make || ""} ${input.model || ""}`.trim() || "Unknown vehicle",
+          lenderName: lender?.lender.name,
+          existing: {
+            amountFinanced: input.amountFinanced,
+            taxesAmount: input.taxesAmount,
+            feesAmount: input.feesAmount,
+            downPaymentAmount: input.downPaymentAmount,
+            totalSalePrice: input.totalSalePrice,
+            pricingNotes: input.pricingNotes,
+            taxesNotes: input.taxesNotes,
+            feesNotes: input.feesNotes,
+            addOnsNotes: input.addOnsNotes,
+            tradeInNotes: input.tradeInNotes,
+          },
+        });
+        if (!ai.ok) throw new Error(ai.error);
+        return ai.data;
       }}
     />
   );

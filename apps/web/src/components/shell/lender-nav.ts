@@ -1,6 +1,7 @@
 import {
   Award,
   Bell,
+  Bot,
   Calendar,
   ClipboardCheck,
   FileText,
@@ -29,6 +30,7 @@ export const lenderShellNavItems = [
   { href: "/lender/enforcement-readiness", label: "Enforcement readiness", icon: Gavel },
   { href: "/lender/dealers", label: "Dealers", icon: Handshake },
   { href: "/lender/dealers/performance", label: "Dealer grades", icon: Award },
+  { href: "/lender/generation", label: "Generation link", icon: Bot },
   { href: "/lender/dealers/approval-queue", label: "Approval queue", icon: Shield },
   { href: "/lender/forms", label: "Forms", icon: FileText },
   { href: "/lender/rules", label: "Rules", icon: ScrollText },

@@ -1,5 +1,6 @@
 import {
   Bell,
+  Bot,
   Calendar,
   ClipboardList,
   Database,
@@ -35,5 +36,6 @@ export const adminShellNavItems = [
   { href: "/admin/tasks", label: "Tasks", icon: ClipboardList },
   { href: "/admin/system-alerts", label: "System alerts", icon: Bell },
   { href: "/admin/security-compliance", label: "Trust & compliance", icon: ShieldCheck },
+  { href: "/admin/generation", label: "Generation link", icon: Bot },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;

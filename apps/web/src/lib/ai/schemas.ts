@@ -50,3 +50,19 @@ export const complianceReviewSchema = z.object({
 
 export type ComplianceReview = z.infer<typeof complianceReviewSchema>;
 export type ComplianceCheckDraft = z.infer<typeof complianceCheckDraftSchema>;
+
+export const dealDraftAssistSchema = z.object({
+  pricingNotes: z.string().default(""),
+  taxesNotes: z.string().default(""),
+  feesNotes: z.string().default(""),
+  addOnsNotes: z.string().default(""),
+  tradeInNotes: z.string().default(""),
+  amountFinanced: z.string().default(""),
+  taxesAmount: z.string().default(""),
+  feesAmount: z.string().default(""),
+  downPaymentAmount: z.string().default(""),
+  totalSalePrice: z.string().default(""),
+  confidenceSummary: z.string().default(""),
+});
+
+export type DealDraftAssist = z.infer<typeof dealDraftAssistSchema>;
