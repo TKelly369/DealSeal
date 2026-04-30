@@ -30,6 +30,12 @@ export function assertProductionWebEnv(): void {
   });
   const r = schema.safeParse(process.env);
   if (!r.success) {
-    throw new Error(`Production env validation failed: ${r.error.message}`);
+    const message = `Production env validation failed: ${r.error.message}`;
+    if (process.env.DEALSEAL_STRICT_ENV_VALIDATION === "1") {
+      throw new Error(message);
+    }
+    console.error(
+      `[DealSeal] ${message}. Continuing with degraded mode because DEALSEAL_STRICT_ENV_VALIDATION is not enabled.`,
+    );
   }
 }

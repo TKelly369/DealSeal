@@ -8,11 +8,22 @@ export default async function LenderDealersPage() {
   const session = await auth();
   if (!session?.user) redirect("/lender/login?next=/lender/dealers");
   const lenderId = session.user.workspaceId;
-  const links = await prisma.dealerLenderLink.findMany({
-    where: { lenderId },
-    include: { dealer: { select: { name: true } } },
-    orderBy: { updatedAt: "desc" },
-  });
+  let links: Array<
+    Awaited<ReturnType<typeof prisma.dealerLenderLink.findMany>>[number] & {
+      dealer: { name: string };
+    }
+  > = [];
+  let dataWarning: string | null = null;
+  try {
+    links = await prisma.dealerLenderLink.findMany({
+      where: { lenderId },
+      include: { dealer: { select: { name: true } } },
+      orderBy: { updatedAt: "desc" },
+    });
+  } catch (e) {
+    console.error("[DealSeal] lender dealers list unavailable", e);
+    dataWarning = "Dealer links are temporarily unavailable.";
+  }
 
   return (
     <div className="ds-section-shell">
@@ -31,6 +42,7 @@ export default async function LenderDealersPage() {
         </Link>
       </div>
       <div className="card">
+        {dataWarning ? <p style={{ color: "#fecaca" }}>{dataWarning}</p> : null}
         <ul style={{ margin: 0, paddingLeft: "1.2rem" }}>
           {links.map((link) => (
             <li key={link.id} style={{ marginBottom: "0.4rem" }}>

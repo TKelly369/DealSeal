@@ -8,11 +8,22 @@ export default async function LenderDealerApprovalQueuePage() {
   const session = await auth();
   if (!session?.user) redirect("/lender/login?next=/lender/dealers/approval-queue");
   const lenderId = session.user.workspaceId;
-  const pending = await prisma.dealerLenderLink.findMany({
-    where: { lenderId, status: "PENDING" },
-    include: { dealer: { select: { name: true, id: true } } },
-    orderBy: { updatedAt: "desc" },
-  });
+  let pending: Array<
+    Awaited<ReturnType<typeof prisma.dealerLenderLink.findMany>>[number] & {
+      dealer: { name: string; id: string };
+    }
+  > = [];
+  let dataWarning: string | null = null;
+  try {
+    pending = await prisma.dealerLenderLink.findMany({
+      where: { lenderId, status: "PENDING" },
+      include: { dealer: { select: { name: true, id: true } } },
+      orderBy: { updatedAt: "desc" },
+    });
+  } catch (e) {
+    console.error("[DealSeal] lender approval queue unavailable", e);
+    dataWarning = "Approval queue is temporarily unavailable.";
+  }
 
   return (
     <div className="ds-section-shell">
@@ -35,6 +46,7 @@ export default async function LenderDealerApprovalQueuePage() {
         program.
       </p>
       <div className="card">
+        {dataWarning ? <p style={{ color: "#fecaca" }}>{dataWarning}</p> : null}
         {pending.length === 0 ? (
           <p style={{ margin: 0, color: "var(--muted)" }}>No pending approvals.</p>
         ) : (
