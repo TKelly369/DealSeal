@@ -10,6 +10,8 @@ import {
 } from "@/lib/types";
 import { prisma } from "@/lib/db";
 import { isAdminManagementRole } from "@/lib/role-policy";
+import { EVaultRetentionService } from "@/lib/services/evault-retention.service";
+import type { VaultRecordClass } from "@/generated/prisma";
 
 export type AdminUserRow = {
   id: string;
@@ -184,9 +186,6 @@ export async function getAuditLogs({ page = 1, limit = 15 }: { page?: number; li
   };
 }
 
-const GOVERNING_CONTRACT_RETENTION_YEARS = 10;
-const DEAL_JACKET_RETENTION_YEARS = 7;
-
 function yearsAgo(years: number): Date {
   const d = new Date();
   d.setFullYear(d.getFullYear() - years);
@@ -206,18 +205,40 @@ export type CustodialPerformanceReport = {
     governingContracts: number;
     dealJackets: number;
   };
+  purgeJobs: {
+    scheduled: number;
+    running: number;
+    failed: number;
+    completed: number;
+  };
 };
 
 export async function getCustodialPerformanceReport(): Promise<CustodialPerformanceReport> {
-  await requireAdminSession();
-  const governingCutoff = yearsAgo(GOVERNING_CONTRACT_RETENTION_YEARS);
-  const jacketCutoff = yearsAgo(DEAL_JACKET_RETENTION_YEARS);
+  const session = await requireAdminSession();
+  const policies = await EVaultRetentionService.listPolicies(session.user.workspaceId);
+  const governingYears = policies.find((p) => p.recordClass === "GOVERNING_CONTRACT")?.retentionYears ?? 10;
+  const jacketYears = policies.find((p) => p.recordClass === "DEAL_JACKET")?.retentionYears ?? 7;
+  const governingCutoff = yearsAgo(governingYears);
+  const jacketCutoff = yearsAgo(jacketYears);
   let signedLockedGoverningContracts = 0;
   let completedDealJackets = 0;
   let eligibleGoverningContracts = 0;
   let eligibleDealJackets = 0;
+  let scheduled = 0;
+  let running = 0;
+  let failed = 0;
+  let completed = 0;
   try {
-    [signedLockedGoverningContracts, completedDealJackets, eligibleGoverningContracts, eligibleDealJackets] =
+    [
+      signedLockedGoverningContracts,
+      completedDealJackets,
+      eligibleGoverningContracts,
+      eligibleDealJackets,
+      scheduled,
+      running,
+      failed,
+      completed,
+    ] =
       await Promise.all([
         prisma.authoritativeContract.count({
           where: {
@@ -244,6 +265,10 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
             deal: { status: "CONSUMMATED", updatedAt: { lt: jacketCutoff } },
           },
         }),
+        prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, status: "SCHEDULED" } }),
+        prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, status: "RUNNING" } }),
+        prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, status: "FAILED" } }),
+        prisma.purgeJob.count({ where: { workspaceId: session.user.workspaceId, status: "COMPLETED" } }),
       ]);
   } catch (error) {
     console.error("[DealSeal] Custodial report fallback", error);
@@ -251,8 +276,8 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
 
   return {
     policy: {
-      governingContractYears: GOVERNING_CONTRACT_RETENTION_YEARS,
-      dealJacketYears: DEAL_JACKET_RETENTION_YEARS,
+      governingContractYears: governingYears,
+      dealJacketYears: jacketYears,
     },
     inventory: {
       signedLockedGoverningContracts,
@@ -262,17 +287,37 @@ export async function getCustodialPerformanceReport(): Promise<CustodialPerforma
       governingContracts: eligibleGoverningContracts,
       dealJackets: eligibleDealJackets,
     },
+    purgeJobs: {
+      scheduled,
+      running,
+      failed,
+      completed,
+    },
   };
 }
 
 export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { governingContracts: number; dealJackets: number } }> {
   const session = await requireAdminSession();
-  const governingCutoff = yearsAgo(GOVERNING_CONTRACT_RETENTION_YEARS);
-  const jacketCutoff = yearsAgo(DEAL_JACKET_RETENTION_YEARS);
+  const policies = await EVaultRetentionService.listPolicies(session.user.workspaceId);
+  const governingYears = policies.find((p) => p.recordClass === "GOVERNING_CONTRACT")?.retentionYears ?? 10;
+  const jacketYears = policies.find((p) => p.recordClass === "DEAL_JACKET")?.retentionYears ?? 7;
+  const governingCutoff = yearsAgo(governingYears);
+  const jacketCutoff = yearsAgo(jacketYears);
 
   // Contract retention: after legal window, mark status as purged while preserving hash chain.
   let governingPurged = 0;
   let jacketPurged = 0;
+  let failed = false;
+  let errorMessage: string | null = null;
+  const purgeJob = await prisma.purgeJob.create({
+    data: {
+      workspaceId: session.user.workspaceId,
+      scheduledAt: new Date(),
+      startedAt: new Date(),
+      status: "RUNNING",
+      initiatedByUserId: session.user.id,
+    },
+  });
   try {
     const governing = await prisma.authoritativeContract.updateMany({
       where: {
@@ -311,7 +356,7 @@ export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { 
           valuesSnapshot: {
             ...snapshot,
             custodyPurgedAt: new Date().toISOString(),
-            custodyPurgeReason: `Retention met (${DEAL_JACKET_RETENTION_YEARS}y)`,
+            custodyPurgeReason: `Retention met (${jacketYears}y)`,
           },
         },
       });
@@ -319,6 +364,8 @@ export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { 
     jacketPurged = jacketRows.length;
   } catch (error) {
     console.error("[DealSeal] Custodial purge fallback", error);
+    failed = true;
+    errorMessage = error instanceof Error ? error.message : "Unknown purge error";
   }
 
   try {
@@ -332,15 +379,30 @@ export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { 
           eventType: "CUSTODIAL_PURGE_RUN",
           governingContractsPurged: governingPurged,
           dealJacketsPurged: jacketPurged,
-          governingRetentionYears: GOVERNING_CONTRACT_RETENTION_YEARS,
-          dealJacketRetentionYears: DEAL_JACKET_RETENTION_YEARS,
+          governingRetentionYears: governingYears,
+          dealJacketRetentionYears: jacketYears,
           source: "/admin/system-config",
+          purgeJobId: purgeJob.id,
         },
       },
     });
   } catch {
     // Purge run should not fail if audit write is unavailable.
   }
+  await prisma.purgeJob.update({
+    where: { id: purgeJob.id },
+    data: {
+      status: failed ? "FAILED" : "COMPLETED",
+      finishedAt: new Date(),
+      errorMessage: errorMessage ?? undefined,
+      summary: {
+        governingContractsPurged: governingPurged,
+        dealJacketsPurged: jacketPurged,
+        governingRetentionYears: governingYears,
+        dealJacketRetentionYears: jacketYears,
+      },
+    },
+  });
 
   return {
     ok: true,
@@ -349,5 +411,35 @@ export async function executeCustodialPurgeRun(): Promise<{ ok: true; purged: { 
       dealJackets: jacketPurged,
     },
   };
+}
+
+export async function updateRetentionPolicy(input: {
+  recordClass: VaultRecordClass;
+  retentionYears: number;
+  purgeMode?: string;
+  enabled?: boolean;
+}) {
+  const session = await requireAdminSession();
+  await EVaultRetentionService.upsertPolicy({
+    workspaceId: session.user.workspaceId,
+    recordClass: input.recordClass,
+    retentionYears: input.retentionYears,
+    purgeMode: input.purgeMode ?? "HASH_ONLY",
+    enabled: input.enabled ?? true,
+  });
+  return { ok: true };
+}
+
+export async function scheduleCustodialPurgeRun(input: { scheduledAt: string; dryRun?: boolean }) {
+  const session = await requireAdminSession();
+  const when = new Date(input.scheduledAt);
+  if (Number.isNaN(when.getTime())) throw new Error("Invalid schedule date.");
+  await EVaultRetentionService.queuePurgeJob({
+    workspaceId: session.user.workspaceId,
+    scheduledAt: when,
+    dryRun: input.dryRun ?? false,
+    initiatedByUserId: session.user.id,
+  });
+  return { ok: true };
 }
 

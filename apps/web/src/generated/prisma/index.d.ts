@@ -84,6 +84,16 @@ export type LenderTask = $Result.DefaultSelection<Prisma.$LenderTaskPayload>
  */
 export type MissingItemRequest = $Result.DefaultSelection<Prisma.$MissingItemRequestPayload>
 /**
+ * Model RetentionPolicy
+ * 
+ */
+export type RetentionPolicy = $Result.DefaultSelection<Prisma.$RetentionPolicyPayload>
+/**
+ * Model PurgeJob
+ * 
+ */
+export type PurgeJob = $Result.DefaultSelection<Prisma.$PurgeJobPayload>
+/**
  * Model DealParty
  * 
  */
@@ -660,6 +670,28 @@ export const MissingItemReviewStatus: {
 export type MissingItemReviewStatus = (typeof MissingItemReviewStatus)[keyof typeof MissingItemReviewStatus]
 
 
+export const VaultRecordClass: {
+  GOVERNING_CONTRACT: 'GOVERNING_CONTRACT',
+  DEAL_JACKET: 'DEAL_JACKET',
+  AUDIT_LOG: 'AUDIT_LOG',
+  CUSTODY_EVENT: 'CUSTODY_EVENT',
+  PACKAGE_MANIFEST: 'PACKAGE_MANIFEST'
+};
+
+export type VaultRecordClass = (typeof VaultRecordClass)[keyof typeof VaultRecordClass]
+
+
+export const PurgeJobStatus: {
+  SCHEDULED: 'SCHEDULED',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type PurgeJobStatus = (typeof PurgeJobStatus)[keyof typeof PurgeJobStatus]
+
+
 export const DealAlertAuditAction: {
   ALERT_ISSUED: 'ALERT_ISSUED',
   ALERT_SENT: 'ALERT_SENT',
@@ -845,6 +877,14 @@ export const MissingItemRequestStatus: typeof $Enums.MissingItemRequestStatus
 export type MissingItemReviewStatus = $Enums.MissingItemReviewStatus
 
 export const MissingItemReviewStatus: typeof $Enums.MissingItemReviewStatus
+
+export type VaultRecordClass = $Enums.VaultRecordClass
+
+export const VaultRecordClass: typeof $Enums.VaultRecordClass
+
+export type PurgeJobStatus = $Enums.PurgeJobStatus
+
+export const PurgeJobStatus: typeof $Enums.PurgeJobStatus
 
 export type DealAlertAuditAction = $Enums.DealAlertAuditAction
 
@@ -1111,6 +1151,26 @@ export class PrismaClient<
     * ```
     */
   get missingItemRequest(): Prisma.MissingItemRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.retentionPolicy`: Exposes CRUD operations for the **RetentionPolicy** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RetentionPolicies
+    * const retentionPolicies = await prisma.retentionPolicy.findMany()
+    * ```
+    */
+  get retentionPolicy(): Prisma.RetentionPolicyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.purgeJob`: Exposes CRUD operations for the **PurgeJob** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PurgeJobs
+    * const purgeJobs = await prisma.purgeJob.findMany()
+    * ```
+    */
+  get purgeJob(): Prisma.PurgeJobDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.dealParty`: Exposes CRUD operations for the **DealParty** model.
@@ -1836,6 +1896,8 @@ export namespace Prisma {
     Deal: 'Deal',
     LenderTask: 'LenderTask',
     MissingItemRequest: 'MissingItemRequest',
+    RetentionPolicy: 'RetentionPolicy',
+    PurgeJob: 'PurgeJob',
     DealParty: 'DealParty',
     Vehicle: 'Vehicle',
     DealFinancials: 'DealFinancials',
@@ -1881,7 +1943,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "calendarEvent" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "lenderTask" | "missingItemRequest" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "dealAuditEvent" | "account" | "session"
+      modelProps: "user" | "workspace" | "calendarEvent" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "lenderTask" | "missingItemRequest" | "retentionPolicy" | "purgeJob" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "dealAuditEvent" | "account" | "session"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2918,6 +2980,154 @@ export namespace Prisma {
           count: {
             args: Prisma.MissingItemRequestCountArgs<ExtArgs>
             result: $Utils.Optional<MissingItemRequestCountAggregateOutputType> | number
+          }
+        }
+      }
+      RetentionPolicy: {
+        payload: Prisma.$RetentionPolicyPayload<ExtArgs>
+        fields: Prisma.RetentionPolicyFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RetentionPolicyFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RetentionPolicyFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>
+          }
+          findFirst: {
+            args: Prisma.RetentionPolicyFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RetentionPolicyFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>
+          }
+          findMany: {
+            args: Prisma.RetentionPolicyFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>[]
+          }
+          create: {
+            args: Prisma.RetentionPolicyCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>
+          }
+          createMany: {
+            args: Prisma.RetentionPolicyCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RetentionPolicyCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>[]
+          }
+          delete: {
+            args: Prisma.RetentionPolicyDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>
+          }
+          update: {
+            args: Prisma.RetentionPolicyUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>
+          }
+          deleteMany: {
+            args: Prisma.RetentionPolicyDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RetentionPolicyUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RetentionPolicyUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>[]
+          }
+          upsert: {
+            args: Prisma.RetentionPolicyUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetentionPolicyPayload>
+          }
+          aggregate: {
+            args: Prisma.RetentionPolicyAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRetentionPolicy>
+          }
+          groupBy: {
+            args: Prisma.RetentionPolicyGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RetentionPolicyGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RetentionPolicyCountArgs<ExtArgs>
+            result: $Utils.Optional<RetentionPolicyCountAggregateOutputType> | number
+          }
+        }
+      }
+      PurgeJob: {
+        payload: Prisma.$PurgeJobPayload<ExtArgs>
+        fields: Prisma.PurgeJobFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PurgeJobFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PurgeJobFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>
+          }
+          findFirst: {
+            args: Prisma.PurgeJobFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PurgeJobFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>
+          }
+          findMany: {
+            args: Prisma.PurgeJobFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>[]
+          }
+          create: {
+            args: Prisma.PurgeJobCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>
+          }
+          createMany: {
+            args: Prisma.PurgeJobCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PurgeJobCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>[]
+          }
+          delete: {
+            args: Prisma.PurgeJobDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>
+          }
+          update: {
+            args: Prisma.PurgeJobUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>
+          }
+          deleteMany: {
+            args: Prisma.PurgeJobDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PurgeJobUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PurgeJobUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>[]
+          }
+          upsert: {
+            args: Prisma.PurgeJobUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PurgeJobPayload>
+          }
+          aggregate: {
+            args: Prisma.PurgeJobAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePurgeJob>
+          }
+          groupBy: {
+            args: Prisma.PurgeJobGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PurgeJobGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PurgeJobCountArgs<ExtArgs>
+            result: $Utils.Optional<PurgeJobCountAggregateOutputType> | number
           }
         }
       }
@@ -5029,6 +5239,8 @@ export namespace Prisma {
     deal?: DealOmit
     lenderTask?: LenderTaskOmit
     missingItemRequest?: MissingItemRequestOmit
+    retentionPolicy?: RetentionPolicyOmit
+    purgeJob?: PurgeJobOmit
     dealParty?: DealPartyOmit
     vehicle?: VehicleOmit
     dealFinancials?: DealFinancialsOmit
@@ -5269,6 +5481,8 @@ export namespace Prisma {
     dealerTasks: number
     lenderMissingItemRequests: number
     dealerMissingItemRequests: number
+    retentionPolicies: number
+    purgeJobs: number
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5293,6 +5507,8 @@ export namespace Prisma {
     dealerTasks?: boolean | WorkspaceCountOutputTypeCountDealerTasksArgs
     lenderMissingItemRequests?: boolean | WorkspaceCountOutputTypeCountLenderMissingItemRequestsArgs
     dealerMissingItemRequests?: boolean | WorkspaceCountOutputTypeCountDealerMissingItemRequestsArgs
+    retentionPolicies?: boolean | WorkspaceCountOutputTypeCountRetentionPoliciesArgs
+    purgeJobs?: boolean | WorkspaceCountOutputTypeCountPurgeJobsArgs
   }
 
   // Custom InputTypes
@@ -5451,6 +5667,20 @@ export namespace Prisma {
    */
   export type WorkspaceCountOutputTypeCountDealerMissingItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MissingItemRequestWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountRetentionPoliciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RetentionPolicyWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountPurgeJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PurgeJobWhereInput
   }
 
 
@@ -5630,6 +5860,37 @@ export namespace Prisma {
    */
   export type DealCountOutputTypeCountMissingItemRequestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MissingItemRequestWhereInput
+  }
+
+
+  /**
+   * Count Type RetentionPolicyCountOutputType
+   */
+
+  export type RetentionPolicyCountOutputType = {
+    purgeJobs: number
+  }
+
+  export type RetentionPolicyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    purgeJobs?: boolean | RetentionPolicyCountOutputTypeCountPurgeJobsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RetentionPolicyCountOutputType without action
+   */
+  export type RetentionPolicyCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicyCountOutputType
+     */
+    select?: RetentionPolicyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RetentionPolicyCountOutputType without action
+   */
+  export type RetentionPolicyCountOutputTypeCountPurgeJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PurgeJobWhereInput
   }
 
 
@@ -7562,6 +7823,8 @@ export namespace Prisma {
     dealerTasks?: boolean | Workspace$dealerTasksArgs<ExtArgs>
     lenderMissingItemRequests?: boolean | Workspace$lenderMissingItemRequestsArgs<ExtArgs>
     dealerMissingItemRequests?: boolean | Workspace$dealerMissingItemRequestsArgs<ExtArgs>
+    retentionPolicies?: boolean | Workspace$retentionPoliciesArgs<ExtArgs>
+    purgeJobs?: boolean | Workspace$purgeJobsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
@@ -7620,6 +7883,8 @@ export namespace Prisma {
     dealerTasks?: boolean | Workspace$dealerTasksArgs<ExtArgs>
     lenderMissingItemRequests?: boolean | Workspace$lenderMissingItemRequestsArgs<ExtArgs>
     dealerMissingItemRequests?: boolean | Workspace$dealerMissingItemRequestsArgs<ExtArgs>
+    retentionPolicies?: boolean | Workspace$retentionPoliciesArgs<ExtArgs>
+    purgeJobs?: boolean | Workspace$purgeJobsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7651,6 +7916,8 @@ export namespace Prisma {
       dealerTasks: Prisma.$LenderTaskPayload<ExtArgs>[]
       lenderMissingItemRequests: Prisma.$MissingItemRequestPayload<ExtArgs>[]
       dealerMissingItemRequests: Prisma.$MissingItemRequestPayload<ExtArgs>[]
+      retentionPolicies: Prisma.$RetentionPolicyPayload<ExtArgs>[]
+      purgeJobs: Prisma.$PurgeJobPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8077,6 +8344,8 @@ export namespace Prisma {
     dealerTasks<T extends Workspace$dealerTasksArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$dealerTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LenderTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     lenderMissingItemRequests<T extends Workspace$lenderMissingItemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$lenderMissingItemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dealerMissingItemRequests<T extends Workspace$dealerMissingItemRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$dealerMissingItemRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MissingItemRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    retentionPolicies<T extends Workspace$retentionPoliciesArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$retentionPoliciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    purgeJobs<T extends Workspace$purgeJobsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$purgeJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9040,6 +9309,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MissingItemRequestScalarFieldEnum | MissingItemRequestScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.retentionPolicies
+   */
+  export type Workspace$retentionPoliciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    where?: RetentionPolicyWhereInput
+    orderBy?: RetentionPolicyOrderByWithRelationInput | RetentionPolicyOrderByWithRelationInput[]
+    cursor?: RetentionPolicyWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RetentionPolicyScalarFieldEnum | RetentionPolicyScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.purgeJobs
+   */
+  export type Workspace$purgeJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    where?: PurgeJobWhereInput
+    orderBy?: PurgeJobOrderByWithRelationInput | PurgeJobOrderByWithRelationInput[]
+    cursor?: PurgeJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PurgeJobScalarFieldEnum | PurgeJobScalarFieldEnum[]
   }
 
   /**
@@ -23493,6 +23810,2378 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MissingItemRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RetentionPolicy
+   */
+
+  export type AggregateRetentionPolicy = {
+    _count: RetentionPolicyCountAggregateOutputType | null
+    _avg: RetentionPolicyAvgAggregateOutputType | null
+    _sum: RetentionPolicySumAggregateOutputType | null
+    _min: RetentionPolicyMinAggregateOutputType | null
+    _max: RetentionPolicyMaxAggregateOutputType | null
+  }
+
+  export type RetentionPolicyAvgAggregateOutputType = {
+    retentionYears: number | null
+  }
+
+  export type RetentionPolicySumAggregateOutputType = {
+    retentionYears: number | null
+  }
+
+  export type RetentionPolicyMinAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    recordClass: $Enums.VaultRecordClass | null
+    jurisdiction: string | null
+    retentionYears: number | null
+    purgeMode: string | null
+    legalHoldExempt: boolean | null
+    enabled: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RetentionPolicyMaxAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    recordClass: $Enums.VaultRecordClass | null
+    jurisdiction: string | null
+    retentionYears: number | null
+    purgeMode: string | null
+    legalHoldExempt: boolean | null
+    enabled: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RetentionPolicyCountAggregateOutputType = {
+    id: number
+    workspaceId: number
+    recordClass: number
+    jurisdiction: number
+    retentionYears: number
+    purgeMode: number
+    legalHoldExempt: number
+    enabled: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RetentionPolicyAvgAggregateInputType = {
+    retentionYears?: true
+  }
+
+  export type RetentionPolicySumAggregateInputType = {
+    retentionYears?: true
+  }
+
+  export type RetentionPolicyMinAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    recordClass?: true
+    jurisdiction?: true
+    retentionYears?: true
+    purgeMode?: true
+    legalHoldExempt?: true
+    enabled?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RetentionPolicyMaxAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    recordClass?: true
+    jurisdiction?: true
+    retentionYears?: true
+    purgeMode?: true
+    legalHoldExempt?: true
+    enabled?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RetentionPolicyCountAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    recordClass?: true
+    jurisdiction?: true
+    retentionYears?: true
+    purgeMode?: true
+    legalHoldExempt?: true
+    enabled?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RetentionPolicyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RetentionPolicy to aggregate.
+     */
+    where?: RetentionPolicyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RetentionPolicies to fetch.
+     */
+    orderBy?: RetentionPolicyOrderByWithRelationInput | RetentionPolicyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RetentionPolicyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RetentionPolicies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RetentionPolicies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RetentionPolicies
+    **/
+    _count?: true | RetentionPolicyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RetentionPolicyAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RetentionPolicySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RetentionPolicyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RetentionPolicyMaxAggregateInputType
+  }
+
+  export type GetRetentionPolicyAggregateType<T extends RetentionPolicyAggregateArgs> = {
+        [P in keyof T & keyof AggregateRetentionPolicy]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRetentionPolicy[P]>
+      : GetScalarType<T[P], AggregateRetentionPolicy[P]>
+  }
+
+
+
+
+  export type RetentionPolicyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RetentionPolicyWhereInput
+    orderBy?: RetentionPolicyOrderByWithAggregationInput | RetentionPolicyOrderByWithAggregationInput[]
+    by: RetentionPolicyScalarFieldEnum[] | RetentionPolicyScalarFieldEnum
+    having?: RetentionPolicyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RetentionPolicyCountAggregateInputType | true
+    _avg?: RetentionPolicyAvgAggregateInputType
+    _sum?: RetentionPolicySumAggregateInputType
+    _min?: RetentionPolicyMinAggregateInputType
+    _max?: RetentionPolicyMaxAggregateInputType
+  }
+
+  export type RetentionPolicyGroupByOutputType = {
+    id: string
+    workspaceId: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction: string
+    retentionYears: number
+    purgeMode: string
+    legalHoldExempt: boolean
+    enabled: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: RetentionPolicyCountAggregateOutputType | null
+    _avg: RetentionPolicyAvgAggregateOutputType | null
+    _sum: RetentionPolicySumAggregateOutputType | null
+    _min: RetentionPolicyMinAggregateOutputType | null
+    _max: RetentionPolicyMaxAggregateOutputType | null
+  }
+
+  type GetRetentionPolicyGroupByPayload<T extends RetentionPolicyGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RetentionPolicyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RetentionPolicyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RetentionPolicyGroupByOutputType[P]>
+            : GetScalarType<T[P], RetentionPolicyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RetentionPolicySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    recordClass?: boolean
+    jurisdiction?: boolean
+    retentionYears?: boolean
+    purgeMode?: boolean
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    purgeJobs?: boolean | RetentionPolicy$purgeJobsArgs<ExtArgs>
+    _count?: boolean | RetentionPolicyCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["retentionPolicy"]>
+
+  export type RetentionPolicySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    recordClass?: boolean
+    jurisdiction?: boolean
+    retentionYears?: boolean
+    purgeMode?: boolean
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["retentionPolicy"]>
+
+  export type RetentionPolicySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    recordClass?: boolean
+    jurisdiction?: boolean
+    retentionYears?: boolean
+    purgeMode?: boolean
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["retentionPolicy"]>
+
+  export type RetentionPolicySelectScalar = {
+    id?: boolean
+    workspaceId?: boolean
+    recordClass?: boolean
+    jurisdiction?: boolean
+    retentionYears?: boolean
+    purgeMode?: boolean
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RetentionPolicyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "recordClass" | "jurisdiction" | "retentionYears" | "purgeMode" | "legalHoldExempt" | "enabled" | "createdAt" | "updatedAt", ExtArgs["result"]["retentionPolicy"]>
+  export type RetentionPolicyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    purgeJobs?: boolean | RetentionPolicy$purgeJobsArgs<ExtArgs>
+    _count?: boolean | RetentionPolicyCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RetentionPolicyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+  export type RetentionPolicyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+  }
+
+  export type $RetentionPolicyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RetentionPolicy"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      purgeJobs: Prisma.$PurgeJobPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      workspaceId: string
+      recordClass: $Enums.VaultRecordClass
+      jurisdiction: string
+      retentionYears: number
+      purgeMode: string
+      legalHoldExempt: boolean
+      enabled: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["retentionPolicy"]>
+    composites: {}
+  }
+
+  type RetentionPolicyGetPayload<S extends boolean | null | undefined | RetentionPolicyDefaultArgs> = $Result.GetResult<Prisma.$RetentionPolicyPayload, S>
+
+  type RetentionPolicyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RetentionPolicyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RetentionPolicyCountAggregateInputType | true
+    }
+
+  export interface RetentionPolicyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RetentionPolicy'], meta: { name: 'RetentionPolicy' } }
+    /**
+     * Find zero or one RetentionPolicy that matches the filter.
+     * @param {RetentionPolicyFindUniqueArgs} args - Arguments to find a RetentionPolicy
+     * @example
+     * // Get one RetentionPolicy
+     * const retentionPolicy = await prisma.retentionPolicy.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RetentionPolicyFindUniqueArgs>(args: SelectSubset<T, RetentionPolicyFindUniqueArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RetentionPolicy that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RetentionPolicyFindUniqueOrThrowArgs} args - Arguments to find a RetentionPolicy
+     * @example
+     * // Get one RetentionPolicy
+     * const retentionPolicy = await prisma.retentionPolicy.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RetentionPolicyFindUniqueOrThrowArgs>(args: SelectSubset<T, RetentionPolicyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RetentionPolicy that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetentionPolicyFindFirstArgs} args - Arguments to find a RetentionPolicy
+     * @example
+     * // Get one RetentionPolicy
+     * const retentionPolicy = await prisma.retentionPolicy.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RetentionPolicyFindFirstArgs>(args?: SelectSubset<T, RetentionPolicyFindFirstArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RetentionPolicy that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetentionPolicyFindFirstOrThrowArgs} args - Arguments to find a RetentionPolicy
+     * @example
+     * // Get one RetentionPolicy
+     * const retentionPolicy = await prisma.retentionPolicy.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RetentionPolicyFindFirstOrThrowArgs>(args?: SelectSubset<T, RetentionPolicyFindFirstOrThrowArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RetentionPolicies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetentionPolicyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RetentionPolicies
+     * const retentionPolicies = await prisma.retentionPolicy.findMany()
+     * 
+     * // Get first 10 RetentionPolicies
+     * const retentionPolicies = await prisma.retentionPolicy.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const retentionPolicyWithIdOnly = await prisma.retentionPolicy.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RetentionPolicyFindManyArgs>(args?: SelectSubset<T, RetentionPolicyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RetentionPolicy.
+     * @param {RetentionPolicyCreateArgs} args - Arguments to create a RetentionPolicy.
+     * @example
+     * // Create one RetentionPolicy
+     * const RetentionPolicy = await prisma.retentionPolicy.create({
+     *   data: {
+     *     // ... data to create a RetentionPolicy
+     *   }
+     * })
+     * 
+     */
+    create<T extends RetentionPolicyCreateArgs>(args: SelectSubset<T, RetentionPolicyCreateArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RetentionPolicies.
+     * @param {RetentionPolicyCreateManyArgs} args - Arguments to create many RetentionPolicies.
+     * @example
+     * // Create many RetentionPolicies
+     * const retentionPolicy = await prisma.retentionPolicy.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RetentionPolicyCreateManyArgs>(args?: SelectSubset<T, RetentionPolicyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RetentionPolicies and returns the data saved in the database.
+     * @param {RetentionPolicyCreateManyAndReturnArgs} args - Arguments to create many RetentionPolicies.
+     * @example
+     * // Create many RetentionPolicies
+     * const retentionPolicy = await prisma.retentionPolicy.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RetentionPolicies and only return the `id`
+     * const retentionPolicyWithIdOnly = await prisma.retentionPolicy.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RetentionPolicyCreateManyAndReturnArgs>(args?: SelectSubset<T, RetentionPolicyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RetentionPolicy.
+     * @param {RetentionPolicyDeleteArgs} args - Arguments to delete one RetentionPolicy.
+     * @example
+     * // Delete one RetentionPolicy
+     * const RetentionPolicy = await prisma.retentionPolicy.delete({
+     *   where: {
+     *     // ... filter to delete one RetentionPolicy
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RetentionPolicyDeleteArgs>(args: SelectSubset<T, RetentionPolicyDeleteArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RetentionPolicy.
+     * @param {RetentionPolicyUpdateArgs} args - Arguments to update one RetentionPolicy.
+     * @example
+     * // Update one RetentionPolicy
+     * const retentionPolicy = await prisma.retentionPolicy.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RetentionPolicyUpdateArgs>(args: SelectSubset<T, RetentionPolicyUpdateArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RetentionPolicies.
+     * @param {RetentionPolicyDeleteManyArgs} args - Arguments to filter RetentionPolicies to delete.
+     * @example
+     * // Delete a few RetentionPolicies
+     * const { count } = await prisma.retentionPolicy.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RetentionPolicyDeleteManyArgs>(args?: SelectSubset<T, RetentionPolicyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RetentionPolicies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetentionPolicyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RetentionPolicies
+     * const retentionPolicy = await prisma.retentionPolicy.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RetentionPolicyUpdateManyArgs>(args: SelectSubset<T, RetentionPolicyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RetentionPolicies and returns the data updated in the database.
+     * @param {RetentionPolicyUpdateManyAndReturnArgs} args - Arguments to update many RetentionPolicies.
+     * @example
+     * // Update many RetentionPolicies
+     * const retentionPolicy = await prisma.retentionPolicy.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RetentionPolicies and only return the `id`
+     * const retentionPolicyWithIdOnly = await prisma.retentionPolicy.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RetentionPolicyUpdateManyAndReturnArgs>(args: SelectSubset<T, RetentionPolicyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RetentionPolicy.
+     * @param {RetentionPolicyUpsertArgs} args - Arguments to update or create a RetentionPolicy.
+     * @example
+     * // Update or create a RetentionPolicy
+     * const retentionPolicy = await prisma.retentionPolicy.upsert({
+     *   create: {
+     *     // ... data to create a RetentionPolicy
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RetentionPolicy we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RetentionPolicyUpsertArgs>(args: SelectSubset<T, RetentionPolicyUpsertArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RetentionPolicies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetentionPolicyCountArgs} args - Arguments to filter RetentionPolicies to count.
+     * @example
+     * // Count the number of RetentionPolicies
+     * const count = await prisma.retentionPolicy.count({
+     *   where: {
+     *     // ... the filter for the RetentionPolicies we want to count
+     *   }
+     * })
+    **/
+    count<T extends RetentionPolicyCountArgs>(
+      args?: Subset<T, RetentionPolicyCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RetentionPolicyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RetentionPolicy.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetentionPolicyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RetentionPolicyAggregateArgs>(args: Subset<T, RetentionPolicyAggregateArgs>): Prisma.PrismaPromise<GetRetentionPolicyAggregateType<T>>
+
+    /**
+     * Group by RetentionPolicy.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetentionPolicyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RetentionPolicyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RetentionPolicyGroupByArgs['orderBy'] }
+        : { orderBy?: RetentionPolicyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RetentionPolicyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRetentionPolicyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RetentionPolicy model
+   */
+  readonly fields: RetentionPolicyFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RetentionPolicy.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RetentionPolicyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    purgeJobs<T extends RetentionPolicy$purgeJobsArgs<ExtArgs> = {}>(args?: Subset<T, RetentionPolicy$purgeJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RetentionPolicy model
+   */
+  interface RetentionPolicyFieldRefs {
+    readonly id: FieldRef<"RetentionPolicy", 'String'>
+    readonly workspaceId: FieldRef<"RetentionPolicy", 'String'>
+    readonly recordClass: FieldRef<"RetentionPolicy", 'VaultRecordClass'>
+    readonly jurisdiction: FieldRef<"RetentionPolicy", 'String'>
+    readonly retentionYears: FieldRef<"RetentionPolicy", 'Int'>
+    readonly purgeMode: FieldRef<"RetentionPolicy", 'String'>
+    readonly legalHoldExempt: FieldRef<"RetentionPolicy", 'Boolean'>
+    readonly enabled: FieldRef<"RetentionPolicy", 'Boolean'>
+    readonly createdAt: FieldRef<"RetentionPolicy", 'DateTime'>
+    readonly updatedAt: FieldRef<"RetentionPolicy", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RetentionPolicy findUnique
+   */
+  export type RetentionPolicyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * Filter, which RetentionPolicy to fetch.
+     */
+    where: RetentionPolicyWhereUniqueInput
+  }
+
+  /**
+   * RetentionPolicy findUniqueOrThrow
+   */
+  export type RetentionPolicyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * Filter, which RetentionPolicy to fetch.
+     */
+    where: RetentionPolicyWhereUniqueInput
+  }
+
+  /**
+   * RetentionPolicy findFirst
+   */
+  export type RetentionPolicyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * Filter, which RetentionPolicy to fetch.
+     */
+    where?: RetentionPolicyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RetentionPolicies to fetch.
+     */
+    orderBy?: RetentionPolicyOrderByWithRelationInput | RetentionPolicyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RetentionPolicies.
+     */
+    cursor?: RetentionPolicyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RetentionPolicies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RetentionPolicies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RetentionPolicies.
+     */
+    distinct?: RetentionPolicyScalarFieldEnum | RetentionPolicyScalarFieldEnum[]
+  }
+
+  /**
+   * RetentionPolicy findFirstOrThrow
+   */
+  export type RetentionPolicyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * Filter, which RetentionPolicy to fetch.
+     */
+    where?: RetentionPolicyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RetentionPolicies to fetch.
+     */
+    orderBy?: RetentionPolicyOrderByWithRelationInput | RetentionPolicyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RetentionPolicies.
+     */
+    cursor?: RetentionPolicyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RetentionPolicies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RetentionPolicies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RetentionPolicies.
+     */
+    distinct?: RetentionPolicyScalarFieldEnum | RetentionPolicyScalarFieldEnum[]
+  }
+
+  /**
+   * RetentionPolicy findMany
+   */
+  export type RetentionPolicyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * Filter, which RetentionPolicies to fetch.
+     */
+    where?: RetentionPolicyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RetentionPolicies to fetch.
+     */
+    orderBy?: RetentionPolicyOrderByWithRelationInput | RetentionPolicyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RetentionPolicies.
+     */
+    cursor?: RetentionPolicyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RetentionPolicies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RetentionPolicies.
+     */
+    skip?: number
+    distinct?: RetentionPolicyScalarFieldEnum | RetentionPolicyScalarFieldEnum[]
+  }
+
+  /**
+   * RetentionPolicy create
+   */
+  export type RetentionPolicyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RetentionPolicy.
+     */
+    data: XOR<RetentionPolicyCreateInput, RetentionPolicyUncheckedCreateInput>
+  }
+
+  /**
+   * RetentionPolicy createMany
+   */
+  export type RetentionPolicyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RetentionPolicies.
+     */
+    data: RetentionPolicyCreateManyInput | RetentionPolicyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RetentionPolicy createManyAndReturn
+   */
+  export type RetentionPolicyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * The data used to create many RetentionPolicies.
+     */
+    data: RetentionPolicyCreateManyInput | RetentionPolicyCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RetentionPolicy update
+   */
+  export type RetentionPolicyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RetentionPolicy.
+     */
+    data: XOR<RetentionPolicyUpdateInput, RetentionPolicyUncheckedUpdateInput>
+    /**
+     * Choose, which RetentionPolicy to update.
+     */
+    where: RetentionPolicyWhereUniqueInput
+  }
+
+  /**
+   * RetentionPolicy updateMany
+   */
+  export type RetentionPolicyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RetentionPolicies.
+     */
+    data: XOR<RetentionPolicyUpdateManyMutationInput, RetentionPolicyUncheckedUpdateManyInput>
+    /**
+     * Filter which RetentionPolicies to update
+     */
+    where?: RetentionPolicyWhereInput
+    /**
+     * Limit how many RetentionPolicies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RetentionPolicy updateManyAndReturn
+   */
+  export type RetentionPolicyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * The data used to update RetentionPolicies.
+     */
+    data: XOR<RetentionPolicyUpdateManyMutationInput, RetentionPolicyUncheckedUpdateManyInput>
+    /**
+     * Filter which RetentionPolicies to update
+     */
+    where?: RetentionPolicyWhereInput
+    /**
+     * Limit how many RetentionPolicies to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RetentionPolicy upsert
+   */
+  export type RetentionPolicyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RetentionPolicy to update in case it exists.
+     */
+    where: RetentionPolicyWhereUniqueInput
+    /**
+     * In case the RetentionPolicy found by the `where` argument doesn't exist, create a new RetentionPolicy with this data.
+     */
+    create: XOR<RetentionPolicyCreateInput, RetentionPolicyUncheckedCreateInput>
+    /**
+     * In case the RetentionPolicy was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RetentionPolicyUpdateInput, RetentionPolicyUncheckedUpdateInput>
+  }
+
+  /**
+   * RetentionPolicy delete
+   */
+  export type RetentionPolicyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    /**
+     * Filter which RetentionPolicy to delete.
+     */
+    where: RetentionPolicyWhereUniqueInput
+  }
+
+  /**
+   * RetentionPolicy deleteMany
+   */
+  export type RetentionPolicyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RetentionPolicies to delete
+     */
+    where?: RetentionPolicyWhereInput
+    /**
+     * Limit how many RetentionPolicies to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RetentionPolicy.purgeJobs
+   */
+  export type RetentionPolicy$purgeJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    where?: PurgeJobWhereInput
+    orderBy?: PurgeJobOrderByWithRelationInput | PurgeJobOrderByWithRelationInput[]
+    cursor?: PurgeJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PurgeJobScalarFieldEnum | PurgeJobScalarFieldEnum[]
+  }
+
+  /**
+   * RetentionPolicy without action
+   */
+  export type RetentionPolicyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PurgeJob
+   */
+
+  export type AggregatePurgeJob = {
+    _count: PurgeJobCountAggregateOutputType | null
+    _min: PurgeJobMinAggregateOutputType | null
+    _max: PurgeJobMaxAggregateOutputType | null
+  }
+
+  export type PurgeJobMinAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    policyId: string | null
+    status: $Enums.PurgeJobStatus | null
+    dryRun: boolean | null
+    scheduledAt: Date | null
+    startedAt: Date | null
+    finishedAt: Date | null
+    initiatedByUserId: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PurgeJobMaxAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    policyId: string | null
+    status: $Enums.PurgeJobStatus | null
+    dryRun: boolean | null
+    scheduledAt: Date | null
+    startedAt: Date | null
+    finishedAt: Date | null
+    initiatedByUserId: string | null
+    errorMessage: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PurgeJobCountAggregateOutputType = {
+    id: number
+    workspaceId: number
+    policyId: number
+    status: number
+    dryRun: number
+    scheduledAt: number
+    startedAt: number
+    finishedAt: number
+    initiatedByUserId: number
+    summary: number
+    errorMessage: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PurgeJobMinAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    policyId?: true
+    status?: true
+    dryRun?: true
+    scheduledAt?: true
+    startedAt?: true
+    finishedAt?: true
+    initiatedByUserId?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PurgeJobMaxAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    policyId?: true
+    status?: true
+    dryRun?: true
+    scheduledAt?: true
+    startedAt?: true
+    finishedAt?: true
+    initiatedByUserId?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PurgeJobCountAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    policyId?: true
+    status?: true
+    dryRun?: true
+    scheduledAt?: true
+    startedAt?: true
+    finishedAt?: true
+    initiatedByUserId?: true
+    summary?: true
+    errorMessage?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PurgeJobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PurgeJob to aggregate.
+     */
+    where?: PurgeJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PurgeJobs to fetch.
+     */
+    orderBy?: PurgeJobOrderByWithRelationInput | PurgeJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PurgeJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PurgeJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PurgeJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PurgeJobs
+    **/
+    _count?: true | PurgeJobCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PurgeJobMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PurgeJobMaxAggregateInputType
+  }
+
+  export type GetPurgeJobAggregateType<T extends PurgeJobAggregateArgs> = {
+        [P in keyof T & keyof AggregatePurgeJob]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePurgeJob[P]>
+      : GetScalarType<T[P], AggregatePurgeJob[P]>
+  }
+
+
+
+
+  export type PurgeJobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PurgeJobWhereInput
+    orderBy?: PurgeJobOrderByWithAggregationInput | PurgeJobOrderByWithAggregationInput[]
+    by: PurgeJobScalarFieldEnum[] | PurgeJobScalarFieldEnum
+    having?: PurgeJobScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PurgeJobCountAggregateInputType | true
+    _min?: PurgeJobMinAggregateInputType
+    _max?: PurgeJobMaxAggregateInputType
+  }
+
+  export type PurgeJobGroupByOutputType = {
+    id: string
+    workspaceId: string
+    policyId: string | null
+    status: $Enums.PurgeJobStatus
+    dryRun: boolean
+    scheduledAt: Date
+    startedAt: Date | null
+    finishedAt: Date | null
+    initiatedByUserId: string | null
+    summary: JsonValue
+    errorMessage: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PurgeJobCountAggregateOutputType | null
+    _min: PurgeJobMinAggregateOutputType | null
+    _max: PurgeJobMaxAggregateOutputType | null
+  }
+
+  type GetPurgeJobGroupByPayload<T extends PurgeJobGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PurgeJobGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PurgeJobGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PurgeJobGroupByOutputType[P]>
+            : GetScalarType<T[P], PurgeJobGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PurgeJobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    policyId?: boolean
+    status?: boolean
+    dryRun?: boolean
+    scheduledAt?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    initiatedByUserId?: boolean
+    summary?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    policy?: boolean | PurgeJob$policyArgs<ExtArgs>
+  }, ExtArgs["result"]["purgeJob"]>
+
+  export type PurgeJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    policyId?: boolean
+    status?: boolean
+    dryRun?: boolean
+    scheduledAt?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    initiatedByUserId?: boolean
+    summary?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    policy?: boolean | PurgeJob$policyArgs<ExtArgs>
+  }, ExtArgs["result"]["purgeJob"]>
+
+  export type PurgeJobSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    policyId?: boolean
+    status?: boolean
+    dryRun?: boolean
+    scheduledAt?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    initiatedByUserId?: boolean
+    summary?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    policy?: boolean | PurgeJob$policyArgs<ExtArgs>
+  }, ExtArgs["result"]["purgeJob"]>
+
+  export type PurgeJobSelectScalar = {
+    id?: boolean
+    workspaceId?: boolean
+    policyId?: boolean
+    status?: boolean
+    dryRun?: boolean
+    scheduledAt?: boolean
+    startedAt?: boolean
+    finishedAt?: boolean
+    initiatedByUserId?: boolean
+    summary?: boolean
+    errorMessage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PurgeJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "policyId" | "status" | "dryRun" | "scheduledAt" | "startedAt" | "finishedAt" | "initiatedByUserId" | "summary" | "errorMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["purgeJob"]>
+  export type PurgeJobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    policy?: boolean | PurgeJob$policyArgs<ExtArgs>
+  }
+  export type PurgeJobIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    policy?: boolean | PurgeJob$policyArgs<ExtArgs>
+  }
+  export type PurgeJobIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    policy?: boolean | PurgeJob$policyArgs<ExtArgs>
+  }
+
+  export type $PurgeJobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PurgeJob"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      policy: Prisma.$RetentionPolicyPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      workspaceId: string
+      policyId: string | null
+      status: $Enums.PurgeJobStatus
+      dryRun: boolean
+      scheduledAt: Date
+      startedAt: Date | null
+      finishedAt: Date | null
+      initiatedByUserId: string | null
+      summary: Prisma.JsonValue
+      errorMessage: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["purgeJob"]>
+    composites: {}
+  }
+
+  type PurgeJobGetPayload<S extends boolean | null | undefined | PurgeJobDefaultArgs> = $Result.GetResult<Prisma.$PurgeJobPayload, S>
+
+  type PurgeJobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PurgeJobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PurgeJobCountAggregateInputType | true
+    }
+
+  export interface PurgeJobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PurgeJob'], meta: { name: 'PurgeJob' } }
+    /**
+     * Find zero or one PurgeJob that matches the filter.
+     * @param {PurgeJobFindUniqueArgs} args - Arguments to find a PurgeJob
+     * @example
+     * // Get one PurgeJob
+     * const purgeJob = await prisma.purgeJob.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PurgeJobFindUniqueArgs>(args: SelectSubset<T, PurgeJobFindUniqueArgs<ExtArgs>>): Prisma__PurgeJobClient<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PurgeJob that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PurgeJobFindUniqueOrThrowArgs} args - Arguments to find a PurgeJob
+     * @example
+     * // Get one PurgeJob
+     * const purgeJob = await prisma.purgeJob.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PurgeJobFindUniqueOrThrowArgs>(args: SelectSubset<T, PurgeJobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PurgeJobClient<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PurgeJob that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PurgeJobFindFirstArgs} args - Arguments to find a PurgeJob
+     * @example
+     * // Get one PurgeJob
+     * const purgeJob = await prisma.purgeJob.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PurgeJobFindFirstArgs>(args?: SelectSubset<T, PurgeJobFindFirstArgs<ExtArgs>>): Prisma__PurgeJobClient<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PurgeJob that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PurgeJobFindFirstOrThrowArgs} args - Arguments to find a PurgeJob
+     * @example
+     * // Get one PurgeJob
+     * const purgeJob = await prisma.purgeJob.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PurgeJobFindFirstOrThrowArgs>(args?: SelectSubset<T, PurgeJobFindFirstOrThrowArgs<ExtArgs>>): Prisma__PurgeJobClient<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PurgeJobs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PurgeJobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PurgeJobs
+     * const purgeJobs = await prisma.purgeJob.findMany()
+     * 
+     * // Get first 10 PurgeJobs
+     * const purgeJobs = await prisma.purgeJob.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const purgeJobWithIdOnly = await prisma.purgeJob.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PurgeJobFindManyArgs>(args?: SelectSubset<T, PurgeJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PurgeJob.
+     * @param {PurgeJobCreateArgs} args - Arguments to create a PurgeJob.
+     * @example
+     * // Create one PurgeJob
+     * const PurgeJob = await prisma.purgeJob.create({
+     *   data: {
+     *     // ... data to create a PurgeJob
+     *   }
+     * })
+     * 
+     */
+    create<T extends PurgeJobCreateArgs>(args: SelectSubset<T, PurgeJobCreateArgs<ExtArgs>>): Prisma__PurgeJobClient<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PurgeJobs.
+     * @param {PurgeJobCreateManyArgs} args - Arguments to create many PurgeJobs.
+     * @example
+     * // Create many PurgeJobs
+     * const purgeJob = await prisma.purgeJob.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PurgeJobCreateManyArgs>(args?: SelectSubset<T, PurgeJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PurgeJobs and returns the data saved in the database.
+     * @param {PurgeJobCreateManyAndReturnArgs} args - Arguments to create many PurgeJobs.
+     * @example
+     * // Create many PurgeJobs
+     * const purgeJob = await prisma.purgeJob.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PurgeJobs and only return the `id`
+     * const purgeJobWithIdOnly = await prisma.purgeJob.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PurgeJobCreateManyAndReturnArgs>(args?: SelectSubset<T, PurgeJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PurgeJob.
+     * @param {PurgeJobDeleteArgs} args - Arguments to delete one PurgeJob.
+     * @example
+     * // Delete one PurgeJob
+     * const PurgeJob = await prisma.purgeJob.delete({
+     *   where: {
+     *     // ... filter to delete one PurgeJob
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PurgeJobDeleteArgs>(args: SelectSubset<T, PurgeJobDeleteArgs<ExtArgs>>): Prisma__PurgeJobClient<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PurgeJob.
+     * @param {PurgeJobUpdateArgs} args - Arguments to update one PurgeJob.
+     * @example
+     * // Update one PurgeJob
+     * const purgeJob = await prisma.purgeJob.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PurgeJobUpdateArgs>(args: SelectSubset<T, PurgeJobUpdateArgs<ExtArgs>>): Prisma__PurgeJobClient<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PurgeJobs.
+     * @param {PurgeJobDeleteManyArgs} args - Arguments to filter PurgeJobs to delete.
+     * @example
+     * // Delete a few PurgeJobs
+     * const { count } = await prisma.purgeJob.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PurgeJobDeleteManyArgs>(args?: SelectSubset<T, PurgeJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PurgeJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PurgeJobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PurgeJobs
+     * const purgeJob = await prisma.purgeJob.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PurgeJobUpdateManyArgs>(args: SelectSubset<T, PurgeJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PurgeJobs and returns the data updated in the database.
+     * @param {PurgeJobUpdateManyAndReturnArgs} args - Arguments to update many PurgeJobs.
+     * @example
+     * // Update many PurgeJobs
+     * const purgeJob = await prisma.purgeJob.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PurgeJobs and only return the `id`
+     * const purgeJobWithIdOnly = await prisma.purgeJob.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PurgeJobUpdateManyAndReturnArgs>(args: SelectSubset<T, PurgeJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PurgeJob.
+     * @param {PurgeJobUpsertArgs} args - Arguments to update or create a PurgeJob.
+     * @example
+     * // Update or create a PurgeJob
+     * const purgeJob = await prisma.purgeJob.upsert({
+     *   create: {
+     *     // ... data to create a PurgeJob
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PurgeJob we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PurgeJobUpsertArgs>(args: SelectSubset<T, PurgeJobUpsertArgs<ExtArgs>>): Prisma__PurgeJobClient<$Result.GetResult<Prisma.$PurgeJobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PurgeJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PurgeJobCountArgs} args - Arguments to filter PurgeJobs to count.
+     * @example
+     * // Count the number of PurgeJobs
+     * const count = await prisma.purgeJob.count({
+     *   where: {
+     *     // ... the filter for the PurgeJobs we want to count
+     *   }
+     * })
+    **/
+    count<T extends PurgeJobCountArgs>(
+      args?: Subset<T, PurgeJobCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PurgeJobCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PurgeJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PurgeJobAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PurgeJobAggregateArgs>(args: Subset<T, PurgeJobAggregateArgs>): Prisma.PrismaPromise<GetPurgeJobAggregateType<T>>
+
+    /**
+     * Group by PurgeJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PurgeJobGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PurgeJobGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PurgeJobGroupByArgs['orderBy'] }
+        : { orderBy?: PurgeJobGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PurgeJobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPurgeJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PurgeJob model
+   */
+  readonly fields: PurgeJobFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PurgeJob.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PurgeJobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    policy<T extends PurgeJob$policyArgs<ExtArgs> = {}>(args?: Subset<T, PurgeJob$policyArgs<ExtArgs>>): Prisma__RetentionPolicyClient<$Result.GetResult<Prisma.$RetentionPolicyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PurgeJob model
+   */
+  interface PurgeJobFieldRefs {
+    readonly id: FieldRef<"PurgeJob", 'String'>
+    readonly workspaceId: FieldRef<"PurgeJob", 'String'>
+    readonly policyId: FieldRef<"PurgeJob", 'String'>
+    readonly status: FieldRef<"PurgeJob", 'PurgeJobStatus'>
+    readonly dryRun: FieldRef<"PurgeJob", 'Boolean'>
+    readonly scheduledAt: FieldRef<"PurgeJob", 'DateTime'>
+    readonly startedAt: FieldRef<"PurgeJob", 'DateTime'>
+    readonly finishedAt: FieldRef<"PurgeJob", 'DateTime'>
+    readonly initiatedByUserId: FieldRef<"PurgeJob", 'String'>
+    readonly summary: FieldRef<"PurgeJob", 'Json'>
+    readonly errorMessage: FieldRef<"PurgeJob", 'String'>
+    readonly createdAt: FieldRef<"PurgeJob", 'DateTime'>
+    readonly updatedAt: FieldRef<"PurgeJob", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PurgeJob findUnique
+   */
+  export type PurgeJobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * Filter, which PurgeJob to fetch.
+     */
+    where: PurgeJobWhereUniqueInput
+  }
+
+  /**
+   * PurgeJob findUniqueOrThrow
+   */
+  export type PurgeJobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * Filter, which PurgeJob to fetch.
+     */
+    where: PurgeJobWhereUniqueInput
+  }
+
+  /**
+   * PurgeJob findFirst
+   */
+  export type PurgeJobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * Filter, which PurgeJob to fetch.
+     */
+    where?: PurgeJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PurgeJobs to fetch.
+     */
+    orderBy?: PurgeJobOrderByWithRelationInput | PurgeJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PurgeJobs.
+     */
+    cursor?: PurgeJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PurgeJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PurgeJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PurgeJobs.
+     */
+    distinct?: PurgeJobScalarFieldEnum | PurgeJobScalarFieldEnum[]
+  }
+
+  /**
+   * PurgeJob findFirstOrThrow
+   */
+  export type PurgeJobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * Filter, which PurgeJob to fetch.
+     */
+    where?: PurgeJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PurgeJobs to fetch.
+     */
+    orderBy?: PurgeJobOrderByWithRelationInput | PurgeJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PurgeJobs.
+     */
+    cursor?: PurgeJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PurgeJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PurgeJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PurgeJobs.
+     */
+    distinct?: PurgeJobScalarFieldEnum | PurgeJobScalarFieldEnum[]
+  }
+
+  /**
+   * PurgeJob findMany
+   */
+  export type PurgeJobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * Filter, which PurgeJobs to fetch.
+     */
+    where?: PurgeJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PurgeJobs to fetch.
+     */
+    orderBy?: PurgeJobOrderByWithRelationInput | PurgeJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PurgeJobs.
+     */
+    cursor?: PurgeJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PurgeJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PurgeJobs.
+     */
+    skip?: number
+    distinct?: PurgeJobScalarFieldEnum | PurgeJobScalarFieldEnum[]
+  }
+
+  /**
+   * PurgeJob create
+   */
+  export type PurgeJobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PurgeJob.
+     */
+    data: XOR<PurgeJobCreateInput, PurgeJobUncheckedCreateInput>
+  }
+
+  /**
+   * PurgeJob createMany
+   */
+  export type PurgeJobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PurgeJobs.
+     */
+    data: PurgeJobCreateManyInput | PurgeJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PurgeJob createManyAndReturn
+   */
+  export type PurgeJobCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * The data used to create many PurgeJobs.
+     */
+    data: PurgeJobCreateManyInput | PurgeJobCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PurgeJob update
+   */
+  export type PurgeJobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PurgeJob.
+     */
+    data: XOR<PurgeJobUpdateInput, PurgeJobUncheckedUpdateInput>
+    /**
+     * Choose, which PurgeJob to update.
+     */
+    where: PurgeJobWhereUniqueInput
+  }
+
+  /**
+   * PurgeJob updateMany
+   */
+  export type PurgeJobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PurgeJobs.
+     */
+    data: XOR<PurgeJobUpdateManyMutationInput, PurgeJobUncheckedUpdateManyInput>
+    /**
+     * Filter which PurgeJobs to update
+     */
+    where?: PurgeJobWhereInput
+    /**
+     * Limit how many PurgeJobs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PurgeJob updateManyAndReturn
+   */
+  export type PurgeJobUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * The data used to update PurgeJobs.
+     */
+    data: XOR<PurgeJobUpdateManyMutationInput, PurgeJobUncheckedUpdateManyInput>
+    /**
+     * Filter which PurgeJobs to update
+     */
+    where?: PurgeJobWhereInput
+    /**
+     * Limit how many PurgeJobs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PurgeJob upsert
+   */
+  export type PurgeJobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PurgeJob to update in case it exists.
+     */
+    where: PurgeJobWhereUniqueInput
+    /**
+     * In case the PurgeJob found by the `where` argument doesn't exist, create a new PurgeJob with this data.
+     */
+    create: XOR<PurgeJobCreateInput, PurgeJobUncheckedCreateInput>
+    /**
+     * In case the PurgeJob was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PurgeJobUpdateInput, PurgeJobUncheckedUpdateInput>
+  }
+
+  /**
+   * PurgeJob delete
+   */
+  export type PurgeJobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
+    /**
+     * Filter which PurgeJob to delete.
+     */
+    where: PurgeJobWhereUniqueInput
+  }
+
+  /**
+   * PurgeJob deleteMany
+   */
+  export type PurgeJobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PurgeJobs to delete
+     */
+    where?: PurgeJobWhereInput
+    /**
+     * Limit how many PurgeJobs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PurgeJob.policy
+   */
+  export type PurgeJob$policyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetentionPolicy
+     */
+    select?: RetentionPolicySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetentionPolicy
+     */
+    omit?: RetentionPolicyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetentionPolicyInclude<ExtArgs> | null
+    where?: RetentionPolicyWhereInput
+  }
+
+  /**
+   * PurgeJob without action
+   */
+  export type PurgeJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PurgeJob
+     */
+    select?: PurgeJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PurgeJob
+     */
+    omit?: PurgeJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurgeJobInclude<ExtArgs> | null
   }
 
 
@@ -54967,6 +57656,41 @@ export namespace Prisma {
   export type MissingItemRequestScalarFieldEnum = (typeof MissingItemRequestScalarFieldEnum)[keyof typeof MissingItemRequestScalarFieldEnum]
 
 
+  export const RetentionPolicyScalarFieldEnum: {
+    id: 'id',
+    workspaceId: 'workspaceId',
+    recordClass: 'recordClass',
+    jurisdiction: 'jurisdiction',
+    retentionYears: 'retentionYears',
+    purgeMode: 'purgeMode',
+    legalHoldExempt: 'legalHoldExempt',
+    enabled: 'enabled',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RetentionPolicyScalarFieldEnum = (typeof RetentionPolicyScalarFieldEnum)[keyof typeof RetentionPolicyScalarFieldEnum]
+
+
+  export const PurgeJobScalarFieldEnum: {
+    id: 'id',
+    workspaceId: 'workspaceId',
+    policyId: 'policyId',
+    status: 'status',
+    dryRun: 'dryRun',
+    scheduledAt: 'scheduledAt',
+    startedAt: 'startedAt',
+    finishedAt: 'finishedAt',
+    initiatedByUserId: 'initiatedByUserId',
+    summary: 'summary',
+    errorMessage: 'errorMessage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PurgeJobScalarFieldEnum = (typeof PurgeJobScalarFieldEnum)[keyof typeof PurgeJobScalarFieldEnum]
+
+
   export const DealPartyScalarFieldEnum: {
     id: 'id',
     dealId: 'dealId',
@@ -55801,6 +58525,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'VaultRecordClass'
+   */
+  export type EnumVaultRecordClassFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VaultRecordClass'>
+    
+
+
+  /**
+   * Reference to a field of type 'VaultRecordClass[]'
+   */
+  export type ListEnumVaultRecordClassFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VaultRecordClass[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PurgeJobStatus'
+   */
+  export type EnumPurgeJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurgeJobStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PurgeJobStatus[]'
+   */
+  export type ListEnumPurgeJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PurgeJobStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DealPartyRole'
    */
   export type EnumDealPartyRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealPartyRole'>
@@ -56273,6 +59025,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskListRelationFilter
     lenderMissingItemRequests?: MissingItemRequestListRelationFilter
     dealerMissingItemRequests?: MissingItemRequestListRelationFilter
+    retentionPolicies?: RetentionPolicyListRelationFilter
+    purgeJobs?: PurgeJobListRelationFilter
   }
 
   export type WorkspaceOrderByWithRelationInput = {
@@ -56306,6 +59060,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskOrderByRelationAggregateInput
     lenderMissingItemRequests?: MissingItemRequestOrderByRelationAggregateInput
     dealerMissingItemRequests?: MissingItemRequestOrderByRelationAggregateInput
+    retentionPolicies?: RetentionPolicyOrderByRelationAggregateInput
+    purgeJobs?: PurgeJobOrderByRelationAggregateInput
   }
 
   export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -56342,6 +59098,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskListRelationFilter
     lenderMissingItemRequests?: MissingItemRequestListRelationFilter
     dealerMissingItemRequests?: MissingItemRequestListRelationFilter
+    retentionPolicies?: RetentionPolicyListRelationFilter
+    purgeJobs?: PurgeJobListRelationFilter
   }, "id" | "slug">
 
   export type WorkspaceOrderByWithAggregationInput = {
@@ -57540,6 +60298,190 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"MissingItemRequest"> | Date | string
     resolvedAt?: DateTimeNullableWithAggregatesFilter<"MissingItemRequest"> | Date | string | null
     updatedAt?: DateTimeWithAggregatesFilter<"MissingItemRequest"> | Date | string
+  }
+
+  export type RetentionPolicyWhereInput = {
+    AND?: RetentionPolicyWhereInput | RetentionPolicyWhereInput[]
+    OR?: RetentionPolicyWhereInput[]
+    NOT?: RetentionPolicyWhereInput | RetentionPolicyWhereInput[]
+    id?: StringFilter<"RetentionPolicy"> | string
+    workspaceId?: StringFilter<"RetentionPolicy"> | string
+    recordClass?: EnumVaultRecordClassFilter<"RetentionPolicy"> | $Enums.VaultRecordClass
+    jurisdiction?: StringFilter<"RetentionPolicy"> | string
+    retentionYears?: IntFilter<"RetentionPolicy"> | number
+    purgeMode?: StringFilter<"RetentionPolicy"> | string
+    legalHoldExempt?: BoolFilter<"RetentionPolicy"> | boolean
+    enabled?: BoolFilter<"RetentionPolicy"> | boolean
+    createdAt?: DateTimeFilter<"RetentionPolicy"> | Date | string
+    updatedAt?: DateTimeFilter<"RetentionPolicy"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    purgeJobs?: PurgeJobListRelationFilter
+  }
+
+  export type RetentionPolicyOrderByWithRelationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    recordClass?: SortOrder
+    jurisdiction?: SortOrder
+    retentionYears?: SortOrder
+    purgeMode?: SortOrder
+    legalHoldExempt?: SortOrder
+    enabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    purgeJobs?: PurgeJobOrderByRelationAggregateInput
+  }
+
+  export type RetentionPolicyWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    workspaceId_recordClass_jurisdiction?: RetentionPolicyWorkspaceIdRecordClassJurisdictionCompoundUniqueInput
+    AND?: RetentionPolicyWhereInput | RetentionPolicyWhereInput[]
+    OR?: RetentionPolicyWhereInput[]
+    NOT?: RetentionPolicyWhereInput | RetentionPolicyWhereInput[]
+    workspaceId?: StringFilter<"RetentionPolicy"> | string
+    recordClass?: EnumVaultRecordClassFilter<"RetentionPolicy"> | $Enums.VaultRecordClass
+    jurisdiction?: StringFilter<"RetentionPolicy"> | string
+    retentionYears?: IntFilter<"RetentionPolicy"> | number
+    purgeMode?: StringFilter<"RetentionPolicy"> | string
+    legalHoldExempt?: BoolFilter<"RetentionPolicy"> | boolean
+    enabled?: BoolFilter<"RetentionPolicy"> | boolean
+    createdAt?: DateTimeFilter<"RetentionPolicy"> | Date | string
+    updatedAt?: DateTimeFilter<"RetentionPolicy"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    purgeJobs?: PurgeJobListRelationFilter
+  }, "id" | "workspaceId_recordClass_jurisdiction">
+
+  export type RetentionPolicyOrderByWithAggregationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    recordClass?: SortOrder
+    jurisdiction?: SortOrder
+    retentionYears?: SortOrder
+    purgeMode?: SortOrder
+    legalHoldExempt?: SortOrder
+    enabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RetentionPolicyCountOrderByAggregateInput
+    _avg?: RetentionPolicyAvgOrderByAggregateInput
+    _max?: RetentionPolicyMaxOrderByAggregateInput
+    _min?: RetentionPolicyMinOrderByAggregateInput
+    _sum?: RetentionPolicySumOrderByAggregateInput
+  }
+
+  export type RetentionPolicyScalarWhereWithAggregatesInput = {
+    AND?: RetentionPolicyScalarWhereWithAggregatesInput | RetentionPolicyScalarWhereWithAggregatesInput[]
+    OR?: RetentionPolicyScalarWhereWithAggregatesInput[]
+    NOT?: RetentionPolicyScalarWhereWithAggregatesInput | RetentionPolicyScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RetentionPolicy"> | string
+    workspaceId?: StringWithAggregatesFilter<"RetentionPolicy"> | string
+    recordClass?: EnumVaultRecordClassWithAggregatesFilter<"RetentionPolicy"> | $Enums.VaultRecordClass
+    jurisdiction?: StringWithAggregatesFilter<"RetentionPolicy"> | string
+    retentionYears?: IntWithAggregatesFilter<"RetentionPolicy"> | number
+    purgeMode?: StringWithAggregatesFilter<"RetentionPolicy"> | string
+    legalHoldExempt?: BoolWithAggregatesFilter<"RetentionPolicy"> | boolean
+    enabled?: BoolWithAggregatesFilter<"RetentionPolicy"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"RetentionPolicy"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RetentionPolicy"> | Date | string
+  }
+
+  export type PurgeJobWhereInput = {
+    AND?: PurgeJobWhereInput | PurgeJobWhereInput[]
+    OR?: PurgeJobWhereInput[]
+    NOT?: PurgeJobWhereInput | PurgeJobWhereInput[]
+    id?: StringFilter<"PurgeJob"> | string
+    workspaceId?: StringFilter<"PurgeJob"> | string
+    policyId?: StringNullableFilter<"PurgeJob"> | string | null
+    status?: EnumPurgeJobStatusFilter<"PurgeJob"> | $Enums.PurgeJobStatus
+    dryRun?: BoolFilter<"PurgeJob"> | boolean
+    scheduledAt?: DateTimeFilter<"PurgeJob"> | Date | string
+    startedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    finishedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    initiatedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    summary?: JsonFilter<"PurgeJob">
+    errorMessage?: StringNullableFilter<"PurgeJob"> | string | null
+    createdAt?: DateTimeFilter<"PurgeJob"> | Date | string
+    updatedAt?: DateTimeFilter<"PurgeJob"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    policy?: XOR<RetentionPolicyNullableScalarRelationFilter, RetentionPolicyWhereInput> | null
+  }
+
+  export type PurgeJobOrderByWithRelationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    policyId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    dryRun?: SortOrder
+    scheduledAt?: SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    finishedAt?: SortOrderInput | SortOrder
+    initiatedByUserId?: SortOrderInput | SortOrder
+    summary?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    policy?: RetentionPolicyOrderByWithRelationInput
+  }
+
+  export type PurgeJobWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PurgeJobWhereInput | PurgeJobWhereInput[]
+    OR?: PurgeJobWhereInput[]
+    NOT?: PurgeJobWhereInput | PurgeJobWhereInput[]
+    workspaceId?: StringFilter<"PurgeJob"> | string
+    policyId?: StringNullableFilter<"PurgeJob"> | string | null
+    status?: EnumPurgeJobStatusFilter<"PurgeJob"> | $Enums.PurgeJobStatus
+    dryRun?: BoolFilter<"PurgeJob"> | boolean
+    scheduledAt?: DateTimeFilter<"PurgeJob"> | Date | string
+    startedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    finishedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    initiatedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    summary?: JsonFilter<"PurgeJob">
+    errorMessage?: StringNullableFilter<"PurgeJob"> | string | null
+    createdAt?: DateTimeFilter<"PurgeJob"> | Date | string
+    updatedAt?: DateTimeFilter<"PurgeJob"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    policy?: XOR<RetentionPolicyNullableScalarRelationFilter, RetentionPolicyWhereInput> | null
+  }, "id">
+
+  export type PurgeJobOrderByWithAggregationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    policyId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    dryRun?: SortOrder
+    scheduledAt?: SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    finishedAt?: SortOrderInput | SortOrder
+    initiatedByUserId?: SortOrderInput | SortOrder
+    summary?: SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PurgeJobCountOrderByAggregateInput
+    _max?: PurgeJobMaxOrderByAggregateInput
+    _min?: PurgeJobMinOrderByAggregateInput
+  }
+
+  export type PurgeJobScalarWhereWithAggregatesInput = {
+    AND?: PurgeJobScalarWhereWithAggregatesInput | PurgeJobScalarWhereWithAggregatesInput[]
+    OR?: PurgeJobScalarWhereWithAggregatesInput[]
+    NOT?: PurgeJobScalarWhereWithAggregatesInput | PurgeJobScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PurgeJob"> | string
+    workspaceId?: StringWithAggregatesFilter<"PurgeJob"> | string
+    policyId?: StringNullableWithAggregatesFilter<"PurgeJob"> | string | null
+    status?: EnumPurgeJobStatusWithAggregatesFilter<"PurgeJob"> | $Enums.PurgeJobStatus
+    dryRun?: BoolWithAggregatesFilter<"PurgeJob"> | boolean
+    scheduledAt?: DateTimeWithAggregatesFilter<"PurgeJob"> | Date | string
+    startedAt?: DateTimeNullableWithAggregatesFilter<"PurgeJob"> | Date | string | null
+    finishedAt?: DateTimeNullableWithAggregatesFilter<"PurgeJob"> | Date | string | null
+    initiatedByUserId?: StringNullableWithAggregatesFilter<"PurgeJob"> | string | null
+    summary?: JsonWithAggregatesFilter<"PurgeJob">
+    errorMessage?: StringNullableWithAggregatesFilter<"PurgeJob"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PurgeJob"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PurgeJob"> | Date | string
   }
 
   export type DealPartyWhereInput = {
@@ -59969,6 +62911,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateInput = {
@@ -60002,6 +62946,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUpdateInput = {
@@ -60035,6 +62981,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateInput = {
@@ -60068,6 +63016,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateManyInput = {
@@ -61407,6 +64357,210 @@ export namespace Prisma {
     lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RetentionPolicyCreateInput = {
+    id?: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction?: string
+    retentionYears: number
+    purgeMode?: string
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutRetentionPoliciesInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutPolicyInput
+  }
+
+  export type RetentionPolicyUncheckedCreateInput = {
+    id?: string
+    workspaceId: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction?: string
+    retentionYears: number
+    purgeMode?: string
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutPolicyInput
+  }
+
+  export type RetentionPolicyUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutRetentionPoliciesNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutPolicyNestedInput
+  }
+
+  export type RetentionPolicyUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutPolicyNestedInput
+  }
+
+  export type RetentionPolicyCreateManyInput = {
+    id?: string
+    workspaceId: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction?: string
+    retentionYears: number
+    purgeMode?: string
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RetentionPolicyUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RetentionPolicyUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PurgeJobCreateInput = {
+    id?: string
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutPurgeJobsInput
+    policy?: RetentionPolicyCreateNestedOneWithoutPurgeJobsInput
+  }
+
+  export type PurgeJobUncheckedCreateInput = {
+    id?: string
+    workspaceId: string
+    policyId?: string | null
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PurgeJobUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutPurgeJobsNestedInput
+    policy?: RetentionPolicyUpdateOneWithoutPurgeJobsNestedInput
+  }
+
+  export type PurgeJobUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    policyId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PurgeJobCreateManyInput = {
+    id?: string
+    workspaceId: string
+    policyId?: string | null
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PurgeJobUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PurgeJobUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    policyId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -64246,6 +67400,18 @@ export namespace Prisma {
     none?: MissingItemRequestWhereInput
   }
 
+  export type RetentionPolicyListRelationFilter = {
+    every?: RetentionPolicyWhereInput
+    some?: RetentionPolicyWhereInput
+    none?: RetentionPolicyWhereInput
+  }
+
+  export type PurgeJobListRelationFilter = {
+    every?: PurgeJobWhereInput
+    some?: PurgeJobWhereInput
+    none?: PurgeJobWhereInput
+  }
+
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -64295,6 +67461,14 @@ export namespace Prisma {
   }
 
   export type MissingItemRequestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RetentionPolicyOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PurgeJobOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -65448,6 +68622,144 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel>
     _max?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel>
+  }
+
+  export type EnumVaultRecordClassFilter<$PrismaModel = never> = {
+    equals?: $Enums.VaultRecordClass | EnumVaultRecordClassFieldRefInput<$PrismaModel>
+    in?: $Enums.VaultRecordClass[] | ListEnumVaultRecordClassFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VaultRecordClass[] | ListEnumVaultRecordClassFieldRefInput<$PrismaModel>
+    not?: NestedEnumVaultRecordClassFilter<$PrismaModel> | $Enums.VaultRecordClass
+  }
+
+  export type RetentionPolicyWorkspaceIdRecordClassJurisdictionCompoundUniqueInput = {
+    workspaceId: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction: string
+  }
+
+  export type RetentionPolicyCountOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    recordClass?: SortOrder
+    jurisdiction?: SortOrder
+    retentionYears?: SortOrder
+    purgeMode?: SortOrder
+    legalHoldExempt?: SortOrder
+    enabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RetentionPolicyAvgOrderByAggregateInput = {
+    retentionYears?: SortOrder
+  }
+
+  export type RetentionPolicyMaxOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    recordClass?: SortOrder
+    jurisdiction?: SortOrder
+    retentionYears?: SortOrder
+    purgeMode?: SortOrder
+    legalHoldExempt?: SortOrder
+    enabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RetentionPolicyMinOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    recordClass?: SortOrder
+    jurisdiction?: SortOrder
+    retentionYears?: SortOrder
+    purgeMode?: SortOrder
+    legalHoldExempt?: SortOrder
+    enabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RetentionPolicySumOrderByAggregateInput = {
+    retentionYears?: SortOrder
+  }
+
+  export type EnumVaultRecordClassWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VaultRecordClass | EnumVaultRecordClassFieldRefInput<$PrismaModel>
+    in?: $Enums.VaultRecordClass[] | ListEnumVaultRecordClassFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VaultRecordClass[] | ListEnumVaultRecordClassFieldRefInput<$PrismaModel>
+    not?: NestedEnumVaultRecordClassWithAggregatesFilter<$PrismaModel> | $Enums.VaultRecordClass
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVaultRecordClassFilter<$PrismaModel>
+    _max?: NestedEnumVaultRecordClassFilter<$PrismaModel>
+  }
+
+  export type EnumPurgeJobStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PurgeJobStatus | EnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPurgeJobStatusFilter<$PrismaModel> | $Enums.PurgeJobStatus
+  }
+
+  export type RetentionPolicyNullableScalarRelationFilter = {
+    is?: RetentionPolicyWhereInput | null
+    isNot?: RetentionPolicyWhereInput | null
+  }
+
+  export type PurgeJobCountOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    policyId?: SortOrder
+    status?: SortOrder
+    dryRun?: SortOrder
+    scheduledAt?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    initiatedByUserId?: SortOrder
+    summary?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PurgeJobMaxOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    policyId?: SortOrder
+    status?: SortOrder
+    dryRun?: SortOrder
+    scheduledAt?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    initiatedByUserId?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PurgeJobMinOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    policyId?: SortOrder
+    status?: SortOrder
+    dryRun?: SortOrder
+    scheduledAt?: SortOrder
+    startedAt?: SortOrder
+    finishedAt?: SortOrder
+    initiatedByUserId?: SortOrder
+    errorMessage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumPurgeJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PurgeJobStatus | EnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPurgeJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.PurgeJobStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPurgeJobStatusFilter<$PrismaModel>
+    _max?: NestedEnumPurgeJobStatusFilter<$PrismaModel>
   }
 
   export type EnumDealPartyRoleFilter<$PrismaModel = never> = {
@@ -67769,6 +71081,20 @@ export namespace Prisma {
     connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
   }
 
+  export type RetentionPolicyCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<RetentionPolicyCreateWithoutWorkspaceInput, RetentionPolicyUncheckedCreateWithoutWorkspaceInput> | RetentionPolicyCreateWithoutWorkspaceInput[] | RetentionPolicyUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: RetentionPolicyCreateOrConnectWithoutWorkspaceInput | RetentionPolicyCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: RetentionPolicyCreateManyWorkspaceInputEnvelope
+    connect?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+  }
+
+  export type PurgeJobCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<PurgeJobCreateWithoutWorkspaceInput, PurgeJobUncheckedCreateWithoutWorkspaceInput> | PurgeJobCreateWithoutWorkspaceInput[] | PurgeJobUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: PurgeJobCreateOrConnectWithoutWorkspaceInput | PurgeJobCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: PurgeJobCreateManyWorkspaceInputEnvelope
+    connect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput = {
     create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
@@ -67926,6 +71252,20 @@ export namespace Prisma {
     connectOrCreate?: MissingItemRequestCreateOrConnectWithoutDealerInput | MissingItemRequestCreateOrConnectWithoutDealerInput[]
     createMany?: MissingItemRequestCreateManyDealerInputEnvelope
     connect?: MissingItemRequestWhereUniqueInput | MissingItemRequestWhereUniqueInput[]
+  }
+
+  export type RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<RetentionPolicyCreateWithoutWorkspaceInput, RetentionPolicyUncheckedCreateWithoutWorkspaceInput> | RetentionPolicyCreateWithoutWorkspaceInput[] | RetentionPolicyUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: RetentionPolicyCreateOrConnectWithoutWorkspaceInput | RetentionPolicyCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: RetentionPolicyCreateManyWorkspaceInputEnvelope
+    connect?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+  }
+
+  export type PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<PurgeJobCreateWithoutWorkspaceInput, PurgeJobUncheckedCreateWithoutWorkspaceInput> | PurgeJobCreateWithoutWorkspaceInput[] | PurgeJobUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: PurgeJobCreateOrConnectWithoutWorkspaceInput | PurgeJobCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: PurgeJobCreateManyWorkspaceInputEnvelope
+    connect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
   }
 
   export type EnumWorkspaceTypeFieldUpdateOperationsInput = {
@@ -68254,6 +71594,34 @@ export namespace Prisma {
     deleteMany?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
   }
 
+  export type RetentionPolicyUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<RetentionPolicyCreateWithoutWorkspaceInput, RetentionPolicyUncheckedCreateWithoutWorkspaceInput> | RetentionPolicyCreateWithoutWorkspaceInput[] | RetentionPolicyUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: RetentionPolicyCreateOrConnectWithoutWorkspaceInput | RetentionPolicyCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: RetentionPolicyUpsertWithWhereUniqueWithoutWorkspaceInput | RetentionPolicyUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: RetentionPolicyCreateManyWorkspaceInputEnvelope
+    set?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+    disconnect?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+    delete?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+    connect?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+    update?: RetentionPolicyUpdateWithWhereUniqueWithoutWorkspaceInput | RetentionPolicyUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: RetentionPolicyUpdateManyWithWhereWithoutWorkspaceInput | RetentionPolicyUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: RetentionPolicyScalarWhereInput | RetentionPolicyScalarWhereInput[]
+  }
+
+  export type PurgeJobUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<PurgeJobCreateWithoutWorkspaceInput, PurgeJobUncheckedCreateWithoutWorkspaceInput> | PurgeJobCreateWithoutWorkspaceInput[] | PurgeJobUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: PurgeJobCreateOrConnectWithoutWorkspaceInput | PurgeJobCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: PurgeJobUpsertWithWhereUniqueWithoutWorkspaceInput | PurgeJobUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: PurgeJobCreateManyWorkspaceInputEnvelope
+    set?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    disconnect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    delete?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    connect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    update?: PurgeJobUpdateWithWhereUniqueWithoutWorkspaceInput | PurgeJobUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: PurgeJobUpdateManyWithWhereWithoutWorkspaceInput | PurgeJobUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: PurgeJobScalarWhereInput | PurgeJobScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput = {
     create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
@@ -68566,6 +71934,34 @@ export namespace Prisma {
     update?: MissingItemRequestUpdateWithWhereUniqueWithoutDealerInput | MissingItemRequestUpdateWithWhereUniqueWithoutDealerInput[]
     updateMany?: MissingItemRequestUpdateManyWithWhereWithoutDealerInput | MissingItemRequestUpdateManyWithWhereWithoutDealerInput[]
     deleteMany?: MissingItemRequestScalarWhereInput | MissingItemRequestScalarWhereInput[]
+  }
+
+  export type RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<RetentionPolicyCreateWithoutWorkspaceInput, RetentionPolicyUncheckedCreateWithoutWorkspaceInput> | RetentionPolicyCreateWithoutWorkspaceInput[] | RetentionPolicyUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: RetentionPolicyCreateOrConnectWithoutWorkspaceInput | RetentionPolicyCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: RetentionPolicyUpsertWithWhereUniqueWithoutWorkspaceInput | RetentionPolicyUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: RetentionPolicyCreateManyWorkspaceInputEnvelope
+    set?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+    disconnect?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+    delete?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+    connect?: RetentionPolicyWhereUniqueInput | RetentionPolicyWhereUniqueInput[]
+    update?: RetentionPolicyUpdateWithWhereUniqueWithoutWorkspaceInput | RetentionPolicyUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: RetentionPolicyUpdateManyWithWhereWithoutWorkspaceInput | RetentionPolicyUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: RetentionPolicyScalarWhereInput | RetentionPolicyScalarWhereInput[]
+  }
+
+  export type PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<PurgeJobCreateWithoutWorkspaceInput, PurgeJobUncheckedCreateWithoutWorkspaceInput> | PurgeJobCreateWithoutWorkspaceInput[] | PurgeJobUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: PurgeJobCreateOrConnectWithoutWorkspaceInput | PurgeJobCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: PurgeJobUpsertWithWhereUniqueWithoutWorkspaceInput | PurgeJobUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: PurgeJobCreateManyWorkspaceInputEnvelope
+    set?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    disconnect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    delete?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    connect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    update?: PurgeJobUpdateWithWhereUniqueWithoutWorkspaceInput | PurgeJobUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: PurgeJobUpdateManyWithWhereWithoutWorkspaceInput | PurgeJobUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: PurgeJobScalarWhereInput | PurgeJobScalarWhereInput[]
   }
 
   export type WorkspaceCreateNestedOneWithoutCalendarEventsInput = {
@@ -69822,6 +73218,100 @@ export namespace Prisma {
     upsert?: DealUpsertWithoutMissingItemRequestsInput
     connect?: DealWhereUniqueInput
     update?: XOR<XOR<DealUpdateToOneWithWhereWithoutMissingItemRequestsInput, DealUpdateWithoutMissingItemRequestsInput>, DealUncheckedUpdateWithoutMissingItemRequestsInput>
+  }
+
+  export type WorkspaceCreateNestedOneWithoutRetentionPoliciesInput = {
+    create?: XOR<WorkspaceCreateWithoutRetentionPoliciesInput, WorkspaceUncheckedCreateWithoutRetentionPoliciesInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutRetentionPoliciesInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type PurgeJobCreateNestedManyWithoutPolicyInput = {
+    create?: XOR<PurgeJobCreateWithoutPolicyInput, PurgeJobUncheckedCreateWithoutPolicyInput> | PurgeJobCreateWithoutPolicyInput[] | PurgeJobUncheckedCreateWithoutPolicyInput[]
+    connectOrCreate?: PurgeJobCreateOrConnectWithoutPolicyInput | PurgeJobCreateOrConnectWithoutPolicyInput[]
+    createMany?: PurgeJobCreateManyPolicyInputEnvelope
+    connect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+  }
+
+  export type PurgeJobUncheckedCreateNestedManyWithoutPolicyInput = {
+    create?: XOR<PurgeJobCreateWithoutPolicyInput, PurgeJobUncheckedCreateWithoutPolicyInput> | PurgeJobCreateWithoutPolicyInput[] | PurgeJobUncheckedCreateWithoutPolicyInput[]
+    connectOrCreate?: PurgeJobCreateOrConnectWithoutPolicyInput | PurgeJobCreateOrConnectWithoutPolicyInput[]
+    createMany?: PurgeJobCreateManyPolicyInputEnvelope
+    connect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+  }
+
+  export type EnumVaultRecordClassFieldUpdateOperationsInput = {
+    set?: $Enums.VaultRecordClass
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutRetentionPoliciesNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutRetentionPoliciesInput, WorkspaceUncheckedCreateWithoutRetentionPoliciesInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutRetentionPoliciesInput
+    upsert?: WorkspaceUpsertWithoutRetentionPoliciesInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutRetentionPoliciesInput, WorkspaceUpdateWithoutRetentionPoliciesInput>, WorkspaceUncheckedUpdateWithoutRetentionPoliciesInput>
+  }
+
+  export type PurgeJobUpdateManyWithoutPolicyNestedInput = {
+    create?: XOR<PurgeJobCreateWithoutPolicyInput, PurgeJobUncheckedCreateWithoutPolicyInput> | PurgeJobCreateWithoutPolicyInput[] | PurgeJobUncheckedCreateWithoutPolicyInput[]
+    connectOrCreate?: PurgeJobCreateOrConnectWithoutPolicyInput | PurgeJobCreateOrConnectWithoutPolicyInput[]
+    upsert?: PurgeJobUpsertWithWhereUniqueWithoutPolicyInput | PurgeJobUpsertWithWhereUniqueWithoutPolicyInput[]
+    createMany?: PurgeJobCreateManyPolicyInputEnvelope
+    set?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    disconnect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    delete?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    connect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    update?: PurgeJobUpdateWithWhereUniqueWithoutPolicyInput | PurgeJobUpdateWithWhereUniqueWithoutPolicyInput[]
+    updateMany?: PurgeJobUpdateManyWithWhereWithoutPolicyInput | PurgeJobUpdateManyWithWhereWithoutPolicyInput[]
+    deleteMany?: PurgeJobScalarWhereInput | PurgeJobScalarWhereInput[]
+  }
+
+  export type PurgeJobUncheckedUpdateManyWithoutPolicyNestedInput = {
+    create?: XOR<PurgeJobCreateWithoutPolicyInput, PurgeJobUncheckedCreateWithoutPolicyInput> | PurgeJobCreateWithoutPolicyInput[] | PurgeJobUncheckedCreateWithoutPolicyInput[]
+    connectOrCreate?: PurgeJobCreateOrConnectWithoutPolicyInput | PurgeJobCreateOrConnectWithoutPolicyInput[]
+    upsert?: PurgeJobUpsertWithWhereUniqueWithoutPolicyInput | PurgeJobUpsertWithWhereUniqueWithoutPolicyInput[]
+    createMany?: PurgeJobCreateManyPolicyInputEnvelope
+    set?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    disconnect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    delete?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    connect?: PurgeJobWhereUniqueInput | PurgeJobWhereUniqueInput[]
+    update?: PurgeJobUpdateWithWhereUniqueWithoutPolicyInput | PurgeJobUpdateWithWhereUniqueWithoutPolicyInput[]
+    updateMany?: PurgeJobUpdateManyWithWhereWithoutPolicyInput | PurgeJobUpdateManyWithWhereWithoutPolicyInput[]
+    deleteMany?: PurgeJobScalarWhereInput | PurgeJobScalarWhereInput[]
+  }
+
+  export type WorkspaceCreateNestedOneWithoutPurgeJobsInput = {
+    create?: XOR<WorkspaceCreateWithoutPurgeJobsInput, WorkspaceUncheckedCreateWithoutPurgeJobsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutPurgeJobsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type RetentionPolicyCreateNestedOneWithoutPurgeJobsInput = {
+    create?: XOR<RetentionPolicyCreateWithoutPurgeJobsInput, RetentionPolicyUncheckedCreateWithoutPurgeJobsInput>
+    connectOrCreate?: RetentionPolicyCreateOrConnectWithoutPurgeJobsInput
+    connect?: RetentionPolicyWhereUniqueInput
+  }
+
+  export type EnumPurgeJobStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PurgeJobStatus
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutPurgeJobsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutPurgeJobsInput, WorkspaceUncheckedCreateWithoutPurgeJobsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutPurgeJobsInput
+    upsert?: WorkspaceUpsertWithoutPurgeJobsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutPurgeJobsInput, WorkspaceUpdateWithoutPurgeJobsInput>, WorkspaceUncheckedUpdateWithoutPurgeJobsInput>
+  }
+
+  export type RetentionPolicyUpdateOneWithoutPurgeJobsNestedInput = {
+    create?: XOR<RetentionPolicyCreateWithoutPurgeJobsInput, RetentionPolicyUncheckedCreateWithoutPurgeJobsInput>
+    connectOrCreate?: RetentionPolicyCreateOrConnectWithoutPurgeJobsInput
+    upsert?: RetentionPolicyUpsertWithoutPurgeJobsInput
+    disconnect?: RetentionPolicyWhereInput | boolean
+    delete?: RetentionPolicyWhereInput | boolean
+    connect?: RetentionPolicyWhereUniqueInput
+    update?: XOR<XOR<RetentionPolicyUpdateToOneWithWhereWithoutPurgeJobsInput, RetentionPolicyUpdateWithoutPurgeJobsInput>, RetentionPolicyUncheckedUpdateWithoutPurgeJobsInput>
   }
 
   export type DealCreateNestedOneWithoutPartiesInput = {
@@ -71630,6 +75120,40 @@ export namespace Prisma {
     _max?: NestedEnumMissingItemReviewStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumVaultRecordClassFilter<$PrismaModel = never> = {
+    equals?: $Enums.VaultRecordClass | EnumVaultRecordClassFieldRefInput<$PrismaModel>
+    in?: $Enums.VaultRecordClass[] | ListEnumVaultRecordClassFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VaultRecordClass[] | ListEnumVaultRecordClassFieldRefInput<$PrismaModel>
+    not?: NestedEnumVaultRecordClassFilter<$PrismaModel> | $Enums.VaultRecordClass
+  }
+
+  export type NestedEnumVaultRecordClassWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VaultRecordClass | EnumVaultRecordClassFieldRefInput<$PrismaModel>
+    in?: $Enums.VaultRecordClass[] | ListEnumVaultRecordClassFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VaultRecordClass[] | ListEnumVaultRecordClassFieldRefInput<$PrismaModel>
+    not?: NestedEnumVaultRecordClassWithAggregatesFilter<$PrismaModel> | $Enums.VaultRecordClass
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVaultRecordClassFilter<$PrismaModel>
+    _max?: NestedEnumVaultRecordClassFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPurgeJobStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PurgeJobStatus | EnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPurgeJobStatusFilter<$PrismaModel> | $Enums.PurgeJobStatus
+  }
+
+  export type NestedEnumPurgeJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PurgeJobStatus | EnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PurgeJobStatus[] | ListEnumPurgeJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPurgeJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.PurgeJobStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPurgeJobStatusFilter<$PrismaModel>
+    _max?: NestedEnumPurgeJobStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumDealPartyRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.DealPartyRole | EnumDealPartyRoleFieldRefInput<$PrismaModel>
     in?: $Enums.DealPartyRole[] | ListEnumDealPartyRoleFieldRefInput<$PrismaModel>
@@ -72147,6 +75671,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutOrganizationUsersInput = {
@@ -72179,6 +75705,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutOrganizationUsersInput = {
@@ -72607,6 +76135,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutOrganizationUsersInput = {
@@ -72639,6 +76169,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -73953,6 +77485,82 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RetentionPolicyCreateWithoutWorkspaceInput = {
+    id?: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction?: string
+    retentionYears: number
+    purgeMode?: string
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    purgeJobs?: PurgeJobCreateNestedManyWithoutPolicyInput
+  }
+
+  export type RetentionPolicyUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction?: string
+    retentionYears: number
+    purgeMode?: string
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutPolicyInput
+  }
+
+  export type RetentionPolicyCreateOrConnectWithoutWorkspaceInput = {
+    where: RetentionPolicyWhereUniqueInput
+    create: XOR<RetentionPolicyCreateWithoutWorkspaceInput, RetentionPolicyUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type RetentionPolicyCreateManyWorkspaceInputEnvelope = {
+    data: RetentionPolicyCreateManyWorkspaceInput | RetentionPolicyCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PurgeJobCreateWithoutWorkspaceInput = {
+    id?: string
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    policy?: RetentionPolicyCreateNestedOneWithoutPurgeJobsInput
+  }
+
+  export type PurgeJobUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    policyId?: string | null
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PurgeJobCreateOrConnectWithoutWorkspaceInput = {
+    where: PurgeJobWhereUniqueInput
+    create: XOR<PurgeJobCreateWithoutWorkspaceInput, PurgeJobUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type PurgeJobCreateManyWorkspaceInputEnvelope = {
+    data: PurgeJobCreateManyWorkspaceInput | PurgeJobCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithWhereUniqueWithoutOrganizationWorkspaceInput = {
     where: UserWhereUniqueInput
     update: XOR<UserUpdateWithoutOrganizationWorkspaceInput, UserUncheckedUpdateWithoutOrganizationWorkspaceInput>
@@ -74598,6 +78206,73 @@ export namespace Prisma {
     data: XOR<MissingItemRequestUpdateManyMutationInput, MissingItemRequestUncheckedUpdateManyWithoutDealerInput>
   }
 
+  export type RetentionPolicyUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: RetentionPolicyWhereUniqueInput
+    update: XOR<RetentionPolicyUpdateWithoutWorkspaceInput, RetentionPolicyUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<RetentionPolicyCreateWithoutWorkspaceInput, RetentionPolicyUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type RetentionPolicyUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: RetentionPolicyWhereUniqueInput
+    data: XOR<RetentionPolicyUpdateWithoutWorkspaceInput, RetentionPolicyUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type RetentionPolicyUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: RetentionPolicyScalarWhereInput
+    data: XOR<RetentionPolicyUpdateManyMutationInput, RetentionPolicyUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type RetentionPolicyScalarWhereInput = {
+    AND?: RetentionPolicyScalarWhereInput | RetentionPolicyScalarWhereInput[]
+    OR?: RetentionPolicyScalarWhereInput[]
+    NOT?: RetentionPolicyScalarWhereInput | RetentionPolicyScalarWhereInput[]
+    id?: StringFilter<"RetentionPolicy"> | string
+    workspaceId?: StringFilter<"RetentionPolicy"> | string
+    recordClass?: EnumVaultRecordClassFilter<"RetentionPolicy"> | $Enums.VaultRecordClass
+    jurisdiction?: StringFilter<"RetentionPolicy"> | string
+    retentionYears?: IntFilter<"RetentionPolicy"> | number
+    purgeMode?: StringFilter<"RetentionPolicy"> | string
+    legalHoldExempt?: BoolFilter<"RetentionPolicy"> | boolean
+    enabled?: BoolFilter<"RetentionPolicy"> | boolean
+    createdAt?: DateTimeFilter<"RetentionPolicy"> | Date | string
+    updatedAt?: DateTimeFilter<"RetentionPolicy"> | Date | string
+  }
+
+  export type PurgeJobUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: PurgeJobWhereUniqueInput
+    update: XOR<PurgeJobUpdateWithoutWorkspaceInput, PurgeJobUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<PurgeJobCreateWithoutWorkspaceInput, PurgeJobUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type PurgeJobUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: PurgeJobWhereUniqueInput
+    data: XOR<PurgeJobUpdateWithoutWorkspaceInput, PurgeJobUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type PurgeJobUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: PurgeJobScalarWhereInput
+    data: XOR<PurgeJobUpdateManyMutationInput, PurgeJobUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type PurgeJobScalarWhereInput = {
+    AND?: PurgeJobScalarWhereInput | PurgeJobScalarWhereInput[]
+    OR?: PurgeJobScalarWhereInput[]
+    NOT?: PurgeJobScalarWhereInput | PurgeJobScalarWhereInput[]
+    id?: StringFilter<"PurgeJob"> | string
+    workspaceId?: StringFilter<"PurgeJob"> | string
+    policyId?: StringNullableFilter<"PurgeJob"> | string | null
+    status?: EnumPurgeJobStatusFilter<"PurgeJob"> | $Enums.PurgeJobStatus
+    dryRun?: BoolFilter<"PurgeJob"> | boolean
+    scheduledAt?: DateTimeFilter<"PurgeJob"> | Date | string
+    startedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    finishedAt?: DateTimeNullableFilter<"PurgeJob"> | Date | string | null
+    initiatedByUserId?: StringNullableFilter<"PurgeJob"> | string | null
+    summary?: JsonFilter<"PurgeJob">
+    errorMessage?: StringNullableFilter<"PurgeJob"> | string | null
+    createdAt?: DateTimeFilter<"PurgeJob"> | Date | string
+    updatedAt?: DateTimeFilter<"PurgeJob"> | Date | string
+  }
+
   export type WorkspaceCreateWithoutCalendarEventsInput = {
     id?: string
     name: string
@@ -74628,6 +78303,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutCalendarEventsInput = {
@@ -74660,6 +78337,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutCalendarEventsInput = {
@@ -74803,6 +78482,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutCalendarEventsInput = {
@@ -74835,6 +78516,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealUpsertWithoutCalendarEventsInput = {
@@ -75013,6 +78696,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutMembershipsInput = {
@@ -75045,6 +78730,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutMembershipsInput = {
@@ -75144,6 +78831,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutMembershipsInput = {
@@ -75176,6 +78865,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutDocumentsInput = {
@@ -75208,6 +78899,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDocumentsInput = {
@@ -75240,6 +78933,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDocumentsInput = {
@@ -75288,6 +78983,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDocumentsInput = {
@@ -75320,6 +79017,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutSubscriptionsInput = {
@@ -75352,6 +79051,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutSubscriptionsInput = {
@@ -75384,6 +79085,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutSubscriptionsInput = {
@@ -75432,6 +79135,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutSubscriptionsInput = {
@@ -75464,6 +79169,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerProfileInput = {
@@ -75496,6 +79203,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerProfileInput = {
@@ -75528,6 +79237,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerProfileInput = {
@@ -75576,6 +79287,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerProfileInput = {
@@ -75608,6 +79321,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutLenderProfileInput = {
@@ -75640,6 +79355,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderProfileInput = {
@@ -75672,6 +79389,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderProfileInput = {
@@ -75720,6 +79439,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderProfileInput = {
@@ -75752,6 +79473,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerLinksInput = {
@@ -75784,6 +79507,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerLinksInput = {
@@ -75816,6 +79541,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerLinksInput = {
@@ -75853,6 +79580,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderLinksInput = {
@@ -75885,6 +79614,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderLinksInput = {
@@ -76033,6 +79764,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerLinksInput = {
@@ -76065,6 +79798,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUpsertWithoutLenderLinksInput = {
@@ -76108,6 +79843,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderLinksInput = {
@@ -76140,6 +79877,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealUpsertWithWhereUniqueWithoutDealerLenderLinkInput = {
@@ -76188,6 +79927,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerOnboardingAnswersInput = {
@@ -76220,6 +79961,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerOnboardingAnswersInput = {
@@ -76268,6 +80011,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerOnboardingAnswersInput = {
@@ -76300,6 +80045,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutLenderOnboardingAnswersInput = {
@@ -76332,6 +80079,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderOnboardingAnswersInput = {
@@ -76364,6 +80113,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderOnboardingAnswersInput = {
@@ -76412,6 +80163,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderOnboardingAnswersInput = {
@@ -76444,6 +80197,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerDealsInput = {
@@ -76476,6 +80231,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerDealsInput = {
@@ -76508,6 +80265,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerDealsInput = {
@@ -76545,6 +80304,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderDealsInput = {
@@ -76577,6 +80338,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderDealsInput = {
@@ -77420,6 +81183,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerDealsInput = {
@@ -77452,6 +81217,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUpsertWithoutLenderDealsInput = {
@@ -77495,6 +81262,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderDealsInput = {
@@ -77527,6 +81296,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealerLenderLinkUpsertWithoutDealsInput = {
@@ -78200,6 +81971,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderTasksInput = {
@@ -78232,6 +82005,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderTasksInput = {
@@ -78269,6 +82044,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerTasksInput = {
@@ -78301,6 +82078,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerTasksInput = {
@@ -78507,6 +82286,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderTasksInput = {
@@ -78539,6 +82320,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUpsertWithoutDealerTasksInput = {
@@ -78582,6 +82365,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerTasksInput = {
@@ -78614,6 +82399,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealUpsertWithoutLenderTasksInput = {
@@ -78816,6 +82603,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderMissingItemRequestsInput = {
@@ -78848,6 +82637,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderMissingItemRequestsInput = {
@@ -78885,6 +82676,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerMissingItemRequestsInput = {
@@ -78917,6 +82710,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerMissingItemRequestsInput = {
@@ -79060,6 +82855,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderMissingItemRequestsInput = {
@@ -79092,6 +82889,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUpsertWithoutDealerMissingItemRequestsInput = {
@@ -79135,6 +82934,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerMissingItemRequestsInput = {
@@ -79167,6 +82968,8 @@ export namespace Prisma {
     lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealUpsertWithoutMissingItemRequestsInput = {
@@ -79268,6 +83071,434 @@ export namespace Prisma {
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
     calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
     lenderTasks?: LenderTaskUncheckedUpdateManyWithoutDealNestedInput
+  }
+
+  export type WorkspaceCreateWithoutRetentionPoliciesInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutRetentionPoliciesInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutRetentionPoliciesInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutRetentionPoliciesInput, WorkspaceUncheckedCreateWithoutRetentionPoliciesInput>
+  }
+
+  export type PurgeJobCreateWithoutPolicyInput = {
+    id?: string
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutPurgeJobsInput
+  }
+
+  export type PurgeJobUncheckedCreateWithoutPolicyInput = {
+    id?: string
+    workspaceId: string
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PurgeJobCreateOrConnectWithoutPolicyInput = {
+    where: PurgeJobWhereUniqueInput
+    create: XOR<PurgeJobCreateWithoutPolicyInput, PurgeJobUncheckedCreateWithoutPolicyInput>
+  }
+
+  export type PurgeJobCreateManyPolicyInputEnvelope = {
+    data: PurgeJobCreateManyPolicyInput | PurgeJobCreateManyPolicyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WorkspaceUpsertWithoutRetentionPoliciesInput = {
+    update: XOR<WorkspaceUpdateWithoutRetentionPoliciesInput, WorkspaceUncheckedUpdateWithoutRetentionPoliciesInput>
+    create: XOR<WorkspaceCreateWithoutRetentionPoliciesInput, WorkspaceUncheckedCreateWithoutRetentionPoliciesInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutRetentionPoliciesInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutRetentionPoliciesInput, WorkspaceUncheckedUpdateWithoutRetentionPoliciesInput>
+  }
+
+  export type WorkspaceUpdateWithoutRetentionPoliciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutRetentionPoliciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type PurgeJobUpsertWithWhereUniqueWithoutPolicyInput = {
+    where: PurgeJobWhereUniqueInput
+    update: XOR<PurgeJobUpdateWithoutPolicyInput, PurgeJobUncheckedUpdateWithoutPolicyInput>
+    create: XOR<PurgeJobCreateWithoutPolicyInput, PurgeJobUncheckedCreateWithoutPolicyInput>
+  }
+
+  export type PurgeJobUpdateWithWhereUniqueWithoutPolicyInput = {
+    where: PurgeJobWhereUniqueInput
+    data: XOR<PurgeJobUpdateWithoutPolicyInput, PurgeJobUncheckedUpdateWithoutPolicyInput>
+  }
+
+  export type PurgeJobUpdateManyWithWhereWithoutPolicyInput = {
+    where: PurgeJobScalarWhereInput
+    data: XOR<PurgeJobUpdateManyMutationInput, PurgeJobUncheckedUpdateManyWithoutPolicyInput>
+  }
+
+  export type WorkspaceCreateWithoutPurgeJobsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutPurgeJobsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
+    lenderTasks?: LenderTaskUncheckedCreateNestedManyWithoutLenderInput
+    dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutPurgeJobsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutPurgeJobsInput, WorkspaceUncheckedCreateWithoutPurgeJobsInput>
+  }
+
+  export type RetentionPolicyCreateWithoutPurgeJobsInput = {
+    id?: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction?: string
+    retentionYears: number
+    purgeMode?: string
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutRetentionPoliciesInput
+  }
+
+  export type RetentionPolicyUncheckedCreateWithoutPurgeJobsInput = {
+    id?: string
+    workspaceId: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction?: string
+    retentionYears: number
+    purgeMode?: string
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RetentionPolicyCreateOrConnectWithoutPurgeJobsInput = {
+    where: RetentionPolicyWhereUniqueInput
+    create: XOR<RetentionPolicyCreateWithoutPurgeJobsInput, RetentionPolicyUncheckedCreateWithoutPurgeJobsInput>
+  }
+
+  export type WorkspaceUpsertWithoutPurgeJobsInput = {
+    update: XOR<WorkspaceUpdateWithoutPurgeJobsInput, WorkspaceUncheckedUpdateWithoutPurgeJobsInput>
+    create: XOR<WorkspaceCreateWithoutPurgeJobsInput, WorkspaceUncheckedCreateWithoutPurgeJobsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutPurgeJobsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutPurgeJobsInput, WorkspaceUncheckedUpdateWithoutPurgeJobsInput>
+  }
+
+  export type WorkspaceUpdateWithoutPurgeJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutPurgeJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
+    lenderTasks?: LenderTaskUncheckedUpdateManyWithoutLenderNestedInput
+    dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
+    lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
+    dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type RetentionPolicyUpsertWithoutPurgeJobsInput = {
+    update: XOR<RetentionPolicyUpdateWithoutPurgeJobsInput, RetentionPolicyUncheckedUpdateWithoutPurgeJobsInput>
+    create: XOR<RetentionPolicyCreateWithoutPurgeJobsInput, RetentionPolicyUncheckedCreateWithoutPurgeJobsInput>
+    where?: RetentionPolicyWhereInput
+  }
+
+  export type RetentionPolicyUpdateToOneWithWhereWithoutPurgeJobsInput = {
+    where?: RetentionPolicyWhereInput
+    data: XOR<RetentionPolicyUpdateWithoutPurgeJobsInput, RetentionPolicyUncheckedUpdateWithoutPurgeJobsInput>
+  }
+
+  export type RetentionPolicyUpdateWithoutPurgeJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutRetentionPoliciesNestedInput
+  }
+
+  export type RetentionPolicyUncheckedUpdateWithoutPurgeJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DealCreateWithoutPartiesInput = {
@@ -80462,6 +84693,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLoanPoolsInput = {
@@ -80494,6 +84727,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLoanPoolsInput = {
@@ -80735,6 +84970,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLoanPoolsInput = {
@@ -80767,6 +85004,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutLoanPoolsCreatedInput = {
@@ -81875,6 +86114,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutNotificationsInput = {
@@ -81907,6 +86148,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutNotificationsInput = {
@@ -82095,6 +86338,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutNotificationsInput = {
@@ -82127,6 +86372,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutNotificationsInput = {
@@ -82311,6 +86558,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutApiKeysInput = {
@@ -82343,6 +86592,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutApiKeysInput = {
@@ -82391,6 +86642,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutApiKeysInput = {
@@ -82423,6 +86676,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutWebhookEndpointsInput = {
@@ -82455,6 +86710,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutWebhookEndpointsInput = {
@@ -82487,6 +86744,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutWebhookEndpointsInput = {
@@ -82569,6 +86828,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutWebhookEndpointsInput = {
@@ -82601,6 +86862,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WebhookDeliveryUpsertWithWhereUniqueWithoutWebhookEndpointInput = {
@@ -82770,6 +87033,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutAccessAuditsInput = {
@@ -82802,6 +87067,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutAccessAuditsInput = {
@@ -82901,6 +87168,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutAccessAuditsInput = {
@@ -82933,6 +87202,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealCreateWithoutCommentsInput = {
@@ -83586,6 +87857,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealAlertsInput = {
@@ -83618,6 +87891,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedCreateNestedManyWithoutDealerInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutLenderInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedCreateNestedManyWithoutDealerInput
+    retentionPolicies?: RetentionPolicyUncheckedCreateNestedManyWithoutWorkspaceInput
+    purgeJobs?: PurgeJobUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealAlertsInput = {
@@ -83797,6 +88072,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealAlertsInput = {
@@ -83829,6 +88106,8 @@ export namespace Prisma {
     dealerTasks?: LenderTaskUncheckedUpdateManyWithoutDealerNestedInput
     lenderMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutLenderNestedInput
     dealerMissingItemRequests?: MissingItemRequestUncheckedUpdateManyWithoutDealerNestedInput
+    retentionPolicies?: RetentionPolicyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealAlertAuditUpsertWithWhereUniqueWithoutDealAlertInput = {
@@ -86498,6 +90777,33 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type RetentionPolicyCreateManyWorkspaceInput = {
+    id?: string
+    recordClass: $Enums.VaultRecordClass
+    jurisdiction?: string
+    retentionYears: number
+    purgeMode?: string
+    legalHoldExempt?: boolean
+    enabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PurgeJobCreateManyWorkspaceInput = {
+    id?: string
+    policyId?: string | null
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutOrganizationWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -87545,6 +91851,89 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RetentionPolicyUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    purgeJobs?: PurgeJobUpdateManyWithoutPolicyNestedInput
+  }
+
+  export type RetentionPolicyUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    purgeJobs?: PurgeJobUncheckedUpdateManyWithoutPolicyNestedInput
+  }
+
+  export type RetentionPolicyUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recordClass?: EnumVaultRecordClassFieldUpdateOperationsInput | $Enums.VaultRecordClass
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    retentionYears?: IntFieldUpdateOperationsInput | number
+    purgeMode?: StringFieldUpdateOperationsInput | string
+    legalHoldExempt?: BoolFieldUpdateOperationsInput | boolean
+    enabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PurgeJobUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    policy?: RetentionPolicyUpdateOneWithoutPurgeJobsNestedInput
+  }
+
+  export type PurgeJobUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    policyId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PurgeJobUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    policyId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DealCreateManyDealerLenderLinkInput = {
     id?: string
     dealerId: string
@@ -88468,6 +92857,66 @@ export namespace Prisma {
     lenderReviewStatus?: EnumMissingItemReviewStatusFieldUpdateOperationsInput | $Enums.MissingItemReviewStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PurgeJobCreateManyPolicyInput = {
+    id?: string
+    workspaceId: string
+    status?: $Enums.PurgeJobStatus
+    dryRun?: boolean
+    scheduledAt: Date | string
+    startedAt?: Date | string | null
+    finishedAt?: Date | string | null
+    initiatedByUserId?: string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PurgeJobUpdateWithoutPolicyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutPurgeJobsNestedInput
+  }
+
+  export type PurgeJobUncheckedUpdateWithoutPolicyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PurgeJobUncheckedUpdateManyWithoutPolicyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    status?: EnumPurgeJobStatusFieldUpdateOperationsInput | $Enums.PurgeJobStatus
+    dryRun?: BoolFieldUpdateOperationsInput | boolean
+    scheduledAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initiatedByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    summary?: JsonNullValueInput | InputJsonValue
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

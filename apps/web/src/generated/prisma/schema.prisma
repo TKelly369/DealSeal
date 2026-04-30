@@ -330,6 +330,22 @@ enum MissingItemReviewStatus {
   rejected
 }
 
+enum VaultRecordClass {
+  GOVERNING_CONTRACT
+  DEAL_JACKET
+  AUDIT_LOG
+  CUSTODY_EVENT
+  PACKAGE_MANIFEST
+}
+
+enum PurgeJobStatus {
+  SCHEDULED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
 enum DealAlertAuditAction {
   ALERT_ISSUED
   ALERT_SENT
@@ -402,6 +418,8 @@ model Workspace {
   dealerTasks               LenderTask[]             @relation("DealerWorkspaceTasks")
   lenderMissingItemRequests MissingItemRequest[]     @relation("LenderWorkspaceMissingItems")
   dealerMissingItemRequests MissingItemRequest[]     @relation("DealerWorkspaceMissingItems")
+  retentionPolicies         RetentionPolicy[]
+  purgeJobs                 PurgeJob[]
   createdAt                 DateTime                 @default(now())
   updatedAt                 DateTime                 @updatedAt
 }
@@ -649,6 +667,44 @@ model MissingItemRequest {
   @@index([lenderId, status, dueDate])
   @@index([dealerId, status])
   @@index([dealId, status])
+}
+
+model RetentionPolicy {
+  id              String           @id @default(cuid())
+  workspaceId     String
+  recordClass     VaultRecordClass
+  jurisdiction    String           @default("US")
+  retentionYears  Int
+  purgeMode       String           @default("HASH_ONLY")
+  legalHoldExempt Boolean          @default(false)
+  enabled         Boolean          @default(true)
+  workspace       Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  purgeJobs       PurgeJob[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@unique([workspaceId, recordClass, jurisdiction])
+  @@index([workspaceId, enabled])
+}
+
+model PurgeJob {
+  id                String           @id @default(cuid())
+  workspaceId       String
+  policyId          String?
+  status            PurgeJobStatus   @default(SCHEDULED)
+  dryRun            Boolean          @default(false)
+  scheduledAt       DateTime
+  startedAt         DateTime?
+  finishedAt        DateTime?
+  initiatedByUserId String?
+  summary           Json             @default("{}")
+  errorMessage      String?
+  workspace         Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  policy            RetentionPolicy? @relation(fields: [policyId], references: [id], onDelete: SetNull)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([workspaceId, status, scheduledAt])
 }
 
 model DealParty {

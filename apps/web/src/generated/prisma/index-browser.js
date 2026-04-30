@@ -321,6 +321,35 @@ exports.Prisma.MissingItemRequestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RetentionPolicyScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  recordClass: 'recordClass',
+  jurisdiction: 'jurisdiction',
+  retentionYears: 'retentionYears',
+  purgeMode: 'purgeMode',
+  legalHoldExempt: 'legalHoldExempt',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PurgeJobScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  policyId: 'policyId',
+  status: 'status',
+  dryRun: 'dryRun',
+  scheduledAt: 'scheduledAt',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  initiatedByUserId: 'initiatedByUserId',
+  summary: 'summary',
+  errorMessage: 'errorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.DealPartyScalarFieldEnum = {
   id: 'id',
   dealId: 'dealId',
@@ -869,6 +898,22 @@ exports.MissingItemReviewStatus = exports.$Enums.MissingItemReviewStatus = {
   rejected: 'rejected'
 };
 
+exports.VaultRecordClass = exports.$Enums.VaultRecordClass = {
+  GOVERNING_CONTRACT: 'GOVERNING_CONTRACT',
+  DEAL_JACKET: 'DEAL_JACKET',
+  AUDIT_LOG: 'AUDIT_LOG',
+  CUSTODY_EVENT: 'CUSTODY_EVENT',
+  PACKAGE_MANIFEST: 'PACKAGE_MANIFEST'
+};
+
+exports.PurgeJobStatus = exports.$Enums.PurgeJobStatus = {
+  SCHEDULED: 'SCHEDULED',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.DealPartyRole = exports.$Enums.DealPartyRole = {
   BUYER: 'BUYER',
   CO_BUYER: 'CO_BUYER'
@@ -1057,6 +1102,8 @@ exports.Prisma.ModelName = {
   Deal: 'Deal',
   LenderTask: 'LenderTask',
   MissingItemRequest: 'MissingItemRequest',
+  RetentionPolicy: 'RetentionPolicy',
+  PurgeJob: 'PurgeJob',
   DealParty: 'DealParty',
   Vehicle: 'Vehicle',
   DealFinancials: 'DealFinancials',
