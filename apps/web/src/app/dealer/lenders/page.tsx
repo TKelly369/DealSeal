@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { DealerLenderLinkService } from "@/lib/services/link.service";
@@ -74,7 +75,12 @@ export default async function DealerLendersPage({
 
   return (
     <div className="ds-section-shell">
-      <h1 style={{ marginTop: 0 }}>Lender network</h1>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: "0.75rem", alignItems: "baseline" }}>
+        <h1 style={{ marginTop: 0 }}>Lender network</h1>
+        <Link href="/dealer/lenders/performance" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
+          Lender proficiency scores
+        </Link>
+      </div>
       <p style={{ color: "var(--muted)", maxWidth: 720, lineHeight: 1.5 }}>
         You can only structure and submit deals with <strong>approved</strong> lenders. Request access below; pending
         rows show programs awaiting lender or platform approval.

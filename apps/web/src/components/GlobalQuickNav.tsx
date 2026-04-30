@@ -19,6 +19,7 @@ const DEALER_ROUTES = [
   { value: "/dealer/deals/new", label: "Dealer: New deal" },
   { value: "/dealer/files", label: "Dealer: Files" },
   { value: "/dealer/lenders", label: "Dealer: Lenders" },
+  { value: "/dealer/lenders/performance", label: "Dealer: Lender grades" },
   { value: "/dealer", label: "Dealer: Home" },
 ];
 
@@ -27,6 +28,7 @@ const LENDER_ROUTES = [
   { value: "/lender/dashboard", label: "Lender: Dashboard" },
   { value: "/lender/deal-intake", label: "Lender: Deal intake" },
   { value: "/lender/dealers", label: "Lender: Dealers" },
+  { value: "/lender/dealers/performance", label: "Lender: Dealer grades" },
   { value: "/lender/calendar", label: "Lender: Calendar" },
   { value: "/lender/assets", label: "Lender: Assets & pools" },
 ];

@@ -1,4 +1,5 @@
 import {
+  Award,
   Calendar,
   ClipboardCheck,
   FileStack,
@@ -20,6 +21,7 @@ export const dealerShellNavItems = [
   { href: "/dealer/files", label: "Files", icon: FolderOpen },
   { href: "/dealer/deals", label: "Deals", icon: Kanban },
   { href: "/dealer/lenders", label: "Lenders", icon: Handshake },
+  { href: "/dealer/lenders/performance", label: "Lender grades", icon: Award },
   { href: "/dealer/calendar", label: "Calendar", icon: Calendar },
   { href: "/dealer/tasks", label: "Tasks", icon: ListTodo },
   { href: "/dealer/settings", label: "Settings", icon: Settings },

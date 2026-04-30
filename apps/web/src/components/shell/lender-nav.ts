@@ -1,4 +1,5 @@
 import {
+  Award,
   Bell,
   Calendar,
   ClipboardCheck,
@@ -21,6 +22,7 @@ export const lenderShellNavItems = [
   { href: "/lender/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/lender/deal-intake", label: "Deal intake", icon: Inbox },
   { href: "/lender/dealers", label: "Dealers", icon: Handshake },
+  { href: "/lender/dealers/performance", label: "Dealer grades", icon: Award },
   { href: "/lender/dealers/approval-queue", label: "Approval queue", icon: Shield },
   { href: "/lender/forms", label: "Forms", icon: FileText },
   { href: "/lender/rules", label: "Rules", icon: ScrollText },

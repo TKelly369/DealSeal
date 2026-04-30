@@ -37,9 +37,14 @@ export default async function LenderDealersPage() {
         }}
       >
         <h1 style={{ marginTop: 0 }}>Approved dealers</h1>
-        <Link href="/lender/dealers/approval-queue" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
-          Approval queue
-        </Link>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+          <Link href="/lender/dealers/performance" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
+            Dealer grades
+          </Link>
+          <Link href="/lender/dealers/approval-queue" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
+            Approval queue
+          </Link>
+        </div>
       </div>
       <div className="card">
         {dataWarning ? <p style={{ color: "#fecaca" }}>{dataWarning}</p> : null}
