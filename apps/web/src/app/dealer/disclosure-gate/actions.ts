@@ -29,10 +29,6 @@ export async function uploadDealerOpeningDisclosureAction(
     return { error: "Opening disclosure applies to dealer workspaces only." };
   }
 
-  if (await hasUploadedDealerOpeningDisclosure(workspaceId)) {
-    redirect("/dealer/dashboard");
-  }
-
   const profile = await prisma.dealerProfile.findUnique({
     where: { workspaceId },
     select: { id: true },
@@ -78,5 +74,5 @@ export async function uploadDealerOpeningDisclosureAction(
   revalidatePath("/dealer", "layout");
   revalidatePath("/dealer/dashboard");
   revalidatePath("/dealer/disclosure-gate");
-  redirect("/dealer/dashboard");
+  redirect("/dealer/disclosure-gate");
 }

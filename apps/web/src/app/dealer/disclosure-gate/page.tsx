@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { DEALER_DISCLOSURE_BLOCKED_CAPABILITIES } from "@/lib/dealer-disclosure-gate";
 import { redirect } from "next/navigation";
 import { hasUploadedDealerOpeningDisclosure } from "@/lib/onboarding-status";
+import { prisma } from "@/lib/db";
 import { OpeningDisclosureForm } from "./OpeningDisclosureForm";
 
 export default async function DealerDisclosureGatePage() {
@@ -10,6 +11,15 @@ export default async function DealerDisclosureGatePage() {
   if (!session?.user) redirect("/dealer/login?next=/dealer/disclosure-gate");
 
   const unlocked = await hasUploadedDealerOpeningDisclosure(session.user.workspaceId);
+  const profile = await prisma.dealerProfile.findUnique({
+    where: { workspaceId: session.user.workspaceId },
+    select: {
+      openingDisclosureUploadedAt: true,
+      openingDisclosureOriginalName: true,
+      openingDisclosureSha256: true,
+      openingDisclosureStorageKey: true,
+    },
+  });
 
   return (
     <div className="ds-section-shell">
@@ -35,6 +45,36 @@ export default async function DealerDisclosureGatePage() {
 
       <div className="card" style={{ marginTop: "1rem", maxWidth: 720 }}>
         <p className="ds-card-title" style={{ marginTop: 0 }}>
+          Opening disclosure contract
+        </p>
+        <p style={{ color: "var(--muted)", marginTop: 0 }}>
+          Print this disclosure contract, obtain signatures, then upload the signed file back here for clearance.
+        </p>
+        <div className="row">
+          <a className="btn btn-secondary" href="/api/dealer/opening-disclosure/printable" target="_blank" rel="noreferrer">
+            View / print disclosure contract
+          </a>
+          {profile?.openingDisclosureStorageKey ? (
+            <>
+              <a className="btn btn-secondary" href="/api/dealer/opening-disclosure/file?mode=view" target="_blank" rel="noreferrer">
+                Open uploaded disclosure
+              </a>
+              <a className="btn btn-secondary" href="/api/dealer/opening-disclosure/file?mode=download">
+                Download uploaded disclosure
+              </a>
+            </>
+          ) : null}
+        </div>
+        {profile?.openingDisclosureUploadedAt ? (
+          <p style={{ marginBottom: 0, marginTop: "0.85rem", color: "var(--muted)", fontSize: "0.88rem" }}>
+            Last uploaded: {profile.openingDisclosureUploadedAt.toLocaleString()} · {profile.openingDisclosureOriginalName ?? "opening-disclosure.pdf"}
+            {profile.openingDisclosureSha256 ? ` · SHA-256 ${profile.openingDisclosureSha256.slice(0, 12)}…` : ""}
+          </p>
+        ) : null}
+      </div>
+
+      <div className="card" style={{ marginTop: "1rem", maxWidth: 720 }}>
+        <p className="ds-card-title" style={{ marginTop: 0 }}>
           Blocked until disclosure is uploaded
         </p>
         <ul style={{ margin: "0 0 0.75rem", paddingLeft: "1.2rem", color: "var(--text-secondary)" }}>
@@ -50,7 +90,12 @@ export default async function DealerDisclosureGatePage() {
 
       {unlocked ? (
         <div style={{ marginTop: "1.5rem" }}>
-          <p style={{ color: "var(--muted)" }}>Opening disclosure is on file for this workspace.</p>
+          <p style={{ color: "var(--muted)" }}>
+            Opening disclosure is on file for this workspace. You can still upload a corrected/superseding signed copy here.
+          </p>
+          <h2 style={{ fontSize: "1.05rem", marginBottom: "0.75rem" }}>Replace / upload signed disclosure copy</h2>
+          <OpeningDisclosureForm />
+          <p />
           <Link className="btn" href="/dealer/dashboard">
             Continue to dashboard
           </Link>
