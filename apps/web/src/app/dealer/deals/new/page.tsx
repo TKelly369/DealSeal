@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { Prisma } from "@/generated/prisma";
 import { redirect } from "next/navigation";
 import { DealerLenderLinkService } from "@/lib/services/link.service";
 import { AuthoritativeContractService } from "@/lib/services/contract.service";
@@ -9,7 +10,7 @@ import { DealBuilderClient } from "./DealBuilderClient";
 
 export default async function DealerDealBuilderPage() {
   const session = await auth();
-  if (!session?.user) redirect("/login?next=/dealer/deals/new");
+  if (!session?.user) redirect("/dealer/login?next=/dealer/deals/new");
   const dealerId = session.user.workspaceId;
   let links: Awaited<ReturnType<typeof DealerLenderLinkService.getActiveLinksForDealer>> = [];
   try {
@@ -29,7 +30,7 @@ export default async function DealerDealBuilderPage() {
       createDeal={async (fd) => {
         "use server";
         const fresh = await auth();
-        if (!fresh?.user) redirect("/login?next=/dealer/deals/new");
+        if (!fresh?.user) redirect("/dealer/login?next=/dealer/deals/new");
         const linkId = String(fd.get("dealerLenderLinkId") || "");
         const active = await DealerLenderLinkService.getActiveLinksForDealer(fresh.user.workspaceId);
         const match = active.find((l) => l.id === linkId);
@@ -43,6 +44,11 @@ export default async function DealerDealBuilderPage() {
           throw e;
         }
 
+        const coFirst = String(fd.get("coBuyerFirstName") || "").trim();
+        const coLast = String(fd.get("coBuyerLastName") || "").trim();
+        const coBuyerName =
+          [coFirst, coLast].filter(Boolean).join(" ").trim() || String(fd.get("coBuyerName") || "").trim();
+
         const deal = await AuthoritativeContractService.generateCanonicalDeal({
           dealerId: fresh.user.workspaceId,
           lenderId: match.lender.id,
@@ -52,7 +58,7 @@ export default async function DealerDealBuilderPage() {
             firstName: String(fd.get("firstName") || ""),
             lastName: String(fd.get("lastName") || ""),
             address: String(fd.get("address") || ""),
-            coBuyerName: String(fd.get("coBuyerName") || ""),
+            coBuyerName: coBuyerName || undefined,
             contactInfo: String(fd.get("contactInfo") || ""),
             creditTier: String(fd.get("creditTier") || ""),
           },
@@ -69,6 +75,65 @@ export default async function DealerDealBuilderPage() {
           dealerRepresentative: String(fd.get("dealerRepresentative") || ""),
           dealershipLocation: String(fd.get("dealershipLocation") || ""),
         });
+
+        const preliminarySubmittedTerms = {
+          builderVersion: 2,
+          coBuyer: {
+            firstName: coFirst,
+            lastName: coLast,
+            address: String(fd.get("coBuyerAddress") || "").trim(),
+          },
+          pricing: {
+            notes: String(fd.get("pricingNotes") || ""),
+            amountFinanced: fd.get("amountFinanced") ? String(fd.get("amountFinanced")) : null,
+          },
+          taxes: {
+            notes: String(fd.get("taxesNotes") || ""),
+            amount: fd.get("taxesAmount") ? String(fd.get("taxesAmount")) : null,
+          },
+          fees: {
+            notes: String(fd.get("feesNotes") || ""),
+            amount: fd.get("feesAmount") ? String(fd.get("feesAmount")) : null,
+          },
+          addOns: String(fd.get("addOnsNotes") || ""),
+          tradeIn: String(fd.get("tradeInNotes") || ""),
+          downPayment: {
+            amount: fd.get("downPaymentAmount") ? String(fd.get("downPaymentAmount")) : null,
+            notes: String(fd.get("downPaymentNotes") || ""),
+          },
+        };
+
+        await prisma.deal.update({
+          where: { id: deal.id },
+          data: { preliminarySubmittedTerms: preliminarySubmittedTerms as Prisma.InputJsonValue },
+        });
+
+        const af = String(fd.get("amountFinanced") || "").trim();
+        if (af) {
+          try {
+            const amt = new Prisma.Decimal(af);
+            const taxes = new Prisma.Decimal(String(fd.get("taxesAmount") || "0"));
+            const fees = new Prisma.Decimal(String(fd.get("feesAmount") || "0"));
+            const totalRaw = String(fd.get("totalSalePrice") || "").trim();
+            const totalDec = totalRaw ? new Prisma.Decimal(totalRaw) : amt.plus(taxes).plus(fees);
+            await prisma.dealFinancials.create({
+              data: {
+                dealId: deal.id,
+                amountFinanced: amt,
+                ltv: new Prisma.Decimal(0.85),
+                maxLtv: new Prisma.Decimal(0.9),
+                taxes,
+                fees,
+                gap: new Prisma.Decimal(0),
+                warranty: new Prisma.Decimal(0),
+                totalSalePrice: totalDec,
+              },
+            });
+          } catch (err) {
+            console.warn("[DealSeal] deal financials not created from builder", err);
+          }
+        }
+
         await prisma.workspace.update({
           where: { id: fresh.user.workspaceId },
           data: { dealCountCurrentPeriod: { increment: 1 } },
@@ -78,7 +143,7 @@ export default async function DealerDealBuilderPage() {
       runCompliance={async (dealId) => {
         "use server";
         const fresh = await auth();
-        if (!fresh?.user) redirect("/login?next=/dealer/deals/new");
+        if (!fresh?.user) redirect("/dealer/login?next=/dealer/deals/new");
         const deal = await prisma.deal.findUnique({ where: { id: dealId }, select: { status: true } });
         if (!deal || deal.status === "DISCLOSURE_REQUIRED") {
           throw new Error("Upload and accept the signed Initial Disclosure before running compliance.");
@@ -96,7 +161,7 @@ export default async function DealerDealBuilderPage() {
       generateDoc={async (dealId, docType) => {
         "use server";
         const fresh = await auth();
-        if (!fresh?.user) redirect("/login?next=/dealer/deals/new");
+        if (!fresh?.user) redirect("/dealer/login?next=/dealer/deals/new");
         const deal = await prisma.deal.findUnique({ where: { id: dealId }, select: { status: true } });
         if (!deal || deal.status === "DISCLOSURE_REQUIRED") {
           throw new Error("Upload and accept the signed Initial Disclosure before generating documents.");

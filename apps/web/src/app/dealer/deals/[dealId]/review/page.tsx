@@ -5,9 +5,11 @@ import { prisma } from "@/lib/db";
 import { FundingValidationService } from "@/lib/services/funding.service";
 
 export default async function DealerDealReviewPage({ params }: { params: Promise<{ dealId: string }> }) {
-  const session = await auth();
-  if (!session?.user) redirect("/login");
   const { dealId } = await params;
+  const session = await auth();
+  if (!session?.user) {
+    redirect(`/dealer/login?next=${encodeURIComponent(`/dealer/deals/${dealId}/review`)}`);
+  }
   const deal = await prisma.deal.findUnique({
     where: { id: dealId },
     include: {
@@ -17,7 +19,7 @@ export default async function DealerDealReviewPage({ params }: { params: Promise
     },
   });
   if (!deal || deal.dealerId !== session.user.workspaceId) {
-    redirect("/dealer");
+    redirect("/dealer/deals");
   }
 
   const certificate =

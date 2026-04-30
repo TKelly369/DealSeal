@@ -3,6 +3,7 @@ import { ApiKeyService } from "@/lib/services/api-key.service";
 import { BillingGateService, BillingLimitExceeded } from "@/lib/services/billing-gate.service";
 import { AuthoritativeContractService } from "@/lib/services/contract.service";
 import { prisma } from "@/lib/db";
+import { hasUploadedDealerOpeningDisclosure } from "@/lib/onboarding-status";
 
 const InboundDealSchema = z.object({
   lenderId: z.string().min(1),
@@ -42,6 +43,20 @@ export async function POST(req: Request) {
   if (!apiContext) return unauthorized();
   if (!apiContext.scopes.includes("deals:write")) {
     return Response.json({ error: "Insufficient API scope. Required: deals:write" }, { status: 403 });
+  }
+
+  const ws = await prisma.workspace.findUnique({
+    where: { id: apiContext.workspaceId },
+    select: { type: true },
+  });
+  if (ws?.type === "DEALERSHIP" && !(await hasUploadedDealerOpeningDisclosure(apiContext.workspaceId))) {
+    return Response.json(
+      {
+        error:
+          "Opening disclosure must be uploaded before deal work (buyer/vehicle/numbers, contracts, documents, lender submit) for this dealer workspace.",
+      },
+      { status: 403 },
+    );
   }
 
   const parsed = InboundDealSchema.safeParse(await req.json().catch(() => ({})));

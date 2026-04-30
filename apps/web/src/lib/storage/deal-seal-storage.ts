@@ -54,6 +54,17 @@ export function safeDisplayToken(): string {
   return randomUUID().replace(/-/g, "").slice(0, 16);
 }
 
+/** Dealer workspace opening disclosure (not deal-scoped). */
+export function buildOpeningDisclosureObjectKey(input: {
+  workspaceId: string;
+  safeFileToken: string;
+  originalFileName: string;
+}): string {
+  const safe =
+    input.originalFileName.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 200) || "opening-disclosure.pdf";
+  return [rootPrefix(), input.workspaceId, "opening-disclosure", input.safeFileToken, safe].join("/");
+}
+
 export interface DealSealStorageAdapter {
   readonly providerLabel: "LOCAL" | "S3";
   putObject(params: PutDealObjectParams): Promise<PutDealObjectResult>;

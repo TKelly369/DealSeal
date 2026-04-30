@@ -33,7 +33,7 @@ export default async function DealerDealLifecyclePage({ params }: { params: Prom
   if (!session?.user) redirect("/login");
   const { dealId } = await params;
   const deal = await DealWorkflowService.getDealForActor(dealId, session.user.workspaceId, "dealer");
-  if (!deal) redirect("/dealer");
+  if (!deal) redirect("/dealer/deals");
   const alerts = await DealAlertService.getAlertsForDeal(dealId);
 
   const buyer = deal.parties.find((p) => p.role === "BUYER");

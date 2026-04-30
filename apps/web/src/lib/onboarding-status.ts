@@ -24,3 +24,12 @@ export async function getWorkspaceType(workspaceId: string): Promise<WorkspaceTy
   });
   return ws?.type ?? null;
 }
+
+/** First lock: dealer org must file opening disclosure before deal work. */
+export async function hasUploadedDealerOpeningDisclosure(dealerWorkspaceId: string): Promise<boolean> {
+  const row = await prisma.dealerProfile.findUnique({
+    where: { workspaceId: dealerWorkspaceId },
+    select: { openingDisclosureUploadedAt: true },
+  });
+  return row?.openingDisclosureUploadedAt != null;
+}

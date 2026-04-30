@@ -142,6 +142,20 @@ exports.Prisma.WorkspaceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CalendarEventScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  kind: 'kind',
+  title: 'title',
+  notes: 'notes',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  allDay: 'allDay',
+  dealId: 'dealId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.MembershipScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -185,6 +199,10 @@ exports.Prisma.DealerProfileScalarFieldEnum = {
   vehicleTypes: 'vehicleTypes',
   addOnsOffered: 'addOnsOffered',
   signingMethod: 'signingMethod',
+  openingDisclosureUploadedAt: 'openingDisclosureUploadedAt',
+  openingDisclosureStorageKey: 'openingDisclosureStorageKey',
+  openingDisclosureOriginalName: 'openingDisclosureOriginalName',
+  openingDisclosureSha256: 'openingDisclosureSha256',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -662,6 +680,15 @@ exports.WorkspaceType = exports.$Enums.WorkspaceType = {
   INTERNAL: 'INTERNAL'
 };
 
+exports.CalendarEventKind = exports.$Enums.CalendarEventKind = {
+  FOLLOW_UP: 'FOLLOW_UP',
+  DOCUMENT_REMINDER: 'DOCUMENT_REMINDER',
+  FUNDING_TASK: 'FUNDING_TASK',
+  CUSTOMER_SIGNING: 'CUSTOMER_SIGNING',
+  LENDER_CONDITION: 'LENDER_CONDITION',
+  TITLE_REGISTRATION: 'TITLE_REGISTRATION'
+};
+
 exports.MembershipRole = exports.$Enums.MembershipRole = {
   OWNER: 'OWNER',
   ADMIN: 'ADMIN',
@@ -906,6 +933,7 @@ exports.ComplianceRuleSet = exports.$Enums.ComplianceRuleSet = {
 exports.Prisma.ModelName = {
   User: 'User',
   Workspace: 'Workspace',
+  CalendarEvent: 'CalendarEvent',
   Membership: 'Membership',
   Document: 'Document',
   Subscription: 'Subscription',

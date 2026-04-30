@@ -24,6 +24,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Workspace = $Result.DefaultSelection<Prisma.$WorkspacePayload>
 /**
+ * Model CalendarEvent
+ * 
+ */
+export type CalendarEvent = $Result.DefaultSelection<Prisma.$CalendarEventPayload>
+/**
  * Model Membership
  * 
  */
@@ -569,6 +574,18 @@ export const DealAlertAuditAction: {
 
 export type DealAlertAuditAction = (typeof DealAlertAuditAction)[keyof typeof DealAlertAuditAction]
 
+
+export const CalendarEventKind: {
+  FOLLOW_UP: 'FOLLOW_UP',
+  DOCUMENT_REMINDER: 'DOCUMENT_REMINDER',
+  FUNDING_TASK: 'FUNDING_TASK',
+  CUSTOMER_SIGNING: 'CUSTOMER_SIGNING',
+  LENDER_CONDITION: 'LENDER_CONDITION',
+  TITLE_REGISTRATION: 'TITLE_REGISTRATION'
+};
+
+export type CalendarEventKind = (typeof CalendarEventKind)[keyof typeof CalendarEventKind]
+
 }
 
 export type UserRole = $Enums.UserRole
@@ -711,6 +728,10 @@ export type DealAlertAuditAction = $Enums.DealAlertAuditAction
 
 export const DealAlertAuditAction: typeof $Enums.DealAlertAuditAction
 
+export type CalendarEventKind = $Enums.CalendarEventKind
+
+export const CalendarEventKind: typeof $Enums.CalendarEventKind
+
 /**
  * ##  Prisma Client ʲˢ
  *
@@ -848,6 +869,16 @@ export class PrismaClient<
     * ```
     */
   get workspace(): Prisma.WorkspaceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.calendarEvent`: Exposes CRUD operations for the **CalendarEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CalendarEvents
+    * const calendarEvents = await prisma.calendarEvent.findMany()
+    * ```
+    */
+  get calendarEvent(): Prisma.CalendarEventDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.membership`: Exposes CRUD operations for the **Membership** model.
@@ -1651,6 +1682,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Workspace: 'Workspace',
+    CalendarEvent: 'CalendarEvent',
     Membership: 'Membership',
     Document: 'Document',
     Subscription: 'Subscription',
@@ -1705,7 +1737,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "workspace" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "dealAuditEvent" | "account" | "session"
+      modelProps: "user" | "workspace" | "calendarEvent" | "membership" | "document" | "subscription" | "dealerProfile" | "lenderProfile" | "dealerLenderLink" | "dealerOnboardingAnswer" | "lenderOnboardingAnswer" | "deal" | "dealParty" | "vehicle" | "dealFinancials" | "authoritativeContract" | "contractTransactionEvent" | "loanPool" | "negotiableInstrument" | "instrumentTransferEvent" | "generatedDocument" | "notification" | "apiKey" | "webhookEndpoint" | "webhookDelivery" | "userAccessAudit" | "dealComment" | "dealAlert" | "dealAlertAudit" | "accountRecoveryToken" | "userLoginOverride" | "amendment" | "documentCustodyEvent" | "documentVersion" | "complianceCheck" | "preFundingValidationCertificate" | "dealAuditEvent" | "account" | "session"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1854,6 +1886,80 @@ export namespace Prisma {
           count: {
             args: Prisma.WorkspaceCountArgs<ExtArgs>
             result: $Utils.Optional<WorkspaceCountAggregateOutputType> | number
+          }
+        }
+      }
+      CalendarEvent: {
+        payload: Prisma.$CalendarEventPayload<ExtArgs>
+        fields: Prisma.CalendarEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CalendarEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CalendarEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          findFirst: {
+            args: Prisma.CalendarEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CalendarEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          findMany: {
+            args: Prisma.CalendarEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>[]
+          }
+          create: {
+            args: Prisma.CalendarEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          createMany: {
+            args: Prisma.CalendarEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CalendarEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>[]
+          }
+          delete: {
+            args: Prisma.CalendarEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          update: {
+            args: Prisma.CalendarEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.CalendarEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CalendarEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CalendarEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.CalendarEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CalendarEventPayload>
+          }
+          aggregate: {
+            args: Prisma.CalendarEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCalendarEvent>
+          }
+          groupBy: {
+            args: Prisma.CalendarEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CalendarEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CalendarEventCountArgs<ExtArgs>
+            result: $Utils.Optional<CalendarEventCountAggregateOutputType> | number
           }
         }
       }
@@ -4619,6 +4725,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     workspace?: WorkspaceOmit
+    calendarEvent?: CalendarEventOmit
     membership?: MembershipOmit
     document?: DocumentOmit
     subscription?: SubscriptionOmit
@@ -4863,6 +4970,7 @@ export namespace Prisma {
     apiKeys: number
     webhookEndpoints: number
     accessAudits: number
+    calendarEvents: number
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4882,6 +4990,7 @@ export namespace Prisma {
     apiKeys?: boolean | WorkspaceCountOutputTypeCountApiKeysArgs
     webhookEndpoints?: boolean | WorkspaceCountOutputTypeCountWebhookEndpointsArgs
     accessAudits?: boolean | WorkspaceCountOutputTypeCountAccessAuditsArgs
+    calendarEvents?: boolean | WorkspaceCountOutputTypeCountCalendarEventsArgs
   }
 
   // Custom InputTypes
@@ -5007,6 +5116,13 @@ export namespace Prisma {
     where?: UserAccessAuditWhereInput
   }
 
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountCalendarEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CalendarEventWhereInput
+  }
+
 
   /**
    * Count Type DealerLenderLinkCountOutputType
@@ -5055,6 +5171,7 @@ export namespace Prisma {
     alerts: number
     comments: number
     auditEvents: number
+    calendarEvents: number
   }
 
   export type DealCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5069,6 +5186,7 @@ export namespace Prisma {
     alerts?: boolean | DealCountOutputTypeCountAlertsArgs
     comments?: boolean | DealCountOutputTypeCountCommentsArgs
     auditEvents?: boolean | DealCountOutputTypeCountAuditEventsArgs
+    calendarEvents?: boolean | DealCountOutputTypeCountCalendarEventsArgs
   }
 
   // Custom InputTypes
@@ -5157,6 +5275,13 @@ export namespace Prisma {
    */
   export type DealCountOutputTypeCountAuditEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DealAuditEventWhereInput
+  }
+
+  /**
+   * DealCountOutputType without action
+   */
+  export type DealCountOutputTypeCountCalendarEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CalendarEventWhereInput
   }
 
 
@@ -7075,6 +7200,7 @@ export namespace Prisma {
     apiKeys?: boolean | Workspace$apiKeysArgs<ExtArgs>
     webhookEndpoints?: boolean | Workspace$webhookEndpointsArgs<ExtArgs>
     accessAudits?: boolean | Workspace$accessAuditsArgs<ExtArgs>
+    calendarEvents?: boolean | Workspace$calendarEventsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
@@ -7128,6 +7254,7 @@ export namespace Prisma {
     apiKeys?: boolean | Workspace$apiKeysArgs<ExtArgs>
     webhookEndpoints?: boolean | Workspace$webhookEndpointsArgs<ExtArgs>
     accessAudits?: boolean | Workspace$accessAuditsArgs<ExtArgs>
+    calendarEvents?: boolean | Workspace$calendarEventsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7154,6 +7281,7 @@ export namespace Prisma {
       apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
       webhookEndpoints: Prisma.$WebhookEndpointPayload<ExtArgs>[]
       accessAudits: Prisma.$UserAccessAuditPayload<ExtArgs>[]
+      calendarEvents: Prisma.$CalendarEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7575,6 +7703,7 @@ export namespace Prisma {
     apiKeys<T extends Workspace$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     webhookEndpoints<T extends Workspace$webhookEndpointsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$webhookEndpointsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookEndpointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     accessAudits<T extends Workspace$accessAuditsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$accessAuditsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserAccessAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    calendarEvents<T extends Workspace$calendarEventsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$calendarEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8421,6 +8550,30 @@ export namespace Prisma {
   }
 
   /**
+   * Workspace.calendarEvents
+   */
+  export type Workspace$calendarEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    where?: CalendarEventWhereInput
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    cursor?: CalendarEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
+  }
+
+  /**
    * Workspace without action
    */
   export type WorkspaceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8436,6 +8589,1169 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: WorkspaceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CalendarEvent
+   */
+
+  export type AggregateCalendarEvent = {
+    _count: CalendarEventCountAggregateOutputType | null
+    _min: CalendarEventMinAggregateOutputType | null
+    _max: CalendarEventMaxAggregateOutputType | null
+  }
+
+  export type CalendarEventMinAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    kind: $Enums.CalendarEventKind | null
+    title: string | null
+    notes: string | null
+    startsAt: Date | null
+    endsAt: Date | null
+    allDay: boolean | null
+    dealId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CalendarEventMaxAggregateOutputType = {
+    id: string | null
+    workspaceId: string | null
+    kind: $Enums.CalendarEventKind | null
+    title: string | null
+    notes: string | null
+    startsAt: Date | null
+    endsAt: Date | null
+    allDay: boolean | null
+    dealId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CalendarEventCountAggregateOutputType = {
+    id: number
+    workspaceId: number
+    kind: number
+    title: number
+    notes: number
+    startsAt: number
+    endsAt: number
+    allDay: number
+    dealId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CalendarEventMinAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    kind?: true
+    title?: true
+    notes?: true
+    startsAt?: true
+    endsAt?: true
+    allDay?: true
+    dealId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CalendarEventMaxAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    kind?: true
+    title?: true
+    notes?: true
+    startsAt?: true
+    endsAt?: true
+    allDay?: true
+    dealId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CalendarEventCountAggregateInputType = {
+    id?: true
+    workspaceId?: true
+    kind?: true
+    title?: true
+    notes?: true
+    startsAt?: true
+    endsAt?: true
+    allDay?: true
+    dealId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CalendarEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CalendarEvent to aggregate.
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CalendarEvents to fetch.
+     */
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CalendarEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CalendarEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CalendarEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CalendarEvents
+    **/
+    _count?: true | CalendarEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CalendarEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CalendarEventMaxAggregateInputType
+  }
+
+  export type GetCalendarEventAggregateType<T extends CalendarEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateCalendarEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCalendarEvent[P]>
+      : GetScalarType<T[P], AggregateCalendarEvent[P]>
+  }
+
+
+
+
+  export type CalendarEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CalendarEventWhereInput
+    orderBy?: CalendarEventOrderByWithAggregationInput | CalendarEventOrderByWithAggregationInput[]
+    by: CalendarEventScalarFieldEnum[] | CalendarEventScalarFieldEnum
+    having?: CalendarEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CalendarEventCountAggregateInputType | true
+    _min?: CalendarEventMinAggregateInputType
+    _max?: CalendarEventMaxAggregateInputType
+  }
+
+  export type CalendarEventGroupByOutputType = {
+    id: string
+    workspaceId: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes: string | null
+    startsAt: Date
+    endsAt: Date | null
+    allDay: boolean
+    dealId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CalendarEventCountAggregateOutputType | null
+    _min: CalendarEventMinAggregateOutputType | null
+    _max: CalendarEventMaxAggregateOutputType | null
+  }
+
+  type GetCalendarEventGroupByPayload<T extends CalendarEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CalendarEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CalendarEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CalendarEventGroupByOutputType[P]>
+            : GetScalarType<T[P], CalendarEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CalendarEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    kind?: boolean
+    title?: boolean
+    notes?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    allDay?: boolean
+    dealId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | CalendarEvent$dealArgs<ExtArgs>
+  }, ExtArgs["result"]["calendarEvent"]>
+
+  export type CalendarEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    kind?: boolean
+    title?: boolean
+    notes?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    allDay?: boolean
+    dealId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | CalendarEvent$dealArgs<ExtArgs>
+  }, ExtArgs["result"]["calendarEvent"]>
+
+  export type CalendarEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workspaceId?: boolean
+    kind?: boolean
+    title?: boolean
+    notes?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    allDay?: boolean
+    dealId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | CalendarEvent$dealArgs<ExtArgs>
+  }, ExtArgs["result"]["calendarEvent"]>
+
+  export type CalendarEventSelectScalar = {
+    id?: boolean
+    workspaceId?: boolean
+    kind?: boolean
+    title?: boolean
+    notes?: boolean
+    startsAt?: boolean
+    endsAt?: boolean
+    allDay?: boolean
+    dealId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CalendarEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "kind" | "title" | "notes" | "startsAt" | "endsAt" | "allDay" | "dealId" | "createdAt" | "updatedAt", ExtArgs["result"]["calendarEvent"]>
+  export type CalendarEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | CalendarEvent$dealArgs<ExtArgs>
+  }
+  export type CalendarEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | CalendarEvent$dealArgs<ExtArgs>
+  }
+  export type CalendarEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    deal?: boolean | CalendarEvent$dealArgs<ExtArgs>
+  }
+
+  export type $CalendarEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CalendarEvent"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      deal: Prisma.$DealPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      workspaceId: string
+      kind: $Enums.CalendarEventKind
+      title: string
+      notes: string | null
+      startsAt: Date
+      endsAt: Date | null
+      allDay: boolean
+      dealId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["calendarEvent"]>
+    composites: {}
+  }
+
+  type CalendarEventGetPayload<S extends boolean | null | undefined | CalendarEventDefaultArgs> = $Result.GetResult<Prisma.$CalendarEventPayload, S>
+
+  type CalendarEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CalendarEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CalendarEventCountAggregateInputType | true
+    }
+
+  export interface CalendarEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CalendarEvent'], meta: { name: 'CalendarEvent' } }
+    /**
+     * Find zero or one CalendarEvent that matches the filter.
+     * @param {CalendarEventFindUniqueArgs} args - Arguments to find a CalendarEvent
+     * @example
+     * // Get one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CalendarEventFindUniqueArgs>(args: SelectSubset<T, CalendarEventFindUniqueArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CalendarEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CalendarEventFindUniqueOrThrowArgs} args - Arguments to find a CalendarEvent
+     * @example
+     * // Get one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CalendarEventFindUniqueOrThrowArgs>(args: SelectSubset<T, CalendarEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CalendarEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventFindFirstArgs} args - Arguments to find a CalendarEvent
+     * @example
+     * // Get one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CalendarEventFindFirstArgs>(args?: SelectSubset<T, CalendarEventFindFirstArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CalendarEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventFindFirstOrThrowArgs} args - Arguments to find a CalendarEvent
+     * @example
+     * // Get one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CalendarEventFindFirstOrThrowArgs>(args?: SelectSubset<T, CalendarEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CalendarEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CalendarEvents
+     * const calendarEvents = await prisma.calendarEvent.findMany()
+     * 
+     * // Get first 10 CalendarEvents
+     * const calendarEvents = await prisma.calendarEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const calendarEventWithIdOnly = await prisma.calendarEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CalendarEventFindManyArgs>(args?: SelectSubset<T, CalendarEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CalendarEvent.
+     * @param {CalendarEventCreateArgs} args - Arguments to create a CalendarEvent.
+     * @example
+     * // Create one CalendarEvent
+     * const CalendarEvent = await prisma.calendarEvent.create({
+     *   data: {
+     *     // ... data to create a CalendarEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends CalendarEventCreateArgs>(args: SelectSubset<T, CalendarEventCreateArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CalendarEvents.
+     * @param {CalendarEventCreateManyArgs} args - Arguments to create many CalendarEvents.
+     * @example
+     * // Create many CalendarEvents
+     * const calendarEvent = await prisma.calendarEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CalendarEventCreateManyArgs>(args?: SelectSubset<T, CalendarEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CalendarEvents and returns the data saved in the database.
+     * @param {CalendarEventCreateManyAndReturnArgs} args - Arguments to create many CalendarEvents.
+     * @example
+     * // Create many CalendarEvents
+     * const calendarEvent = await prisma.calendarEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CalendarEvents and only return the `id`
+     * const calendarEventWithIdOnly = await prisma.calendarEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CalendarEventCreateManyAndReturnArgs>(args?: SelectSubset<T, CalendarEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CalendarEvent.
+     * @param {CalendarEventDeleteArgs} args - Arguments to delete one CalendarEvent.
+     * @example
+     * // Delete one CalendarEvent
+     * const CalendarEvent = await prisma.calendarEvent.delete({
+     *   where: {
+     *     // ... filter to delete one CalendarEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CalendarEventDeleteArgs>(args: SelectSubset<T, CalendarEventDeleteArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CalendarEvent.
+     * @param {CalendarEventUpdateArgs} args - Arguments to update one CalendarEvent.
+     * @example
+     * // Update one CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CalendarEventUpdateArgs>(args: SelectSubset<T, CalendarEventUpdateArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CalendarEvents.
+     * @param {CalendarEventDeleteManyArgs} args - Arguments to filter CalendarEvents to delete.
+     * @example
+     * // Delete a few CalendarEvents
+     * const { count } = await prisma.calendarEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CalendarEventDeleteManyArgs>(args?: SelectSubset<T, CalendarEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CalendarEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CalendarEvents
+     * const calendarEvent = await prisma.calendarEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CalendarEventUpdateManyArgs>(args: SelectSubset<T, CalendarEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CalendarEvents and returns the data updated in the database.
+     * @param {CalendarEventUpdateManyAndReturnArgs} args - Arguments to update many CalendarEvents.
+     * @example
+     * // Update many CalendarEvents
+     * const calendarEvent = await prisma.calendarEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CalendarEvents and only return the `id`
+     * const calendarEventWithIdOnly = await prisma.calendarEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CalendarEventUpdateManyAndReturnArgs>(args: SelectSubset<T, CalendarEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CalendarEvent.
+     * @param {CalendarEventUpsertArgs} args - Arguments to update or create a CalendarEvent.
+     * @example
+     * // Update or create a CalendarEvent
+     * const calendarEvent = await prisma.calendarEvent.upsert({
+     *   create: {
+     *     // ... data to create a CalendarEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CalendarEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CalendarEventUpsertArgs>(args: SelectSubset<T, CalendarEventUpsertArgs<ExtArgs>>): Prisma__CalendarEventClient<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CalendarEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventCountArgs} args - Arguments to filter CalendarEvents to count.
+     * @example
+     * // Count the number of CalendarEvents
+     * const count = await prisma.calendarEvent.count({
+     *   where: {
+     *     // ... the filter for the CalendarEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends CalendarEventCountArgs>(
+      args?: Subset<T, CalendarEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CalendarEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CalendarEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CalendarEventAggregateArgs>(args: Subset<T, CalendarEventAggregateArgs>): Prisma.PrismaPromise<GetCalendarEventAggregateType<T>>
+
+    /**
+     * Group by CalendarEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CalendarEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CalendarEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CalendarEventGroupByArgs['orderBy'] }
+        : { orderBy?: CalendarEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CalendarEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCalendarEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CalendarEvent model
+   */
+  readonly fields: CalendarEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CalendarEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CalendarEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    deal<T extends CalendarEvent$dealArgs<ExtArgs> = {}>(args?: Subset<T, CalendarEvent$dealArgs<ExtArgs>>): Prisma__DealClient<$Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CalendarEvent model
+   */
+  interface CalendarEventFieldRefs {
+    readonly id: FieldRef<"CalendarEvent", 'String'>
+    readonly workspaceId: FieldRef<"CalendarEvent", 'String'>
+    readonly kind: FieldRef<"CalendarEvent", 'CalendarEventKind'>
+    readonly title: FieldRef<"CalendarEvent", 'String'>
+    readonly notes: FieldRef<"CalendarEvent", 'String'>
+    readonly startsAt: FieldRef<"CalendarEvent", 'DateTime'>
+    readonly endsAt: FieldRef<"CalendarEvent", 'DateTime'>
+    readonly allDay: FieldRef<"CalendarEvent", 'Boolean'>
+    readonly dealId: FieldRef<"CalendarEvent", 'String'>
+    readonly createdAt: FieldRef<"CalendarEvent", 'DateTime'>
+    readonly updatedAt: FieldRef<"CalendarEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CalendarEvent findUnique
+   */
+  export type CalendarEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvent to fetch.
+     */
+    where: CalendarEventWhereUniqueInput
+  }
+
+  /**
+   * CalendarEvent findUniqueOrThrow
+   */
+  export type CalendarEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvent to fetch.
+     */
+    where: CalendarEventWhereUniqueInput
+  }
+
+  /**
+   * CalendarEvent findFirst
+   */
+  export type CalendarEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvent to fetch.
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CalendarEvents to fetch.
+     */
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CalendarEvents.
+     */
+    cursor?: CalendarEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CalendarEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CalendarEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CalendarEvents.
+     */
+    distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
+  }
+
+  /**
+   * CalendarEvent findFirstOrThrow
+   */
+  export type CalendarEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvent to fetch.
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CalendarEvents to fetch.
+     */
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CalendarEvents.
+     */
+    cursor?: CalendarEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CalendarEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CalendarEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CalendarEvents.
+     */
+    distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
+  }
+
+  /**
+   * CalendarEvent findMany
+   */
+  export type CalendarEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * Filter, which CalendarEvents to fetch.
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CalendarEvents to fetch.
+     */
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CalendarEvents.
+     */
+    cursor?: CalendarEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CalendarEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CalendarEvents.
+     */
+    skip?: number
+    distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
+  }
+
+  /**
+   * CalendarEvent create
+   */
+  export type CalendarEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CalendarEvent.
+     */
+    data: XOR<CalendarEventCreateInput, CalendarEventUncheckedCreateInput>
+  }
+
+  /**
+   * CalendarEvent createMany
+   */
+  export type CalendarEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CalendarEvents.
+     */
+    data: CalendarEventCreateManyInput | CalendarEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CalendarEvent createManyAndReturn
+   */
+  export type CalendarEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many CalendarEvents.
+     */
+    data: CalendarEventCreateManyInput | CalendarEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CalendarEvent update
+   */
+  export type CalendarEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CalendarEvent.
+     */
+    data: XOR<CalendarEventUpdateInput, CalendarEventUncheckedUpdateInput>
+    /**
+     * Choose, which CalendarEvent to update.
+     */
+    where: CalendarEventWhereUniqueInput
+  }
+
+  /**
+   * CalendarEvent updateMany
+   */
+  export type CalendarEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CalendarEvents.
+     */
+    data: XOR<CalendarEventUpdateManyMutationInput, CalendarEventUncheckedUpdateManyInput>
+    /**
+     * Filter which CalendarEvents to update
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * Limit how many CalendarEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CalendarEvent updateManyAndReturn
+   */
+  export type CalendarEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * The data used to update CalendarEvents.
+     */
+    data: XOR<CalendarEventUpdateManyMutationInput, CalendarEventUncheckedUpdateManyInput>
+    /**
+     * Filter which CalendarEvents to update
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * Limit how many CalendarEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CalendarEvent upsert
+   */
+  export type CalendarEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CalendarEvent to update in case it exists.
+     */
+    where: CalendarEventWhereUniqueInput
+    /**
+     * In case the CalendarEvent found by the `where` argument doesn't exist, create a new CalendarEvent with this data.
+     */
+    create: XOR<CalendarEventCreateInput, CalendarEventUncheckedCreateInput>
+    /**
+     * In case the CalendarEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CalendarEventUpdateInput, CalendarEventUncheckedUpdateInput>
+  }
+
+  /**
+   * CalendarEvent delete
+   */
+  export type CalendarEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    /**
+     * Filter which CalendarEvent to delete.
+     */
+    where: CalendarEventWhereUniqueInput
+  }
+
+  /**
+   * CalendarEvent deleteMany
+   */
+  export type CalendarEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CalendarEvents to delete
+     */
+    where?: CalendarEventWhereInput
+    /**
+     * Limit how many CalendarEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CalendarEvent.deal
+   */
+  export type CalendarEvent$dealArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deal
+     */
+    select?: DealSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deal
+     */
+    omit?: DealOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DealInclude<ExtArgs> | null
+    where?: DealWhereInput
+  }
+
+  /**
+   * CalendarEvent without action
+   */
+  export type CalendarEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
   }
 
 
@@ -11732,6 +13048,10 @@ export namespace Prisma {
     dmsProvider: string | null
     vehicleTypes: $Enums.VehicleTypeSelection | null
     signingMethod: $Enums.SigningMethod | null
+    openingDisclosureUploadedAt: Date | null
+    openingDisclosureStorageKey: string | null
+    openingDisclosureOriginalName: string | null
+    openingDisclosureSha256: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11746,6 +13066,10 @@ export namespace Prisma {
     dmsProvider: string | null
     vehicleTypes: $Enums.VehicleTypeSelection | null
     signingMethod: $Enums.SigningMethod | null
+    openingDisclosureUploadedAt: Date | null
+    openingDisclosureStorageKey: string | null
+    openingDisclosureOriginalName: string | null
+    openingDisclosureSha256: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -11762,6 +13086,10 @@ export namespace Prisma {
     vehicleTypes: number
     addOnsOffered: number
     signingMethod: number
+    openingDisclosureUploadedAt: number
+    openingDisclosureStorageKey: number
+    openingDisclosureOriginalName: number
+    openingDisclosureSha256: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -11778,6 +13106,10 @@ export namespace Prisma {
     dmsProvider?: true
     vehicleTypes?: true
     signingMethod?: true
+    openingDisclosureUploadedAt?: true
+    openingDisclosureStorageKey?: true
+    openingDisclosureOriginalName?: true
+    openingDisclosureSha256?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11792,6 +13124,10 @@ export namespace Prisma {
     dmsProvider?: true
     vehicleTypes?: true
     signingMethod?: true
+    openingDisclosureUploadedAt?: true
+    openingDisclosureStorageKey?: true
+    openingDisclosureOriginalName?: true
+    openingDisclosureSha256?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -11808,6 +13144,10 @@ export namespace Prisma {
     vehicleTypes?: true
     addOnsOffered?: true
     signingMethod?: true
+    openingDisclosureUploadedAt?: true
+    openingDisclosureStorageKey?: true
+    openingDisclosureOriginalName?: true
+    openingDisclosureSha256?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -11897,6 +13237,10 @@ export namespace Prisma {
     vehicleTypes: $Enums.VehicleTypeSelection
     addOnsOffered: string[]
     signingMethod: $Enums.SigningMethod
+    openingDisclosureUploadedAt: Date | null
+    openingDisclosureStorageKey: string | null
+    openingDisclosureOriginalName: string | null
+    openingDisclosureSha256: string | null
     createdAt: Date
     updatedAt: Date
     _count: DealerProfileCountAggregateOutputType | null
@@ -11930,6 +13274,10 @@ export namespace Prisma {
     vehicleTypes?: boolean
     addOnsOffered?: boolean
     signingMethod?: boolean
+    openingDisclosureUploadedAt?: boolean
+    openingDisclosureStorageKey?: boolean
+    openingDisclosureOriginalName?: boolean
+    openingDisclosureSha256?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -11947,6 +13295,10 @@ export namespace Prisma {
     vehicleTypes?: boolean
     addOnsOffered?: boolean
     signingMethod?: boolean
+    openingDisclosureUploadedAt?: boolean
+    openingDisclosureStorageKey?: boolean
+    openingDisclosureOriginalName?: boolean
+    openingDisclosureSha256?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -11964,6 +13316,10 @@ export namespace Prisma {
     vehicleTypes?: boolean
     addOnsOffered?: boolean
     signingMethod?: boolean
+    openingDisclosureUploadedAt?: boolean
+    openingDisclosureStorageKey?: boolean
+    openingDisclosureOriginalName?: boolean
+    openingDisclosureSha256?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
@@ -11981,11 +13337,15 @@ export namespace Prisma {
     vehicleTypes?: boolean
     addOnsOffered?: boolean
     signingMethod?: boolean
+    openingDisclosureUploadedAt?: boolean
+    openingDisclosureStorageKey?: boolean
+    openingDisclosureOriginalName?: boolean
+    openingDisclosureSha256?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DealerProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "legalName" | "dba" | "stateOfFormation" | "licenseNumber" | "operatingStates" | "dmsProvider" | "vehicleTypes" | "addOnsOffered" | "signingMethod" | "createdAt" | "updatedAt", ExtArgs["result"]["dealerProfile"]>
+  export type DealerProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workspaceId" | "legalName" | "dba" | "stateOfFormation" | "licenseNumber" | "operatingStates" | "dmsProvider" | "vehicleTypes" | "addOnsOffered" | "signingMethod" | "openingDisclosureUploadedAt" | "openingDisclosureStorageKey" | "openingDisclosureOriginalName" | "openingDisclosureSha256" | "createdAt" | "updatedAt", ExtArgs["result"]["dealerProfile"]>
   export type DealerProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
   }
@@ -12013,6 +13373,13 @@ export namespace Prisma {
       vehicleTypes: $Enums.VehicleTypeSelection
       addOnsOffered: string[]
       signingMethod: $Enums.SigningMethod
+      /**
+       * Workspace-level opening disclosure on file — required before deal workflows unlock.
+       */
+      openingDisclosureUploadedAt: Date | null
+      openingDisclosureStorageKey: string | null
+      openingDisclosureOriginalName: string | null
+      openingDisclosureSha256: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["dealerProfile"]>
@@ -12450,6 +13817,10 @@ export namespace Prisma {
     readonly vehicleTypes: FieldRef<"DealerProfile", 'VehicleTypeSelection'>
     readonly addOnsOffered: FieldRef<"DealerProfile", 'String[]'>
     readonly signingMethod: FieldRef<"DealerProfile", 'SigningMethod'>
+    readonly openingDisclosureUploadedAt: FieldRef<"DealerProfile", 'DateTime'>
+    readonly openingDisclosureStorageKey: FieldRef<"DealerProfile", 'String'>
+    readonly openingDisclosureOriginalName: FieldRef<"DealerProfile", 'String'>
+    readonly openingDisclosureSha256: FieldRef<"DealerProfile", 'String'>
     readonly createdAt: FieldRef<"DealerProfile", 'DateTime'>
     readonly updatedAt: FieldRef<"DealerProfile", 'DateTime'>
   }
@@ -17599,6 +18970,7 @@ export namespace Prisma {
     alerts?: boolean | Deal$alertsArgs<ExtArgs>
     comments?: boolean | Deal$commentsArgs<ExtArgs>
     auditEvents?: boolean | Deal$auditEventsArgs<ExtArgs>
+    calendarEvents?: boolean | Deal$calendarEventsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deal"]>
 
@@ -17704,6 +19076,7 @@ export namespace Prisma {
     alerts?: boolean | Deal$alertsArgs<ExtArgs>
     comments?: boolean | Deal$commentsArgs<ExtArgs>
     auditEvents?: boolean | Deal$auditEventsArgs<ExtArgs>
+    calendarEvents?: boolean | Deal$calendarEventsArgs<ExtArgs>
     _count?: boolean | DealCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DealIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17742,6 +19115,7 @@ export namespace Prisma {
       alerts: Prisma.$DealAlertPayload<ExtArgs>[]
       comments: Prisma.$DealCommentPayload<ExtArgs>[]
       auditEvents: Prisma.$DealAuditEventPayload<ExtArgs>[]
+      calendarEvents: Prisma.$CalendarEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18179,6 +19553,7 @@ export namespace Prisma {
     alerts<T extends Deal$alertsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$alertsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAlertPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Deal$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     auditEvents<T extends Deal$auditEventsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$auditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DealAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    calendarEvents<T extends Deal$calendarEventsArgs<ExtArgs> = {}>(args?: Subset<T, Deal$calendarEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CalendarEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19000,6 +20375,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DealAuditEventScalarFieldEnum | DealAuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * Deal.calendarEvents
+   */
+  export type Deal$calendarEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CalendarEvent
+     */
+    select?: CalendarEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CalendarEvent
+     */
+    omit?: CalendarEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CalendarEventInclude<ExtArgs> | null
+    where?: CalendarEventWhereInput
+    orderBy?: CalendarEventOrderByWithRelationInput | CalendarEventOrderByWithRelationInput[]
+    cursor?: CalendarEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CalendarEventScalarFieldEnum | CalendarEventScalarFieldEnum[]
   }
 
   /**
@@ -50249,6 +51648,23 @@ export namespace Prisma {
   export type WorkspaceScalarFieldEnum = (typeof WorkspaceScalarFieldEnum)[keyof typeof WorkspaceScalarFieldEnum]
 
 
+  export const CalendarEventScalarFieldEnum: {
+    id: 'id',
+    workspaceId: 'workspaceId',
+    kind: 'kind',
+    title: 'title',
+    notes: 'notes',
+    startsAt: 'startsAt',
+    endsAt: 'endsAt',
+    allDay: 'allDay',
+    dealId: 'dealId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CalendarEventScalarFieldEnum = (typeof CalendarEventScalarFieldEnum)[keyof typeof CalendarEventScalarFieldEnum]
+
+
   export const MembershipScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -50301,6 +51717,10 @@ export namespace Prisma {
     vehicleTypes: 'vehicleTypes',
     addOnsOffered: 'addOnsOffered',
     signingMethod: 'signingMethod',
+    openingDisclosureUploadedAt: 'openingDisclosureUploadedAt',
+    openingDisclosureStorageKey: 'openingDisclosureStorageKey',
+    openingDisclosureOriginalName: 'openingDisclosureOriginalName',
+    openingDisclosureSha256: 'openingDisclosureSha256',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -50956,6 +52376,27 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CalendarEventKind'
+   */
+  export type EnumCalendarEventKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CalendarEventKind'>
+    
+
+
+  /**
+   * Reference to a field of type 'CalendarEventKind[]'
+   */
+  export type ListEnumCalendarEventKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CalendarEventKind[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'MembershipRole'
    */
   export type EnumMembershipRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MembershipRole'>
@@ -51162,13 +52603,6 @@ export namespace Prisma {
    * Reference to a field of type 'Decimal[]'
    */
   export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -51598,6 +53032,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyListRelationFilter
     webhookEndpoints?: WebhookEndpointListRelationFilter
     accessAudits?: UserAccessAuditListRelationFilter
+    calendarEvents?: CalendarEventListRelationFilter
   }
 
   export type WorkspaceOrderByWithRelationInput = {
@@ -51626,6 +53061,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyOrderByRelationAggregateInput
     webhookEndpoints?: WebhookEndpointOrderByRelationAggregateInput
     accessAudits?: UserAccessAuditOrderByRelationAggregateInput
+    calendarEvents?: CalendarEventOrderByRelationAggregateInput
   }
 
   export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -51657,6 +53093,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyListRelationFilter
     webhookEndpoints?: WebhookEndpointListRelationFilter
     accessAudits?: UserAccessAuditListRelationFilter
+    calendarEvents?: CalendarEventListRelationFilter
   }, "id" | "slug">
 
   export type WorkspaceOrderByWithAggregationInput = {
@@ -51685,6 +53122,94 @@ export namespace Prisma {
     dealCountCurrentPeriod?: IntWithAggregatesFilter<"Workspace"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Workspace"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Workspace"> | Date | string
+  }
+
+  export type CalendarEventWhereInput = {
+    AND?: CalendarEventWhereInput | CalendarEventWhereInput[]
+    OR?: CalendarEventWhereInput[]
+    NOT?: CalendarEventWhereInput | CalendarEventWhereInput[]
+    id?: StringFilter<"CalendarEvent"> | string
+    workspaceId?: StringFilter<"CalendarEvent"> | string
+    kind?: EnumCalendarEventKindFilter<"CalendarEvent"> | $Enums.CalendarEventKind
+    title?: StringFilter<"CalendarEvent"> | string
+    notes?: StringNullableFilter<"CalendarEvent"> | string | null
+    startsAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    endsAt?: DateTimeNullableFilter<"CalendarEvent"> | Date | string | null
+    allDay?: BoolFilter<"CalendarEvent"> | boolean
+    dealId?: StringNullableFilter<"CalendarEvent"> | string | null
+    createdAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    deal?: XOR<DealNullableScalarRelationFilter, DealWhereInput> | null
+  }
+
+  export type CalendarEventOrderByWithRelationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    kind?: SortOrder
+    title?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrderInput | SortOrder
+    allDay?: SortOrder
+    dealId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    deal?: DealOrderByWithRelationInput
+  }
+
+  export type CalendarEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CalendarEventWhereInput | CalendarEventWhereInput[]
+    OR?: CalendarEventWhereInput[]
+    NOT?: CalendarEventWhereInput | CalendarEventWhereInput[]
+    workspaceId?: StringFilter<"CalendarEvent"> | string
+    kind?: EnumCalendarEventKindFilter<"CalendarEvent"> | $Enums.CalendarEventKind
+    title?: StringFilter<"CalendarEvent"> | string
+    notes?: StringNullableFilter<"CalendarEvent"> | string | null
+    startsAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    endsAt?: DateTimeNullableFilter<"CalendarEvent"> | Date | string | null
+    allDay?: BoolFilter<"CalendarEvent"> | boolean
+    dealId?: StringNullableFilter<"CalendarEvent"> | string | null
+    createdAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    deal?: XOR<DealNullableScalarRelationFilter, DealWhereInput> | null
+  }, "id">
+
+  export type CalendarEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    kind?: SortOrder
+    title?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrderInput | SortOrder
+    allDay?: SortOrder
+    dealId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CalendarEventCountOrderByAggregateInput
+    _max?: CalendarEventMaxOrderByAggregateInput
+    _min?: CalendarEventMinOrderByAggregateInput
+  }
+
+  export type CalendarEventScalarWhereWithAggregatesInput = {
+    AND?: CalendarEventScalarWhereWithAggregatesInput | CalendarEventScalarWhereWithAggregatesInput[]
+    OR?: CalendarEventScalarWhereWithAggregatesInput[]
+    NOT?: CalendarEventScalarWhereWithAggregatesInput | CalendarEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CalendarEvent"> | string
+    workspaceId?: StringWithAggregatesFilter<"CalendarEvent"> | string
+    kind?: EnumCalendarEventKindWithAggregatesFilter<"CalendarEvent"> | $Enums.CalendarEventKind
+    title?: StringWithAggregatesFilter<"CalendarEvent"> | string
+    notes?: StringNullableWithAggregatesFilter<"CalendarEvent"> | string | null
+    startsAt?: DateTimeWithAggregatesFilter<"CalendarEvent"> | Date | string
+    endsAt?: DateTimeNullableWithAggregatesFilter<"CalendarEvent"> | Date | string | null
+    allDay?: BoolWithAggregatesFilter<"CalendarEvent"> | boolean
+    dealId?: StringNullableWithAggregatesFilter<"CalendarEvent"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CalendarEvent"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CalendarEvent"> | Date | string
   }
 
   export type MembershipWhereInput = {
@@ -51906,6 +53431,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionFilter<"DealerProfile"> | $Enums.VehicleTypeSelection
     addOnsOffered?: StringNullableListFilter<"DealerProfile">
     signingMethod?: EnumSigningMethodFilter<"DealerProfile"> | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: DateTimeNullableFilter<"DealerProfile"> | Date | string | null
+    openingDisclosureStorageKey?: StringNullableFilter<"DealerProfile"> | string | null
+    openingDisclosureOriginalName?: StringNullableFilter<"DealerProfile"> | string | null
+    openingDisclosureSha256?: StringNullableFilter<"DealerProfile"> | string | null
     createdAt?: DateTimeFilter<"DealerProfile"> | Date | string
     updatedAt?: DateTimeFilter<"DealerProfile"> | Date | string
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
@@ -51923,6 +53452,10 @@ export namespace Prisma {
     vehicleTypes?: SortOrder
     addOnsOffered?: SortOrder
     signingMethod?: SortOrder
+    openingDisclosureUploadedAt?: SortOrderInput | SortOrder
+    openingDisclosureStorageKey?: SortOrderInput | SortOrder
+    openingDisclosureOriginalName?: SortOrderInput | SortOrder
+    openingDisclosureSha256?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     workspace?: WorkspaceOrderByWithRelationInput
@@ -51943,6 +53476,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionFilter<"DealerProfile"> | $Enums.VehicleTypeSelection
     addOnsOffered?: StringNullableListFilter<"DealerProfile">
     signingMethod?: EnumSigningMethodFilter<"DealerProfile"> | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: DateTimeNullableFilter<"DealerProfile"> | Date | string | null
+    openingDisclosureStorageKey?: StringNullableFilter<"DealerProfile"> | string | null
+    openingDisclosureOriginalName?: StringNullableFilter<"DealerProfile"> | string | null
+    openingDisclosureSha256?: StringNullableFilter<"DealerProfile"> | string | null
     createdAt?: DateTimeFilter<"DealerProfile"> | Date | string
     updatedAt?: DateTimeFilter<"DealerProfile"> | Date | string
     workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
@@ -51960,6 +53497,10 @@ export namespace Prisma {
     vehicleTypes?: SortOrder
     addOnsOffered?: SortOrder
     signingMethod?: SortOrder
+    openingDisclosureUploadedAt?: SortOrderInput | SortOrder
+    openingDisclosureStorageKey?: SortOrderInput | SortOrder
+    openingDisclosureOriginalName?: SortOrderInput | SortOrder
+    openingDisclosureSha256?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DealerProfileCountOrderByAggregateInput
@@ -51982,6 +53523,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionWithAggregatesFilter<"DealerProfile"> | $Enums.VehicleTypeSelection
     addOnsOffered?: StringNullableListFilter<"DealerProfile">
     signingMethod?: EnumSigningMethodWithAggregatesFilter<"DealerProfile"> | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: DateTimeNullableWithAggregatesFilter<"DealerProfile"> | Date | string | null
+    openingDisclosureStorageKey?: StringNullableWithAggregatesFilter<"DealerProfile"> | string | null
+    openingDisclosureOriginalName?: StringNullableWithAggregatesFilter<"DealerProfile"> | string | null
+    openingDisclosureSha256?: StringNullableWithAggregatesFilter<"DealerProfile"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DealerProfile"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DealerProfile"> | Date | string
   }
@@ -52338,6 +53883,7 @@ export namespace Prisma {
     alerts?: DealAlertListRelationFilter
     comments?: DealCommentListRelationFilter
     auditEvents?: DealAuditEventListRelationFilter
+    calendarEvents?: CalendarEventListRelationFilter
   }
 
   export type DealOrderByWithRelationInput = {
@@ -52382,6 +53928,7 @@ export namespace Prisma {
     alerts?: DealAlertOrderByRelationAggregateInput
     comments?: DealCommentOrderByRelationAggregateInput
     auditEvents?: DealAuditEventOrderByRelationAggregateInput
+    calendarEvents?: CalendarEventOrderByRelationAggregateInput
   }
 
   export type DealWhereUniqueInput = Prisma.AtLeast<{
@@ -52429,6 +53976,7 @@ export namespace Prisma {
     alerts?: DealAlertListRelationFilter
     comments?: DealCommentListRelationFilter
     auditEvents?: DealAuditEventListRelationFilter
+    calendarEvents?: CalendarEventListRelationFilter
   }, "id">
 
   export type DealOrderByWithAggregationInput = {
@@ -54904,6 +56452,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateInput = {
@@ -54932,6 +56481,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUpdateInput = {
@@ -54960,6 +56510,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateInput = {
@@ -54988,6 +56539,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateManyInput = {
@@ -55016,6 +56568,102 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
     dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventCreateInput = {
+    id?: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutCalendarEventsInput
+    deal?: DealCreateNestedOneWithoutCalendarEventsInput
+  }
+
+  export type CalendarEventUncheckedCreateInput = {
+    id?: string
+    workspaceId: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    dealId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CalendarEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutCalendarEventsNestedInput
+    deal?: DealUpdateOneWithoutCalendarEventsNestedInput
+  }
+
+  export type CalendarEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventCreateManyInput = {
+    id?: string
+    workspaceId: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    dealId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CalendarEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55244,6 +56892,10 @@ export namespace Prisma {
     vehicleTypes?: $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileCreateaddOnsOfferedInput | string[]
     signingMethod?: $Enums.SigningMethod
+    openingDisclosureUploadedAt?: Date | string | null
+    openingDisclosureStorageKey?: string | null
+    openingDisclosureOriginalName?: string | null
+    openingDisclosureSha256?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     workspace: WorkspaceCreateNestedOneWithoutDealerProfileInput
@@ -55261,6 +56913,10 @@ export namespace Prisma {
     vehicleTypes?: $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileCreateaddOnsOfferedInput | string[]
     signingMethod?: $Enums.SigningMethod
+    openingDisclosureUploadedAt?: Date | string | null
+    openingDisclosureStorageKey?: string | null
+    openingDisclosureOriginalName?: string | null
+    openingDisclosureSha256?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55276,6 +56932,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionFieldUpdateOperationsInput | $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileUpdateaddOnsOfferedInput | string[]
     signingMethod?: EnumSigningMethodFieldUpdateOperationsInput | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openingDisclosureStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureOriginalName?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureSha256?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     workspace?: WorkspaceUpdateOneRequiredWithoutDealerProfileNestedInput
@@ -55293,6 +56953,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionFieldUpdateOperationsInput | $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileUpdateaddOnsOfferedInput | string[]
     signingMethod?: EnumSigningMethodFieldUpdateOperationsInput | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openingDisclosureStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureOriginalName?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureSha256?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55309,6 +56973,10 @@ export namespace Prisma {
     vehicleTypes?: $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileCreateaddOnsOfferedInput | string[]
     signingMethod?: $Enums.SigningMethod
+    openingDisclosureUploadedAt?: Date | string | null
+    openingDisclosureStorageKey?: string | null
+    openingDisclosureOriginalName?: string | null
+    openingDisclosureSha256?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55324,6 +56992,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionFieldUpdateOperationsInput | $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileUpdateaddOnsOfferedInput | string[]
     signingMethod?: EnumSigningMethodFieldUpdateOperationsInput | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openingDisclosureStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureOriginalName?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureSha256?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55340,6 +57012,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionFieldUpdateOperationsInput | $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileUpdateaddOnsOfferedInput | string[]
     signingMethod?: EnumSigningMethodFieldUpdateOperationsInput | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openingDisclosureStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureOriginalName?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureSha256?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55717,6 +57393,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateInput = {
@@ -55757,6 +57434,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealUpdateInput = {
@@ -55797,6 +57475,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateInput = {
@@ -55837,6 +57516,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateManyInput = {
@@ -58721,6 +60401,12 @@ export namespace Prisma {
     none?: WebhookEndpointWhereInput
   }
 
+  export type CalendarEventListRelationFilter = {
+    every?: CalendarEventWhereInput
+    some?: CalendarEventWhereInput
+    none?: CalendarEventWhereInput
+  }
+
   export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -58758,6 +60444,10 @@ export namespace Prisma {
   }
 
   export type WebhookEndpointOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CalendarEventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -58823,6 +60513,108 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumCalendarEventKindFilter<$PrismaModel = never> = {
+    equals?: $Enums.CalendarEventKind | EnumCalendarEventKindFieldRefInput<$PrismaModel>
+    in?: $Enums.CalendarEventKind[] | ListEnumCalendarEventKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CalendarEventKind[] | ListEnumCalendarEventKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumCalendarEventKindFilter<$PrismaModel> | $Enums.CalendarEventKind
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type DealNullableScalarRelationFilter = {
+    is?: DealWhereInput | null
+    isNot?: DealWhereInput | null
+  }
+
+  export type CalendarEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    kind?: SortOrder
+    title?: SortOrder
+    notes?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    allDay?: SortOrder
+    dealId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CalendarEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    kind?: SortOrder
+    title?: SortOrder
+    notes?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    allDay?: SortOrder
+    dealId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CalendarEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    workspaceId?: SortOrder
+    kind?: SortOrder
+    title?: SortOrder
+    notes?: SortOrder
+    startsAt?: SortOrder
+    endsAt?: SortOrder
+    allDay?: SortOrder
+    dealId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumCalendarEventKindWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CalendarEventKind | EnumCalendarEventKindFieldRefInput<$PrismaModel>
+    in?: $Enums.CalendarEventKind[] | ListEnumCalendarEventKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CalendarEventKind[] | ListEnumCalendarEventKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumCalendarEventKindWithAggregatesFilter<$PrismaModel> | $Enums.CalendarEventKind
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCalendarEventKindFilter<$PrismaModel>
+    _max?: NestedEnumCalendarEventKindFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumMembershipRoleFilter<$PrismaModel = never> = {
@@ -58926,17 +60718,6 @@ export namespace Prisma {
     _max?: NestedEnumDocumentStatusFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type EnumSubscriptionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.SubscriptionStatus | EnumSubscriptionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
@@ -58978,20 +60759,6 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumSubscriptionStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -59038,6 +60805,10 @@ export namespace Prisma {
     vehicleTypes?: SortOrder
     addOnsOffered?: SortOrder
     signingMethod?: SortOrder
+    openingDisclosureUploadedAt?: SortOrder
+    openingDisclosureStorageKey?: SortOrder
+    openingDisclosureOriginalName?: SortOrder
+    openingDisclosureSha256?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -59052,6 +60823,10 @@ export namespace Prisma {
     dmsProvider?: SortOrder
     vehicleTypes?: SortOrder
     signingMethod?: SortOrder
+    openingDisclosureUploadedAt?: SortOrder
+    openingDisclosureStorageKey?: SortOrder
+    openingDisclosureOriginalName?: SortOrder
+    openingDisclosureSha256?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -59066,6 +60841,10 @@ export namespace Prisma {
     dmsProvider?: SortOrder
     vehicleTypes?: SortOrder
     signingMethod?: SortOrder
+    openingDisclosureUploadedAt?: SortOrder
+    openingDisclosureStorageKey?: SortOrder
+    openingDisclosureOriginalName?: SortOrder
+    openingDisclosureSha256?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -59790,11 +61569,6 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type AuthoritativeContractCountOrderByAggregateInput = {
     id?: SortOrder
     dealId?: SortOrder
@@ -59835,14 +61609,6 @@ export namespace Prisma {
 
   export type AuthoritativeContractSumOrderByAggregateInput = {
     version?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type EnumContractTransactionEventTypeFilter<$PrismaModel = never> = {
@@ -60464,11 +62230,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDocumentProvenanceFilter<$PrismaModel>
     _max?: NestedEnumDocumentProvenanceFilter<$PrismaModel>
-  }
-
-  export type DealNullableScalarRelationFilter = {
-    is?: DealWhereInput | null
-    isNot?: DealWhereInput | null
   }
 
   export type NotificationCountOrderByAggregateInput = {
@@ -61893,6 +63654,13 @@ export namespace Prisma {
     connect?: UserAccessAuditWhereUniqueInput | UserAccessAuditWhereUniqueInput[]
   }
 
+  export type CalendarEventCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<CalendarEventCreateWithoutWorkspaceInput, CalendarEventUncheckedCreateWithoutWorkspaceInput> | CalendarEventCreateWithoutWorkspaceInput[] | CalendarEventUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: CalendarEventCreateOrConnectWithoutWorkspaceInput | CalendarEventCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: CalendarEventCreateManyWorkspaceInputEnvelope
+    connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput = {
     create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
@@ -62015,6 +63783,13 @@ export namespace Prisma {
     connectOrCreate?: UserAccessAuditCreateOrConnectWithoutWorkspaceInput | UserAccessAuditCreateOrConnectWithoutWorkspaceInput[]
     createMany?: UserAccessAuditCreateManyWorkspaceInputEnvelope
     connect?: UserAccessAuditWhereUniqueInput | UserAccessAuditWhereUniqueInput[]
+  }
+
+  export type CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<CalendarEventCreateWithoutWorkspaceInput, CalendarEventUncheckedCreateWithoutWorkspaceInput> | CalendarEventCreateWithoutWorkspaceInput[] | CalendarEventUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: CalendarEventCreateOrConnectWithoutWorkspaceInput | CalendarEventCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: CalendarEventCreateManyWorkspaceInputEnvelope
+    connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
   }
 
   export type EnumWorkspaceTypeFieldUpdateOperationsInput = {
@@ -62273,6 +64048,20 @@ export namespace Prisma {
     deleteMany?: UserAccessAuditScalarWhereInput | UserAccessAuditScalarWhereInput[]
   }
 
+  export type CalendarEventUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<CalendarEventCreateWithoutWorkspaceInput, CalendarEventUncheckedCreateWithoutWorkspaceInput> | CalendarEventCreateWithoutWorkspaceInput[] | CalendarEventUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: CalendarEventCreateOrConnectWithoutWorkspaceInput | CalendarEventCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: CalendarEventUpsertWithWhereUniqueWithoutWorkspaceInput | CalendarEventUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: CalendarEventCreateManyWorkspaceInputEnvelope
+    set?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    disconnect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    delete?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    update?: CalendarEventUpdateWithWhereUniqueWithoutWorkspaceInput | CalendarEventUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: CalendarEventUpdateManyWithWhereWithoutWorkspaceInput | CalendarEventUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput = {
     create?: XOR<UserCreateWithoutOrganizationWorkspaceInput, UserUncheckedCreateWithoutOrganizationWorkspaceInput> | UserCreateWithoutOrganizationWorkspaceInput[] | UserUncheckedCreateWithoutOrganizationWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutOrganizationWorkspaceInput | UserCreateOrConnectWithoutOrganizationWorkspaceInput[]
@@ -62517,6 +64306,62 @@ export namespace Prisma {
     deleteMany?: UserAccessAuditScalarWhereInput | UserAccessAuditScalarWhereInput[]
   }
 
+  export type CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<CalendarEventCreateWithoutWorkspaceInput, CalendarEventUncheckedCreateWithoutWorkspaceInput> | CalendarEventCreateWithoutWorkspaceInput[] | CalendarEventUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: CalendarEventCreateOrConnectWithoutWorkspaceInput | CalendarEventCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: CalendarEventUpsertWithWhereUniqueWithoutWorkspaceInput | CalendarEventUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: CalendarEventCreateManyWorkspaceInputEnvelope
+    set?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    disconnect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    delete?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    update?: CalendarEventUpdateWithWhereUniqueWithoutWorkspaceInput | CalendarEventUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: CalendarEventUpdateManyWithWhereWithoutWorkspaceInput | CalendarEventUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
+  }
+
+  export type WorkspaceCreateNestedOneWithoutCalendarEventsInput = {
+    create?: XOR<WorkspaceCreateWithoutCalendarEventsInput, WorkspaceUncheckedCreateWithoutCalendarEventsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutCalendarEventsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type DealCreateNestedOneWithoutCalendarEventsInput = {
+    create?: XOR<DealCreateWithoutCalendarEventsInput, DealUncheckedCreateWithoutCalendarEventsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutCalendarEventsInput
+    connect?: DealWhereUniqueInput
+  }
+
+  export type EnumCalendarEventKindFieldUpdateOperationsInput = {
+    set?: $Enums.CalendarEventKind
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutCalendarEventsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutCalendarEventsInput, WorkspaceUncheckedCreateWithoutCalendarEventsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutCalendarEventsInput
+    upsert?: WorkspaceUpsertWithoutCalendarEventsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutCalendarEventsInput, WorkspaceUpdateWithoutCalendarEventsInput>, WorkspaceUncheckedUpdateWithoutCalendarEventsInput>
+  }
+
+  export type DealUpdateOneWithoutCalendarEventsNestedInput = {
+    create?: XOR<DealCreateWithoutCalendarEventsInput, DealUncheckedCreateWithoutCalendarEventsInput>
+    connectOrCreate?: DealCreateOrConnectWithoutCalendarEventsInput
+    upsert?: DealUpsertWithoutCalendarEventsInput
+    disconnect?: DealWhereInput | boolean
+    delete?: DealWhereInput | boolean
+    connect?: DealWhereUniqueInput
+    update?: XOR<XOR<DealUpdateToOneWithWhereWithoutCalendarEventsInput, DealUpdateWithoutCalendarEventsInput>, DealUncheckedUpdateWithoutCalendarEventsInput>
+  }
+
   export type UserCreateNestedOneWithoutMembershipsInput = {
     create?: XOR<UserCreateWithoutMembershipsInput, UserUncheckedCreateWithoutMembershipsInput>
     connectOrCreate?: UserCreateOrConnectWithoutMembershipsInput
@@ -62571,10 +64416,6 @@ export namespace Prisma {
     create?: XOR<WorkspaceCreateWithoutSubscriptionsInput, WorkspaceUncheckedCreateWithoutSubscriptionsInput>
     connectOrCreate?: WorkspaceCreateOrConnectWithoutSubscriptionsInput
     connect?: WorkspaceWhereUniqueInput
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type EnumSubscriptionStatusFieldUpdateOperationsInput = {
@@ -62920,6 +64761,13 @@ export namespace Prisma {
     connect?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
   }
 
+  export type CalendarEventCreateNestedManyWithoutDealInput = {
+    create?: XOR<CalendarEventCreateWithoutDealInput, CalendarEventUncheckedCreateWithoutDealInput> | CalendarEventCreateWithoutDealInput[] | CalendarEventUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: CalendarEventCreateOrConnectWithoutDealInput | CalendarEventCreateOrConnectWithoutDealInput[]
+    createMany?: CalendarEventCreateManyDealInputEnvelope
+    connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+  }
+
   export type DealPartyUncheckedCreateNestedManyWithoutDealInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -63025,6 +64873,13 @@ export namespace Prisma {
     connectOrCreate?: DealAuditEventCreateOrConnectWithoutDealInput | DealAuditEventCreateOrConnectWithoutDealInput[]
     createMany?: DealAuditEventCreateManyDealInputEnvelope
     connect?: DealAuditEventWhereUniqueInput | DealAuditEventWhereUniqueInput[]
+  }
+
+  export type CalendarEventUncheckedCreateNestedManyWithoutDealInput = {
+    create?: XOR<CalendarEventCreateWithoutDealInput, CalendarEventUncheckedCreateWithoutDealInput> | CalendarEventCreateWithoutDealInput[] | CalendarEventUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: CalendarEventCreateOrConnectWithoutDealInput | CalendarEventCreateOrConnectWithoutDealInput[]
+    createMany?: CalendarEventCreateManyDealInputEnvelope
+    connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
   }
 
   export type EnumDealStatusFieldUpdateOperationsInput = {
@@ -63277,6 +65132,20 @@ export namespace Prisma {
     deleteMany?: DealAuditEventScalarWhereInput | DealAuditEventScalarWhereInput[]
   }
 
+  export type CalendarEventUpdateManyWithoutDealNestedInput = {
+    create?: XOR<CalendarEventCreateWithoutDealInput, CalendarEventUncheckedCreateWithoutDealInput> | CalendarEventCreateWithoutDealInput[] | CalendarEventUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: CalendarEventCreateOrConnectWithoutDealInput | CalendarEventCreateOrConnectWithoutDealInput[]
+    upsert?: CalendarEventUpsertWithWhereUniqueWithoutDealInput | CalendarEventUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: CalendarEventCreateManyDealInputEnvelope
+    set?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    disconnect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    delete?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    update?: CalendarEventUpdateWithWhereUniqueWithoutDealInput | CalendarEventUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: CalendarEventUpdateManyWithWhereWithoutDealInput | CalendarEventUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
+  }
+
   export type DealPartyUncheckedUpdateManyWithoutDealNestedInput = {
     create?: XOR<DealPartyCreateWithoutDealInput, DealPartyUncheckedCreateWithoutDealInput> | DealPartyCreateWithoutDealInput[] | DealPartyUncheckedCreateWithoutDealInput[]
     connectOrCreate?: DealPartyCreateOrConnectWithoutDealInput | DealPartyCreateOrConnectWithoutDealInput[]
@@ -63481,6 +65350,20 @@ export namespace Prisma {
     deleteMany?: DealAuditEventScalarWhereInput | DealAuditEventScalarWhereInput[]
   }
 
+  export type CalendarEventUncheckedUpdateManyWithoutDealNestedInput = {
+    create?: XOR<CalendarEventCreateWithoutDealInput, CalendarEventUncheckedCreateWithoutDealInput> | CalendarEventCreateWithoutDealInput[] | CalendarEventUncheckedCreateWithoutDealInput[]
+    connectOrCreate?: CalendarEventCreateOrConnectWithoutDealInput | CalendarEventCreateOrConnectWithoutDealInput[]
+    upsert?: CalendarEventUpsertWithWhereUniqueWithoutDealInput | CalendarEventUpsertWithWhereUniqueWithoutDealInput[]
+    createMany?: CalendarEventCreateManyDealInputEnvelope
+    set?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    disconnect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    delete?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    connect?: CalendarEventWhereUniqueInput | CalendarEventWhereUniqueInput[]
+    update?: CalendarEventUpdateWithWhereUniqueWithoutDealInput | CalendarEventUpdateWithWhereUniqueWithoutDealInput[]
+    updateMany?: CalendarEventUpdateManyWithWhereWithoutDealInput | CalendarEventUpdateManyWithWhereWithoutDealInput[]
+    deleteMany?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
+  }
+
   export type DealCreateNestedOneWithoutPartiesInput = {
     create?: XOR<DealCreateWithoutPartiesInput, DealUncheckedCreateWithoutPartiesInput>
     connectOrCreate?: DealCreateOrConnectWithoutPartiesInput
@@ -63571,10 +65454,6 @@ export namespace Prisma {
     connectOrCreate?: AmendmentCreateOrConnectWithoutParentAuthoritativeContractInput | AmendmentCreateOrConnectWithoutParentAuthoritativeContractInput[]
     createMany?: AmendmentCreateManyParentAuthoritativeContractInputEnvelope
     connect?: AmendmentWhereUniqueInput | AmendmentWhereUniqueInput[]
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type DealUpdateOneRequiredWithoutAuthoritativeContractNestedInput = {
@@ -64859,6 +66738,61 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumCalendarEventKindFilter<$PrismaModel = never> = {
+    equals?: $Enums.CalendarEventKind | EnumCalendarEventKindFieldRefInput<$PrismaModel>
+    in?: $Enums.CalendarEventKind[] | ListEnumCalendarEventKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CalendarEventKind[] | ListEnumCalendarEventKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumCalendarEventKindFilter<$PrismaModel> | $Enums.CalendarEventKind
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedEnumCalendarEventKindWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CalendarEventKind | EnumCalendarEventKindFieldRefInput<$PrismaModel>
+    in?: $Enums.CalendarEventKind[] | ListEnumCalendarEventKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CalendarEventKind[] | ListEnumCalendarEventKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumCalendarEventKindWithAggregatesFilter<$PrismaModel> | $Enums.CalendarEventKind
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCalendarEventKindFilter<$PrismaModel>
+    _max?: NestedEnumCalendarEventKindFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedEnumMembershipRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.MembershipRole | EnumMembershipRoleFieldRefInput<$PrismaModel>
     in?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
@@ -64893,36 +66827,11 @@ export namespace Prisma {
     _max?: NestedEnumDocumentStatusFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedEnumSubscriptionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.SubscriptionStatus | EnumSubscriptionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.SubscriptionStatus[] | ListEnumSubscriptionStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumSubscriptionStatusFilter<$PrismaModel> | $Enums.SubscriptionStatus
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumSubscriptionStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -65176,19 +67085,6 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumContractTransactionEventTypeFilter<$PrismaModel = never> = {
@@ -65642,6 +67538,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutOrganizationUsersInput = {
@@ -65669,6 +67566,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutOrganizationUsersInput = {
@@ -66090,6 +67988,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutOrganizationUsersInput = {
@@ -66117,6 +68016,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -66564,6 +68464,10 @@ export namespace Prisma {
     vehicleTypes?: $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileCreateaddOnsOfferedInput | string[]
     signingMethod?: $Enums.SigningMethod
+    openingDisclosureUploadedAt?: Date | string | null
+    openingDisclosureStorageKey?: string | null
+    openingDisclosureOriginalName?: string | null
+    openingDisclosureSha256?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -66579,6 +68483,10 @@ export namespace Prisma {
     vehicleTypes?: $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileCreateaddOnsOfferedInput | string[]
     signingMethod?: $Enums.SigningMethod
+    openingDisclosureUploadedAt?: Date | string | null
+    openingDisclosureStorageKey?: string | null
+    openingDisclosureOriginalName?: string | null
+    openingDisclosureSha256?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -66796,6 +68704,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerInput = {
@@ -66835,6 +68744,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerInput = {
@@ -66884,6 +68794,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLenderInput = {
@@ -66923,6 +68834,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLenderInput = {
@@ -67173,6 +69085,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CalendarEventCreateWithoutWorkspaceInput = {
+    id?: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deal?: DealCreateNestedOneWithoutCalendarEventsInput
+  }
+
+  export type CalendarEventUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    dealId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CalendarEventCreateOrConnectWithoutWorkspaceInput = {
+    where: CalendarEventWhereUniqueInput
+    create: XOR<CalendarEventCreateWithoutWorkspaceInput, CalendarEventUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type CalendarEventCreateManyWorkspaceInputEnvelope = {
+    data: CalendarEventCreateManyWorkspaceInput | CalendarEventCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithWhereUniqueWithoutOrganizationWorkspaceInput = {
     where: UserWhereUniqueInput
     update: XOR<UserUpdateWithoutOrganizationWorkspaceInput, UserUncheckedUpdateWithoutOrganizationWorkspaceInput>
@@ -67301,6 +69249,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionFieldUpdateOperationsInput | $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileUpdateaddOnsOfferedInput | string[]
     signingMethod?: EnumSigningMethodFieldUpdateOperationsInput | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openingDisclosureStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureOriginalName?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureSha256?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -67316,6 +69268,10 @@ export namespace Prisma {
     vehicleTypes?: EnumVehicleTypeSelectionFieldUpdateOperationsInput | $Enums.VehicleTypeSelection
     addOnsOffered?: DealerProfileUpdateaddOnsOfferedInput | string[]
     signingMethod?: EnumSigningMethodFieldUpdateOperationsInput | $Enums.SigningMethod
+    openingDisclosureUploadedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openingDisclosureStorageKey?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureOriginalName?: NullableStringFieldUpdateOperationsInput | string | null
+    openingDisclosureSha256?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -67665,6 +69621,343 @@ export namespace Prisma {
     data: XOR<UserAccessAuditUpdateManyMutationInput, UserAccessAuditUncheckedUpdateManyWithoutWorkspaceInput>
   }
 
+  export type CalendarEventUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: CalendarEventWhereUniqueInput
+    update: XOR<CalendarEventUpdateWithoutWorkspaceInput, CalendarEventUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<CalendarEventCreateWithoutWorkspaceInput, CalendarEventUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type CalendarEventUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: CalendarEventWhereUniqueInput
+    data: XOR<CalendarEventUpdateWithoutWorkspaceInput, CalendarEventUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type CalendarEventUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: CalendarEventScalarWhereInput
+    data: XOR<CalendarEventUpdateManyMutationInput, CalendarEventUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type CalendarEventScalarWhereInput = {
+    AND?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
+    OR?: CalendarEventScalarWhereInput[]
+    NOT?: CalendarEventScalarWhereInput | CalendarEventScalarWhereInput[]
+    id?: StringFilter<"CalendarEvent"> | string
+    workspaceId?: StringFilter<"CalendarEvent"> | string
+    kind?: EnumCalendarEventKindFilter<"CalendarEvent"> | $Enums.CalendarEventKind
+    title?: StringFilter<"CalendarEvent"> | string
+    notes?: StringNullableFilter<"CalendarEvent"> | string | null
+    startsAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    endsAt?: DateTimeNullableFilter<"CalendarEvent"> | Date | string | null
+    allDay?: BoolFilter<"CalendarEvent"> | boolean
+    dealId?: StringNullableFilter<"CalendarEvent"> | string | null
+    createdAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+    updatedAt?: DateTimeFilter<"CalendarEvent"> | Date | string
+  }
+
+  export type WorkspaceCreateWithoutCalendarEventsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealCreateNestedManyWithoutLenderInput
+    notifications?: NotificationCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutCalendarEventsInput = {
+    id?: string
+    name: string
+    slug: string
+    type?: $Enums.WorkspaceType
+    dealCountCurrentPeriod?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizationUsers?: UserUncheckedCreateNestedManyWithoutOrganizationWorkspaceInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkspaceInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealerProfile?: DealerProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    lenderProfile?: LenderProfileUncheckedCreateNestedOneWithoutWorkspaceInput
+    dealerLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutDealerInput
+    lenderLinks?: DealerLenderLinkUncheckedCreateNestedManyWithoutLenderInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedCreateNestedManyWithoutDealerInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedCreateNestedManyWithoutLenderInput
+    dealerDeals?: DealUncheckedCreateNestedManyWithoutDealerInput
+    lenderDeals?: DealUncheckedCreateNestedManyWithoutLenderInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutWorkspaceInput
+    dealAlerts?: DealAlertUncheckedCreateNestedManyWithoutWorkspaceInput
+    loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
+    webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutCalendarEventsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutCalendarEventsInput, WorkspaceUncheckedCreateWithoutCalendarEventsInput>
+  }
+
+  export type DealCreateWithoutCalendarEventsInput = {
+    id?: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dealer: WorkspaceCreateNestedOneWithoutDealerDealsInput
+    lender: WorkspaceCreateNestedOneWithoutLenderDealsInput
+    dealerLenderLink: DealerLenderLinkCreateNestedOneWithoutDealsInput
+    loanPool?: LoanPoolCreateNestedOneWithoutDealsInput
+    parties?: DealPartyCreateNestedManyWithoutDealInput
+    vehicle?: VehicleCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventCreateNestedManyWithoutDealInput
+    amendments?: AmendmentCreateNestedManyWithoutDealInput
+    notifications?: NotificationCreateNestedManyWithoutDealInput
+    alerts?: DealAlertCreateNestedManyWithoutDealInput
+    comments?: DealCommentCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+  }
+
+  export type DealUncheckedCreateWithoutCalendarEventsInput = {
+    id?: string
+    dealerId: string
+    lenderId: string
+    dealerLenderLinkId: string
+    status?: $Enums.DealStatus
+    state: string
+    initialDisclosureAcceptedAt?: Date | string | null
+    initialDisclosureHash?: string | null
+    initialDisclosureSignerName?: string | null
+    dealerRepresentativeName?: string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: string | null
+    secondaryMarketStatus?: $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: string | null
+    apiIngressKeyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parties?: DealPartyUncheckedCreateNestedManyWithoutDealInput
+    vehicle?: VehicleUncheckedCreateNestedOneWithoutDealInput
+    financials?: DealFinancialsUncheckedCreateNestedOneWithoutDealInput
+    authoritativeContract?: AuthoritativeContractUncheckedCreateNestedOneWithoutDealInput
+    generatedDocuments?: GeneratedDocumentUncheckedCreateNestedManyWithoutDealInput
+    custodyEvents?: DocumentCustodyEventUncheckedCreateNestedManyWithoutDealInput
+    complianceChecks?: ComplianceCheckUncheckedCreateNestedManyWithoutDealInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedCreateNestedOneWithoutDealInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedCreateNestedManyWithoutDealInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedCreateNestedOneWithoutDealInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedCreateNestedManyWithoutDealInput
+    amendments?: AmendmentUncheckedCreateNestedManyWithoutDealInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
+    alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
+    comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+  }
+
+  export type DealCreateOrConnectWithoutCalendarEventsInput = {
+    where: DealWhereUniqueInput
+    create: XOR<DealCreateWithoutCalendarEventsInput, DealUncheckedCreateWithoutCalendarEventsInput>
+  }
+
+  export type WorkspaceUpsertWithoutCalendarEventsInput = {
+    update: XOR<WorkspaceUpdateWithoutCalendarEventsInput, WorkspaceUncheckedUpdateWithoutCalendarEventsInput>
+    create: XOR<WorkspaceCreateWithoutCalendarEventsInput, WorkspaceUncheckedCreateWithoutCalendarEventsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutCalendarEventsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutCalendarEventsInput, WorkspaceUncheckedUpdateWithoutCalendarEventsInput>
+  }
+
+  export type WorkspaceUpdateWithoutCalendarEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutCalendarEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    type?: EnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType
+    dealCountCurrentPeriod?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizationUsers?: UserUncheckedUpdateManyWithoutOrganizationWorkspaceNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkspaceNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealerProfile?: DealerProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    lenderProfile?: LenderProfileUncheckedUpdateOneWithoutWorkspaceNestedInput
+    dealerLinks?: DealerLenderLinkUncheckedUpdateManyWithoutDealerNestedInput
+    lenderLinks?: DealerLenderLinkUncheckedUpdateManyWithoutLenderNestedInput
+    dealerOnboardingAnswers?: DealerOnboardingAnswerUncheckedUpdateManyWithoutDealerNestedInput
+    lenderOnboardingAnswers?: LenderOnboardingAnswerUncheckedUpdateManyWithoutLenderNestedInput
+    dealerDeals?: DealUncheckedUpdateManyWithoutDealerNestedInput
+    lenderDeals?: DealUncheckedUpdateManyWithoutLenderNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutWorkspaceNestedInput
+    dealAlerts?: DealAlertUncheckedUpdateManyWithoutWorkspaceNestedInput
+    loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
+    webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type DealUpsertWithoutCalendarEventsInput = {
+    update: XOR<DealUpdateWithoutCalendarEventsInput, DealUncheckedUpdateWithoutCalendarEventsInput>
+    create: XOR<DealCreateWithoutCalendarEventsInput, DealUncheckedCreateWithoutCalendarEventsInput>
+    where?: DealWhereInput
+  }
+
+  export type DealUpdateToOneWithWhereWithoutCalendarEventsInput = {
+    where?: DealWhereInput
+    data: XOR<DealUpdateWithoutCalendarEventsInput, DealUncheckedUpdateWithoutCalendarEventsInput>
+  }
+
+  export type DealUpdateWithoutCalendarEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: WorkspaceUpdateOneRequiredWithoutDealerDealsNestedInput
+    lender?: WorkspaceUpdateOneRequiredWithoutLenderDealsNestedInput
+    dealerLenderLink?: DealerLenderLinkUpdateOneRequiredWithoutDealsNestedInput
+    loanPool?: LoanPoolUpdateOneWithoutDealsNestedInput
+    parties?: DealPartyUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+  }
+
+  export type DealUncheckedUpdateWithoutCalendarEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dealerId?: StringFieldUpdateOperationsInput | string
+    lenderId?: StringFieldUpdateOperationsInput | string
+    dealerLenderLinkId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDealStatusFieldUpdateOperationsInput | $Enums.DealStatus
+    state?: StringFieldUpdateOperationsInput | string
+    initialDisclosureAcceptedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    initialDisclosureHash?: NullableStringFieldUpdateOperationsInput | string | null
+    initialDisclosureSignerName?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerRepresentativeName?: NullableStringFieldUpdateOperationsInput | string | null
+    governingStateProfile?: NullableJsonNullValueInput | InputJsonValue
+    preliminarySubmittedTerms?: NullableJsonNullValueInput | InputJsonValue
+    lenderApprovedTerms?: NullableJsonNullValueInput | InputJsonValue
+    complianceStatus?: EnumDealComplianceStatusFieldUpdateOperationsInput | $Enums.DealComplianceStatus
+    consummatedData?: NullableJsonNullValueInput | InputJsonValue
+    poolId?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryMarketStatus?: EnumSecondaryMarketStatusFieldUpdateOperationsInput | $Enums.SecondaryMarketStatus
+    secondaryMarketGrade?: NullableStringFieldUpdateOperationsInput | string | null
+    apiIngressKeyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parties?: DealPartyUncheckedUpdateManyWithoutDealNestedInput
+    vehicle?: VehicleUncheckedUpdateOneWithoutDealNestedInput
+    financials?: DealFinancialsUncheckedUpdateOneWithoutDealNestedInput
+    authoritativeContract?: AuthoritativeContractUncheckedUpdateOneWithoutDealNestedInput
+    generatedDocuments?: GeneratedDocumentUncheckedUpdateManyWithoutDealNestedInput
+    custodyEvents?: DocumentCustodyEventUncheckedUpdateManyWithoutDealNestedInput
+    complianceChecks?: ComplianceCheckUncheckedUpdateManyWithoutDealNestedInput
+    prefundingValidationCertificate?: PreFundingValidationCertificateUncheckedUpdateOneWithoutDealNestedInput
+    contractTransactionEvents?: ContractTransactionEventUncheckedUpdateManyWithoutDealNestedInput
+    negotiableInstrument?: NegotiableInstrumentUncheckedUpdateOneWithoutDealNestedInput
+    instrumentTransferEvents?: InstrumentTransferEventUncheckedUpdateManyWithoutDealNestedInput
+    amendments?: AmendmentUncheckedUpdateManyWithoutDealNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
+    alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
+    comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+  }
+
   export type UserCreateWithoutMembershipsInput = {
     id?: string
     email: string
@@ -67735,6 +70028,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutMembershipsInput = {
@@ -67762,6 +70056,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutMembershipsInput = {
@@ -67856,6 +70151,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutMembershipsInput = {
@@ -67883,6 +70179,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutDocumentsInput = {
@@ -67910,6 +70207,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDocumentsInput = {
@@ -67937,6 +70235,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDocumentsInput = {
@@ -67980,6 +70279,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDocumentsInput = {
@@ -68007,6 +70307,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutSubscriptionsInput = {
@@ -68034,6 +70335,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutSubscriptionsInput = {
@@ -68061,6 +70363,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutSubscriptionsInput = {
@@ -68104,6 +70407,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutSubscriptionsInput = {
@@ -68131,6 +70435,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerProfileInput = {
@@ -68158,6 +70463,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerProfileInput = {
@@ -68185,6 +70491,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerProfileInput = {
@@ -68228,6 +70535,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerProfileInput = {
@@ -68255,6 +70563,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutLenderProfileInput = {
@@ -68282,6 +70591,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderProfileInput = {
@@ -68309,6 +70619,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderProfileInput = {
@@ -68352,6 +70663,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderProfileInput = {
@@ -68379,6 +70691,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerLinksInput = {
@@ -68406,6 +70719,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerLinksInput = {
@@ -68433,6 +70747,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerLinksInput = {
@@ -68465,6 +70780,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderLinksInput = {
@@ -68492,6 +70808,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderLinksInput = {
@@ -68536,6 +70853,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutDealerLenderLinkInput = {
@@ -68575,6 +70893,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutDealerLenderLinkInput = {
@@ -68623,6 +70942,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerLinksInput = {
@@ -68650,6 +70970,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUpsertWithoutLenderLinksInput = {
@@ -68688,6 +71009,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderLinksInput = {
@@ -68715,6 +71037,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealUpsertWithWhereUniqueWithoutDealerLenderLinkInput = {
@@ -68758,6 +71081,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerOnboardingAnswersInput = {
@@ -68785,6 +71109,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerOnboardingAnswersInput = {
@@ -68828,6 +71153,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerOnboardingAnswersInput = {
@@ -68855,6 +71181,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutLenderOnboardingAnswersInput = {
@@ -68882,6 +71209,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderOnboardingAnswersInput = {
@@ -68909,6 +71237,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderOnboardingAnswersInput = {
@@ -68952,6 +71281,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderOnboardingAnswersInput = {
@@ -68979,6 +71309,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutDealerDealsInput = {
@@ -69006,6 +71337,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealerDealsInput = {
@@ -69033,6 +71365,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealerDealsInput = {
@@ -69065,6 +71398,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLenderDealsInput = {
@@ -69092,6 +71426,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLenderDealsInput = {
@@ -69762,6 +72097,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CalendarEventCreateWithoutDealInput = {
+    id?: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutCalendarEventsInput
+  }
+
+  export type CalendarEventUncheckedCreateWithoutDealInput = {
+    id?: string
+    workspaceId: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CalendarEventCreateOrConnectWithoutDealInput = {
+    where: CalendarEventWhereUniqueInput
+    create: XOR<CalendarEventCreateWithoutDealInput, CalendarEventUncheckedCreateWithoutDealInput>
+  }
+
+  export type CalendarEventCreateManyDealInputEnvelope = {
+    data: CalendarEventCreateManyDealInput | CalendarEventCreateManyDealInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutDealerDealsInput = {
     update: XOR<WorkspaceUpdateWithoutDealerDealsInput, WorkspaceUncheckedUpdateWithoutDealerDealsInput>
     create: XOR<WorkspaceCreateWithoutDealerDealsInput, WorkspaceUncheckedCreateWithoutDealerDealsInput>
@@ -69798,6 +72169,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealerDealsInput = {
@@ -69825,6 +72197,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUpsertWithoutLenderDealsInput = {
@@ -69863,6 +72236,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLenderDealsInput = {
@@ -69890,6 +72264,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealerLenderLinkUpsertWithoutDealsInput = {
@@ -70483,6 +72858,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"DealAuditEvent"> | Date | string
   }
 
+  export type CalendarEventUpsertWithWhereUniqueWithoutDealInput = {
+    where: CalendarEventWhereUniqueInput
+    update: XOR<CalendarEventUpdateWithoutDealInput, CalendarEventUncheckedUpdateWithoutDealInput>
+    create: XOR<CalendarEventCreateWithoutDealInput, CalendarEventUncheckedCreateWithoutDealInput>
+  }
+
+  export type CalendarEventUpdateWithWhereUniqueWithoutDealInput = {
+    where: CalendarEventWhereUniqueInput
+    data: XOR<CalendarEventUpdateWithoutDealInput, CalendarEventUncheckedUpdateWithoutDealInput>
+  }
+
+  export type CalendarEventUpdateManyWithWhereWithoutDealInput = {
+    where: CalendarEventScalarWhereInput
+    data: XOR<CalendarEventUpdateManyMutationInput, CalendarEventUncheckedUpdateManyWithoutDealInput>
+  }
+
   export type DealCreateWithoutPartiesInput = {
     id?: string
     status?: $Enums.DealStatus
@@ -70520,6 +72911,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPartiesInput = {
@@ -70559,6 +72951,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPartiesInput = {
@@ -70614,6 +73007,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPartiesInput = {
@@ -70653,6 +73047,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutVehicleInput = {
@@ -70692,6 +73087,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutVehicleInput = {
@@ -70731,6 +73127,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutVehicleInput = {
@@ -70786,6 +73183,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutVehicleInput = {
@@ -70825,6 +73223,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutFinancialsInput = {
@@ -70864,6 +73263,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutFinancialsInput = {
@@ -70903,6 +73303,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutFinancialsInput = {
@@ -70958,6 +73359,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutFinancialsInput = {
@@ -70997,6 +73399,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutAuthoritativeContractInput = {
@@ -71036,6 +73439,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAuthoritativeContractInput = {
@@ -71075,6 +73479,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAuthoritativeContractInput = {
@@ -71220,6 +73625,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAuthoritativeContractInput = {
@@ -71259,6 +73665,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithWhereUniqueWithoutAuthoritativeContractInput = {
@@ -71330,6 +73737,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutContractTransactionEventsInput = {
@@ -71369,6 +73777,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutContractTransactionEventsInput = {
@@ -71451,6 +73860,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutContractTransactionEventsInput = {
@@ -71490,6 +73900,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithoutLinkedContractEventsInput = {
@@ -71550,6 +73961,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutLoanPoolsInput = {
@@ -71577,6 +73989,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutLoanPoolsInput = {
@@ -71666,6 +74079,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutLoanPoolInput = {
@@ -71705,6 +74119,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutLoanPoolInput = {
@@ -71753,6 +74168,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutLoanPoolsInput = {
@@ -71780,6 +74196,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutLoanPoolsCreatedInput = {
@@ -71886,6 +74303,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNegotiableInstrumentInput = {
@@ -71925,6 +74343,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNegotiableInstrumentInput = {
@@ -72012,6 +74431,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNegotiableInstrumentInput = {
@@ -72051,6 +74471,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type InstrumentTransferEventUpsertWithWhereUniqueWithoutInstrumentInput = {
@@ -72106,6 +74527,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutInstrumentTransferEventsInput = {
@@ -72145,6 +74567,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutInstrumentTransferEventsInput = {
@@ -72265,6 +74688,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutInstrumentTransferEventsInput = {
@@ -72304,6 +74728,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type NegotiableInstrumentUpsertWithoutTransferEventsInput = {
@@ -72398,6 +74823,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutGeneratedDocumentsInput = {
@@ -72437,6 +74863,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutGeneratedDocumentsInput = {
@@ -72610,6 +75037,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutGeneratedDocumentsInput = {
@@ -72649,6 +75077,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutGeneratedDocumentsInput = {
@@ -72795,6 +75224,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutNotificationsInput = {
@@ -72822,6 +75252,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutNotificationsInput = {
@@ -72911,6 +75342,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutNotificationsInput = {
@@ -72950,6 +75382,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutNotificationsInput = {
@@ -72993,6 +75426,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutNotificationsInput = {
@@ -73020,6 +75454,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutNotificationsInput = {
@@ -73121,6 +75556,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutNotificationsInput = {
@@ -73160,6 +75596,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceCreateWithoutApiKeysInput = {
@@ -73187,6 +75624,7 @@ export namespace Prisma {
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutApiKeysInput = {
@@ -73214,6 +75652,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutApiKeysInput = {
@@ -73257,6 +75696,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutApiKeysInput = {
@@ -73284,6 +75724,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateWithoutWebhookEndpointsInput = {
@@ -73311,6 +75752,7 @@ export namespace Prisma {
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutWebhookEndpointsInput = {
@@ -73338,6 +75780,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutWebhookEndpointsInput = {
@@ -73415,6 +75858,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutWebhookEndpointsInput = {
@@ -73442,6 +75886,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WebhookDeliveryUpsertWithWhereUniqueWithoutWebhookEndpointInput = {
@@ -73606,6 +76051,7 @@ export namespace Prisma {
     loanPools?: LoanPoolCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutAccessAuditsInput = {
@@ -73633,6 +76079,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUncheckedCreateNestedManyWithoutLenderInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutAccessAuditsInput = {
@@ -73727,6 +76174,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutAccessAuditsInput = {
@@ -73754,6 +76202,7 @@ export namespace Prisma {
     loanPools?: LoanPoolUncheckedUpdateManyWithoutLenderNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealCreateWithoutCommentsInput = {
@@ -73793,6 +76242,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCommentsInput = {
@@ -73832,6 +76282,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCommentsInput = {
@@ -74056,6 +76507,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCommentsInput = {
@@ -74095,6 +76547,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserUpsertWithoutDealCommentsAuthoredInput = {
@@ -74295,6 +76748,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAlertsInput = {
@@ -74334,6 +76788,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAlertsInput = {
@@ -74366,6 +76821,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDealAlertsInput = {
@@ -74393,6 +76849,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutWorkspaceInput
     webhookEndpoints?: WebhookEndpointUncheckedCreateNestedManyWithoutWorkspaceInput
     accessAudits?: UserAccessAuditUncheckedCreateNestedManyWithoutWorkspaceInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDealAlertsInput = {
@@ -74478,6 +76935,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAlertsInput = {
@@ -74517,6 +76975,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type WorkspaceUpsertWithoutDealAlertsInput = {
@@ -74555,6 +77014,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDealAlertsInput = {
@@ -74582,6 +77042,7 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutWorkspaceNestedInput
     webhookEndpoints?: WebhookEndpointUncheckedUpdateManyWithoutWorkspaceNestedInput
     accessAudits?: UserAccessAuditUncheckedUpdateManyWithoutWorkspaceNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DealAlertAuditUpsertWithWhereUniqueWithoutDealAlertInput = {
@@ -74727,6 +77188,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAmendmentsInput = {
@@ -74766,6 +77228,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAmendmentsInput = {
@@ -74994,6 +77457,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAmendmentsInput = {
@@ -75033,6 +77497,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type AuthoritativeContractUpsertWithoutParentAmendmentsInput = {
@@ -75227,6 +77692,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutCustodyEventsInput = {
@@ -75266,6 +77732,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutCustodyEventsInput = {
@@ -75368,6 +77835,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutCustodyEventsInput = {
@@ -75407,6 +77875,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type GeneratedDocumentUpsertWithoutCustodyEventsInput = {
@@ -75599,6 +78068,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutComplianceChecksInput = {
@@ -75638,6 +78108,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutComplianceChecksInput = {
@@ -75693,6 +78164,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutComplianceChecksInput = {
@@ -75732,6 +78204,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutPrefundingValidationCertificateInput = {
@@ -75771,6 +78244,7 @@ export namespace Prisma {
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutPrefundingValidationCertificateInput = {
@@ -75810,6 +78284,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
     auditEvents?: DealAuditEventUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutPrefundingValidationCertificateInput = {
@@ -75865,6 +78340,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutPrefundingValidationCertificateInput = {
@@ -75904,6 +78380,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealCreateWithoutAuditEventsInput = {
@@ -75943,6 +78420,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutDealInput
     alerts?: DealAlertCreateNestedManyWithoutDealInput
     comments?: DealCommentCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventCreateNestedManyWithoutDealInput
   }
 
   export type DealUncheckedCreateWithoutAuditEventsInput = {
@@ -75982,6 +78460,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutDealInput
     alerts?: DealAlertUncheckedCreateNestedManyWithoutDealInput
     comments?: DealCommentUncheckedCreateNestedManyWithoutDealInput
+    calendarEvents?: CalendarEventUncheckedCreateNestedManyWithoutDealInput
   }
 
   export type DealCreateOrConnectWithoutAuditEventsInput = {
@@ -76037,6 +78516,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutAuditEventsInput = {
@@ -76076,6 +78556,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutDealNestedInput
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -77036,6 +79517,19 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type CalendarEventCreateManyWorkspaceInput = {
+    id?: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    dealId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutOrganizationWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -77361,6 +79855,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerInput = {
@@ -77400,6 +79895,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerInput = {
@@ -77462,6 +79958,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLenderInput = {
@@ -77501,6 +79998,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLenderInput = {
@@ -77790,6 +80288,45 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CalendarEventUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deal?: DealUpdateOneWithoutCalendarEventsNestedInput
+  }
+
+  export type CalendarEventUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    dealId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DealCreateManyDealerLenderLinkInput = {
     id?: string
     dealerId: string
@@ -77850,6 +80387,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutDealerLenderLinkInput = {
@@ -77889,6 +80427,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutDealerLenderLinkInput = {
@@ -78055,6 +80594,19 @@ export namespace Prisma {
     previousChainHash?: string | null
     chainHash?: string | null
     createdAt?: Date | string
+  }
+
+  export type CalendarEventCreateManyDealInput = {
+    id?: string
+    workspaceId: string
+    kind: $Enums.CalendarEventKind
+    title: string
+    notes?: string | null
+    startsAt: Date | string
+    endsAt?: Date | string | null
+    allDay?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DealPartyUpdateWithoutDealInput = {
@@ -78498,6 +81050,45 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CalendarEventUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutCalendarEventsNestedInput
+  }
+
+  export type CalendarEventUncheckedUpdateWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CalendarEventUncheckedUpdateManyWithoutDealInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumCalendarEventKindFieldUpdateOperationsInput | $Enums.CalendarEventKind
+    title?: StringFieldUpdateOperationsInput | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    allDay?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type GeneratedDocumentCreateManyAuthoritativeContractInput = {
     id?: string
     dealId: string
@@ -78692,6 +81283,7 @@ export namespace Prisma {
     alerts?: DealAlertUpdateManyWithoutDealNestedInput
     comments?: DealCommentUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateWithoutLoanPoolInput = {
@@ -78731,6 +81323,7 @@ export namespace Prisma {
     alerts?: DealAlertUncheckedUpdateManyWithoutDealNestedInput
     comments?: DealCommentUncheckedUpdateManyWithoutDealNestedInput
     auditEvents?: DealAuditEventUncheckedUpdateManyWithoutDealNestedInput
+    calendarEvents?: CalendarEventUncheckedUpdateManyWithoutDealNestedInput
   }
 
   export type DealUncheckedUpdateManyWithoutLoanPoolInput = {

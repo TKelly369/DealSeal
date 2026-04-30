@@ -1,3 +1,4 @@
+import type { DealerDashboardDealRow } from "@/lib/dealer-dashboard-metrics";
 import { prisma } from "@/lib/db";
 
 export const DealService = {
@@ -5,6 +6,23 @@ export const DealService = {
     return prisma.deal.findMany({
       where: { dealerId },
       include: { lender: { select: { name: true } } },
+      orderBy: { updatedAt: "desc" },
+    });
+  },
+
+  /** Dealer dashboard: counts, R/Y/G, doc pipeline — avoids loading full deal graphs. */
+  async listDealsForDealerDashboard(dealerId: string): Promise<DealerDashboardDealRow[]> {
+    return prisma.deal.findMany({
+      where: { dealerId },
+      select: {
+        id: true,
+        status: true,
+        state: true,
+        complianceStatus: true,
+        initialDisclosureAcceptedAt: true,
+        lender: { select: { name: true } },
+        _count: { select: { generatedDocuments: true } },
+      },
       orderBy: { updatedAt: "desc" },
     });
   },

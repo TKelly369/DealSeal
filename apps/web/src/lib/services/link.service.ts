@@ -44,4 +44,28 @@ export const DealerLenderLinkService = {
       orderBy: { updatedAt: "desc" },
     });
   },
+
+  async getPendingAccessRequestsForDealer(dealerId: string) {
+    return prisma.dealerLenderLink.findMany({
+      where: {
+        dealerId,
+        status: DealerLenderLinkStatus.PENDING,
+      },
+      include: {
+        lender: { select: { id: true, name: true, slug: true } },
+      },
+      orderBy: { updatedAt: "desc" },
+    });
+  },
+
+  /** All lender relationships for the dealer (approved, pending, suspended, etc.). */
+  async getDealerLenderNetwork(dealerId: string) {
+    return prisma.dealerLenderLink.findMany({
+      where: { dealerId },
+      include: {
+        lender: { select: { id: true, name: true, slug: true } },
+      },
+      orderBy: { updatedAt: "desc" },
+    });
+  },
 };

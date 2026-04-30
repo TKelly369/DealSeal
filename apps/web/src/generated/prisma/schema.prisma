@@ -269,6 +269,16 @@ enum DealAlertAuditAction {
   OVERRIDDEN
 }
 
+/// Dealer workspace calendar (follow-ups, funding, signing, conditions, title).
+enum CalendarEventKind {
+  FOLLOW_UP
+  DOCUMENT_REMINDER
+  FUNDING_TASK
+  CUSTOMER_SIGNING
+  LENDER_CONDITION
+  TITLE_REGISTRATION
+}
+
 model User {
   id                      String            @id @default(cuid())
   email                   String            @unique
@@ -316,8 +326,28 @@ model Workspace {
   webhookEndpoints        WebhookEndpoint[]
   accessAudits            UserAccessAudit[]
   dealCountCurrentPeriod  Int                      @default(0)
+  calendarEvents          CalendarEvent[]
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
+}
+
+model CalendarEvent {
+  id          String            @id @default(cuid())
+  workspaceId String
+  kind        CalendarEventKind
+  title       String
+  notes       String?
+  startsAt    DateTime
+  endsAt      DateTime?
+  allDay      Boolean           @default(false)
+  dealId      String?
+  workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  deal        Deal?             @relation(fields: [dealId], references: [id], onDelete: SetNull)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([workspaceId, startsAt])
+  @@index([dealId])
 }
 
 model Membership {
@@ -361,20 +391,25 @@ model Subscription {
 }
 
 model DealerProfile {
-  id               String               @id @default(cuid())
-  workspaceId      String               @unique
-  legalName        String
-  dba              String?
-  stateOfFormation String
-  licenseNumber    String?
-  operatingStates  String[]
-  dmsProvider      String?
-  vehicleTypes     VehicleTypeSelection @default(BOTH)
-  addOnsOffered    String[]
-  signingMethod    SigningMethod        @default(HYBRID)
-  workspace        Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @updatedAt
+  id                            String               @id @default(cuid())
+  workspaceId                   String               @unique
+  legalName                     String
+  dba                           String?
+  stateOfFormation              String
+  licenseNumber                 String?
+  operatingStates               String[]
+  dmsProvider                   String?
+  vehicleTypes                  VehicleTypeSelection @default(BOTH)
+  addOnsOffered                 String[]
+  signingMethod                 SigningMethod        @default(HYBRID)
+  /// Workspace-level opening disclosure on file — required before deal workflows unlock.
+  openingDisclosureUploadedAt   DateTime?
+  openingDisclosureStorageKey   String?
+  openingDisclosureOriginalName String?
+  openingDisclosureSha256       String?
+  workspace                     Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdAt                     DateTime             @default(now())
+  updatedAt                     DateTime             @updatedAt
 }
 
 model LenderProfile {
@@ -474,6 +509,7 @@ model Deal {
   apiIngressKeyId                 String?
   comments                        DealComment[]
   auditEvents                     DealAuditEvent[]
+  calendarEvents                  CalendarEvent[]
   createdAt                       DateTime                         @default(now())
   updatedAt                       DateTime                         @updatedAt
 

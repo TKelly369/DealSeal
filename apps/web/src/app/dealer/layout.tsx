@@ -2,8 +2,13 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { auth } from "@/lib/auth";
+import { isDealerPathAllowedBeforeOpeningDisclosure } from "@/lib/dealer-disclosure-gate";
 import { isAdminShellRole, isDealerStaffRole } from "@/lib/role-policy";
-import { getWorkspaceType, hasCompletedDealerOnboarding } from "@/lib/onboarding-status";
+import {
+  getWorkspaceType,
+  hasCompletedDealerOnboarding,
+  hasUploadedDealerOpeningDisclosure,
+} from "@/lib/onboarding-status";
 
 export default async function DealerLayout({ children }: { children: ReactNode }) {
   const pathname = (await headers()).get("x-dealseal-pathname") ?? "";
@@ -31,9 +36,16 @@ export default async function DealerLayout({ children }: { children: ReactNode }
     return children;
   }
 
-  if (await hasCompletedDealerOnboarding(session.user.workspaceId)) {
-    return children;
+  if (!(await hasCompletedDealerOnboarding(session.user.workspaceId))) {
+    redirect("/dealer/onboarding");
   }
 
-  redirect("/dealer/onboarding");
+  if (
+    !(await hasUploadedDealerOpeningDisclosure(session.user.workspaceId)) &&
+    !isDealerPathAllowedBeforeOpeningDisclosure(pathname)
+  ) {
+    redirect("/dealer/disclosure-gate");
+  }
+
+  return children;
 }

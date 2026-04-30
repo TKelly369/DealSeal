@@ -70,7 +70,10 @@ async function main() {
 
   await prisma.dealerProfile.upsert({
     where: { workspaceId: workspace.id },
-    update: {},
+    update: {
+      openingDisclosureUploadedAt: new Date(),
+      openingDisclosureOriginalName: "seed-opening-disclosure.pdf",
+    },
     create: {
       workspaceId: workspace.id,
       legalName: "Demo Dealer LLC",
@@ -80,6 +83,8 @@ async function main() {
       vehicleTypes: VehicleTypeSelection.BOTH,
       signingMethod: SigningMethod.HYBRID,
       licenseNumber: "DL-1000",
+      openingDisclosureUploadedAt: new Date(),
+      openingDisclosureOriginalName: "seed-opening-disclosure.pdf",
     },
   });
 

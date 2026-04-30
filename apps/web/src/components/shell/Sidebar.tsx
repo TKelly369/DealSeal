@@ -4,32 +4,48 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { Menu, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { dealerShellNavItems } from "@/components/shell/dealer-nav";
 import { shellNavItems } from "@/components/shell/nav";
 import { ShellUser } from "@/components/shell/types";
 import { isAdminShellRole, roleDisplayLabel } from "@/lib/role-policy";
 import { useShellUiState } from "@/lib/ui-state";
 
+function dealerNavActive(pathname: string, href: string): boolean {
+  if (href === "/dealer") {
+    return pathname === "/dealer" || pathname === "/dealer/dashboard";
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 function NavContent({ user, compact = false }: { user: ShellUser; compact?: boolean }) {
   const pathname = usePathname() ?? "";
+  const useDealerShell =
+    pathname.startsWith("/dealer") && !pathname.startsWith("/dealer/login");
+
+  const items = useDealerShell
+    ? dealerShellNavItems.map((item) => ({ ...item, adminOnly: false as const }))
+    : shellNavItems.filter((item) => !item.adminOnly || isAdminShellRole(user.role));
+
   return (
     <nav className="ds-shell-nav">
-      {shellNavItems
-        .filter((item) => !item.adminOnly || isAdminShellRole(user.role))
-        .map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={pathname === item.href ? "page" : undefined}
-              className="ds-shell-nav-item"
-              title={compact ? item.label : undefined}
-            >
-              <Icon size={16} />
-              {!compact ? <span>{item.label}</span> : null}
-            </Link>
-          );
-        })}
+      {items.map((item) => {
+        const Icon = item.icon;
+        const current = useDealerShell
+          ? dealerNavActive(pathname, item.href)
+          : pathname === item.href;
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            aria-current={current ? "page" : undefined}
+            className="ds-shell-nav-item"
+            title={compact ? item.label : undefined}
+          >
+            <Icon size={16} />
+            {!compact ? <span>{item.label}</span> : null}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

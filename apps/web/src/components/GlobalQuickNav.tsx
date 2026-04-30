@@ -14,7 +14,11 @@ const COMMON_ROUTES = [
 const USER_ROUTES = [{ value: "/dashboard", label: "Dashboard" }];
 
 const DEALER_ROUTES = [
-  { value: "/dealer/deals/new", label: "Dealer: New Deal Form" },
+  { value: "/dealer/dashboard", label: "Dealer: Dashboard" },
+  { value: "/dealer/deals", label: "Dealer: Deals" },
+  { value: "/dealer/deals/new", label: "Dealer: New deal" },
+  { value: "/dealer/files", label: "Dealer: Files" },
+  { value: "/dealer/lenders", label: "Dealer: Lenders" },
   { value: "/dealer", label: "Dealer: Home" },
 ];
 
