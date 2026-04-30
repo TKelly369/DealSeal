@@ -134,8 +134,8 @@ export default function AboutPage() {
           </div>
         </div>
         <p style={bodyTextStyle}>
-          These components are designed as proprietary system architecture, including patentable workflow and verification
-          methods across deal assembly and deal-scanning operations.
+          These components are designed as integrated system architecture with workflow and verification methods across
+          deal assembly and deal-scanning operations.
         </p>
         <p style={{ margin: 0, color: "var(--text-secondary)" }}>
           The Document Generator AI Agent is also a core system function, producing synchronized contract packages and related

@@ -47,7 +47,7 @@ export default function RootLayout({
           </Suspense>
           <div className="ds-demo-watermark" aria-hidden>
             <span>Demo Infrastructure</span>
-            <span>Patent Pending</span>
+            <span>System Build</span>
           </div>
         </AuthProvider>
       </body>
