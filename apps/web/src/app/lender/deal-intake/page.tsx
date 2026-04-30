@@ -65,6 +65,8 @@ export type LenderIntakeQueueDeal = IntakeDealFilterRow & {
   dealer: { name: string };
   vehicle: { year: number; make: string; model: string } | null;
   amendments: { id: string }[];
+  poolId: string | null;
+  loanPool: { poolName: string; poolType: string } | null;
 };
 
 export default async function LenderDealIntakePage({
@@ -132,6 +134,9 @@ export default async function LenderDealIntakePage({
         </div>
         <Link href="/lender/dashboard" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
           Dashboard
+        </Link>
+        <Link href="/lender/pools" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
+          Pools
         </Link>
       </div>
 
@@ -224,6 +229,7 @@ export default async function LenderDealIntakePage({
                 <th>Status</th>
                 <th>State</th>
                 <th>Compliance</th>
+                <th>Pool relationship</th>
                 <th>Amendments</th>
                 <th>Updated</th>
                 <th />
@@ -264,6 +270,15 @@ export default async function LenderDealIntakePage({
                     <td>{deal.state}</td>
                     <td>
                       <span style={{ color: comp.color, fontSize: "0.85rem", fontWeight: 600 }}>{comp.label}</span>
+                    </td>
+                    <td style={{ fontSize: "0.82rem" }}>
+                      {deal.poolId ? (
+                        <Link href={`/lender/pools/${deal.poolId}`}>
+                          {deal.loanPool?.poolName ?? `${deal.poolId.slice(0, 8)}…`} · {deal.loanPool?.poolType ?? "ASSIGNED"}
+                        </Link>
+                      ) : (
+                        <span style={{ color: "var(--muted)" }}>Unassigned</span>
+                      )}
                     </td>
                     <td>
                       {deal.amendments.length > 0 ? (
@@ -315,6 +330,8 @@ async function fetchIntakeDeals(lenderId: string): Promise<LenderIntakeQueueDeal
       vehicle: { select: { year: true, make: true, model: true } },
       parties: { where: { role: "BUYER" }, select: { creditTier: true } },
       authoritativeContract: { select: { signatureStatus: true } },
+      poolId: true,
+      loanPool: { select: { poolName: true, poolType: true } },
       amendments: { where: { status: "PENDING_LENDER_APPROVAL" }, select: { id: true } },
       generatedDocuments: {
         where: { documentType: DocumentType.RISC_SIGNED },

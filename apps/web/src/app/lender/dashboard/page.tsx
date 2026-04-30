@@ -204,6 +204,12 @@ export default async function LenderDashboardPage() {
       ALERT_REMINDER: "Alert reminder",
     })[k] ?? k;
   const unresolvedOpsAlerts = opsAlerts.filter((a) => String((a as { status?: string }).status ?? "").toUpperCase() !== "RESOLVED");
+  const dealSpecificRows = pipeline
+    .slice()
+    .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+    .slice(0, 12);
+  const complianceTone = (status: LenderDashboardDealRow["complianceStatus"]) =>
+    status === "BLOCKED" ? "#f87171" : status === "WARNING" ? "#fbbf24" : "#86efac";
 
   return (
     <div className="ds-section-shell">
@@ -221,8 +227,23 @@ export default async function LenderDashboardPage() {
           {pipeline.length} active in pipeline · {deals.length} total in book
         </span>
       </div>
+      <section style={{ marginTop: "1rem" }} aria-label="Workflow lens separator">
+        <p style={{ color: "var(--muted)", margin: 0 }}>
+          <strong>Overall workflow stats</strong> show portfolio-level throughput and pressure.{" "}
+          <strong>Deal-specific workflow stats</strong> show the flow state for each individual file.
+        </p>
+      </section>
 
-      <section style={{ marginTop: "1.25rem" }} aria-label="Compliance status">
+      <section style={{ marginTop: "1.25rem" }} aria-label="Overall workflow stats">
+        <h2 className="ds-card-title" style={{ margin: "0 0 0.75rem" }}>
+          Overall workflow stats
+        </h2>
+        <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginTop: 0, maxWidth: 780 }}>
+          Portfolio-wide signal across your full lender pipeline, used to monitor intake flow, risk pressure, and funding readiness.
+        </p>
+      </section>
+
+      <section style={{ marginTop: "1rem" }} aria-label="Compliance status">
         <h2 className="ds-card-title" style={{ margin: "0 0 0.75rem" }}>
           Deal status (red / yellow / green)
         </h2>
@@ -270,6 +291,58 @@ export default async function LenderDashboardPage() {
           <div className="card"><p className="ds-card-title">Enforcement warnings</p><h2>{commandCenter.enforcementWarnings}</h2></div>
           <div className="card"><p className="ds-card-title">Pooling ready</p><h2>{commandCenter.poolingReadyDeals}</h2></div>
           <div className="card"><p className="ds-card-title">Secondary market alerts</p><h2>{commandCenter.secondaryMarketAlerts}</h2></div>
+        </div>
+      </section>
+
+      <section style={{ marginTop: "1.25rem" }} aria-label="Deal-specific workflow stats">
+        <h2 className="ds-card-title" style={{ margin: "0 0 0.75rem" }}>
+          Deal-specific workflow stats
+        </h2>
+        <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginTop: 0, maxWidth: 820 }}>
+          Individual deal flow to separate file-level execution from portfolio totals. Use this to see exactly which deal is moving, blocked, or missing documents.
+        </p>
+        <div className="card" style={{ marginTop: "0.75rem" }}>
+          {dealSpecificRows.length === 0 ? (
+            <p style={{ margin: 0, color: "var(--muted)" }}>No active individual deals in workflow.</p>
+          ) : (
+            <table className="ds-table" style={{ width: "100%" }}>
+              <thead>
+                <tr>
+                  <th>Deal</th>
+                  <th>Dealer</th>
+                  <th>Workflow stage</th>
+                  <th>Compliance</th>
+                  <th>Docs</th>
+                  <th>Amendments</th>
+                  <th>Updated</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dealSpecificRows.map((d) => (
+                  <tr key={d.id}>
+                    <td>
+                      <Link href={`/lender/deal-intake/${d.id}`}>
+                        <code>{d.id.slice(0, 10)}…</code>
+                      </Link>
+                    </td>
+                    <td>{d.dealer.name}</td>
+                    <td>{d.status.replace(/_/g, " ")}</td>
+                    <td>
+                      <span style={{ color: complianceTone(d.complianceStatus), fontWeight: 700 }}>
+                        {d.complianceStatus}
+                      </span>
+                    </td>
+                    <td>{d._count.generatedDocuments}</td>
+                    <td>{d.amendments.length}</td>
+                    <td>{d.updatedAt.toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          <p style={{ margin: "0.75rem 0 0", fontSize: "0.82rem" }}>
+            <Link href="/lender/deal-intake">Open full deal workflow queue →</Link>
+          </p>
         </div>
       </section>
 

@@ -15,6 +15,8 @@ import {
   requestMissingDealerItemFormAction,
   approveAmendmentIntakeFormAction,
   rejectAmendmentIntakeFormAction,
+  assignDealToPoolFromIntakeAction,
+  removeDealFromPoolFromIntakeAction,
 } from "./actions";
 import { prisma } from "@/lib/db";
 import { CommentService } from "@/lib/services/comment.service";
@@ -63,6 +65,22 @@ export default async function LenderDealIntakeDetailPage({
     })),
   );
   const enforcement = await LenderOpsService.evaluateEnforcementReadiness(dealId, session.user.workspaceId);
+  const poolOptions = await prisma.loanPool.findMany({
+    where: {
+      lenderId: session.user.workspaceId,
+      status: { in: ["DRAFT", "FORMING", "ACTIVE", "IN_REVIEW", "READY_FOR_SALE"] },
+    },
+    select: {
+      id: true,
+      poolName: true,
+      poolType: true,
+      status: true,
+      totalLoanCount: true,
+      poolIntegrityStatus: true,
+    },
+    orderBy: { updatedAt: "desc" },
+    take: 25,
+  });
   const checklist = [
     ["Dealer-uploaded credit report", creditReports.length > 0 || !canViewCredit],
     ["Authoritative contract", Boolean(deal.authoritativeContract?.authoritativeContractHash)],
@@ -110,6 +128,53 @@ export default async function LenderDealIntakeDetailPage({
           </ul>
           <p style={{ marginTop: "0.65rem", color: "var(--muted)" }}>
             Enforcement readiness: <strong>{enforcement.status}</strong> ({enforcement.score}%)
+          </p>
+        </div>
+
+        <div className="card">
+          <h2 style={{ marginTop: 0 }}>Pooling relationships</h2>
+          <p style={{ color: "var(--muted)", marginTop: 0 }}>
+            Connect this deal directly to lender pools from intake so underwriting, funding, and secondary-market workflows stay linked.
+          </p>
+          {deal.poolId ? (
+            <p style={{ marginBottom: "0.6rem" }}>
+              Current pool relationship:{" "}
+              <Link href={`/lender/pools/${deal.poolId}`} style={{ fontWeight: 700 }}>
+                {deal.poolId.slice(0, 10)}…
+              </Link>
+            </p>
+          ) : (
+            <p style={{ marginBottom: "0.6rem", color: "var(--muted)" }}>No current pool relationship for this deal.</p>
+          )}
+          <form action={assignDealToPoolFromIntakeAction} style={{ display: "grid", gap: "0.5rem", maxWidth: "38rem" }}>
+            <input type="hidden" name="dealId" value={dealId} />
+            <label>
+              Assign deal to pool
+              <select name="poolId" className="ds-input" defaultValue="">
+                <option value="" disabled>
+                  Select a lender pool
+                </option>
+                {poolOptions.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.poolName} · {p.poolType} · {p.status} · {p.totalLoanCount} loans
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              <button type="submit" className="btn btn-secondary">Assign to pool</button>
+            </div>
+          </form>
+          {deal.poolId ? (
+            <form action={removeDealFromPoolFromIntakeAction} style={{ marginTop: "0.45rem" }}>
+              <input type="hidden" name="dealId" value={dealId} />
+              <input type="hidden" name="poolId" value={deal.poolId} />
+              <button type="submit" className="btn btn-secondary">Remove from current pool</button>
+            </form>
+          ) : null}
+          <p style={{ marginTop: "0.65rem", color: "var(--muted)", fontSize: "0.85rem" }}>
+            Active lender pools available for relationship routing: {poolOptions.length}. Pooling relationship changes from
+            this intake page are synced to lender pools and secondary-market workflow.
           </p>
         </div>
 

@@ -5,10 +5,13 @@ import { getWorkspaceType } from "@/lib/onboarding-status";
 import { LoanPoolService } from "@/lib/services/loan-pool.service";
 import {
   addDealToPoolAction,
+  finalizeAiPoolingDecisionAction,
   generatePoolPackageAction,
   removeDealFromPoolAction,
+  runAiPoolingReviewAction,
   transitionPoolAction,
 } from "@/app/lender/pools/actions";
+import { LoanPoolType } from "@/generated/prisma";
 
 export default async function LoanPoolDetailPage({ params }: { params: Promise<{ poolId: string }> }) {
   const session = await auth();
@@ -21,6 +24,20 @@ export default async function LoanPoolDetailPage({ params }: { params: Promise<{
   if (!pool) {
     redirect("/lender/pools");
   }
+
+  const aiReview = (() => {
+    const raw = (pool.filterCriteriaJson ?? {}) as Record<string, unknown>;
+    return (raw.aiPoolingReview ?? null) as
+      | {
+          reviewedAt?: string;
+          primeCount?: number;
+          subprimeCount?: number;
+          otherCount?: number;
+          recommendedBucket?: string;
+          recommendationSummary?: string;
+        }
+      | null;
+  })();
 
   return (
     <div className="ds-section-shell">
@@ -57,6 +74,75 @@ export default async function LoanPoolDetailPage({ params }: { params: Promise<{
             <button type="submit" className="btn btn-secondary">
               Mark sold
             </button>
+          </form>
+        </div>
+      </section>
+
+      <section style={{ marginTop: "1.5rem" }}>
+        <h2>AI market distribution + human final approval</h2>
+        <p style={{ color: "var(--muted)", maxWidth: "56rem" }}>
+          AI verifies package readiness and recommends distribution between prime, subprime, and other markets. Lender rep
+          gives final approval or hold. After approval, AI automation performs downstream packaging and sale preparation.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem", marginTop: "0.5rem" }}>
+          <form
+            action={async () => {
+              "use server";
+              await runAiPoolingReviewAction(poolId);
+            }}
+          >
+            <button type="submit" className="btn">
+              Run AI pooling review
+            </button>
+          </form>
+        </div>
+        {aiReview ? (
+          <div className="card" style={{ marginTop: "0.8rem" }}>
+            <p style={{ margin: 0 }}>
+              Prime: <strong>{aiReview.primeCount ?? 0}</strong> · Subprime: <strong>{aiReview.subprimeCount ?? 0}</strong>{" "}
+              · Other markets: <strong>{aiReview.otherCount ?? 0}</strong>
+            </p>
+            <p style={{ margin: "0.45rem 0 0", color: "var(--muted)" }}>
+              Recommended bucket: <strong>{aiReview.recommendedBucket ?? "MIXED"}</strong>
+            </p>
+            {aiReview.recommendationSummary ? (
+              <p style={{ margin: "0.45rem 0 0", color: "var(--muted)" }}>{aiReview.recommendationSummary}</p>
+            ) : null}
+          </div>
+        ) : (
+          <p style={{ color: "var(--muted)" }}>No AI review run yet for this pool.</p>
+        )}
+        <div className="card" style={{ marginTop: "0.8rem" }}>
+          <h3 style={{ marginTop: 0 }}>Final lender rep decision</h3>
+          <form action={finalizeAiPoolingDecisionAction} style={{ display: "grid", gap: "0.6rem", maxWidth: "36rem" }}>
+            <input type="hidden" name="poolId" value={poolId} />
+            <label>
+              Final market bucket arrangement
+              <select name="finalBucket" className="ds-input" defaultValue={String(aiReview?.recommendedBucket ?? pool.poolType)}>
+                {Object.values(LoanPoolType).map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Decision note (optional)
+              <textarea
+                name="note"
+                className="ds-input"
+                rows={2}
+                placeholder="Optional context for approval or hold."
+              />
+            </label>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              <button type="submit" name="decision" value="APPROVE" className="btn">
+                Final approve and let AI execute
+              </button>
+              <button type="submit" name="decision" value="HOLD" className="btn btn-secondary">
+                Put on hold
+              </button>
+            </div>
           </form>
         </div>
       </section>

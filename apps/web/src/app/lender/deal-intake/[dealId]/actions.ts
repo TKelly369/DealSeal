@@ -6,6 +6,7 @@ import { DealWorkflowService } from "@/lib/services/deal-workflow.service";
 import { prisma } from "@/lib/db";
 import { AmendmentService } from "@/lib/services/amendment.service";
 import { LenderOpsService } from "@/lib/services/lender-ops.service";
+import { LoanPoolService } from "@/lib/services/loan-pool.service";
 
 const intakeDealPath = (dealId: string) => `/lender/deal-intake/${dealId}`;
 
@@ -98,4 +99,36 @@ export async function rejectAmendmentIntakeFormAction(formData: FormData) {
   revalidatePath(intakeDealPath(dealId));
   revalidatePath(`/dealer/deals/${dealId}`);
   revalidatePath("/lender/assets");
+}
+
+export async function assignDealToPoolFromIntakeAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const poolId = String(formData.get("poolId") || "");
+  if (!poolId) throw new Error("Pool is required.");
+  const { session } = await requireLenderDeal(dealId);
+  await LoanPoolService.addDealToPool({
+    poolId,
+    dealId,
+    lenderId: session.user.workspaceId,
+    actorUserId: session.user.id,
+  });
+  revalidatePath(intakeDealPath(dealId));
+  revalidatePath(`/lender/pools/${poolId}`);
+  revalidatePath("/lender/pools");
+}
+
+export async function removeDealFromPoolFromIntakeAction(formData: FormData) {
+  const dealId = String(formData.get("dealId") || "");
+  const poolId = String(formData.get("poolId") || "");
+  if (!poolId) throw new Error("Pool is required.");
+  const { session } = await requireLenderDeal(dealId);
+  await LoanPoolService.removeDealFromPool({
+    poolId,
+    dealId,
+    lenderId: session.user.workspaceId,
+    actorUserId: session.user.id,
+  });
+  revalidatePath(intakeDealPath(dealId));
+  revalidatePath(`/lender/pools/${poolId}`);
+  revalidatePath("/lender/pools");
 }

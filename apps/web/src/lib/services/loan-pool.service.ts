@@ -274,6 +274,198 @@ export const LoanPoolService = {
 
     return { digest, summary };
   },
+
+  async runAiPoolingReview(input: {
+    poolId: string;
+    lenderId: string;
+    actorUserId?: string | null;
+  }): Promise<{
+    primeCount: number;
+    subprimeCount: number;
+    otherCount: number;
+    recommendedBucket: LoanPoolType;
+    recommendationSummary: string;
+  }> {
+    const pool = await this.getForLender(input.poolId, input.lenderId);
+    if (!pool) throw new Error("Pool not found.");
+
+    const classifyTier = (value: string | null | undefined) => {
+      const tier = String(value ?? "").trim().toUpperCase();
+      if (!tier) return "other";
+      if (tier.includes("SUB")) return "subprime";
+      if (tier.includes("PRIME") || ["A", "A+", "A-", "B+", "B"].includes(tier)) return "prime";
+      return "other";
+    };
+
+    let primeCount = 0;
+    let subprimeCount = 0;
+    let otherCount = 0;
+    for (const d of pool.deals) {
+      const buyer = await prisma.dealParty.findFirst({ where: { dealId: d.id, role: "BUYER" } });
+      const cls = classifyTier(buyer?.creditTier);
+      if (cls === "prime") primeCount += 1;
+      else if (cls === "subprime") subprimeCount += 1;
+      else otherCount += 1;
+    }
+
+    const total = pool.deals.length || 1;
+    const primeRatio = primeCount / total;
+    const subprimeRatio = subprimeCount / total;
+    const recommendedBucket =
+      primeRatio >= 0.7
+        ? LoanPoolType.PRIME
+        : subprimeRatio >= 0.5
+          ? LoanPoolType.SUBPRIME
+          : otherCount > 0
+            ? LoanPoolType.MIXED
+            : LoanPoolType.NEAR_PRIME;
+
+    const recommendationSummary = `AI review: prime ${primeCount}, subprime ${subprimeCount}, other-market ${otherCount}. Recommended pool distribution: ${recommendedBucket}.`;
+
+    await prisma.loanPool.update({
+      where: { id: pool.id },
+      data: {
+        auditStatus: "HUMAN_FINAL_APPROVAL_REQUIRED",
+        filterCriteriaJson: {
+          ...(pool.filterCriteriaJson as Record<string, unknown> | null),
+          aiPoolingReview: {
+            reviewedAt: new Date().toISOString(),
+            primeCount,
+            subprimeCount,
+            otherCount,
+            recommendedBucket,
+            recommendationSummary,
+          },
+        } as Prisma.InputJsonValue,
+      },
+    });
+
+    await prisma.lenderTask.create({
+      data: {
+        lenderId: input.lenderId,
+        poolId: pool.id,
+        title: `AI pooling review ready for ${pool.poolName}`,
+        description:
+          "AI completed package verification and market-bucket recommendation. Lender rep must issue final approval or hold.",
+        category: "pooling",
+        priority: "high",
+        status: "open",
+        source: "ai_pooling_review",
+        assignedTo: input.actorUserId ?? undefined,
+      },
+    });
+
+    await recordDealAuditEvent({
+      workspaceId: input.lenderId,
+      actorUserId: input.actorUserId ?? undefined,
+      authMethod: "SESSION",
+      action: "LOAN_POOL_AI_REVIEW_COMPLETED",
+      entityType: "LoanPool",
+      entityId: pool.id,
+      payload: {
+        primeCount,
+        subprimeCount,
+        otherCount,
+        recommendedBucket,
+      },
+    });
+
+    return { primeCount, subprimeCount, otherCount, recommendedBucket, recommendationSummary };
+  },
+
+  async finalizeAiPoolingDecision(input: {
+    poolId: string;
+    lenderId: string;
+    actorUserId?: string | null;
+    decision: "APPROVE" | "HOLD";
+    finalBucket?: LoanPoolType;
+    note?: string;
+  }) {
+    const pool = await this.getForLender(input.poolId, input.lenderId);
+    if (!pool) throw new Error("Pool not found.");
+
+    if (input.decision === "HOLD") {
+      await prisma.loanPool.update({
+        where: { id: pool.id },
+        data: {
+          status: LoanPoolStatus.IN_REVIEW,
+          saleStage: LoanPoolSaleStage.IN_REVIEW,
+          auditStatus: "ON_HOLD_BY_LENDER_REP",
+        },
+      });
+      await prisma.lenderTask.create({
+        data: {
+          lenderId: input.lenderId,
+          poolId: pool.id,
+          title: `Pool hold requires remediation: ${pool.poolName}`,
+          description: input.note?.trim() || "Human reviewer put this pool on hold pending arrangement updates.",
+          category: "pooling",
+          priority: "critical",
+          status: "blocked",
+          source: "ai_pooling_hold",
+          assignedTo: input.actorUserId ?? undefined,
+        },
+      });
+      await recordDealAuditEvent({
+        workspaceId: input.lenderId,
+        actorUserId: input.actorUserId ?? undefined,
+        authMethod: "SESSION",
+        action: "LOAN_POOL_HUMAN_HOLD",
+        entityType: "LoanPool",
+        entityId: pool.id,
+        payload: { note: input.note ?? null },
+      });
+      return { status: "HOLD" as const };
+    }
+
+    const finalBucket = input.finalBucket ?? pool.poolType;
+    await prisma.$transaction(async (tx) => {
+      await tx.loanPool.update({
+        where: { id: pool.id },
+        data: {
+          poolType: finalBucket,
+          riskClassification: finalBucket,
+          status: LoanPoolStatus.READY_FOR_SALE,
+          saleStage: LoanPoolSaleStage.READY_FOR_SALE,
+          auditStatus: "FINAL_APPROVED_BY_LENDER_REP",
+        },
+      });
+      await tx.deal.updateMany({
+        where: { poolId: pool.id, lenderId: input.lenderId },
+        data: {
+          secondaryMarketStatus: "AVAILABLE_FOR_SALE",
+          secondaryMarketGrade: finalBucket,
+        },
+      });
+      await tx.lenderTask.create({
+        data: {
+          lenderId: input.lenderId,
+          poolId: pool.id,
+          title: `Pool approved for market execution: ${pool.poolName}`,
+          description:
+            "Human final approval captured. AI automation proceeds with package generation and secondary-market preparation.",
+          category: "pooling",
+          priority: "high",
+          status: "completed",
+          completedAt: new Date(),
+          source: "ai_pooling_approved",
+          assignedTo: input.actorUserId ?? undefined,
+        },
+      });
+    });
+
+    const packageResult = await this.generatePoolPackagePlaceholder(pool.id, input.lenderId);
+    await recordDealAuditEvent({
+      workspaceId: input.lenderId,
+      actorUserId: input.actorUserId ?? undefined,
+      authMethod: "SESSION",
+      action: "LOAN_POOL_HUMAN_FINAL_APPROVED",
+      entityType: "LoanPool",
+      entityId: pool.id,
+      payload: { finalBucket, note: input.note ?? null, packageDigest: packageResult.digest },
+    });
+    return { status: "APPROVED" as const, digest: packageResult.digest };
+  },
 };
 
 function rootPrefix(): string {

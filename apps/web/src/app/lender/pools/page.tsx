@@ -24,7 +24,8 @@ export default async function LenderPoolsPage() {
       </div>
       <p style={{ color: "var(--muted)", maxWidth: "52rem" }}>
         Lender-only portfolio grouping for funded, validated deals. DealSeal does not assign credit tiers — filters use your
-        onboarded classifications only.
+        onboarded classifications only. AI verifies package quality, recommends prime/subprime/other market arrangement,
+        and routes final approve/hold to a lender representative before automation continues.
       </p>
       {pools.length === 0 ? (
         <p>No pools yet. Create one to begin packaging loans.</p>

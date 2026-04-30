@@ -118,3 +118,38 @@ export async function transitionPoolAction(formData: FormData) {
   });
   revalidatePath(`/lender/pools/${poolId}`);
 }
+
+export async function runAiPoolingReviewAction(poolId: string) {
+  const user = await requireLenderPoolManager();
+  const result = await LoanPoolService.runAiPoolingReview({
+    poolId,
+    lenderId: user.workspaceId,
+    actorUserId: user.id,
+  });
+  revalidatePath(`/lender/pools/${poolId}`);
+  return result;
+}
+
+export async function finalizeAiPoolingDecisionAction(formData: FormData) {
+  const user = await requireLenderPoolManager();
+  const poolId = String(formData.get("poolId") ?? "").trim();
+  const decision = String(formData.get("decision") ?? "").trim().toUpperCase();
+  const finalBucketRaw = String(formData.get("finalBucket") ?? "").trim();
+  const note = String(formData.get("note") ?? "").trim() || undefined;
+  if (!poolId) throw new Error("Missing pool.");
+  if (decision !== "APPROVE" && decision !== "HOLD") throw new Error("Invalid decision.");
+  const finalBucket = (Object.values(LoanPoolType) as string[]).includes(finalBucketRaw)
+    ? (finalBucketRaw as LoanPoolType)
+    : undefined;
+
+  await LoanPoolService.finalizeAiPoolingDecision({
+    poolId,
+    lenderId: user.workspaceId,
+    actorUserId: user.id,
+    decision: decision as "APPROVE" | "HOLD",
+    finalBucket,
+    note,
+  });
+  revalidatePath(`/lender/pools/${poolId}`);
+  revalidatePath("/lender/pools");
+}
