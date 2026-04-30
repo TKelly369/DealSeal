@@ -1,6 +1,8 @@
 import { Prisma, PrismaClient } from "@/generated/prisma";
+import { ensureDatabaseUrlFromPgEnv } from "@/lib/database-url";
 import { assertProductionWebEnv } from "@/lib/env-server";
 
+ensureDatabaseUrlFromPgEnv();
 assertProductionWebEnv();
 
 const globalForPrisma = globalThis as unknown as {
