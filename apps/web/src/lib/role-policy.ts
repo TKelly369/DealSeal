@@ -9,6 +9,10 @@ export function roleDisplayLabel(role: UserRole): string {
     LENDER_MANAGER: "Lender manager",
     ADMIN_USER: "Admin user",
     CUSTODIAN_ADMIN: "Custodian admin",
+    SECURITY_ADMIN: "Security admin",
+    COMPLIANCE_ADMIN: "Compliance admin",
+    SUPPORT_REP: "Support representative",
+    AUDITOR: "Auditor",
     SUPER_ADMIN: "Super admin",
   };
   return labels[role] ?? role;
@@ -20,12 +24,41 @@ export function isPlatformSuperRole(role: UserRole): boolean {
 
 /** Full admin console management (users, config, rules, documents, pools). */
 export function isAdminManagementRole(role: UserRole): boolean {
-  return role === "ADMIN_USER" || role === "SUPER_ADMIN";
+  return (
+    role === "ADMIN_USER" ||
+    role === "SECURITY_ADMIN" ||
+    role === "COMPLIANCE_ADMIN" ||
+    role === "SUPER_ADMIN"
+  );
 }
 
 /** Any staff who may open /admin or /audit. */
 export function isAdminShellRole(role: UserRole): boolean {
-  return role === "ADMIN_USER" || role === "CUSTODIAN_ADMIN" || role === "SUPER_ADMIN";
+  return (
+    role === "ADMIN_USER" ||
+    role === "CUSTODIAN_ADMIN" ||
+    role === "SECURITY_ADMIN" ||
+    role === "COMPLIANCE_ADMIN" ||
+    role === "SUPPORT_REP" ||
+    role === "AUDITOR" ||
+    role === "SUPER_ADMIN"
+  );
+}
+
+export function isSecurityAdminRole(role: UserRole): boolean {
+  return role === "SECURITY_ADMIN" || role === "SUPER_ADMIN";
+}
+
+export function isComplianceAdminRole(role: UserRole): boolean {
+  return role === "COMPLIANCE_ADMIN" || role === "SUPER_ADMIN";
+}
+
+export function isSupportRole(role: UserRole): boolean {
+  return role === "SUPPORT_REP";
+}
+
+export function isAuditorRole(role: UserRole): boolean {
+  return role === "AUDITOR";
 }
 
 export function isDealerStaffRole(role: UserRole): boolean {
@@ -110,6 +143,10 @@ export function defaultHomeForRole(role: string): string {
       return ROLE_HOME.dealer;
     case "ADMIN_USER":
     case "CUSTODIAN_ADMIN":
+    case "SECURITY_ADMIN":
+    case "COMPLIANCE_ADMIN":
+    case "SUPPORT_REP":
+    case "AUDITOR":
     case "SUPER_ADMIN":
       return ROLE_HOME.admin;
     default:

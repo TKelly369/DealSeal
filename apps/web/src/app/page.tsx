@@ -51,7 +51,7 @@ const footerColumns: { title: string; links: { label: string; href: string }[] }
     links: [
       { label: "Privacy Policy", href: "/legal/privacy" },
       { label: "Terms of Service", href: "/legal/terms" },
-      { label: "Security", href: "/legal/security" },
+      { label: "Trust & Security", href: "/trust-security" },
     ],
   },
   {

@@ -692,6 +692,293 @@ exports.Prisma.DealAuditEventScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SecurityPolicyScalarFieldEnum = {
+  id: 'id',
+  policyKey: 'policyKey',
+  title: 'title',
+  ownerUserId: 'ownerUserId',
+  currentVersionId: 'currentVersionId',
+  reviewCadenceDays: 'reviewCadenceDays',
+  lastReviewedAt: 'lastReviewedAt',
+  nextReviewAt: 'nextReviewAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PolicyVersionScalarFieldEnum = {
+  id: 'id',
+  policyId: 'policyId',
+  versionLabel: 'versionLabel',
+  contentMarkdown: 'contentMarkdown',
+  status: 'status',
+  approvedByUserId: 'approvedByUserId',
+  approvedAt: 'approvedAt',
+  effectiveAt: 'effectiveAt',
+  changeSummary: 'changeSummary',
+  policyOwnerUserId: 'policyOwnerUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PolicyAcknowledgmentScalarFieldEnum = {
+  id: 'id',
+  policyVersionId: 'policyVersionId',
+  userId: 'userId',
+  role: 'role',
+  acknowledgedAt: 'acknowledgedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent'
+};
+
+exports.Prisma.AccessReviewScalarFieldEnum = {
+  id: 'id',
+  quarterLabel: 'quarterLabel',
+  scopeSummary: 'scopeSummary',
+  status: 'status',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  reviewerUserId: 'reviewerUserId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AccessReviewFindingScalarFieldEnum = {
+  id: 'id',
+  accessReviewId: 'accessReviewId',
+  findingType: 'findingType',
+  severity: 'severity',
+  subjectType: 'subjectType',
+  subjectId: 'subjectId',
+  description: 'description',
+  remediationOwnerUserId: 'remediationOwnerUserId',
+  remediatedAt: 'remediatedAt',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ComplianceEvidenceScalarFieldEnum = {
+  id: 'id',
+  evidenceName: 'evidenceName',
+  controlCategory: 'controlCategory',
+  controlOwnerUserId: 'controlOwnerUserId',
+  uploadDate: 'uploadDate',
+  reviewDate: 'reviewDate',
+  reviewerUserId: 'reviewerUserId',
+  expirationDate: 'expirationDate',
+  soc2Criterion: 'soc2Criterion',
+  fileHash: 'fileHash',
+  storageKey: 'storageKey',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ControlMappingScalarFieldEnum = {
+  id: 'id',
+  controlId: 'controlId',
+  controlCategory: 'controlCategory',
+  controlDescription: 'controlDescription',
+  soc2Criterion: 'soc2Criterion',
+  ownerUserId: 'ownerUserId',
+  automated: 'automated',
+  lastTestDate: 'lastTestDate',
+  nextReviewDate: 'nextReviewDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VendorRiskRecordScalarFieldEnum = {
+  id: 'id',
+  vendorName: 'vendorName',
+  serviceProvided: 'serviceProvided',
+  dataAccessed: 'dataAccessed',
+  riskLevel: 'riskLevel',
+  contractStatus: 'contractStatus',
+  dpaStatus: 'dpaStatus',
+  soc2ReportStatus: 'soc2ReportStatus',
+  securityReviewDate: 'securityReviewDate',
+  renewalDate: 'renewalDate',
+  approved: 'approved',
+  incidentHistory: 'incidentHistory',
+  reviewNotes: 'reviewNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SecurityIncidentScalarFieldEnum = {
+  id: 'id',
+  incidentType: 'incidentType',
+  severity: 'severity',
+  status: 'status',
+  title: 'title',
+  description: 'description',
+  ownerUserId: 'ownerUserId',
+  detectedAt: 'detectedAt',
+  containedAt: 'containedAt',
+  resolvedAt: 'resolvedAt',
+  rootCause: 'rootCause',
+  evidencePreservationRef: 'evidencePreservationRef',
+  notificationsJson: 'notificationsJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.IncidentActionScalarFieldEnum = {
+  id: 'id',
+  incidentId: 'incidentId',
+  actionType: 'actionType',
+  actorUserId: 'actorUserId',
+  notes: 'notes',
+  actionTimestamp: 'actionTimestamp',
+  evidenceReference: 'evidenceReference'
+};
+
+exports.Prisma.ChangeRequestScalarFieldEnum = {
+  id: 'id',
+  changeOwnerUserId: 'changeOwnerUserId',
+  title: 'title',
+  description: 'description',
+  riskRating: 'riskRating',
+  testEvidence: 'testEvidence',
+  approvalUserId: 'approvalUserId',
+  approvalTimestamp: 'approvalTimestamp',
+  rollbackPlan: 'rollbackPlan',
+  affectedServices: 'affectedServices',
+  status: 'status',
+  emergencyChange: 'emergencyChange',
+  postDeployVerification: 'postDeployVerification',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DeploymentRecordScalarFieldEnum = {
+  id: 'id',
+  changeRequestId: 'changeRequestId',
+  deploymentTimestamp: 'deploymentTimestamp',
+  environment: 'environment',
+  actorUserId: 'actorUserId',
+  commitSha: 'commitSha',
+  serviceName: 'serviceName',
+  rollbackPlan: 'rollbackPlan',
+  verificationStatus: 'verificationStatus',
+  notes: 'notes',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  eventType: 'eventType',
+  userId: 'userId',
+  role: 'role',
+  organizationId: 'organizationId',
+  timestamp: 'timestamp',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  affectedRecordType: 'affectedRecordType',
+  affectedRecordId: 'affectedRecordId',
+  previousValue: 'previousValue',
+  newValue: 'newValue',
+  documentHash: 'documentHash',
+  systemStatus: 'systemStatus',
+  immutableLogRef: 'immutableLogRef',
+  metadata: 'metadata'
+};
+
+exports.Prisma.DataRetentionRuleScalarFieldEnum = {
+  id: 'id',
+  dataCategory: 'dataCategory',
+  jurisdiction: 'jurisdiction',
+  retentionDays: 'retentionDays',
+  legalHoldSupported: 'legalHoldSupported',
+  deletionMode: 'deletionMode',
+  anonymizationAllowed: 'anonymizationAllowed',
+  ownerUserId: 'ownerUserId',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PrivacyRequestScalarFieldEnum = {
+  id: 'id',
+  requestType: 'requestType',
+  requestorEmail: 'requestorEmail',
+  organizationId: 'organizationId',
+  subjectReference: 'subjectReference',
+  permissiblePurposeRef: 'permissiblePurposeRef',
+  status: 'status',
+  receivedAt: 'receivedAt',
+  dueAt: 'dueAt',
+  resolvedAt: 'resolvedAt',
+  resolverUserId: 'resolverUserId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.BackupVerificationScalarFieldEnum = {
+  id: 'id',
+  verificationDate: 'verificationDate',
+  environment: 'environment',
+  backupType: 'backupType',
+  rtoMinutes: 'rtoMinutes',
+  rpoMinutes: 'rpoMinutes',
+  passed: 'passed',
+  details: 'details',
+  verifiedByUserId: 'verifiedByUserId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.VulnerabilityFindingScalarFieldEnum = {
+  id: 'id',
+  source: 'source',
+  findingTitle: 'findingTitle',
+  severity: 'severity',
+  status: 'status',
+  cve: 'cve',
+  affectedComponent: 'affectedComponent',
+  detectedAt: 'detectedAt',
+  dueAt: 'dueAt',
+  remediatedAt: 'remediatedAt',
+  ownerUserId: 'ownerUserId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ComplianceExceptionScalarFieldEnum = {
+  id: 'id',
+  controlId: 'controlId',
+  category: 'category',
+  severity: 'severity',
+  description: 'description',
+  approvedByUserId: 'approvedByUserId',
+  expiresAt: 'expiresAt',
+  remediationPlan: 'remediationPlan',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SOC2ReadinessReportScalarFieldEnum = {
+  id: 'id',
+  reportDate: 'reportDate',
+  controlCategory: 'controlCategory',
+  controlDescription: 'controlDescription',
+  evidenceStatus: 'evidenceStatus',
+  controlOwnerUserId: 'controlOwnerUserId',
+  lastTestDate: 'lastTestDate',
+  nextReviewDate: 'nextReviewDate',
+  exceptionsSummary: 'exceptionsSummary',
+  remediationStatus: 'remediationStatus',
+  readinessScore: 'readinessScore',
+  generatedByUserId: 'generatedByUserId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -750,6 +1037,10 @@ exports.UserRole = exports.$Enums.UserRole = {
   LENDER_MANAGER: 'LENDER_MANAGER',
   ADMIN_USER: 'ADMIN_USER',
   CUSTODIAN_ADMIN: 'CUSTODIAN_ADMIN',
+  SECURITY_ADMIN: 'SECURITY_ADMIN',
+  COMPLIANCE_ADMIN: 'COMPLIANCE_ADMIN',
+  SUPPORT_REP: 'SUPPORT_REP',
+  AUDITOR: 'AUDITOR',
   SUPER_ADMIN: 'SUPER_ADMIN'
 };
 
@@ -1101,6 +1392,61 @@ exports.ComplianceRuleSet = exports.$Enums.ComplianceRuleSet = {
   LENDER: 'LENDER'
 };
 
+exports.AccessReviewStatus = exports.$Enums.AccessReviewStatus = {
+  open: 'open',
+  in_review: 'in_review',
+  completed: 'completed',
+  closed: 'closed'
+};
+
+exports.ComplianceEvidenceStatus = exports.$Enums.ComplianceEvidenceStatus = {
+  pending: 'pending',
+  approved: 'approved',
+  expired: 'expired',
+  needs_update: 'needs_update'
+};
+
+exports.SecurityIncidentSeverity = exports.$Enums.SecurityIncidentSeverity = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  critical: 'critical'
+};
+
+exports.SecurityIncidentStatus = exports.$Enums.SecurityIncidentStatus = {
+  detected: 'detected',
+  triaged: 'triaged',
+  contained: 'contained',
+  investigating: 'investigating',
+  remediation: 'remediation',
+  monitoring: 'monitoring',
+  closed: 'closed'
+};
+
+exports.ChangeRequestStatus = exports.$Enums.ChangeRequestStatus = {
+  draft: 'draft',
+  pending_approval: 'pending_approval',
+  approved: 'approved',
+  deployed: 'deployed',
+  rejected: 'rejected',
+  emergency: 'emergency'
+};
+
+exports.PrivacyRequestStatus = exports.$Enums.PrivacyRequestStatus = {
+  requested: 'requested',
+  in_review: 'in_review',
+  fulfilled: 'fulfilled',
+  denied: 'denied',
+  archived: 'archived'
+};
+
+exports.VulnerabilityStatus = exports.$Enums.VulnerabilityStatus = {
+  open: 'open',
+  accepted_risk: 'accepted_risk',
+  remediated: 'remediated',
+  closed: 'closed'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Workspace: 'Workspace',
@@ -1143,6 +1489,25 @@ exports.Prisma.ModelName = {
   ComplianceCheck: 'ComplianceCheck',
   PreFundingValidationCertificate: 'PreFundingValidationCertificate',
   DealAuditEvent: 'DealAuditEvent',
+  SecurityPolicy: 'SecurityPolicy',
+  PolicyVersion: 'PolicyVersion',
+  PolicyAcknowledgment: 'PolicyAcknowledgment',
+  AccessReview: 'AccessReview',
+  AccessReviewFinding: 'AccessReviewFinding',
+  ComplianceEvidence: 'ComplianceEvidence',
+  ControlMapping: 'ControlMapping',
+  VendorRiskRecord: 'VendorRiskRecord',
+  SecurityIncident: 'SecurityIncident',
+  IncidentAction: 'IncidentAction',
+  ChangeRequest: 'ChangeRequest',
+  DeploymentRecord: 'DeploymentRecord',
+  AuditLog: 'AuditLog',
+  DataRetentionRule: 'DataRetentionRule',
+  PrivacyRequest: 'PrivacyRequest',
+  BackupVerification: 'BackupVerification',
+  VulnerabilityFinding: 'VulnerabilityFinding',
+  ComplianceException: 'ComplianceException',
+  SOC2ReadinessReport: 'SOC2ReadinessReport',
   Account: 'Account',
   Session: 'Session'
 };

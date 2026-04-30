@@ -14,6 +14,7 @@ import {
   Shield,
   Users,
   UserSquare2,
+  ShieldCheck,
 } from "lucide-react";
 
 /** Admin/custodian shell — aligns with `/admin/*` route structure. */
@@ -33,5 +34,6 @@ export const adminShellNavItems = [
   { href: "/admin/calendar", label: "Calendar", icon: Calendar },
   { href: "/admin/tasks", label: "Tasks", icon: ClipboardList },
   { href: "/admin/system-alerts", label: "System alerts", icon: Bell },
+  { href: "/admin/security-compliance", label: "Trust & compliance", icon: ShieldCheck },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ] as const;

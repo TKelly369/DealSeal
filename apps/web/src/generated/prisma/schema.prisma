@@ -17,6 +17,10 @@ enum UserRole {
   LENDER_MANAGER
   ADMIN_USER
   CUSTODIAN_ADMIN
+  SECURITY_ADMIN
+  COMPLIANCE_ADMIN
+  SUPPORT_REP
+  AUDITOR
   SUPER_ADMIN
 }
 
@@ -1154,6 +1158,361 @@ model DealAuditEvent {
   @@index([dealId, createdAt])
   @@index([workspaceId, createdAt])
   @@index([chainHash])
+}
+
+enum ComplianceEvidenceStatus {
+  pending
+  approved
+  expired
+  needs_update
+}
+
+enum SecurityIncidentSeverity {
+  low
+  medium
+  high
+  critical
+}
+
+enum SecurityIncidentStatus {
+  detected
+  triaged
+  contained
+  investigating
+  remediation
+  monitoring
+  closed
+}
+
+enum ChangeRequestStatus {
+  draft
+  pending_approval
+  approved
+  deployed
+  rejected
+  emergency
+}
+
+enum VulnerabilityStatus {
+  open
+  accepted_risk
+  remediated
+  closed
+}
+
+enum PrivacyRequestStatus {
+  requested
+  in_review
+  fulfilled
+  denied
+  archived
+}
+
+enum AccessReviewStatus {
+  open
+  in_review
+  completed
+  closed
+}
+
+model SecurityPolicy {
+  id                String    @id @default(cuid())
+  policyKey         String    @unique
+  title             String
+  ownerUserId       String?
+  currentVersionId  String?
+  reviewCadenceDays Int       @default(365)
+  lastReviewedAt    DateTime?
+  nextReviewAt      DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model PolicyVersion {
+  id                String    @id @default(cuid())
+  policyId          String
+  versionLabel      String
+  contentMarkdown   String
+  status            String    @default("draft")
+  approvedByUserId  String?
+  approvedAt        DateTime?
+  effectiveAt       DateTime?
+  changeSummary     String?
+  policyOwnerUserId String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([policyId, createdAt])
+}
+
+model PolicyAcknowledgment {
+  id              String   @id @default(cuid())
+  policyVersionId String
+  userId          String
+  role            String
+  acknowledgedAt  DateTime @default(now())
+  ipAddress       String?
+  userAgent       String?
+
+  @@unique([policyVersionId, userId])
+}
+
+model AccessReview {
+  id             String             @id @default(cuid())
+  quarterLabel   String
+  scopeSummary   String
+  status         AccessReviewStatus @default(open)
+  startedAt      DateTime           @default(now())
+  completedAt    DateTime?
+  reviewerUserId String?
+  notes          String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+}
+
+model AccessReviewFinding {
+  id                     String    @id @default(cuid())
+  accessReviewId         String
+  findingType            String
+  severity               String    @default("medium")
+  subjectType            String
+  subjectId              String?
+  description            String
+  remediationOwnerUserId String?
+  remediatedAt           DateTime?
+  status                 String    @default("open")
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@index([accessReviewId, status])
+}
+
+model ComplianceEvidence {
+  id                 String                   @id @default(cuid())
+  evidenceName       String
+  controlCategory    String
+  controlOwnerUserId String?
+  uploadDate         DateTime                 @default(now())
+  reviewDate         DateTime?
+  reviewerUserId     String?
+  expirationDate     DateTime?
+  soc2Criterion      String
+  fileHash           String
+  storageKey         String?
+  status             ComplianceEvidenceStatus @default(pending)
+  notes              String?
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+}
+
+model ControlMapping {
+  id                 String    @id @default(cuid())
+  controlId          String
+  controlCategory    String
+  controlDescription String
+  soc2Criterion      String
+  ownerUserId        String?
+  automated          Boolean   @default(false)
+  lastTestDate       DateTime?
+  nextReviewDate     DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model VendorRiskRecord {
+  id                 String    @id @default(cuid())
+  vendorName         String
+  serviceProvided    String
+  dataAccessed       String
+  riskLevel          String
+  contractStatus     String
+  dpaStatus          String
+  soc2ReportStatus   String
+  securityReviewDate DateTime?
+  renewalDate        DateTime?
+  approved           Boolean   @default(false)
+  incidentHistory    Json      @default("[]")
+  reviewNotes        String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model SecurityIncident {
+  id                      String                   @id @default(cuid())
+  incidentType            String
+  severity                SecurityIncidentSeverity @default(medium)
+  status                  SecurityIncidentStatus   @default(detected)
+  title                   String
+  description             String
+  ownerUserId             String?
+  detectedAt              DateTime                 @default(now())
+  containedAt             DateTime?
+  resolvedAt              DateTime?
+  rootCause               String?
+  evidencePreservationRef String?
+  notificationsJson       Json                     @default("[]")
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+}
+
+model IncidentAction {
+  id                String   @id @default(cuid())
+  incidentId        String
+  actionType        String
+  actorUserId       String?
+  notes             String?
+  actionTimestamp   DateTime @default(now())
+  evidenceReference String?
+
+  @@index([incidentId, actionTimestamp])
+}
+
+model ChangeRequest {
+  id                     String              @id @default(cuid())
+  changeOwnerUserId      String?
+  title                  String
+  description            String
+  riskRating             String
+  testEvidence           String?
+  approvalUserId         String?
+  approvalTimestamp      DateTime?
+  rollbackPlan           String?
+  affectedServices       String
+  status                 ChangeRequestStatus @default(draft)
+  emergencyChange        Boolean             @default(false)
+  postDeployVerification String?
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+}
+
+model DeploymentRecord {
+  id                  String   @id @default(cuid())
+  changeRequestId     String?
+  deploymentTimestamp DateTime @default(now())
+  environment         String
+  actorUserId         String?
+  commitSha           String?
+  serviceName         String
+  rollbackPlan        String?
+  verificationStatus  String   @default("pending")
+  notes               String?
+  createdAt           DateTime @default(now())
+}
+
+model AuditLog {
+  id                 String   @id @default(cuid())
+  eventId            String   @unique
+  eventType          String
+  userId             String?
+  role               String?
+  organizationId     String?
+  timestamp          DateTime @default(now())
+  ipAddress          String?
+  userAgent          String?
+  affectedRecordType String?
+  affectedRecordId   String?
+  previousValue      Json?
+  newValue           Json?
+  documentHash       String?
+  systemStatus       String?
+  immutableLogRef    String?
+  metadata           Json     @default("{}")
+
+  @@index([timestamp])
+  @@index([organizationId, timestamp])
+}
+
+model DataRetentionRule {
+  id                   String   @id @default(cuid())
+  dataCategory         String
+  jurisdiction         String?
+  retentionDays        Int
+  legalHoldSupported   Boolean  @default(true)
+  deletionMode         String   @default("soft_delete")
+  anonymizationAllowed Boolean  @default(false)
+  ownerUserId          String?
+  enabled              Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model PrivacyRequest {
+  id                    String               @id @default(cuid())
+  requestType           String
+  requestorEmail        String
+  organizationId        String?
+  subjectReference      String?
+  permissiblePurposeRef String?
+  status                PrivacyRequestStatus @default(requested)
+  receivedAt            DateTime             @default(now())
+  dueAt                 DateTime?
+  resolvedAt            DateTime?
+  resolverUserId        String?
+  notes                 String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+}
+
+model BackupVerification {
+  id               String   @id @default(cuid())
+  verificationDate DateTime @default(now())
+  environment      String
+  backupType       String
+  rtoMinutes       Int?
+  rpoMinutes       Int?
+  passed           Boolean
+  details          String?
+  verifiedByUserId String?
+  createdAt        DateTime @default(now())
+}
+
+model VulnerabilityFinding {
+  id                String              @id @default(cuid())
+  source            String
+  findingTitle      String
+  severity          String
+  status            VulnerabilityStatus @default(open)
+  cve               String?
+  affectedComponent String?
+  detectedAt        DateTime            @default(now())
+  dueAt             DateTime?
+  remediatedAt      DateTime?
+  ownerUserId       String?
+  notes             String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+}
+
+model ComplianceException {
+  id               String    @id @default(cuid())
+  controlId        String?
+  category         String
+  severity         String
+  description      String
+  approvedByUserId String?
+  expiresAt        DateTime?
+  remediationPlan  String?
+  status           String    @default("open")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model SOC2ReadinessReport {
+  id                 String    @id @default(cuid())
+  reportDate         DateTime  @default(now())
+  controlCategory    String
+  controlDescription String
+  evidenceStatus     String
+  controlOwnerUserId String?
+  lastTestDate       DateTime?
+  nextReviewDate     DateTime?
+  exceptionsSummary  String?
+  remediationStatus  String?
+  readinessScore     Int       @default(0)
+  generatedByUserId  String?
+  createdAt          DateTime  @default(now())
+
+  @@index([reportDate, controlCategory])
 }
 
 model Account {
