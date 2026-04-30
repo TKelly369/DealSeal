@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 import { ConditionalLayout } from "@/components/ConditionalLayout";
-import { GlobalQuickNav } from "@/components/GlobalQuickNav";
 import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -34,7 +33,6 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
-          <GlobalQuickNav />
           <Suspense
             fallback={
               <div
