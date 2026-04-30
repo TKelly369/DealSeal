@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
@@ -5,7 +6,7 @@ import { DealerLenderLinkService } from "@/lib/services/link.service";
 
 export default async function LenderDealersPage() {
   const session = await auth();
-  if (!session?.user) redirect("/login?next=/lender/dealers");
+  if (!session?.user) redirect("/lender/login?next=/lender/dealers");
   const lenderId = session.user.workspaceId;
   const links = await prisma.dealerLenderLink.findMany({
     where: { lenderId },
@@ -15,7 +16,20 @@ export default async function LenderDealersPage() {
 
   return (
     <div className="ds-section-shell">
-      <h1 style={{ marginTop: 0 }}>Approved Dealers</h1>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          gap: "0.75rem",
+          alignItems: "baseline",
+        }}
+      >
+        <h1 style={{ marginTop: 0 }}>Approved dealers</h1>
+        <Link href="/lender/dealers/approval-queue" className="btn btn-secondary" style={{ fontSize: "0.85rem" }}>
+          Approval queue
+        </Link>
+      </div>
       <div className="card">
         <ul style={{ margin: 0, paddingLeft: "1.2rem" }}>
           {links.map((link) => (
@@ -27,7 +41,7 @@ export default async function LenderDealersPage() {
                   action={async () => {
                     "use server";
                     const fresh = await auth();
-                    if (!fresh?.user) redirect("/login?next=/lender/dealers");
+                    if (!fresh?.user) redirect("/lender/login?next=/lender/dealers");
                     await DealerLenderLinkService.approveAccess(link.id, fresh.user.id);
                   }}
                 >

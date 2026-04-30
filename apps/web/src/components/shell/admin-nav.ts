@@ -1,0 +1,37 @@
+import {
+  Bell,
+  Calendar,
+  ClipboardList,
+  Database,
+  FileArchive,
+  FileText,
+  FolderKanban,
+  Gavel,
+  Handshake,
+  Home,
+  ScrollText,
+  Settings,
+  Shield,
+  Users,
+  UserSquare2,
+} from "lucide-react";
+
+/** Admin/custodian shell — aligns with `/admin/*` route structure. */
+export const adminShellNavItems = [
+  { href: "/admin", label: "Home", icon: Home },
+  { href: "/admin/dashboard", label: "Dashboard", icon: FolderKanban },
+  { href: "/admin/deals", label: "Deals", icon: FileText },
+  { href: "/admin/audit", label: "Audit", icon: ScrollText },
+  { href: "/admin/custody", label: "Custody", icon: Shield },
+  { href: "/admin/documents", label: "Documents", icon: FileArchive },
+  { href: "/admin/document-vault", label: "Document vault", icon: Database },
+  { href: "/admin/state-rules", label: "State rules", icon: Gavel },
+  { href: "/admin/lender-rules", label: "Lender rules", icon: ClipboardList },
+  { href: "/admin/dealer-lender-links", label: "Dealer-lender links", icon: Handshake },
+  { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/organizations", label: "Organizations", icon: UserSquare2 },
+  { href: "/admin/calendar", label: "Calendar", icon: Calendar },
+  { href: "/admin/tasks", label: "Tasks", icon: ClipboardList },
+  { href: "/admin/system-alerts", label: "System alerts", icon: Bell },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
+] as const;

@@ -1,4 +1,4 @@
-import type { Deal, DealFinancials, DealStatus, UserRole } from "@/generated/prisma";
+import type { Deal, DealFinancials, DealerLenderLink, DealStatus, UserRole } from "@/generated/prisma";
 import { Prisma } from "@/generated/prisma";
 import { prisma } from "@/lib/db";
 import { isAdminShellRole } from "@/lib/role-policy";
@@ -39,11 +39,19 @@ const LENDER_FINANCIAL_VISIBLE: DealStatus[] = [
 
 export type LenderRuleProfileShape = {
   showDealerFeeBreakdown?: boolean;
+  /** When false, lender cannot open custodial view of dealer-uploaded credit reports. Default: allowed. */
+  allowLenderCreditReportView?: boolean;
+  /** When false, lender cannot download dealer-uploaded credit reports. Default: allowed. */
+  allowLenderCreditReportDownload?: boolean;
 };
 
-function parseRuleProfile(raw: unknown): LenderRuleProfileShape {
+export function parseLenderRuleProfile(raw: unknown): LenderRuleProfileShape {
   if (!raw || typeof raw !== "object") return {};
   return raw as LenderRuleProfileShape;
+}
+
+function parseRuleProfile(raw: unknown): LenderRuleProfileShape {
+  return parseLenderRuleProfile(raw);
 }
 
 /** Hide dealer markup lines unless lender rule profile allows (column-oriented disclosure control). */
@@ -68,7 +76,10 @@ export function maskDealFinancialsForLender(
 export async function getDealForSession(
   session: SessionUser,
   dealId: string,
-): Promise<{ deal: Deal & { financials: DealFinancials | null }; financialsView: DealFinancials | null } | null> {
+): Promise<{
+  deal: Deal & { financials: DealFinancials | null; dealerLenderLink: DealerLenderLink };
+  financialsView: DealFinancials | null;
+} | null> {
   const deal = await prisma.deal.findUnique({
     where: { id: dealId },
     include: {

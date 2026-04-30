@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 import { CommentService } from "@/lib/services/comment.service";
 
 function pathForDealView(fromPath: "dealer" | "lender", dealId: string) {
-  return fromPath === "dealer" ? `/dealer/deals/${dealId}` : `/lender/intake/${dealId}`;
+  return fromPath === "dealer" ? `/dealer/deals/${dealId}` : `/lender/deal-intake/${dealId}`;
 }
 
 export async function submitDealCommentAction(

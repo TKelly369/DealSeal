@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 export default async function LenderRulesPage() {
   const session = await auth();
-  if (!session?.user) redirect("/login?next=/lender/rules");
+  if (!session?.user) redirect("/lender/login?next=/lender/rules");
 
   return (
     <div className="ds-section-shell">

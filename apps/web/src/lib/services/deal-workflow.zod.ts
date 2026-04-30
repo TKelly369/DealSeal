@@ -13,6 +13,6 @@ export const DealLifecycleStatusSchema = z.enum([
   "CONSUMMATED",
 ]);
 
-export const GreenStageDocTypeSchema = z.enum(["DEALER_UPLOAD", "INSURANCE"]);
+export const GreenStageDocTypeSchema = z.enum(["DEALER_UPLOAD", "INSURANCE", "CREDIT_REPORT_UPLOAD"]);
 
 export type DealLifecycleStatus = z.infer<typeof DealLifecycleStatusSchema>;

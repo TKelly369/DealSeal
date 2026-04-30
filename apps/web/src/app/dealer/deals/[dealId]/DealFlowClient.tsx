@@ -396,6 +396,20 @@ export function DealFlowClient({
               <SubmitLabel idle="Upload stipulation" />
             </button>
           </form>
+          <form action={uploadGreenStageDocAction} style={{ display: "grid", gap: "0.5rem", marginTop: "1rem" }}>
+            <input type="hidden" name="dealId" value={deal.dealId} />
+            <input type="hidden" name="docType" value="CREDIT_REPORT_UPLOAD" />
+            <label style={{ fontSize: "0.85rem" }}>
+              Credit report (dealer- or bureau-sourced PDF)
+              <span style={{ color: "var(--muted)", display: "block", fontSize: "0.78rem", marginTop: "0.2rem" }}>
+                DealSeal does not pull credit. Your lender may view or download per program policy; access is audited.
+              </span>
+            </label>
+            <input type="file" name="file" accept=".pdf,application/pdf" required />
+            <button type="submit" className="btn btn-secondary">
+              <SubmitLabel idle="Upload credit report" />
+            </button>
+          </form>
           <hr style={{ borderColor: "#333", margin: "1.25rem 0" }} />
           <p style={{ fontWeight: 600, fontSize: "0.95rem" }}>Send to lender for approval</p>
           <p style={{ color: "var(--muted)", fontSize: "0.88rem" }}>

@@ -6,6 +6,8 @@ import { DealWorkflowService } from "@/lib/services/deal-workflow.service";
 import { prisma } from "@/lib/db";
 import { AmendmentService } from "@/lib/services/amendment.service";
 
+const intakeDealPath = (dealId: string) => `/lender/deal-intake/${dealId}`;
+
 async function requireLenderDeal(dealId: string) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
@@ -22,7 +24,7 @@ export async function lenderFinalRISCFormAction(formData: FormData) {
   const session = await auth();
   if (!session?.user) throw new Error("Unauthorized");
   await DealWorkflowService.lenderApproveAndSendFinalRISC(dealId, { fileName }, session.user.id, session.user.role);
-  revalidatePath(`/lender/intake/${dealId}`);
+  revalidatePath(intakeDealPath(dealId));
   revalidatePath(`/dealer/deals/${dealId}`);
 }
 
@@ -34,7 +36,7 @@ export async function approveAmendmentIntakeFormAction(formData: FormData) {
   const amendment = await prisma.amendment.findUnique({ where: { id: amendmentId } });
   if (!amendment || amendment.dealId !== dealId) throw new Error("Amendment not found.");
   await AmendmentService.approveAmendment(amendmentId, session.user.id, session.user.role);
-  revalidatePath(`/lender/intake/${dealId}`);
+  revalidatePath(intakeDealPath(dealId));
   revalidatePath(`/dealer/deals/${dealId}`);
   revalidatePath("/lender/assets");
 }
@@ -47,7 +49,7 @@ export async function rejectAmendmentIntakeFormAction(formData: FormData) {
   const amendment = await prisma.amendment.findUnique({ where: { id: amendmentId } });
   if (!amendment || amendment.dealId !== dealId) throw new Error("Amendment not found.");
   await AmendmentService.rejectAmendment(amendmentId, session.user.id);
-  revalidatePath(`/lender/intake/${dealId}`);
+  revalidatePath(intakeDealPath(dealId));
   revalidatePath(`/dealer/deals/${dealId}`);
   revalidatePath("/lender/assets");
 }

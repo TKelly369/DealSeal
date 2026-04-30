@@ -18,6 +18,8 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const dealId = searchParams.get("dealId");
   const documentId = searchParams.get("documentId");
+  const mode = searchParams.get("mode");
+  const action = mode === "view" ? "VIEW" : "DOWNLOAD";
   if (!dealId || !documentId) {
     return NextResponse.json({ error: "dealId and documentId are required." }, { status: 400 });
   }
@@ -33,12 +35,18 @@ export async function GET(req: NextRequest) {
     session: session.user,
     dealId,
     documentId,
-    action: "DOWNLOAD",
+    action,
     ip: req.headers.get("x-forwarded-for") ?? undefined,
   });
   if (!logged.ok) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    return NextResponse.json({ error: "Forbidden", reason: logged.reason }, { status: 403 });
   }
+
+  const filename =
+    action === "VIEW"
+      ? `credit-or-doc-${documentId.slice(0, 8)}.pdf`
+      : `document-${documentId.slice(0, 8)}.bin`;
+  const disposition = action === "VIEW" ? "inline" : "attachment";
 
   const storage = getDealSealStorage();
   if (storage.providerLabel === "LOCAL") {
@@ -48,8 +56,8 @@ export async function GET(req: NextRequest) {
     }
     return new NextResponse(new Uint8Array(buf), {
       headers: {
-        "Content-Type": "application/octet-stream",
-        "Content-Disposition": `attachment; filename="document-${documentId.slice(0, 8)}.bin"`,
+        "Content-Type": action === "VIEW" ? "application/pdf" : "application/octet-stream",
+        "Content-Disposition": `${disposition}; filename="${filename}"`,
       },
     });
   }

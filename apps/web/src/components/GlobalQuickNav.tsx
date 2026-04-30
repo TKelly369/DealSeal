@@ -24,11 +24,24 @@ const DEALER_ROUTES = [
 
 const LENDER_ROUTES = [
   { value: "/lender", label: "Lender: Home" },
+  { value: "/lender/dashboard", label: "Lender: Dashboard" },
+  { value: "/lender/deal-intake", label: "Lender: Deal intake" },
+  { value: "/lender/dealers", label: "Lender: Dealers" },
+  { value: "/lender/calendar", label: "Lender: Calendar" },
   { value: "/lender/assets", label: "Lender: Assets & pools" },
 ];
 
 const ADMIN_ROUTES = [
-  { value: "/admin", label: "Admin Console" },
+  { value: "/admin", label: "Admin: Home" },
+  { value: "/admin/dashboard", label: "Admin: Dashboard" },
+  { value: "/admin/deals", label: "Admin: Deals" },
+  { value: "/admin/audit", label: "Admin: Audit" },
+  { value: "/admin/custody", label: "Admin: Custody" },
+  { value: "/admin/documents", label: "Admin: Documents" },
+  { value: "/admin/document-vault", label: "Admin: Document vault" },
+  { value: "/admin/dealer-lender-links", label: "Admin: Dealer-lender links" },
+  { value: "/admin/calendar", label: "Admin: Calendar" },
+  { value: "/admin/system-alerts", label: "Admin: System alerts" },
 ];
 
 export function GlobalQuickNav() {

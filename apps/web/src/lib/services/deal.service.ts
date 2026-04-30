@@ -1,4 +1,5 @@
 import type { DealerDashboardDealRow } from "@/lib/dealer-dashboard-metrics";
+import type { LenderDashboardDealRow } from "@/lib/lender-dashboard-metrics";
 import { prisma } from "@/lib/db";
 
 export const DealService = {
@@ -31,6 +32,29 @@ export const DealService = {
     return prisma.deal.findMany({
       where: { lenderId },
       include: { dealer: { select: { name: true } } },
+      orderBy: { updatedAt: "desc" },
+    });
+  },
+
+  /** Lender dashboard: lean rows + pending amendment ids + document counts. */
+  async listDealsForLenderDashboard(lenderId: string): Promise<LenderDashboardDealRow[]> {
+    return prisma.deal.findMany({
+      where: { lenderId },
+      select: {
+        id: true,
+        status: true,
+        state: true,
+        complianceStatus: true,
+        initialDisclosureAcceptedAt: true,
+        createdAt: true,
+        updatedAt: true,
+        dealer: { select: { name: true } },
+        _count: { select: { generatedDocuments: true } },
+        amendments: {
+          where: { status: "PENDING_LENDER_APPROVAL" },
+          select: { id: true },
+        },
+      },
       orderBy: { updatedAt: "desc" },
     });
   },

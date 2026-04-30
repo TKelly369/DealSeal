@@ -4,7 +4,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { Menu, PanelLeftClose, PanelLeftOpen, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { adminShellNavItems } from "@/components/shell/admin-nav";
 import { dealerShellNavItems } from "@/components/shell/dealer-nav";
+import { lenderShellNavItems } from "@/components/shell/lender-nav";
 import { shellNavItems } from "@/components/shell/nav";
 import { ShellUser } from "@/components/shell/types";
 import { isAdminShellRole, roleDisplayLabel } from "@/lib/role-policy";
@@ -17,14 +19,44 @@ function dealerNavActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function lenderNavActive(pathname: string, href: string): boolean {
+  if (href === "/lender") {
+    return pathname === "/lender" || pathname === "/lender/dashboard";
+  }
+  if (href === "/lender/dealers") {
+    return pathname === "/lender/dealers";
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function adminNavActive(pathname: string, href: string): boolean {
+  if (href === "/admin") {
+    return pathname === "/admin" || pathname === "/admin/dashboard";
+  }
+  if (href === "/admin/deals") {
+    return pathname === "/admin/deals";
+  }
+  if (href === "/admin/audit") {
+    return pathname === "/admin/audit";
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 function NavContent({ user, compact = false }: { user: ShellUser; compact?: boolean }) {
   const pathname = usePathname() ?? "";
   const useDealerShell =
     pathname.startsWith("/dealer") && !pathname.startsWith("/dealer/login");
+  const useLenderShell =
+    pathname.startsWith("/lender") && !pathname.startsWith("/lender/login");
+  const useAdminShell = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
 
   const items = useDealerShell
     ? dealerShellNavItems.map((item) => ({ ...item, adminOnly: false as const }))
-    : shellNavItems.filter((item) => !item.adminOnly || isAdminShellRole(user.role));
+    : useLenderShell
+      ? lenderShellNavItems.map((item) => ({ ...item, adminOnly: false as const }))
+      : useAdminShell
+        ? adminShellNavItems.map((item) => ({ ...item, adminOnly: false as const }))
+      : shellNavItems.filter((item) => !item.adminOnly || isAdminShellRole(user.role));
 
   return (
     <nav className="ds-shell-nav">
@@ -32,7 +64,11 @@ function NavContent({ user, compact = false }: { user: ShellUser; compact?: bool
         const Icon = item.icon;
         const current = useDealerShell
           ? dealerNavActive(pathname, item.href)
-          : pathname === item.href;
+          : useLenderShell
+            ? lenderNavActive(pathname, item.href)
+            : useAdminShell
+              ? adminNavActive(pathname, item.href)
+            : pathname === item.href;
         return (
           <Link
             key={item.href}

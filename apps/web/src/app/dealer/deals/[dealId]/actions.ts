@@ -131,7 +131,7 @@ export async function requestAmendmentFormAction(formData: FormData) {
   );
   revalidatePath(`/dealer/deals/${dealId}`);
   revalidatePath("/lender/assets");
-  revalidatePath("/lender/intake");
+  revalidatePath("/lender/deal-intake");
 }
 
 export async function clearDealAlertFormAction(formData: FormData) {

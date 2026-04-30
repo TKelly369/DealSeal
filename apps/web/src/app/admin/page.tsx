@@ -8,7 +8,7 @@ export default async function AdminPage() {
     redirect("/admin/login?next=/admin");
   }
   if (isAdminManagementRole(session.user.role)) {
-    redirect("/admin/users");
+    redirect("/admin/dashboard");
   }
   redirect("/admin/audit");
 }

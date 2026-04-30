@@ -29,6 +29,7 @@ function legacyTypeFor(dt: DocumentType): GeneratedDocumentType {
     case "UCSP_STATE_DISCLOSURE":
       return "DISCLOSURE";
     case "DEALER_UPLOAD":
+    case "CREDIT_REPORT_UPLOAD":
     case "UCSP_BUYERS_ORDER":
       return "BUYERS_ORDER";
     case "RISC_UNSIGNED":
@@ -164,6 +165,7 @@ export const DealWorkflowService = {
         complianceChecks: { orderBy: { createdAt: "asc" } },
         negotiableInstrument: { select: { hdcStatus: true, hdcDefects: true } },
         authoritativeContract: true,
+        dealerLenderLink: { select: { lenderRuleProfile: true, status: true } },
         vehicle: true,
         parties: true,
         financials: true,
@@ -300,6 +302,9 @@ export const DealWorkflowService = {
             originalFileName: input.fileName,
             signatureState: "UNSIGNED",
             pricingState: "ESTIMATED_PRE_SIGNATURE",
+            ...(docType === "CREDIT_REPORT_UPLOAD"
+              ? { dealerUploadCategory: "CREDIT_REPORT", note: "Dealer-uploaded; DealSeal does not pull credit." }
+              : {}),
           },
         },
       });
@@ -310,7 +315,11 @@ export const DealWorkflowService = {
         eventType: "UPLOADED",
         actorUserId: userId,
         actorRole,
-        metadata: { documentType: docType, fileUrl },
+        metadata: {
+          documentType: docType,
+          fileUrl,
+          ...(docType === "CREDIT_REPORT_UPLOAD" ? { creditReportUpload: true } : {}),
+        },
       });
 
       return doc;

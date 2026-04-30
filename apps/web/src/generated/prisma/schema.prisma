@@ -124,6 +124,8 @@ enum DocumentType {
   CHANGE_SUMMARY_DISCLOSURE
   PROCESS_DISCLOSURE
   DEALER_UPLOAD
+  /// Bureau or dealer-sourced credit file uploaded by dealer; DealSeal does not pull credit.
+  CREDIT_REPORT_UPLOAD
   INSURANCE
   RISC_UNSIGNED
   RISC_LENDER_FINAL
@@ -277,6 +279,9 @@ enum CalendarEventKind {
   CUSTOMER_SIGNING
   LENDER_CONDITION
   TITLE_REGISTRATION
+  REPO_REPLEVIN_REVIEW
+  INTERNAL_NOTE
+  ALERT_REMINDER
 }
 
 model User {

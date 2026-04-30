@@ -10,6 +10,7 @@ import { WebhookService } from "@/lib/services/webhook.service";
 const AVAILABLE_SCOPES = [
   { id: "deals:write", label: "Create Deals" },
   { id: "deals:read", label: "Read Deals" },
+  { id: "credit_report:read", label: "Credit reports (dealer-uploaded, lender API)" },
   { id: "webhooks:manage", label: "Manage Webhooks" },
 ];
 

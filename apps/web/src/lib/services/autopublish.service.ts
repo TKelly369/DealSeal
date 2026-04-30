@@ -9,6 +9,7 @@ function legacyTypeFor(dt: DocumentType): GeneratedDocumentType {
     case "UCSP_STATE_DISCLOSURE":
       return "DISCLOSURE";
     case "DEALER_UPLOAD":
+    case "CREDIT_REPORT_UPLOAD":
     case "UCSP_BUYERS_ORDER":
       return "BUYERS_ORDER";
     case "RISC_UNSIGNED":
