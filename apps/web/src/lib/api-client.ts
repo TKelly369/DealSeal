@@ -1,6 +1,31 @@
 import { getToken } from "./session";
 
 const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+const DEVICE_FINGERPRINT_HEADER = "x-dealseal-device-fingerprint";
+let deviceFingerprintPromise: Promise<string> | null = null;
+
+function toHex(bytes: Uint8Array): string {
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function getDeviceFingerprint(): Promise<string> {
+  if (typeof window === "undefined") return "server";
+  if (deviceFingerprintPromise) return deviceFingerprintPromise;
+  deviceFingerprintPromise = (async () => {
+    const material = [
+      navigator.userAgent,
+      String(window.screen?.width ?? 0),
+      String(window.screen?.colorDepth ?? 0),
+      Intl.DateTimeFormat().resolvedOptions().timeZone ?? "unknown",
+    ].join("|");
+    const data = new TextEncoder().encode(material);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    return toHex(new Uint8Array(digest));
+  })();
+  return deviceFingerprintPromise;
+}
 
 export async function api<T>(
   path: string,
@@ -12,6 +37,7 @@ export async function api<T>(
     headers.set("Content-Type", "application/json");
   }
   if (token) headers.set("Authorization", `Bearer ${token}`);
+  headers.set(DEVICE_FINGERPRINT_HEADER, await getDeviceFingerprint());
   const res = await fetch(`${base}${path}`, { ...init, headers });
   if (res.status === 409) {
     const err = await res.json().catch(() => ({}));

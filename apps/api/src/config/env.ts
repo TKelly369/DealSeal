@@ -32,6 +32,10 @@ const schema = z.object({
    * Not read by the API process by default; documented for Next.js / workers calling the API.
    */
   API_INTERNAL_URL: z.string().url().optional(),
+  /** Amazon QLDB ledger name for `@dealseal/custody-ledger`. Required in production for custody writes. */
+  DEALSEAL_QLDB_LEDGER_NAME: z.string().optional(),
+  /** Optional AWS region for QLDB (defaults to `AWS_REGION` or `us-east-1`). */
+  DEALSEAL_QLDB_REGION: z.string().optional(),
 });
 
 type BaseEnv = z.infer<typeof schema>;

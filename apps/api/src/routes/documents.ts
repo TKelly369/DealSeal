@@ -15,6 +15,8 @@ import {
   finalizeDocumentUpload,
 } from "../services/document-upload-service.js";
 import { reprocessDocumentVersion } from "../services/document-reprocess-service.js";
+import type { CustodyRuntime } from "../services/custody/custody-factory.js";
+import { emitStipulationUploadedCustodyEvent } from "../services/custody/domain-custody-hooks.js";
 
 const createDocBody = z.object({
   transactionId: z.string().uuid(),
@@ -51,7 +53,7 @@ const reprocessBody = z.object({
   version: z.number().int().positive().optional(),
 });
 
-export function createDocumentsRouter(env: Env): Router {
+export function createDocumentsRouter(env: Env, deps: { custody: CustodyRuntime }): Router {
   const r = Router();
   r.use(createAuthMiddleware(env));
 
@@ -129,6 +131,21 @@ export function createDocumentsRouter(env: Env): Router {
       authoritative: body.authoritative,
       reqMeta: { ip: req.ip, userAgent: req.headers["user-agent"] as string | undefined },
     });
+    if (out.documentType === DocumentType.SUPPORTING) {
+      await emitStipulationUploadedCustodyEvent(deps.custody.service, {
+        dealId: out.transactionId,
+        documentName: out.fileName,
+        mimeType: out.mimeType,
+        contentSha256Hash: out.contentSha256Hash,
+        actor: {
+          userId: req.auth!.sub,
+          role: req.auth!.roles.join(","),
+          ipAddress: req.ip,
+          userAgent: req.headers["user-agent"] as string | undefined,
+          deviceFingerprint: (req.headers["x-dealseal-device-fingerprint"] as string | undefined) ?? undefined,
+        },
+      });
+    }
     res.status(201).json(out);
   });
 

@@ -43,7 +43,7 @@ const footerColumns: { title: string; links: { label: string; href: string }[] }
     links: [
       { label: "Dealer Platform", href: "/dealer/login?next=/dealer" },
       { label: "Lender Platform", href: "/lender/login?next=/lender" },
-      { label: "Admin Oversight", href: "/admin/login?next=/admin" },
+      { label: "Admin Oversight", href: "/admin/login?next=/admin/dashboard" },
     ],
   },
   {

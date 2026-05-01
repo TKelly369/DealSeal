@@ -48,6 +48,26 @@ const DEFAULT_COUNTS: LenderCommandCenterCounts = {
   secondaryMarketAlerts: 0,
 };
 
+function isMissingCustodyEventsTableError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const maybe = error as {
+    code?: unknown;
+    meta?: { modelName?: unknown; table?: unknown };
+    message?: unknown;
+  };
+  if (maybe.code !== "P2021") return false;
+  const modelName = typeof maybe.meta?.modelName === "string" ? maybe.meta.modelName : "";
+  const tableName = typeof maybe.meta?.table === "string" ? maybe.meta.table : "";
+  const message = typeof maybe.message === "string" ? maybe.message : "";
+  return (
+    modelName.includes("DocumentCustodyEvent") ||
+    tableName.toLowerCase().includes("documentcustodyevent") ||
+    tableName.toLowerCase().includes("document_custody_event") ||
+    message.includes("DocumentCustodyEvent") ||
+    message.toLowerCase().includes("document_custody_event")
+  );
+}
+
 function trafficLightFromCompliance(
   status: DealComplianceStatus,
 ): "Green" | "Yellow" | "Red" {
@@ -177,18 +197,35 @@ export const LenderOpsService = {
       { key: "redCompliance", label: "No unresolved red-light compliance issues", ok: false, blocking: true },
     ];
     try {
-      const deal = await prisma.deal.findFirst({
-        where: { id: dealId, lenderId },
-        include: {
-          authoritativeContract: true,
-          generatedDocuments: true,
-          contractTransactionEvents: true,
-          prefundingValidationCertificate: true,
-          auditEvents: true,
-          custodyEvents: true,
-          complianceChecks: true,
-        },
-      });
+      let deal;
+      try {
+        deal = await prisma.deal.findFirst({
+          where: { id: dealId, lenderId },
+          include: {
+            authoritativeContract: true,
+            generatedDocuments: true,
+            contractTransactionEvents: true,
+            prefundingValidationCertificate: true,
+            auditEvents: true,
+            custodyEvents: true,
+            complianceChecks: true,
+          },
+        });
+      } catch (error) {
+        if (!isMissingCustodyEventsTableError(error)) throw error;
+        const fallbackDeal = await prisma.deal.findFirst({
+          where: { id: dealId, lenderId },
+          include: {
+            authoritativeContract: true,
+            generatedDocuments: true,
+            contractTransactionEvents: true,
+            prefundingValidationCertificate: true,
+            auditEvents: true,
+            complianceChecks: true,
+          },
+        });
+        deal = fallbackDeal ? { ...fallbackDeal, custodyEvents: [] } : null;
+      }
       if (!deal) {
         return { status: "Enforcement Blocked", score: 0, checks };
       }

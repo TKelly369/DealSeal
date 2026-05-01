@@ -2,6 +2,7 @@
 
 import { useRef, useState, useCallback } from "react";
 import { DealActivityPanel } from "@/components/deals/DealActivityPanel";
+import { DealCustodyTimeline } from "@/components/deals/DealCustodyTimeline";
 import { DealFlowClient, type DealFlowSnapshot } from "./DealFlowClient";
 import type { DealTimelineItem } from "@/lib/services/comment.service";
 
@@ -38,6 +39,7 @@ export function DealDealsWorkspace({ deal, timeline, currentUserId }: Props) {
     >
       <div style={{ minWidth: 0 }}>
         <DealFlowClient deal={deal} onRequestCommentOnEntity={onRequestComment} />
+        <DealCustodyTimeline dealId={deal.dealId} />
       </div>
       <DealActivityPanel
         panelRef={panelRef}

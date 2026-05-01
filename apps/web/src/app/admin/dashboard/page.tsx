@@ -3,6 +3,26 @@ import { prisma } from "@/lib/db";
 import { isAdminShellRole } from "@/lib/role-policy";
 import { redirect } from "next/navigation";
 
+function isMissingCustodyEventsTableError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const maybe = error as {
+    code?: unknown;
+    meta?: { modelName?: unknown; table?: unknown };
+    message?: unknown;
+  };
+  if (maybe.code !== "P2021") return false;
+  const modelName = typeof maybe.meta?.modelName === "string" ? maybe.meta.modelName : "";
+  const tableName = typeof maybe.meta?.table === "string" ? maybe.meta.table : "";
+  const message = typeof maybe.message === "string" ? maybe.message : "";
+  return (
+    modelName.includes("DocumentCustodyEvent") ||
+    tableName.toLowerCase().includes("documentcustodyevent") ||
+    tableName.toLowerCase().includes("document_custody_event") ||
+    message.includes("DocumentCustodyEvent") ||
+    message.toLowerCase().includes("document_custody_event")
+  );
+}
+
 export default async function AdminDashboardPage() {
   const session = await auth();
   if (!session?.user) redirect("/admin/login?next=/admin/dashboard");
@@ -17,20 +37,40 @@ export default async function AdminDashboardPage() {
     organizations: 0,
   };
   let warning: string | null = null;
-  try {
-    const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    const [deals, openAlerts, custodyEvents24h, auditEvents24h, pendingLinks, organizations] = await Promise.all([
-      prisma.deal.count(),
-      prisma.dealAlert.count({ where: { status: "OPEN" } }),
-      prisma.documentCustodyEvent.count({ where: { timestamp: { gte: since } } }),
-      prisma.dealAuditEvent.count({ where: { createdAt: { gte: since } } }),
-      prisma.dealerLenderLink.count({ where: { status: "PENDING" } }),
-      prisma.workspace.count(),
-    ]);
-    metrics = { deals, openAlerts, custodyEvents24h, auditEvents24h, pendingLinks, organizations };
-  } catch {
-    warning = "Dashboard is running in degraded mode while database connectivity is limited.";
-  }
+  const warnings: string[] = [];
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const [deals, openAlerts, custodyEvents24h, auditEvents24h, pendingLinks, organizations] = await Promise.all([
+    prisma.deal.count().catch(() => {
+      warnings.push("Some dashboard metrics are temporarily unavailable.");
+      return 0;
+    }),
+    prisma.dealAlert.count({ where: { status: "OPEN" } }).catch(() => {
+      warnings.push("Some dashboard metrics are temporarily unavailable.");
+      return 0;
+    }),
+    prisma.documentCustodyEvent.count({ where: { timestamp: { gte: since } } }).catch((error) => {
+      if (isMissingCustodyEventsTableError(error)) {
+        warnings.push("Custody metrics are unavailable until database migrations are deployed.");
+      } else {
+        warnings.push("Some dashboard metrics are temporarily unavailable.");
+      }
+      return 0;
+    }),
+    prisma.dealAuditEvent.count({ where: { createdAt: { gte: since } } }).catch(() => {
+      warnings.push("Some dashboard metrics are temporarily unavailable.");
+      return 0;
+    }),
+    prisma.dealerLenderLink.count({ where: { status: "PENDING" } }).catch(() => {
+      warnings.push("Some dashboard metrics are temporarily unavailable.");
+      return 0;
+    }),
+    prisma.workspace.count().catch(() => {
+      warnings.push("Some dashboard metrics are temporarily unavailable.");
+      return 0;
+    }),
+  ]);
+  metrics = { deals, openAlerts, custodyEvents24h, auditEvents24h, pendingLinks, organizations };
+  warning = warnings[0] ?? null;
 
   const cards = [
     { label: "System-wide deals", value: metrics.deals },

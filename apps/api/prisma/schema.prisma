@@ -301,8 +301,50 @@ model Transaction {
   governingRecord          GoverningRecord?
   integrationLogs         IntegrationLog[]
 
+  /// CQRS read model: folded custody aggregate (QLDB is source of truth; this is for validation + UI).
+  custodyDealProjection CustodyDealProjection?
+  custodyLedgerEvents   CustodyLedgerEvent[]
+
   @@index([orgId, state])
   @@index([publicId])
+}
+
+/// Projected deal row for custody command validation and fast reads (never written from the web app).
+/// `transactionId` is the canonical `deal_id` in custody commands and QLDB metadata.
+model CustodyDealProjection {
+  id                    String   @id @default(uuid())
+  transactionId         String   @unique
+  version               Int      @default(0)
+  lifecyclePhase        String
+  governingDocumentHash String?
+  openBlockersJson      Json     @default("[]")
+  lastEventId           String?
+  lastQldbDocumentId    String?
+  lastDigestTipBase64   String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@map("custody_deal_projections")
+}
+
+/// One row per appended custody event (idempotent upsert on `eventId`).
+model CustodyLedgerEvent {
+  id               String   @id @default(uuid())
+  eventId          String   @unique
+  transactionId    String
+  eventType        String
+  payloadJson      Json
+  metadataJson     Json
+  qldbDocumentId   String?
+  digestTipBase64  String?
+  createdAt        DateTime @default(now())
+
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([transactionId, createdAt])
+  @@map("custody_ledger_events")
 }
 
 model GoverningAgreement {

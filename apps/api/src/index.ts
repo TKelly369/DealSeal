@@ -7,6 +7,7 @@ import { getVerificationPublicBaseUrl } from "./config/urls.js";
 import { setLogLevelFromEnv } from "./lib/logger.js";
 import { requestLoggerMiddleware } from "./middleware/request-logger.js";
 import { registerRoutes } from "./routes/index.js";
+import { createCustodyRuntime } from "./services/custody/custody-factory.js";
 import { createVerifyApiRouter } from "./routes/verify-public.js";
 import { errorHandler } from "./middleware/error-handler.js";
 import { createStripeWebhookHandler } from "./routes/billing-webhook.js";
@@ -158,7 +159,8 @@ app.get("/demo", async (_req, res) => {
   }
 });
 
-registerRoutes(app, env);
+const custodyRuntime = createCustodyRuntime(env);
+registerRoutes(app, env, { custody: custodyRuntime });
 
 app.use(errorHandler);
 

@@ -125,6 +125,11 @@ export default auth(async (req) => {
     if (hasIdentity) {
       const requestedNext = nextUrl.searchParams.get("next");
       const safeNext = requestedNext && requestedNext.startsWith("/") ? requestedNext : roleHomePath(req.auth.user.role);
+      // Dealer/lender sessions must still be able to open the admin sign-in screen (e.g. marketing footer link).
+      // Otherwise we redirect to `next=/admin`, middleware rejects non-admin users, and they never reach this form.
+      if (pathname === "/admin/login" && !isAdminShellRole(req.auth.user.role as UserRole)) {
+        return nextWithPathname(req, pathname);
+      }
       return NextResponse.redirect(new URL(safeNext, nextUrl.origin));
     }
     return nextWithPathname(req, pathname);

@@ -22,6 +22,26 @@ type DisclosureMetadataInput = {
 
 type DealerFolderBucket = "UNSIGNED_DEMO" | "OFFICIAL_SIGNED" | "PROBLEM_REVIEW";
 
+function isMissingCustodyEventsTableError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const maybe = error as {
+    code?: unknown;
+    meta?: { modelName?: unknown; table?: unknown };
+    message?: unknown;
+  };
+  if (maybe.code !== "P2021") return false;
+  const modelName = typeof maybe.meta?.modelName === "string" ? maybe.meta.modelName : "";
+  const tableName = typeof maybe.meta?.table === "string" ? maybe.meta.table : "";
+  const message = typeof maybe.message === "string" ? maybe.message : "";
+  return (
+    modelName.includes("DocumentCustodyEvent") ||
+    tableName.toLowerCase().includes("documentcustodyevent") ||
+    tableName.toLowerCase().includes("document_custody_event") ||
+    message.includes("DocumentCustodyEvent") ||
+    message.toLowerCase().includes("document_custody_event")
+  );
+}
+
 function folderBucketForDocType(documentType: DocumentType): DealerFolderBucket {
   if (
     documentType === "RISC_SIGNED" ||
@@ -184,22 +204,43 @@ function buildChangeSummary(preliminary: Record<string, unknown>, finalTerms: Re
 
 export const DealWorkflowService = {
   async getDealForActor(dealId: string, actorWorkspaceId: string, side: "dealer" | "lender") {
-    const deal = await prisma.deal.findUnique({
-      where: { id: dealId },
-      include: {
-        generatedDocuments: { orderBy: { createdAt: "asc" } },
-        custodyEvents: { orderBy: { timestamp: "asc" } },
-        complianceChecks: { orderBy: { createdAt: "asc" } },
-        negotiableInstrument: { select: { hdcStatus: true, hdcDefects: true } },
-        authoritativeContract: true,
-        dealerLenderLink: { select: { lenderRuleProfile: true, status: true } },
-        vehicle: true,
-        parties: true,
-        financials: true,
-        contractTransactionEvents: true,
-        amendments: { orderBy: { createdAt: "desc" } },
-      },
-    });
+    let deal;
+    try {
+      deal = await prisma.deal.findUnique({
+        where: { id: dealId },
+        include: {
+          generatedDocuments: { orderBy: { createdAt: "asc" } },
+          custodyEvents: { orderBy: { timestamp: "asc" } },
+          complianceChecks: { orderBy: { createdAt: "asc" } },
+          negotiableInstrument: { select: { hdcStatus: true, hdcDefects: true } },
+          authoritativeContract: true,
+          dealerLenderLink: { select: { lenderRuleProfile: true, status: true } },
+          vehicle: true,
+          parties: true,
+          financials: true,
+          contractTransactionEvents: true,
+          amendments: { orderBy: { createdAt: "desc" } },
+        },
+      });
+    } catch (error) {
+      if (!isMissingCustodyEventsTableError(error)) throw error;
+      const fallbackDeal = await prisma.deal.findUnique({
+        where: { id: dealId },
+        include: {
+          generatedDocuments: { orderBy: { createdAt: "asc" } },
+          complianceChecks: { orderBy: { createdAt: "asc" } },
+          negotiableInstrument: { select: { hdcStatus: true, hdcDefects: true } },
+          authoritativeContract: true,
+          dealerLenderLink: { select: { lenderRuleProfile: true, status: true } },
+          vehicle: true,
+          parties: true,
+          financials: true,
+          contractTransactionEvents: true,
+          amendments: { orderBy: { createdAt: "desc" } },
+        },
+      });
+      deal = fallbackDeal ? { ...fallbackDeal, custodyEvents: [] } : null;
+    }
     if (!deal) return null;
     if (side === "dealer" && deal.dealerId !== actorWorkspaceId) return null;
     if (side === "lender" && deal.lenderId !== actorWorkspaceId) return null;

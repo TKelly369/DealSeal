@@ -32,6 +32,8 @@ import {
 } from "../services/completion-protocol.js";
 import { assertCoreDealDataMutable } from "../services/lock-guard.js";
 import { registerTransactionAuthorityRoutes } from "./transaction-authority-routes.js";
+import type { CustodyRuntime } from "../services/custody/custody-factory.js";
+import { emitDealCreatedCustodyEvent } from "../services/custody/domain-custody-hooks.js";
 
 const createBody = z.object({
   referenceCode: z.string().min(4),
@@ -81,7 +83,7 @@ const programPickBody = z.object({
   lenderProgramId: z.string().uuid(),
 });
 
-export function createTransactionsRouter(env: Env): Router {
+export function createTransactionsRouter(env: Env, deps: { custody: CustodyRuntime }): Router {
   const r = Router();
   const auth = createAuthMiddleware(env);
 
@@ -162,6 +164,19 @@ export function createTransactionsRouter(env: Env): Router {
         resource: "Transaction",
         resourceId: result.tx.id,
         payload: { governingAgreementId: result.ga.id },
+      });
+
+      await emitDealCreatedCustodyEvent(deps.custody.service, {
+        dealId: result.tx.id,
+        dealType: "retail-installment",
+        lenderId: "unassigned",
+        actor: {
+          userId: req.auth!.sub,
+          role: req.auth!.roles.join(","),
+          ipAddress: req.ip,
+          userAgent: req.headers["user-agent"] as string | undefined,
+          deviceFingerprint: (req.headers["x-dealseal-device-fingerprint"] as string | undefined) ?? undefined,
+        },
       });
 
       res.status(201).json({

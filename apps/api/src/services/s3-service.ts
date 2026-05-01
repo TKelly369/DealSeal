@@ -4,7 +4,10 @@ import {
   HeadObjectCommand,
   CopyObjectCommand,
   DeleteObjectCommand,
+  GetObjectCommand,
 } from "@aws-sdk/client-s3";
+import { createHash } from "node:crypto";
+import { Readable } from "node:stream";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { Env } from "../config/env.js";
 import { HttpError } from "../lib/http-error.js";
@@ -98,4 +101,19 @@ export async function deleteObjectIfPresent(env: Env, key: string): Promise<void
   } catch {
     /* best-effort cleanup */
   }
+}
+
+export async function computeObjectSha256(env: Env, key: string): Promise<string> {
+  const client = createS3Client(env);
+  const bucket = getBucket(env);
+  const out = await client.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
+  const body = out.Body;
+  if (!(body instanceof Readable)) {
+    throw new HttpError(500, "Object body was not stream-readable", "S3_STREAM");
+  }
+  const hash = createHash("sha256");
+  for await (const chunk of body) {
+    hash.update(chunk as Buffer);
+  }
+  return hash.digest("hex");
 }

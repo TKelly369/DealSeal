@@ -5,6 +5,7 @@ import { HttpError } from "../lib/http-error.js";
 import { assertNoActiveHold, canPatchDealData } from "./hold-service.js";
 import {
   copyObjectInBucket,
+  computeObjectSha256,
   deleteObjectIfPresent,
   headObjectMeta,
   presignPutObject,
@@ -135,7 +136,16 @@ export async function finalizeDocumentUpload(input: {
   immutable?: boolean;
   authoritative?: boolean;
   reqMeta: { ip?: string; userAgent?: string };
-}): Promise<{ version: number; storageKey: string; ingestStatus: DocumentIngestStatus }> {
+}): Promise<{
+  version: number;
+  storageKey: string;
+  ingestStatus: DocumentIngestStatus;
+  transactionId: string;
+  mimeType: string;
+  contentSha256Hash: string;
+  fileName: string;
+  documentType: string;
+}> {
   const intent = await prisma.documentUploadIntent.findFirst({
     where: {
       id: input.intentId,
@@ -188,6 +198,10 @@ export async function finalizeDocumentUpload(input: {
   if (meta.contentLength > Number(intent.maxBytes)) {
     throw new HttpError(400, "Object exceeds declared max size", "SIZE_CAP");
   }
+  const contentSha256Hash = await computeObjectSha256(input.env, intent.stagingKey);
+  if (contentSha256Hash !== input.sha256) {
+    throw new HttpError(400, "sha256 mismatch with uploaded bytes", "CHECKSUM_BYTES");
+  }
 
   const immutableLock = await prisma.documentVersion.findFirst({
     where: { documentId: intent.documentId, isImmutable: true },
@@ -234,7 +248,7 @@ export async function finalizeDocumentUpload(input: {
         storageKey,
         mimeType: intent.mimeType,
         byteSize: BigInt(meta.contentLength),
-        sha256: input.sha256,
+        sha256: contentSha256Hash,
         isImmutable: input.immutable ?? false,
         authoritative: input.authoritative ?? false,
         derivedRenderKey,
@@ -274,7 +288,7 @@ export async function finalizeDocumentUpload(input: {
     payload: {
       intentId: input.intentId,
       version: result.version,
-      sha256: input.sha256,
+      sha256: contentSha256Hash,
     },
     ip: input.reqMeta.ip,
     userAgent: input.reqMeta.userAgent,
@@ -291,5 +305,12 @@ export async function finalizeDocumentUpload(input: {
     await runDocumentValidationInline(validationPayload, "sync-fallback");
   }
 
-  return result;
+  return {
+    ...result,
+    transactionId: intent.transactionId,
+    mimeType: intent.mimeType,
+    contentSha256Hash,
+    fileName: intent.stagingKey.split("/").at(-1) ?? intent.document.id,
+    documentType: intent.document.type,
+  };
 }

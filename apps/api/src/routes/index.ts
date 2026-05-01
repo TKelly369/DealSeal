@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import type { Env } from "../config/env.js";
+import type { CustodyRuntime } from "../services/custody/custody-factory.js";
 import { createAuthRouter } from "./auth.js";
 import { createTransactionsRouter } from "./transactions.js";
 import { createDocumentsRouter } from "./documents.js";
@@ -18,11 +19,12 @@ import { createIntegrationsRouter } from "./integrations.js";
 import { createOutboundTestRouter } from "./webhooks-routes.js";
 import { createPartnerApiRouter } from "./partner-api.js";
 import { createGoverningRecordsRouter } from "./governing-records-routes.js";
+import { createCustodyRouter } from "./custody-routes.js";
 
-export function registerRoutes(app: Express, env: Env): void {
+export function registerRoutes(app: Express, env: Env, deps: { custody: CustodyRuntime }): void {
   app.use("/auth", createAuthRouter(env));
-  app.use("/transactions", createTransactionsRouter(env));
-  app.use("/documents", createDocumentsRouter(env));
+  app.use("/transactions", createTransactionsRouter(env, deps));
+  app.use("/documents", createDocumentsRouter(env, deps));
   app.use("/rules", createRulesRouter(env));
   app.use("/approvals", createApprovalsRouter(env));
   app.use("/overrides", createOverridesRouter(env));
@@ -38,4 +40,5 @@ export function registerRoutes(app: Express, env: Env): void {
   app.use("/webhooks", createOutboundTestRouter(env));
   app.use("/governing-records", createGoverningRecordsRouter(env));
   app.use("/api", createPartnerApiRouter(env));
+  app.use("/api/custody", createCustodyRouter(env, deps.custody));
 }
